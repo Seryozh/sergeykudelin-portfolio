@@ -49,14 +49,7 @@ export default function Home() {
     formData.append('audio', audioBlob, 'voice_input.mp3');
 
     try {
-      // --- PASTE YOUR n8n WEBHOOK URL HERE LATER ---
-      const N8N_WEBHOOK_URL = 'YOUR_WEBHOOK_URL_GOES_HERE';
-
-      if (N8N_WEBHOOK_URL === 'YOUR_WEBHOOK_URL_GOES_HERE') {
-        alert("Wait! You haven't pasted your n8n URL in the code yet.");
-        setStatus('idle');
-        return;
-      }
+      const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook-test/voice-agent';
 
       const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
