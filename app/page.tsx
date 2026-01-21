@@ -1,65 +1,143 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useRef } from 'react';
+import { Mic, Volume2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Home() {
+  // Status: idle (waiting), recording (holding button), processing (sending to n8n), playing (hearing response)
+  const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing'>('idle');
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+  // --- 1. START RECORDING (Press Down) ---
+  const startRecording = async () => {
+    try {
+      // Request Microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      // Collect Audio Data
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      // When Stopped, Trigger Upload
+      mediaRecorderRef.current.onstop = sendAudioToN8N;
+
+      mediaRecorderRef.current.start();
+      setStatus('recording');
+    } catch (err) {
+      alert("Please allow microphone access to talk to the concierge.");
+    }
+  };
+
+  // --- 2. STOP RECORDING (Release Button) ---
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && status === 'recording') {
+      mediaRecorderRef.current.stop();
+      setStatus('processing');
+    }
+  };
+
+  // --- 3. SEND TO n8n ---
+  const sendAudioToN8N = async () => {
+    // Convert chunks to a single MP3 blob
+    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'voice_input.mp3');
+
+    try {
+      // --- PASTE YOUR n8n WEBHOOK URL HERE LATER ---
+      const N8N_WEBHOOK_URL = 'YOUR_WEBHOOK_URL_GOES_HERE';
+
+      if (N8N_WEBHOOK_URL === 'YOUR_WEBHOOK_URL_GOES_HERE') {
+        alert("Wait! You haven't pasted your n8n URL in the code yet.");
+        setStatus('idle');
+        return;
+      }
+
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Network error');
+
+      // --- 4. PLAY THE AI RESPONSE ---
+      const responseBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(responseBlob);
+      const audio = new Audio(audioUrl);
+
+      setStatus('playing');
+      audio.play();
+
+      // Reset when audio finishes
+      audio.onended = () => setStatus('idle');
+
+    } catch (error) {
+      console.error(error);
+      setStatus('idle');
+      alert("Could not connect to the Concierge. Check your n8n URL.");
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4 overflow-hidden selection:bg-none">
+
+      {/* HEADER LOGO */}
+      <div className="absolute top-12 text-center">
+        <h1 className="text-3xl font-bold text-white tracking-[0.2em]">THE TIDES</h1>
+        <div className="w-12 h-1 bg-blue-500 mx-auto my-3"></div>
+        <p className="text-slate-400 text-xs uppercase tracking-widest">Virtual Concierge Service</p>
+      </div>
+
+      {/* THE INTERACTIVE BUTTON */}
+      <div className="relative">
+
+        {/* Pulsing Ring (Visible only when recording) */}
+        {status === 'recording' && (
+          <motion.div
+            initial={{ scale: 1, opacity: 0 }}
+            animate={{ scale: 2, opacity: [0, 0.5, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
+            className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-500 z-0"
+          />
+        )}
+
+        {/* Main Button */}
+        <motion.button
+          onMouseDown={startRecording}
+          onMouseUp={stopRecording}
+          onTouchStart={startRecording} // Essential for Mobile
+          onTouchEnd={stopRecording}    // Essential for Mobile
+          whileTap={{ scale: 0.95 }}
+          className={`relative z-10 flex items-center justify-center w-64 h-64 rounded-full shadow-2xl transition-all duration-500
+            ${status === 'recording' ? 'bg-red-500 shadow-red-500/50' :
+              status === 'processing' ? 'bg-amber-400 animate-pulse' :
+              status === 'playing' ? 'bg-emerald-500' :
+              'bg-blue-600 hover:bg-blue-500 shadow-blue-500/30'}
+          `}
+        >
+          {status === 'processing' ? (
+            <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin" />
+          ) : status === 'playing' ? (
+            <Volume2 size={80} className="text-white" />
+          ) : (
+            <Mic size={80} className="text-white" />
+          )}
+        </motion.button>
+      </div>
+
+      {/* STATUS TEXT */}
+      <p className="mt-12 text-slate-400 font-light text-xl tracking-wide h-8">
+        {status === 'idle' && "Hold to Speak"}
+        {status === 'recording' && "Listening..."}
+        {status === 'processing' && "Consulting Tides Policy..."}
+        {status === 'playing' && "Speaking..."}
+      </p>
+
+    </main>
   );
 }
