@@ -1,15 +1,85 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Mic, Volume2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// SpeechRecognition types
+interface SpeechRecognitionEvent {
+  resultIndex: number;
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string;
+}
+
+interface SpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognitionInstance;
+    webkitSpeechRecognition: new () => SpeechRecognitionInstance;
+  }
+}
 
 export default function DoorLoopPage() {
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing'>('idle');
+  const [transcript, setTranscript] = useState('');
+  const [showTranscript, setShowTranscript] = useState(false);
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const transcriptTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
+
+  // Initialize Speech Recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = (event) => {
+          let interimTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            interimTranscript += transcript;
+          }
+          setTranscript(interimTranscript);
+          setShowTranscript(true);
+
+          if (transcriptTimeoutRef.current) {
+            clearTimeout(transcriptTimeoutRef.current);
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.log('Speech recognition error:', event.error);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   const startRecording = async () => {
     try {
@@ -24,6 +94,15 @@ export default function DoorLoopPage() {
       mediaRecorderRef.current.onstop = sendAudioToN8N;
       mediaRecorderRef.current.start();
       setStatus('recording');
+      setTranscript('');
+
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.start();
+        } catch (e) {
+          // Already started or not supported
+        }
+      }
     } catch (err) {
       alert("Microphone access denied.");
     }
@@ -33,6 +112,14 @@ export default function DoorLoopPage() {
     if (mediaRecorderRef.current && status === 'recording') {
       mediaRecorderRef.current.stop();
       setStatus('processing');
+
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+
+      transcriptTimeoutRef.current = setTimeout(() => {
+        setShowTranscript(false);
+      }, 2000);
     }
   };
 
@@ -52,7 +139,6 @@ export default function DoorLoopPage() {
 
       const responseBlob = await response.blob();
 
-      // Debug: Check what we're getting back
       console.log('Response type:', responseBlob.type);
       console.log('Response size:', responseBlob.size, 'bytes');
 
@@ -81,56 +167,278 @@ export default function DoorLoopPage() {
     }
   };
 
+  const getOrbColors = () => {
+    switch (status) {
+      case 'recording':
+        return {
+          primary: '#ef4444',
+          secondary: '#dc2626',
+          glow: 'rgba(239, 68, 68, 0.6)',
+        };
+      case 'processing':
+        return {
+          primary: '#f59e0b',
+          secondary: '#8b5cf6',
+          glow: 'rgba(245, 158, 11, 0.6)',
+        };
+      case 'playing':
+        return {
+          primary: '#10b981',
+          secondary: '#059669',
+          glow: 'rgba(16, 185, 129, 0.6)',
+        };
+      default:
+        return {
+          primary: '#3b82f6',
+          secondary: '#1d4ed8',
+          glow: 'rgba(59, 130, 246, 0.4)',
+        };
+    }
+  };
+
+  const colors = getOrbColors();
+
+  const statusText = {
+    idle: 'Tap & Hold to Speak',
+    recording: 'Listening...',
+    processing: 'Thinking...',
+    playing: 'Speaking...',
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4 overflow-hidden selection:bg-none">
+    <main className="relative flex min-h-screen flex-col items-center justify-center bg-[#0a0a0f] p-4 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-transparent to-slate-900/50" />
 
-      {/* BRANDED HEADER */}
-      <div className="absolute top-12 text-center">
-        <h1 className="text-3xl font-bold text-white tracking-[0.2em]">DOORLOOP</h1>
-        <div className="w-12 h-1 bg-blue-500 mx-auto my-3"></div>
-        <p className="text-slate-400 text-xs uppercase tracking-widest">Candidate AI Agent</p>
-      </div>
+      {/* Glassmorphism Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute top-8 text-center z-10"
+      >
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl px-8 py-4 shadow-2xl">
+          <h1 className="text-2xl font-semibold text-white tracking-[0.15em] uppercase">
+            DoorLoop
+          </h1>
+          <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-2" />
+          <p className="text-white/40 text-xs uppercase tracking-[0.2em] mt-2">
+            Candidate AI Agent
+          </p>
+        </div>
+      </motion.div>
 
-      {/* INTERACTIVE BUTTON */}
-      <div className="relative">
-        {status === 'recording' && (
+      {/* Live Transcript */}
+      <AnimatePresence>
+        {showTranscript && transcript && (
           <motion.div
-            initial={{ scale: 1, opacity: 0 }}
-            animate={{ scale: 2, opacity: [0, 0.5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
-            className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-500 z-0"
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute top-40 max-w-md text-center z-10 px-4"
+          >
+            <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl px-6 py-3">
+              <p className="text-white/80 text-lg font-light italic">
+                "{transcript}"
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* The Orb */}
+      <div className="relative flex items-center justify-center">
+        {/* Outer glow rings */}
+        <motion.div
+          className="absolute w-72 h-72 rounded-full"
+          style={{
+            background: `radial-gradient(circle, ${colors.glow} 0%, transparent 70%)`,
+          }}
+          animate={{
+            scale: status === 'idle' ? [1, 1.1, 1] : status === 'recording' ? [1, 1.2, 1] : status === 'processing' ? [1, 1.15, 1] : [1, 1.3, 1],
+            opacity: status === 'idle' ? [0.3, 0.5, 0.3] : [0.5, 0.8, 0.5],
+          }}
+          transition={{
+            duration: status === 'recording' ? 0.8 : status === 'processing' ? 0.6 : 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Secondary pulse ring */}
+        <motion.div
+          className="absolute w-56 h-56 rounded-full border"
+          style={{ borderColor: `${colors.primary}40` }}
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.5, 0, 0.5],
+          }}
+          transition={{
+            duration: status === 'recording' ? 1 : 2.5,
+            repeat: Infinity,
+            ease: "easeOut",
+          }}
+        />
+
+        {/* Sound wave rings for speaking state */}
+        {status === 'playing' && (
+          <>
+            <motion.div
+              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0 }}
+            />
+            <motion.div
+              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.4 }}
+            />
+            <motion.div
+              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.8 }}
+            />
+          </>
         )}
 
+        {/* Main Orb Button */}
         <motion.button
           onMouseDown={startRecording}
           onMouseUp={stopRecording}
           onTouchStart={startRecording}
           onTouchEnd={stopRecording}
+          onMouseLeave={() => {
+            if (status === 'recording') stopRecording();
+          }}
+          className="relative z-10 w-40 h-40 rounded-full cursor-pointer focus:outline-none"
+          style={{
+            background: status === 'processing'
+              ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
+              : `radial-gradient(circle at 30% 30%, ${colors.primary}, ${colors.secondary})`,
+            boxShadow: `0 0 60px ${colors.glow}, inset 0 0 30px rgba(255,255,255,0.1)`,
+          }}
+          animate={{
+            scale: status === 'idle' ? [1, 1.02, 1] : status === 'recording' ? [1, 1.05, 1] : 1,
+            rotate: status === 'processing' ? 360 : 0,
+          }}
+          transition={{
+            scale: {
+              duration: status === 'recording' ? 0.5 : 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            rotate: {
+              duration: 2,
+              repeat: status === 'processing' ? Infinity : 0,
+              ease: "linear",
+            },
+          }}
           whileTap={{ scale: 0.95 }}
-          className={`relative z-10 flex items-center justify-center w-64 h-64 rounded-full shadow-2xl transition-all duration-500
-            ${status === 'recording' ? 'bg-red-500 shadow-red-500/50' :
-              status === 'processing' ? 'bg-amber-400 animate-pulse' :
-              status === 'playing' ? 'bg-emerald-500' :
-              'bg-blue-600 hover:bg-blue-500 shadow-blue-500/30'}
-          `}
         >
-          {status === 'processing' ? (
-            <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin" />
-          ) : status === 'playing' ? (
-            <Volume2 size={80} className="text-white" />
-          ) : (
-            <Mic size={80} className="text-white" />
+          {/* Inner shine */}
+          <div
+            className="absolute inset-2 rounded-full opacity-50"
+            style={{
+              background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%)',
+            }}
+          />
+
+          {/* Processing spinner */}
+          {status === 'processing' && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full" />
+            </motion.div>
+          )}
+
+          {/* Microphone icon */}
+          {(status === 'idle' || status === 'recording') && (
+            <motion.svg
+              className="absolute inset-0 m-auto w-14 h-14 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              animate={{ scale: status === 'recording' ? [1, 1.1, 1] : 1 }}
+              transition={{ duration: 0.5, repeat: status === 'recording' ? Infinity : 0 }}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </motion.svg>
+          )}
+
+          {/* Speaker icon */}
+          {status === 'playing' && (
+            <motion.svg
+              className="absolute inset-0 m-auto w-14 h-14 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.6, repeat: Infinity }}
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+            </motion.svg>
           )}
         </motion.button>
       </div>
 
-      <p className="mt-12 text-slate-400 font-light text-xl tracking-wide h-8">
-        {status === 'idle' && "Hold to Speak"}
-        {status === 'recording' && "Listening..."}
-        {status === 'processing' && "Analyzing Profile..."}
-        {status === 'playing' && "Speaking..."}
-      </p>
+      {/* Waveform visualization */}
+      {status === 'playing' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute bottom-40 flex items-end justify-center gap-1 h-12"
+        >
+          {[...Array(9)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="w-1 bg-emerald-500 rounded-full"
+              animate={{ height: [8, 32, 16, 40, 8] }}
+              transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+            />
+          ))}
+        </motion.div>
+      )}
+
+      {/* Status Text */}
+      <motion.div
+        className="absolute bottom-24 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <motion.p
+          key={status}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="text-white/60 text-lg font-light tracking-wide"
+        >
+          {statusText[status]}
+        </motion.p>
+
+        {status === 'idle' && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.4 }}
+            transition={{ delay: 1 }}
+            className="text-white/30 text-xs mt-2 tracking-wider"
+          >
+            Release to send
+          </motion.p>
+        )}
+      </motion.div>
+
+      {/* Bottom gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none" />
     </main>
   );
 }
