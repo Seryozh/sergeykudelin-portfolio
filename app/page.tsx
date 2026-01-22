@@ -8,6 +8,7 @@ export default function Home() {
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing'>('idle');
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const recordingFormatRef = useRef<{ mimeType: string; extension: string }>({ mimeType: 'audio/webm', extension: 'webm' });
 
   // --- PASTE YOUR n8n WEBHOOK URL HERE ---
   // Note: Use the "Production" URL if you want it to work without clicking "Execute" every time.
@@ -17,7 +18,28 @@ export default function Home() {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
+
+      // Detect supported format
+      let mimeType = 'audio/webm';
+      let extension = 'webm';
+
+      const types = [
+        { mime: 'audio/webm;codecs=opus', ext: 'webm' },
+        { mime: 'audio/mp4', ext: 'mp4' },
+        { mime: 'audio/aac', ext: 'aac' },
+        { mime: 'audio/webm', ext: 'webm' }
+      ];
+
+      for (const type of types) {
+        if (MediaRecorder.isTypeSupported(type.mime)) {
+          mimeType = type.mime;
+          extension = type.ext;
+          break;
+        }
+      }
+
+      recordingFormatRef.current = { mimeType, extension };
+      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
@@ -42,9 +64,10 @@ export default function Home() {
 
   // 3. SEND TO N8N & PLAY RESPONSE
   const sendAudioToN8N = async () => {
-    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+    const { mimeType, extension } = recordingFormatRef.current;
+    const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
     const formData = new FormData();
-    formData.append('audio', audioBlob, 'voice_input.mp3');
+    formData.append('audio', audioBlob, `voice_input.${extension}`);
 
     try {
       const response = await fetch(N8N_WEBHOOK_URL, {

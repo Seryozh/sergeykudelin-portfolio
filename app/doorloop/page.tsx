@@ -38,6 +38,7 @@ export default function DoorLoopPage() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const recordingFormatRef = useRef<{ mimeType: string; extension: string }>({ mimeType: 'audio/webm', extension: 'webm' });
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
@@ -81,7 +82,28 @@ export default function DoorLoopPage() {
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
+
+      // Detect supported format
+      let mimeType = 'audio/webm';
+      let extension = 'webm';
+
+      const types = [
+        { mime: 'audio/webm;codecs=opus', ext: 'webm' },
+        { mime: 'audio/mp4', ext: 'mp4' },
+        { mime: 'audio/aac', ext: 'aac' },
+        { mime: 'audio/webm', ext: 'webm' }
+      ];
+
+      for (const type of types) {
+        if (MediaRecorder.isTypeSupported(type.mime)) {
+          mimeType = type.mime;
+          extension = type.ext;
+          break;
+        }
+      }
+
+      recordingFormatRef.current = { mimeType, extension };
+      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
@@ -116,9 +138,10 @@ export default function DoorLoopPage() {
   };
 
   const sendAudioToN8N = async () => {
-    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+    const { mimeType, extension } = recordingFormatRef.current;
+    const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
     const formData = new FormData();
-    formData.append('audio', audioBlob, 'voice_input.mp3');
+    formData.append('audio', audioBlob, `voice_input.${extension}`);
     formData.append('company', 'DoorLoop');
 
     try {
