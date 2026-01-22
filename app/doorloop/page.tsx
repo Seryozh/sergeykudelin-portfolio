@@ -116,27 +116,10 @@ export default function DoorLoopPage() {
     setAiResponse('');
     setErrorMessage('');
 
-    // Create and unlock a FRESH audio element during user gesture (for iOS)
-    // This must be done for EACH recording session - iOS doesn't allow reusing unlocked elements
-    const audio = new Audio();
-    audio.volume = 0.01; // Very low volume for unlock sound
-    audio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA'; // Silent WAV
-    
-    // Clear any previous audio element reference
-    audioElementRef.current = null;
-    
-    // Play and pause immediately to unlock
-    audio.play().then(() => {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 1.0; // Reset volume for actual playback
-      audioElementRef.current = audio;
-      console.log('[DEBUG] Fresh audio element unlocked for this session');
-    }).catch((e) => {
-      console.log('[DEBUG] Could not pre-unlock audio element:', e);
-      // Still try to use it
-      audioElementRef.current = audio;
-    });
+    // Create a fresh audio element during user gesture (for iOS autoplay policy)
+    // Simply creating it during a touch event may be enough for iOS to allow playback later
+    audioElementRef.current = new Audio();
+    console.log('[DEBUG] Fresh audio element created for this session');
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
