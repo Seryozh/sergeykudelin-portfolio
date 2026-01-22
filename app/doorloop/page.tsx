@@ -122,7 +122,16 @@ export default function DoorLoopPage() {
     console.log('[DEBUG] Fresh audio element created for this session');
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Reuse existing stream if available, otherwise get a new one
+      // This is crucial for mobile - getting a new stream each time can fail
+      let stream = streamRef.current;
+      if (!stream || stream.getTracks().some(t => t.readyState === 'ended')) {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        streamRef.current = stream;
+        console.log('[DEBUG] Got new microphone stream');
+      } else {
+        console.log('[DEBUG] Reusing existing microphone stream');
+      }
 
       // Try to find a supported format, fallback to browser default if none found
       const types = [
@@ -192,8 +201,7 @@ export default function DoorLoopPage() {
     
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
-      // Stop all tracks on the stream
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      // Don't stop stream tracks - we want to reuse the stream for subsequent recordings
       setStatus('processing');
 
       if (recognitionRef.current) {
