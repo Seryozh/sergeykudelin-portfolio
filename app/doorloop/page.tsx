@@ -36,14 +36,17 @@ export default function DoorLoopPage() {
   const [aiResponse, setAiResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
-  const recordingFormatRef = useRef<{ mimeType: string; extension: string }>({ mimeType: 'audio/webm', extension: 'webm' });
   const isRecordingRef = useRef(false);
   const streamRef = useRef<MediaStream | null>(null);
   const audioElementRef = useRef<HTMLAudioElement | null>(null);
   const [hasMicPermission, setHasMicPermission] = useState(false);
+  
+  // Web Audio API refs
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const processorNodeRef = useRef<ScriptProcessorNode | null>(null);
+  const audioBuffersRef = useRef<Float32Array[]>([]);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
@@ -128,9 +131,45 @@ export default function DoorLoopPage() {
     await startRecording();
   };
 
+  // Helper function to convert Float32Array to WAV format
+  const encodeWAV = (samples: Float32Array, sampleRate: number): Blob => {
+    const buffer = new ArrayBuffer(44 + samples.length * 2);
+    const view = new DataView(buffer);
+    
+    // Write WAV header
+    const writeString = (offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
+    
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + samples.length * 2, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM format
+    view.setUint16(22, 1, true); // Mono
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeString(36, 'data');
+    view.setUint32(40, samples.length * 2, true);
+    
+    // Write audio data
+    let offset = 44;
+    for (let i = 0; i < samples.length; i++) {
+      const s = Math.max(-1, Math.min(1, samples[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      offset += 2;
+    }
+    
+    return new Blob([buffer], { type: 'audio/wav' });
+  };
+
   const startRecording = async () => {
     // Set status to recording IMMEDIATELY (before async calls)
-    // This prevents race conditions with rapid taps
     setStatus('recording');
     isRecordingRef.current = true;
 
@@ -138,58 +177,56 @@ export default function DoorLoopPage() {
     setTranscript('');
     setAiResponse('');
     setErrorMessage('');
+    audioBuffersRef.current = [];
 
     // Create a fresh audio element during user gesture (for iOS autoplay policy)
-    // Simply creating it during a touch event may be enough for iOS to allow playback later
     audioElementRef.current = new Audio();
     console.log('[DEBUG] Fresh audio element created for this session');
 
     try {
       // Use the persistent stream that was initialized on page load
-      // If it doesn't exist or is inactive, get a new one
       let stream = streamRef.current;
       if (!stream || stream.getTracks().some(t => t.readyState === 'ended')) {
-        console.log('[DEBUG] Getting new microphone stream (old one was inactive)');
+        console.log('[DEBUG] Getting new microphone stream');
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         streamRef.current = stream;
       } else {
         console.log('[DEBUG] Using persistent microphone stream');
       }
 
-      // Create MediaRecorder with NO options (let browser pick format)
-      // This is the most compatible approach across all mobile browsers
-      let recorder: MediaRecorder;
-      try {
-        recorder = new MediaRecorder(stream);
-        console.log('[DEBUG] MediaRecorder created with default format');
-      } catch (recError) {
-        console.error('[DEBUG] MediaRecorder creation failed:', recError);
-        throw recError;
+      // Create or resume AudioContext
+      if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+        audioContextRef.current = new (window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
+        console.log('[DEBUG] Created new AudioContext');
       }
       
-      mediaRecorderRef.current = recorder;
-      
-      // Get the actual mimeType the browser chose
-      const actualMimeType = recorder.mimeType || 'audio/webm';
-      const actualExt = actualMimeType.includes('mp4') ? 'mp4' : 
-                        actualMimeType.includes('webm') ? 'webm' : 
-                        actualMimeType.includes('aac') ? 'aac' : 
-                        actualMimeType.includes('ogg') ? 'ogg' : 'webm';
-      
-      console.log('[DEBUG] Actual audio format:', actualMimeType, actualExt);
-      recordingFormatRef.current = { mimeType: actualMimeType, extension: actualExt };
-      audioChunksRef.current = [];
+      // Resume AudioContext if suspended (important for iOS)
+      if (audioContextRef.current.state === 'suspended') {
+        await audioContextRef.current.resume();
+        console.log('[DEBUG] Resumed AudioContext');
+      }
 
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
+      // Create source node from stream
+      sourceNodeRef.current = audioContextRef.current.createMediaStreamSource(stream);
+      
+      // Create processor node for capturing audio data
+      // Using ScriptProcessorNode (deprecated but widely supported)
+      const bufferSize = 4096;
+      processorNodeRef.current = audioContextRef.current.createScriptProcessor(bufferSize, 1, 1);
+      
+      processorNodeRef.current.onaudioprocess = (e) => {
+        if (isRecordingRef.current) {
+          const inputData = e.inputBuffer.getChannelData(0);
+          // Store a copy of the audio data
+          audioBuffersRef.current.push(new Float32Array(inputData));
         }
       };
-
-      mediaRecorderRef.current.onstop = sendAudioToN8N;
-      // Use timeslice to get data every 100ms (important for mobile)
-      mediaRecorderRef.current.start(100);
-      // Status is already 'recording' - set at the start of startRecording()
+      
+      // Connect nodes: source -> processor -> destination
+      sourceNodeRef.current.connect(processorNodeRef.current);
+      processorNodeRef.current.connect(audioContextRef.current.destination);
+      
+      console.log('[DEBUG] Web Audio API recording started');
 
       if (recognitionRef.current) {
         try {
@@ -208,15 +245,20 @@ export default function DoorLoopPage() {
 
   const stopRecording = () => {
     console.log('[DEBUG] stopRecording called');
+    isRecordingRef.current = false;
     
-    // Stop the MediaRecorder if it's recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-      mediaRecorderRef.current.stop();
-      console.log('[DEBUG] MediaRecorder stopped');
+    // Disconnect processor node but keep audio context and source alive
+    if (processorNodeRef.current) {
+      processorNodeRef.current.disconnect();
+      processorNodeRef.current = null;
     }
     
-    // DON'T stop stream tracks - keep the mic stream alive for next recording!
-    // The stream is managed by the useEffect lifecycle (only stops on unmount)
+    if (sourceNodeRef.current) {
+      sourceNodeRef.current.disconnect();
+      sourceNodeRef.current = null;
+    }
+    
+    // DON'T close AudioContext or stop stream - keep them alive for next recording!
     
     // Stop speech recognition
     if (recognitionRef.current) {
@@ -228,24 +270,39 @@ export default function DoorLoopPage() {
     }
     
     setStatus('processing');
-    isRecordingRef.current = false;
+    
+    // Send the recorded audio
+    sendAudioToN8N();
   };
 
   const sendAudioToN8N = async () => {
-    const { mimeType, extension } = recordingFormatRef.current;
-    const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+    // Combine all audio buffers into one
+    const totalLength = audioBuffersRef.current.reduce((acc, buf) => acc + buf.length, 0);
+    const combinedBuffer = new Float32Array(totalLength);
+    let offset = 0;
+    for (const buffer of audioBuffersRef.current) {
+      combinedBuffer.set(buffer, offset);
+      offset += buffer.length;
+    }
     
-    console.log('[DEBUG] Audio blob size:', audioBlob.size, 'bytes, type:', mimeType);
+    console.log('[DEBUG] Total audio samples:', totalLength);
     
     // Check for empty audio
-    if (audioBlob.size === 0) {
-      setErrorMessage('No audio recorded. Please hold longer.');
+    if (totalLength === 0) {
+      setErrorMessage('No audio recorded. Please try again.');
       setStatus('error');
       return;
     }
+    
+    // Get sample rate from AudioContext
+    const sampleRate = audioContextRef.current?.sampleRate || 44100;
+    
+    // Convert to WAV format
+    const audioBlob = encodeWAV(combinedBuffer, sampleRate);
+    console.log('[DEBUG] WAV blob size:', audioBlob.size, 'bytes');
 
     const formData = new FormData();
-    formData.append('audio', audioBlob, `voice_input.${extension}`);
+    formData.append('audio', audioBlob, 'voice_input.wav');
     formData.append('company', 'DoorLoop');
 
     try {
