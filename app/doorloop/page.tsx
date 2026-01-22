@@ -51,8 +51,24 @@ export default function DoorLoopPage() {
       if (!response.ok) throw new Error('Network error');
 
       const responseBlob = await response.blob();
+
+      // Debug: Check what we're getting back
+      console.log('Response type:', responseBlob.type);
+      console.log('Response size:', responseBlob.size, 'bytes');
+
+      if (responseBlob.size === 0) {
+        console.error('Empty response from n8n');
+        setStatus('idle');
+        return;
+      }
+
       const audioUrl = URL.createObjectURL(responseBlob);
       const audio = new Audio(audioUrl);
+
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
+        setStatus('idle');
+      };
 
       setStatus('playing');
       audio.play();
