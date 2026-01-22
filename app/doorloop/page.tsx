@@ -47,8 +47,23 @@ export default function DoorLoopPage() {
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
-  // Clean up stream on unmount
+  // Request mic permission on page load
   useEffect(() => {
+    const requestMicPermission = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Stop the stream immediately - we just wanted permission
+        stream.getTracks().forEach(track => track.stop());
+        setHasMicPermission(true);
+        console.log('[DEBUG] Microphone permission granted on load');
+      } catch (err) {
+        console.log('[DEBUG] Microphone permission denied:', err);
+        setHasMicPermission(false);
+      }
+    };
+    
+    requestMicPermission();
+
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
@@ -89,10 +104,24 @@ export default function DoorLoopPage() {
     };
   }, []);
 
-  const startRecording = async (e: React.MouseEvent | React.TouchEvent) => {
-    // Prevent default to avoid double-firing on mobile
+  // Toggle recording - tap to start, tap again to stop
+  const handleOrbClick = async (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     
+    // If already recording, stop it
+    if (status === 'recording' && isRecordingRef.current) {
+      stopRecording();
+      return;
+    }
+    
+    // If idle or error, start recording
+    if (status === 'idle' || status === 'error') {
+      await startRecording();
+    }
+  };
+
+  const startRecording = async () => {
     // Guard against starting if already recording
     if (isRecordingRef.current) return;
     isRecordingRef.current = true;
@@ -144,7 +173,8 @@ export default function DoorLoopPage() {
       };
 
       mediaRecorderRef.current.onstop = sendAudioToN8N;
-      mediaRecorderRef.current.start();
+      // Use timeslice to get data every 100ms (important for mobile)
+      mediaRecorderRef.current.start(100);
       setStatus('recording');
 
       if (recognitionRef.current) {
@@ -162,10 +192,7 @@ export default function DoorLoopPage() {
     }
   };
 
-  const stopRecording = (e: React.MouseEvent | React.TouchEvent) => {
-    // Prevent default to avoid double-firing on mobile
-    e.preventDefault();
-    
+  const stopRecording = () => {
     // Guard against stopping if not recording
     if (!isRecordingRef.current) return;
     
@@ -315,8 +342,8 @@ export default function DoorLoopPage() {
   const colors = getOrbColors();
 
   const statusText = {
-    idle: 'Tap & Hold to Speak',
-    recording: 'Listening...',
+    idle: 'Tap to Start',
+    recording: 'Tap to Stop',
     processing: 'Thinking...',
     playing: 'Speaking...',
     error: 'Error',
@@ -427,15 +454,9 @@ export default function DoorLoopPage() {
           )}
         </AnimatePresence>
 
-        {/* Main Orb Button */}
+        {/* Main Orb Button - Tap to toggle recording */}
         <motion.button
-          onMouseDown={startRecording}
-          onMouseUp={stopRecording}
-          onTouchStart={startRecording}
-          onTouchEnd={stopRecording}
-          onMouseLeave={(e) => {
-            if (status === 'recording') stopRecording(e);
-          }}
+          onClick={handleOrbClick}
           className="relative z-10 w-40 h-40 rounded-full cursor-pointer focus:outline-none"
           style={{
             background: status === 'processing'
@@ -652,15 +673,15 @@ export default function DoorLoopPage() {
         </AnimatePresence>
 
         <AnimatePresence>
-          {status === 'idle' && (
+          {status === 'recording' && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.4 }}
               exit={{ opacity: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.3 }}
               className="text-white/30 text-xs mt-2 tracking-wider"
             >
-              Release to send
+              Recording...
             </motion.p>
           )}
         </AnimatePresence>
