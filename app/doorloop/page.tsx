@@ -47,24 +47,26 @@ export default function DoorLoopPage() {
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
-  // Request mic permission on page load
+  // Request mic permission on page load and KEEP the stream alive
+  // This is crucial for mobile - we maintain a persistent mic connection
   useEffect(() => {
-    const requestMicPermission = async () => {
+    const initMicrophone = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        // Stop the stream immediately - we just wanted permission
-        stream.getTracks().forEach(track => track.stop());
+        // KEEP the stream alive - don't stop it!
+        streamRef.current = stream;
         setHasMicPermission(true);
-        console.log('[DEBUG] Microphone permission granted on load');
+        console.log('[DEBUG] Microphone stream initialized and kept alive');
       } catch (err) {
         console.log('[DEBUG] Microphone permission denied:', err);
         setHasMicPermission(false);
       }
     };
     
-    requestMicPermission();
+    initMicrophone();
 
     return () => {
+      // Only stop streams when component unmounts (page close)
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
@@ -143,10 +145,16 @@ export default function DoorLoopPage() {
     console.log('[DEBUG] Fresh audio element created for this session');
 
     try {
-      // Always get a fresh stream for each recording on mobile (more reliable)
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-      console.log('[DEBUG] Got microphone stream');
+      // Use the persistent stream that was initialized on page load
+      // If it doesn't exist or is inactive, get a new one
+      let stream = streamRef.current;
+      if (!stream || stream.getTracks().some(t => t.readyState === 'ended')) {
+        console.log('[DEBUG] Getting new microphone stream (old one was inactive)');
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        streamRef.current = stream;
+      } else {
+        console.log('[DEBUG] Using persistent microphone stream');
+      }
 
       // Create MediaRecorder with NO options (let browser pick format)
       // This is the most compatible approach across all mobile browsers
@@ -207,10 +215,8 @@ export default function DoorLoopPage() {
       console.log('[DEBUG] MediaRecorder stopped');
     }
     
-    // Stop stream tracks
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-    }
+    // DON'T stop stream tracks - keep the mic stream alive for next recording!
+    // The stream is managed by the useEffect lifecycle (only stops on unmount)
     
     // Stop speech recognition
     if (recognitionRef.current) {
