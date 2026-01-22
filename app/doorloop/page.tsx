@@ -283,7 +283,17 @@ export default function DoorLoopPage() {
           setStatus('error');
         };
 
-        audio.onended = () => {
+        audio.onended = async () => {
+          // Preemptively get a new mic stream before returning to idle
+          // This helps on iOS where the stream gets released after audio playback
+          try {
+            const newStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            streamRef.current = newStream;
+            console.log('[DEBUG] New mic stream acquired after audio playback');
+          } catch (e) {
+            console.log('[DEBUG] Could not preemptively acquire mic stream:', e);
+          }
+          
           setStatus('idle');
           setTimeout(() => setAiResponse(''), 3000);
         };
@@ -318,7 +328,16 @@ export default function DoorLoopPage() {
     }
   };
 
-  const dismissError = () => {
+  const dismissError = async () => {
+    // Preemptively get a new mic stream
+    try {
+      const newStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = newStream;
+      console.log('[DEBUG] New mic stream acquired after dismissing error');
+    } catch (e) {
+      console.log('[DEBUG] Could not acquire mic stream:', e);
+    }
+    
     setStatus('idle');
     setErrorMessage('');
   };
