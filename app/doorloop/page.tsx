@@ -41,8 +41,34 @@ export default function DoorLoopPage() {
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const recordingFormatRef = useRef<{ mimeType: string; extension: string }>({ mimeType: 'audio/webm', extension: 'webm' });
   const isRecordingRef = useRef(false);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioElementRef = useRef<HTMLAudioElement | null>(null);
+  const [hasMicPermission, setHasMicPermission] = useState(false);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
+
+  // Pre-request microphone permission on mount
+  useEffect(() => {
+    const requestMicPermission = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        streamRef.current = stream;
+        setHasMicPermission(true);
+        console.log('[DEBUG] Microphone permission granted');
+      } catch (err) {
+        console.log('[DEBUG] Microphone permission denied or not available');
+      }
+    };
+    
+    requestMicPermission();
+
+    return () => {
+      // Clean up stream on unmount
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
 
   // Initialize Speech Recognition
   useEffect(() => {
@@ -89,6 +115,18 @@ export default function DoorLoopPage() {
     setTranscript('');
     setAiResponse('');
     setErrorMessage('');
+
+    // Create and unlock audio element during user gesture (for iOS)
+    // This allows us to play audio later without user interaction
+    const audio = new Audio();
+    audio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA'; // Silent WAV
+    audio.play().then(() => {
+      audio.pause();
+      audioElementRef.current = audio;
+      console.log('[DEBUG] Audio element unlocked for playback');
+    }).catch(() => {
+      console.log('[DEBUG] Could not pre-unlock audio element');
+    });
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -214,7 +252,10 @@ export default function DoorLoopPage() {
       // Play audio from base64
       if (data.audio) {
         const audioSource = `data:audio/mpeg;base64,${data.audio}`;
-        const audio = new Audio(audioSource);
+        
+        // Use pre-unlocked audio element if available (for iOS), otherwise create new one
+        const audio = audioElementRef.current || new Audio();
+        audio.src = audioSource;
 
         audio.onerror = (e) => {
           console.error('[DEBUG] Audio playback error:', e);
@@ -222,13 +263,29 @@ export default function DoorLoopPage() {
           setStatus('error');
         };
 
-        setStatus('playing');
-        setTranscript('');
-        audio.play();
         audio.onended = () => {
           setStatus('idle');
           setTimeout(() => setAiResponse(''), 3000);
         };
+
+        setStatus('playing');
+        setTranscript('');
+        
+        // Play the audio - wrap in try/catch for iOS
+        try {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((e) => {
+              console.error('[DEBUG] Audio play() failed:', e);
+              setErrorMessage('Audio playback blocked. Try using PC.');
+              setStatus('error');
+            });
+          }
+        } catch (e) {
+          console.error('[DEBUG] Audio play error:', e);
+          setErrorMessage('Audio playback failed');
+          setStatus('error');
+        }
       } else {
         console.warn('[DEBUG] No audio in response');
         setStatus('idle');
