@@ -129,58 +129,19 @@ export default function DoorLoopPage() {
 
       if (!response.ok) throw new Error('Network error');
 
-      const contentType = response.headers.get('content-type');
+      // Parse JSON response: { audio: "base64_string", text: "AI response" }
+      const data = await response.json();
+      console.log('Response received:', data);
 
-      // Handle JSON response with base64 audio and text
-      if (contentType?.includes('application/json')) {
-        const data = await response.json();
-        console.log('JSON response received:', data);
+      // Store AI response text
+      if (data.text) {
+        setAiResponse(data.text);
+      }
 
-        if (data.text) {
-          setAiResponse(data.text);
-        }
-
-        if (data.audio) {
-          // Decode base64 audio
-          const binaryString = atob(data.audio);
-          const bytes = new Uint8Array(binaryString.length);
-          for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-          }
-          const audioBlob = new Blob([bytes], { type: 'audio/mp3' });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          const audio = new Audio(audioUrl);
-
-          audio.onerror = (e) => {
-            console.error('Audio playback error:', e);
-            setStatus('idle');
-          };
-
-          setStatus('playing');
-          // Clear user transcript when AI starts speaking
-          setTranscript('');
-          audio.play();
-          audio.onended = () => {
-            setStatus('idle');
-            // Keep AI response visible for a moment after speaking
-            setTimeout(() => setAiResponse(''), 3000);
-          };
-        } else {
-          setStatus('idle');
-        }
-      } else {
-        // Fallback: Handle binary blob response (old behavior)
-        const responseBlob = await response.blob();
-        console.log('Blob response - type:', responseBlob.type, 'size:', responseBlob.size);
-
-        if (responseBlob.size === 0) {
-          console.error('Empty response from n8n');
-          setStatus('idle');
-          return;
-        }
-
-        const audioUrl = URL.createObjectURL(responseBlob);
-        const audio = new Audio(audioUrl);
+      // Play audio from base64
+      if (data.audio) {
+        const audioSource = `data:audio/mpeg;base64,${data.audio}`;
+        const audio = new Audio(audioSource);
 
         audio.onerror = (e) => {
           console.error('Audio playback error:', e);
@@ -190,7 +151,13 @@ export default function DoorLoopPage() {
         setStatus('playing');
         setTranscript('');
         audio.play();
-        audio.onended = () => setStatus('idle');
+        audio.onended = () => {
+          setStatus('idle');
+          setTimeout(() => setAiResponse(''), 3000);
+        };
+      } else {
+        console.warn('No audio in response');
+        setStatus('idle');
       }
     } catch (error) {
       console.error(error);
