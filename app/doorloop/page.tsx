@@ -93,28 +93,38 @@ export default function DoorLoopPage() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      // Detect supported format
-      let mimeType = 'audio/webm';
-      let extension = 'webm';
-
+      // Try to find a supported format, fallback to browser default if none found
       const types = [
         { mime: 'audio/webm;codecs=opus', ext: 'webm' },
         { mime: 'audio/mp4', ext: 'mp4' },
         { mime: 'audio/aac', ext: 'aac' },
-        { mime: 'audio/webm', ext: 'webm' }
+        { mime: 'audio/webm', ext: 'webm' },
+        { mime: 'audio/mpeg', ext: 'mp3' }
       ];
+
+      let options: MediaRecorderOptions = {};
+      let detectedExt = 'webm';
 
       for (const type of types) {
         if (MediaRecorder.isTypeSupported(type.mime)) {
-          mimeType = type.mime;
-          extension = type.ext;
+          options = { mimeType: type.mime };
+          detectedExt = type.ext;
           break;
         }
       }
 
-      console.log('[DEBUG] Using audio format:', mimeType, extension);
-      recordingFormatRef.current = { mimeType, extension };
-      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
+      // Create recorder - if options is empty, browser uses its default format
+      console.log('[DEBUG] MediaRecorder options:', options);
+      mediaRecorderRef.current = new MediaRecorder(stream, options);
+      
+      // Get the actual mimeType the browser is using (may differ from what we requested)
+      const actualMimeType = mediaRecorderRef.current.mimeType || 'audio/webm';
+      const actualExt = actualMimeType.includes('mp4') ? 'mp4' : 
+                        actualMimeType.includes('webm') ? 'webm' : 
+                        actualMimeType.includes('aac') ? 'aac' : detectedExt;
+      
+      console.log('[DEBUG] Actual audio format:', actualMimeType, actualExt);
+      recordingFormatRef.current = { mimeType: actualMimeType, extension: actualExt };
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
