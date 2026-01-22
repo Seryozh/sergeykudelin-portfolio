@@ -33,12 +33,11 @@ declare global {
 export default function DoorLoopPage() {
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing'>('idle');
   const [transcript, setTranscript] = useState('');
-  const [showTranscript, setShowTranscript] = useState(false);
+  const [aiResponse, setAiResponse] = useState('');
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
-  const transcriptTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
@@ -55,15 +54,9 @@ export default function DoorLoopPage() {
         recognition.onresult = (event) => {
           let interimTranscript = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
-            interimTranscript += transcript;
+            interimTranscript += event.results[i][0].transcript;
           }
           setTranscript(interimTranscript);
-          setShowTranscript(true);
-
-          if (transcriptTimeoutRef.current) {
-            clearTimeout(transcriptTimeoutRef.current);
-          }
         };
 
         recognition.onerror = (event) => {
@@ -82,6 +75,10 @@ export default function DoorLoopPage() {
   }, []);
 
   const startRecording = async () => {
+    // Clear previous transcript immediately
+    setTranscript('');
+    setAiResponse('');
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
@@ -94,7 +91,6 @@ export default function DoorLoopPage() {
       mediaRecorderRef.current.onstop = sendAudioToN8N;
       mediaRecorderRef.current.start();
       setStatus('recording');
-      setTranscript('');
 
       if (recognitionRef.current) {
         try {
@@ -116,10 +112,6 @@ export default function DoorLoopPage() {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
-
-      transcriptTimeoutRef.current = setTimeout(() => {
-        setShowTranscript(false);
-      }, 2000);
     }
   };
 
@@ -137,29 +129,69 @@ export default function DoorLoopPage() {
 
       if (!response.ok) throw new Error('Network error');
 
-      const responseBlob = await response.blob();
+      const contentType = response.headers.get('content-type');
 
-      console.log('Response type:', responseBlob.type);
-      console.log('Response size:', responseBlob.size, 'bytes');
+      // Handle JSON response with base64 audio and text
+      if (contentType?.includes('application/json')) {
+        const data = await response.json();
+        console.log('JSON response received:', data);
 
-      if (responseBlob.size === 0) {
-        console.error('Empty response from n8n');
-        setStatus('idle');
-        return;
+        if (data.text) {
+          setAiResponse(data.text);
+        }
+
+        if (data.audio) {
+          // Decode base64 audio
+          const binaryString = atob(data.audio);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          const audioBlob = new Blob([bytes], { type: 'audio/mp3' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+
+          audio.onerror = (e) => {
+            console.error('Audio playback error:', e);
+            setStatus('idle');
+          };
+
+          setStatus('playing');
+          // Clear user transcript when AI starts speaking
+          setTranscript('');
+          audio.play();
+          audio.onended = () => {
+            setStatus('idle');
+            // Keep AI response visible for a moment after speaking
+            setTimeout(() => setAiResponse(''), 3000);
+          };
+        } else {
+          setStatus('idle');
+        }
+      } else {
+        // Fallback: Handle binary blob response (old behavior)
+        const responseBlob = await response.blob();
+        console.log('Blob response - type:', responseBlob.type, 'size:', responseBlob.size);
+
+        if (responseBlob.size === 0) {
+          console.error('Empty response from n8n');
+          setStatus('idle');
+          return;
+        }
+
+        const audioUrl = URL.createObjectURL(responseBlob);
+        const audio = new Audio(audioUrl);
+
+        audio.onerror = (e) => {
+          console.error('Audio playback error:', e);
+          setStatus('idle');
+        };
+
+        setStatus('playing');
+        setTranscript('');
+        audio.play();
+        audio.onended = () => setStatus('idle');
       }
-
-      const audioUrl = URL.createObjectURL(responseBlob);
-      const audio = new Audio(audioUrl);
-
-      audio.onerror = (e) => {
-        console.error('Audio playback error:', e);
-        setStatus('idle');
-      };
-
-      setStatus('playing');
-      audio.play();
-      audio.onended = () => setStatus('idle');
-
     } catch (error) {
       console.error(error);
       setStatus('idle');
@@ -227,14 +259,16 @@ export default function DoorLoopPage() {
         </div>
       </motion.div>
 
-      {/* Live Transcript */}
-      <AnimatePresence>
-        {showTranscript && transcript && (
+      {/* Live User Transcript */}
+      <AnimatePresence mode="wait">
+        {status === 'recording' && transcript && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-40 max-w-md text-center z-10 px-4"
+            key="user-transcript"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-36 max-w-md text-center z-10 px-4"
           >
             <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl px-6 py-3">
               <p className="text-white/80 text-lg font-light italic">
@@ -280,25 +314,33 @@ export default function DoorLoopPage() {
         />
 
         {/* Sound wave rings for speaking state */}
-        {status === 'playing' && (
-          <>
-            <motion.div
-              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0 }}
-            />
-            <motion.div
-              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.4 }}
-            />
-            <motion.div
-              className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.8 }}
-            />
-          </>
-        )}
+        <AnimatePresence>
+          {status === 'playing' && (
+            <>
+              <motion.div
+                initial={{ scale: 1, opacity: 0 }}
+                animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
+                className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              />
+              <motion.div
+                initial={{ scale: 1, opacity: 0 }}
+                animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.4 }}
+                className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              />
+              <motion.div
+                initial={{ scale: 1, opacity: 0 }}
+                animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut", delay: 0.8 }}
+                className="absolute w-48 h-48 rounded-full border border-emerald-500/30"
+              />
+            </>
+          )}
+        </AnimatePresence>
 
         {/* Main Orb Button */}
         <motion.button
@@ -318,18 +360,12 @@ export default function DoorLoopPage() {
           }}
           animate={{
             scale: status === 'idle' ? [1, 1.02, 1] : status === 'recording' ? [1, 1.05, 1] : 1,
-            rotate: status === 'processing' ? 360 : 0,
           }}
           transition={{
             scale: {
               duration: status === 'recording' ? 0.5 : 3,
               repeat: Infinity,
               ease: "easeInOut",
-            },
-            rotate: {
-              duration: 2,
-              repeat: status === 'processing' ? Infinity : 0,
-              ease: "linear",
             },
           }}
           whileTap={{ scale: 0.95 }}
@@ -342,99 +378,153 @@ export default function DoorLoopPage() {
             }}
           />
 
-          {/* Processing spinner */}
-          {status === 'processing' && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
-              <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full" />
-            </motion.div>
-          )}
+          {/* Processing spinner - continuous rotation */}
+          <AnimatePresence>
+            {status === 'processing' && (
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, rotate: 360 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.2 },
+                  rotate: { duration: 1, repeat: Infinity, ease: "linear" },
+                }}
+              >
+                <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full" />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Microphone icon */}
-          {(status === 'idle' || status === 'recording') && (
-            <motion.svg
-              className="absolute inset-0 m-auto w-14 h-14 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              animate={{ scale: status === 'recording' ? [1, 1.1, 1] : 1 }}
-              transition={{ duration: 0.5, repeat: status === 'recording' ? Infinity : 0 }}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v2a7 7 0 0 1-14 0v-2" />
-              <line x1="12" y1="19" x2="12" y2="23" />
-              <line x1="8" y1="23" x2="16" y2="23" />
-            </motion.svg>
-          )}
+          <AnimatePresence>
+            {(status === 'idle' || status === 'recording') && (
+              <motion.svg
+                className="absolute inset-0 m-auto w-14 h-14 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: 1,
+                  scale: status === 'recording' ? [1, 1.1, 1] : 1
+                }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                  opacity: { duration: 0.15 },
+                  scale: { duration: 0.5, repeat: status === 'recording' ? Infinity : 0 }
+                }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="23" />
+                <line x1="8" y1="23" x2="16" y2="23" />
+              </motion.svg>
+            )}
+          </AnimatePresence>
 
           {/* Speaker icon */}
-          {status === 'playing' && (
-            <motion.svg
-              className="absolute inset-0 m-auto w-14 h-14 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
-            >
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-            </motion.svg>
-          )}
+          <AnimatePresence>
+            {status === 'playing' && (
+              <motion.svg
+                className="absolute inset-0 m-auto w-14 h-14 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: [1, 1.1, 1] }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                  opacity: { duration: 0.15 },
+                  scale: { duration: 0.6, repeat: Infinity }
+                }}
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              </motion.svg>
+            )}
+          </AnimatePresence>
         </motion.button>
       </div>
 
+      {/* AI Response Card */}
+      <AnimatePresence>
+        {aiResponse && status === 'playing' && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="absolute bottom-44 max-w-lg mx-4 z-10"
+          >
+            <div className="backdrop-blur-xl bg-white/5 border border-emerald-500/20 rounded-2xl px-6 py-4 shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 mt-2 rounded-full bg-emerald-500 animate-pulse" />
+                <p className="text-white/90 text-base leading-relaxed">
+                  {aiResponse}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Waveform visualization */}
-      {status === 'playing' && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="absolute bottom-40 flex items-end justify-center gap-1 h-12"
-        >
-          {[...Array(9)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-1 bg-emerald-500 rounded-full"
-              animate={{ height: [8, 32, 16, 40, 8] }}
-              transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
-            />
-          ))}
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {status === 'playing' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute bottom-32 flex items-end justify-center gap-1 h-12"
+          >
+            {[...Array(9)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1 bg-emerald-500 rounded-full"
+                animate={{ height: [8, 32, 16, 40, 8] }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Status Text */}
       <motion.div
-        className="absolute bottom-24 text-center"
+        className="absolute bottom-20 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <motion.p
-          key={status}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="text-white/60 text-lg font-light tracking-wide"
-        >
-          {statusText[status]}
-        </motion.p>
-
-        {status === 'idle' && (
+        <AnimatePresence mode="wait">
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            transition={{ delay: 1 }}
-            className="text-white/30 text-xs mt-2 tracking-wider"
+            key={status}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="text-white/60 text-lg font-light tracking-wide"
           >
-            Release to send
+            {statusText[status]}
           </motion.p>
-        )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {status === 'idle' && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-white/30 text-xs mt-2 tracking-wider"
+            >
+              Release to send
+            </motion.p>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Bottom gradient */}
