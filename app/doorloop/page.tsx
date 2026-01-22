@@ -109,21 +109,27 @@ export default function DoorLoopPage() {
     e.preventDefault();
     e.stopPropagation();
     
-    // If already recording, stop it
-    if (status === 'recording' && isRecordingRef.current) {
+    console.log('[DEBUG] handleOrbClick, current status:', status);
+    
+    // If recording, stop it
+    if (status === 'recording') {
       stopRecording();
       return;
     }
     
-    // If idle or error, start recording
-    if (status === 'idle' || status === 'error') {
-      await startRecording();
+    // If processing or playing, ignore taps
+    if (status === 'processing' || status === 'playing') {
+      return;
     }
+    
+    // If idle or error, start recording
+    await startRecording();
   };
 
   const startRecording = async () => {
-    // Guard against starting if already recording
-    if (isRecordingRef.current) return;
+    // Set status to recording IMMEDIATELY (before async calls)
+    // This prevents race conditions with rapid taps
+    setStatus('recording');
     isRecordingRef.current = true;
 
     // Clear previous state
@@ -175,7 +181,7 @@ export default function DoorLoopPage() {
       mediaRecorderRef.current.onstop = sendAudioToN8N;
       // Use timeslice to get data every 100ms (important for mobile)
       mediaRecorderRef.current.start(100);
-      setStatus('recording');
+      // Status is already 'recording' - set at the start of startRecording()
 
       if (recognitionRef.current) {
         try {
@@ -193,22 +199,29 @@ export default function DoorLoopPage() {
   };
 
   const stopRecording = () => {
-    // Guard against stopping if not recording
-    if (!isRecordingRef.current) return;
+    console.log('[DEBUG] stopRecording called');
     
+    // Stop the MediaRecorder if it's recording
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
-      // Stop stream tracks since we get a fresh stream each time
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-      }
-      setStatus('processing');
-
-      if (recognitionRef.current) {
+      console.log('[DEBUG] MediaRecorder stopped');
+    }
+    
+    // Stop stream tracks
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+    }
+    
+    // Stop speech recognition
+    if (recognitionRef.current) {
+      try {
         recognitionRef.current.stop();
+      } catch (e) {
+        // Already stopped
       }
     }
     
+    setStatus('processing');
     isRecordingRef.current = false;
   };
 
