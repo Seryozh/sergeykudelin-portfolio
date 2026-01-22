@@ -31,14 +31,16 @@ declare global {
 }
 
 export default function DoorLoopPage() {
-  const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing'>('idle');
+  const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing' | 'error'>('idle');
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const recordingFormatRef = useRef<{ mimeType: string; extension: string }>({ mimeType: 'audio/webm', extension: 'webm' });
+  const isRecordingRef = useRef(false);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
@@ -75,10 +77,18 @@ export default function DoorLoopPage() {
     };
   }, []);
 
-  const startRecording = async () => {
-    // Clear previous transcript immediately
+  const startRecording = async (e: React.MouseEvent | React.TouchEvent) => {
+    // Prevent default to avoid double-firing on mobile
+    e.preventDefault();
+    
+    // Guard against starting if already recording
+    if (isRecordingRef.current) return;
+    isRecordingRef.current = true;
+
+    // Clear previous state
     setTranscript('');
     setAiResponse('');
+    setErrorMessage('');
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -102,12 +112,15 @@ export default function DoorLoopPage() {
         }
       }
 
+      console.log('[DEBUG] Using audio format:', mimeType, extension);
       recordingFormatRef.current = { mimeType, extension };
       mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
       };
 
       mediaRecorderRef.current.onstop = sendAudioToN8N;
@@ -122,24 +135,47 @@ export default function DoorLoopPage() {
         }
       }
     } catch (err) {
-      alert("Microphone access denied.");
+      isRecordingRef.current = false;
+      const errorMsg = err instanceof Error ? err.message : 'Microphone access denied';
+      setErrorMessage(`Mic Error: ${errorMsg}`);
+      setStatus('error');
     }
   };
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && status === 'recording') {
+  const stopRecording = (e: React.MouseEvent | React.TouchEvent) => {
+    // Prevent default to avoid double-firing on mobile
+    e.preventDefault();
+    
+    // Guard against stopping if not recording
+    if (!isRecordingRef.current) return;
+    
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
+      // Stop all tracks on the stream
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
       setStatus('processing');
 
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
     }
+    
+    isRecordingRef.current = false;
   };
 
   const sendAudioToN8N = async () => {
     const { mimeType, extension } = recordingFormatRef.current;
     const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+    
+    console.log('[DEBUG] Audio blob size:', audioBlob.size, 'bytes, type:', mimeType);
+    
+    // Check for empty audio
+    if (audioBlob.size === 0) {
+      setErrorMessage('No audio recorded. Please hold longer.');
+      setStatus('error');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('audio', audioBlob, `voice_input.${extension}`);
     formData.append('company', 'DoorLoop');
@@ -150,11 +186,15 @@ export default function DoorLoopPage() {
         body: formData,
       });
 
-      if (!response.ok) throw new Error('Network error');
+      console.log('[DEBUG] Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+      }
 
       // Parse JSON response: { audio: "base64_string", text: "AI response" }
       const data = await response.json();
-      console.log('Response received:', data);
+      console.log('[DEBUG] Response data:', data);
 
       // Store AI response text
       if (data.text) {
@@ -167,8 +207,9 @@ export default function DoorLoopPage() {
         const audio = new Audio(audioSource);
 
         audio.onerror = (e) => {
-          console.error('Audio playback error:', e);
-          setStatus('idle');
+          console.error('[DEBUG] Audio playback error:', e);
+          setErrorMessage('Audio playback failed');
+          setStatus('error');
         };
 
         setStatus('playing');
@@ -179,14 +220,20 @@ export default function DoorLoopPage() {
           setTimeout(() => setAiResponse(''), 3000);
         };
       } else {
-        console.warn('No audio in response');
+        console.warn('[DEBUG] No audio in response');
         setStatus('idle');
       }
     } catch (error) {
-      console.error(error);
-      setStatus('idle');
-      alert("Connection failed. Check n8n URL.");
+      console.error('[DEBUG] Fetch error:', error);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      setErrorMessage(`${errorMsg}`);
+      setStatus('error');
     }
+  };
+
+  const dismissError = () => {
+    setStatus('idle');
+    setErrorMessage('');
   };
 
   const getOrbColors = () => {
@@ -209,6 +256,12 @@ export default function DoorLoopPage() {
           secondary: '#059669',
           glow: 'rgba(16, 185, 129, 0.6)',
         };
+      case 'error':
+        return {
+          primary: '#ef4444',
+          secondary: '#991b1b',
+          glow: 'rgba(239, 68, 68, 0.6)',
+        };
       default:
         return {
           primary: '#3b82f6',
@@ -225,6 +278,7 @@ export default function DoorLoopPage() {
     recording: 'Listening...',
     processing: 'Thinking...',
     playing: 'Speaking...',
+    error: 'Error',
   };
 
   return (
@@ -338,8 +392,8 @@ export default function DoorLoopPage() {
           onMouseUp={stopRecording}
           onTouchStart={startRecording}
           onTouchEnd={stopRecording}
-          onMouseLeave={() => {
-            if (status === 'recording') stopRecording();
+          onMouseLeave={(e) => {
+            if (status === 'recording') stopRecording(e);
           }}
           className="relative z-10 w-40 h-40 rounded-full cursor-pointer focus:outline-none"
           style={{
@@ -437,8 +491,62 @@ export default function DoorLoopPage() {
               </motion.svg>
             )}
           </AnimatePresence>
+
+          {/* Error icon */}
+          <AnimatePresence>
+            {status === 'error' && (
+              <motion.svg
+                className="absolute inset-0 m-auto w-14 h-14 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ opacity: { duration: 0.15 } }}
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </motion.svg>
+            )}
+          </AnimatePresence>
         </motion.button>
       </div>
+
+      {/* Error Message Card */}
+      <AnimatePresence>
+        {status === 'error' && errorMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="absolute bottom-44 max-w-lg mx-4 z-10"
+          >
+            <div 
+              className="backdrop-blur-xl bg-red-500/10 border border-red-500/30 rounded-2xl px-6 py-4 shadow-2xl cursor-pointer"
+              onClick={dismissError}
+            >
+              <div className="flex flex-col gap-2">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 mt-2 rounded-full bg-red-500" />
+                  <p className="text-white/90 text-base leading-relaxed">
+                    {errorMessage}
+                  </p>
+                </div>
+                <p className="text-white/50 text-sm text-center mt-2">
+                  💻 Try using a PC/laptop for best experience
+                </p>
+                <p className="text-white/30 text-xs text-center">
+                  Tap to dismiss
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* AI Response Card */}
       <AnimatePresence>
