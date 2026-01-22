@@ -47,23 +47,9 @@ export default function DoorLoopPage() {
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
 
-  // Pre-request microphone permission on mount
+  // Clean up stream on unmount
   useEffect(() => {
-    const requestMicPermission = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        streamRef.current = stream;
-        setHasMicPermission(true);
-        console.log('[DEBUG] Microphone permission granted');
-      } catch (err) {
-        console.log('[DEBUG] Microphone permission denied or not available');
-      }
-    };
-    
-    requestMicPermission();
-
     return () => {
-      // Clean up stream on unmount
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
@@ -122,46 +108,30 @@ export default function DoorLoopPage() {
     console.log('[DEBUG] Fresh audio element created for this session');
 
     try {
-      // Reuse existing stream if available, otherwise get a new one
-      // This is crucial for mobile - getting a new stream each time can fail
-      let stream = streamRef.current;
-      if (!stream || stream.getTracks().some(t => t.readyState === 'ended')) {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        streamRef.current = stream;
-        console.log('[DEBUG] Got new microphone stream');
-      } else {
-        console.log('[DEBUG] Reusing existing microphone stream');
+      // Always get a fresh stream for each recording on mobile (more reliable)
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+      console.log('[DEBUG] Got microphone stream');
+
+      // Create MediaRecorder with NO options (let browser pick format)
+      // This is the most compatible approach across all mobile browsers
+      let recorder: MediaRecorder;
+      try {
+        recorder = new MediaRecorder(stream);
+        console.log('[DEBUG] MediaRecorder created with default format');
+      } catch (recError) {
+        console.error('[DEBUG] MediaRecorder creation failed:', recError);
+        throw recError;
       }
-
-      // Try to find a supported format, fallback to browser default if none found
-      const types = [
-        { mime: 'audio/webm;codecs=opus', ext: 'webm' },
-        { mime: 'audio/mp4', ext: 'mp4' },
-        { mime: 'audio/aac', ext: 'aac' },
-        { mime: 'audio/webm', ext: 'webm' },
-        { mime: 'audio/mpeg', ext: 'mp3' }
-      ];
-
-      let options: MediaRecorderOptions = {};
-      let detectedExt = 'webm';
-
-      for (const type of types) {
-        if (MediaRecorder.isTypeSupported(type.mime)) {
-          options = { mimeType: type.mime };
-          detectedExt = type.ext;
-          break;
-        }
-      }
-
-      // Create recorder - if options is empty, browser uses its default format
-      console.log('[DEBUG] MediaRecorder options:', options);
-      mediaRecorderRef.current = new MediaRecorder(stream, options);
       
-      // Get the actual mimeType the browser is using (may differ from what we requested)
-      const actualMimeType = mediaRecorderRef.current.mimeType || 'audio/webm';
+      mediaRecorderRef.current = recorder;
+      
+      // Get the actual mimeType the browser chose
+      const actualMimeType = recorder.mimeType || 'audio/webm';
       const actualExt = actualMimeType.includes('mp4') ? 'mp4' : 
                         actualMimeType.includes('webm') ? 'webm' : 
-                        actualMimeType.includes('aac') ? 'aac' : detectedExt;
+                        actualMimeType.includes('aac') ? 'aac' : 
+                        actualMimeType.includes('ogg') ? 'ogg' : 'webm';
       
       console.log('[DEBUG] Actual audio format:', actualMimeType, actualExt);
       recordingFormatRef.current = { mimeType: actualMimeType, extension: actualExt };
@@ -201,7 +171,10 @@ export default function DoorLoopPage() {
     
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
-      // Don't stop stream tracks - we want to reuse the stream for subsequent recordings
+      // Stop stream tracks since we get a fresh stream each time
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
       setStatus('processing');
 
       if (recognitionRef.current) {
