@@ -35,6 +35,7 @@ export default function DoorLoopPage() {
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [history, setHistory] = useState<any[]>([]);
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const isRecordingRef = useRef(false);
@@ -301,10 +302,13 @@ export default function DoorLoopPage() {
     const audioBlob = encodeWAV(combinedBuffer, sampleRate);
     console.log('[DEBUG] WAV blob size:', audioBlob.size, 'bytes');
 
+    const recentHistory = history.slice(-6);
+
     const formData = new FormData();
     formData.append('audio', audioBlob, 'voice_input.wav');
     formData.append('company', 'DoorLoop');
     formData.append('agent_persona', 'doorloop');
+    formData.append('history', JSON.stringify(recentHistory));
 
     try {
       const response = await fetch(N8N_WEBHOOK_URL, {
@@ -322,9 +326,17 @@ export default function DoorLoopPage() {
       const data = await response.json();
       console.log('[DEBUG] Response data:', data);
 
-      // Store AI response text
+      // Store AI response text and update history
       if (data.text) {
         setAiResponse(data.text);
+      }
+
+      if (data.text && data.userTranscript) {
+        setHistory(prev => [
+          ...prev,
+          { role: 'user', content: data.userTranscript },
+          { role: 'assistant', content: data.text },
+        ]);
       }
 
       // Play audio from base64
