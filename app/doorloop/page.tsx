@@ -304,6 +304,7 @@ export default function DoorLoopPage() {
     const formData = new FormData();
     formData.append('audio', audioBlob, 'voice_input.wav');
     formData.append('company', 'DoorLoop');
+    formData.append('agent_persona', 'doorloop');
 
     try {
       const response = await fetch(N8N_WEBHOOK_URL, {

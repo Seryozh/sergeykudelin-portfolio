@@ -274,6 +274,7 @@ export default function TidesOSPage() {
     const formData = new FormData();
     formData.append('audio', audioBlob, 'voice_input.wav');
     formData.append('company', 'TidesOS');
+    formData.append('agent_persona', 'tides');
 
     try {
       const response = await fetch(N8N_WEBHOOK_URL, {
