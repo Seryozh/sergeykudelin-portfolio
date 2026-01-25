@@ -159,7 +159,7 @@ export default function Home() {
           </h2>
           <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10">
             <p className="text-slate-300 text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
-              <span className="text-amber-400 font-semibold">Deterministic Systems for a chaotic reality.</span> I build for the edge cases. Whether I am managing a community of 200,000 subscribers or a high-volume hotel front desk, I believe the best software is stress-tested against real human behavior. I focus on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
+              <span className="text-amber-400 font-semibold">Deterministic Systems for a chaotic reality.</span> I build for the edge cases, focusing on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
             </p>
           </div>
         </motion.div>
@@ -348,6 +348,40 @@ export default function Home() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Footer */}
+      <motion.footer
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-5xl mt-24 mb-8 border-t border-slate-800 pt-8"
+      >
+        <div className="text-center">
+          <h3 className="text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-4">Built With</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Frontend</p>
+              <p className="text-sm text-slate-200 font-medium">React 19, Next.js 15</p>
+            </div>
+            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Styling</p>
+              <p className="text-sm text-slate-200 font-medium">Tailwind CSS</p>
+            </div>
+            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Animation</p>
+              <p className="text-sm text-slate-200 font-medium">Framer Motion</p>
+            </div>
+            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Icons</p>
+              <p className="text-sm text-slate-200 font-medium">Lucide React</p>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500">
+            Designed for performance. Built with modern web technologies. Deployed on Vercel.
+          </p>
+        </div>
+      </motion.footer>
 
       {/* Modal System */}
       <AnimatePresence>
