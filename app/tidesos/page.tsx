@@ -297,11 +297,30 @@ export default function TidesOSPage() {
         throw new Error(`Server error: ${response.status} ${response.statusText}`);
       }
 
-      // Get audio blob directly from response
-      const responseBlob = await response.blob();
-      console.log('[DEBUG] Response blob size:', responseBlob.size, 'bytes');
+      // Parse JSON response: { transcript, message, audio_base64 }
+      const data = await response.json();
+      console.log('[DEBUG] Response data:', data);
 
-      if (responseBlob.size > 0) {
+      // Update chat history with transcript and message
+      if (data.transcript && data.message) {
+        setMessages(prev => [
+          ...prev,
+          { role: 'user', content: data.transcript },
+          { role: 'assistant', content: data.message },
+        ]);
+        setAiResponse(data.message);
+      }
+
+      if (data.audio_base64) {
+        // Convert Base64 string to binary Byte Array
+        const binaryString = atob(data.audio_base64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        // Create the Audio Blob
+        const responseBlob = new Blob([bytes], { type: 'audio/mpeg' });
         const audioUrl = URL.createObjectURL(responseBlob);
         const audio = audioElementRef.current || new Audio();
         audio.src = audioUrl;
@@ -325,6 +344,7 @@ export default function TidesOSPage() {
           }
 
           setStatus('idle');
+          setTimeout(() => setAiResponse(''), 3000);
         };
 
         setStatus('playing');
@@ -418,7 +438,7 @@ export default function TidesOSPage() {
       />
 
       {/* System Status Box - Top Left */}
-      <div className="absolute top-4 left-4 z-20">
+      <div className="absolute top-4 left-4 z-20 hidden sm:block">
         <div className="border border-amber-500/30 bg-slate-900/80 rounded px-3 py-2 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
@@ -435,14 +455,14 @@ export default function TidesOSPage() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="absolute top-8 right-0 left-0 text-center z-10"
+        className="absolute top-4 sm:top-8 right-0 left-0 text-center z-10 px-4"
       >
-        <div className="inline-block border border-amber-500/20 bg-slate-900/60 rounded px-6 py-3 backdrop-blur-sm">
-          <h1 className="text-xl font-mono font-bold text-amber-500 tracking-[0.2em] uppercase">
+        <div className="inline-block border border-amber-500/20 bg-slate-900/60 rounded px-4 sm:px-6 py-2 sm:py-3 backdrop-blur-sm">
+          <h1 className="text-base sm:text-xl font-mono font-bold text-amber-500 tracking-[0.15em] sm:tracking-[0.2em] uppercase">
             TidesOS v2.4
           </h1>
-          <div className="w-12 h-px bg-amber-500/40 mx-auto mt-2" />
-          <p className="text-amber-500/50 text-xs uppercase tracking-[0.25em] mt-2 font-mono">
+          <div className="w-10 sm:w-12 h-px bg-amber-500/40 mx-auto mt-1.5 sm:mt-2" />
+          <p className="text-amber-500/50 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] mt-1.5 sm:mt-2 font-mono">
             NightOps Agent
           </p>
         </div>
@@ -457,10 +477,10 @@ export default function TidesOSPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-36 max-w-md text-center z-10 px-4"
+            className="absolute top-24 sm:top-36 max-w-xs sm:max-w-md text-center z-10 px-4"
           >
-            <div className="border border-amber-500/20 bg-slate-900/80 rounded px-4 py-3 backdrop-blur-sm">
-              <p className="text-amber-100/80 text-sm font-mono">
+            <div className="border border-amber-500/20 bg-slate-900/80 rounded px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm">
+              <p className="text-amber-100/80 text-xs sm:text-sm font-mono">
                 &gt; {transcript}
               </p>
             </div>
@@ -474,7 +494,7 @@ export default function TidesOSPage() {
         <AnimatePresence>
           {status === 'recording' && (
             <motion.div
-              className="absolute w-52 h-52 rounded-full border-2 border-red-500/40"
+              className="absolute w-40 h-40 sm:w-52 sm:h-52 rounded-full border-2 border-red-500/40"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0, 0.6] }}
               exit={{ opacity: 0 }}
@@ -486,7 +506,7 @@ export default function TidesOSPage() {
         <AnimatePresence>
           {(status === 'processing' || status === 'playing') && (
             <motion.div
-              className="absolute w-52 h-52 rounded-full border-2 border-amber-500/40"
+              className="absolute w-40 h-40 sm:w-52 sm:h-52 rounded-full border-2 border-amber-500/40"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0, 0.4] }}
               exit={{ opacity: 0 }}
@@ -498,7 +518,7 @@ export default function TidesOSPage() {
         {/* Main Button - Tactile physical button look */}
         <motion.button
           onClick={handleButtonClick}
-          className="relative z-10 w-40 h-40 rounded-full cursor-pointer focus:outline-none border-4 border-slate-700/80"
+          className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 rounded-full cursor-pointer focus:outline-none border-3 sm:border-4 border-slate-700/80"
           style={{
             background: getButtonBg(),
             boxShadow: getButtonGlow(),
@@ -544,7 +564,7 @@ export default function TidesOSPage() {
                   rotate: { duration: 1.5, repeat: Infinity, ease: "linear" },
                 }}
               >
-                <div className="w-14 h-14 border-3 border-amber-500/30 border-t-amber-400 rounded-full" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 border-3 border-amber-500/30 border-t-amber-400 rounded-full" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -553,7 +573,7 @@ export default function TidesOSPage() {
           <AnimatePresence>
             {(status === 'idle' || status === 'recording') && (
               <motion.svg
-                className="absolute inset-0 m-auto w-12 h-12 text-amber-400"
+                className="absolute inset-0 m-auto w-10 h-10 sm:w-12 sm:h-12 text-amber-400"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -581,7 +601,7 @@ export default function TidesOSPage() {
           <AnimatePresence>
             {status === 'playing' && (
               <motion.svg
-                className="absolute inset-0 m-auto w-12 h-12 text-amber-400"
+                className="absolute inset-0 m-auto w-10 h-10 sm:w-12 sm:h-12 text-amber-400"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -605,7 +625,7 @@ export default function TidesOSPage() {
           <AnimatePresence>
             {status === 'error' && (
               <motion.svg
-                className="absolute inset-0 m-auto w-12 h-12 text-red-400"
+                className="absolute inset-0 m-auto w-10 h-10 sm:w-12 sm:h-12 text-red-400"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -632,20 +652,20 @@ export default function TidesOSPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute bottom-44 max-w-lg mx-4 z-10"
+            className="absolute bottom-32 sm:bottom-44 max-w-xs sm:max-w-lg mx-4 z-10"
           >
             <div
-              className="border border-red-500/40 bg-slate-900/90 rounded px-5 py-3 backdrop-blur-sm cursor-pointer"
+              className="border border-red-500/40 bg-slate-900/90 rounded px-4 sm:px-5 py-2.5 sm:py-3 backdrop-blur-sm cursor-pointer"
               onClick={dismissError}
             >
-              <div className="flex flex-col gap-2">
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 mt-1.5 rounded-full bg-red-500 animate-pulse" />
-                  <p className="text-red-400/90 text-sm font-mono">
+              <div className="flex flex-col gap-1.5 sm:gap-2">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-2 h-2 mt-1 sm:mt-1.5 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                  <p className="text-red-400/90 text-xs sm:text-sm font-mono break-words">
                     {errorMessage}
                   </p>
                 </div>
-                <p className="text-amber-500/40 text-xs text-center font-mono">
+                <p className="text-amber-500/40 text-[10px] sm:text-xs text-center font-mono">
                   [ TAP TO DISMISS ]
                 </p>
               </div>
@@ -662,12 +682,12 @@ export default function TidesOSPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute bottom-44 max-w-lg mx-4 z-10"
+            className="absolute bottom-32 sm:bottom-44 max-w-xs sm:max-w-lg mx-4 z-10"
           >
-            <div className="border border-amber-500/30 bg-slate-900/90 rounded px-5 py-3 backdrop-blur-sm">
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 mt-1.5 rounded-full bg-amber-500 animate-pulse" />
-                <p className="text-amber-100/80 text-sm font-mono leading-relaxed">
+            <div className="border border-amber-500/30 bg-slate-900/90 rounded px-4 sm:px-5 py-2.5 sm:py-3 backdrop-blur-sm">
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className="w-2 h-2 mt-1 sm:mt-1.5 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
+                <p className="text-amber-100/80 text-xs sm:text-sm font-mono leading-relaxed break-words">
                   {aiResponse}
                 </p>
               </div>
@@ -683,7 +703,7 @@ export default function TidesOSPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-32 flex items-end justify-center gap-1 h-10"
+            className="absolute bottom-24 sm:bottom-32 flex items-end justify-center gap-0.5 sm:gap-1 h-8 sm:h-10"
           >
             {[...Array(9)].map((_, i) => (
               <motion.div
@@ -699,7 +719,7 @@ export default function TidesOSPage() {
 
       {/* Status Text */}
       <motion.div
-        className="absolute bottom-16 text-center"
+        className="absolute bottom-12 sm:bottom-16 text-center px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
@@ -710,7 +730,7 @@ export default function TidesOSPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="text-amber-500/70 text-sm font-mono tracking-widest"
+            className="text-amber-500/70 text-xs sm:text-sm font-mono tracking-wider sm:tracking-widest"
           >
             {statusText[status]}
           </motion.p>
@@ -723,7 +743,7 @@ export default function TidesOSPage() {
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-red-400/50 text-[10px] mt-2 tracking-[0.3em] font-mono uppercase"
+              className="text-red-400/50 text-[9px] sm:text-[10px] mt-1.5 sm:mt-2 tracking-[0.25em] sm:tracking-[0.3em] font-mono uppercase"
             >
               Audio Capture Active
             </motion.p>
