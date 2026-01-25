@@ -49,7 +49,7 @@ export default function TidesOSPage() {
   const processorNodeRef = useRef<ScriptProcessorNode | null>(null);
   const audioBuffersRef = useRef<Float32Array[]>([]);
 
-  const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/voice-agent';
+  const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/f250b163-1094-4a70-970b-b878ecc860e2';
 
   // Request mic permission on page load and KEEP the stream alive
   useEffect(() => {
