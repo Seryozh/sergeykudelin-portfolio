@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /tidesos
+Allow: /
+
+Sitemap: https://sergeykudelin.com/sitemap.xml

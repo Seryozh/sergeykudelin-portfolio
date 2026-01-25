@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen } from 'lucide-react';
 
@@ -9,6 +9,27 @@ type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveModal(null);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
+  const copyEmailToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText('sergey@sergeykudelin.com');
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy email:', err);
+    }
+  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -528,13 +549,15 @@ export default function Home() {
 
           {/* Contact Links */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <a
-              href="mailto:sergey@sergeykudelin.com"
+            <button
+              onClick={copyEmailToClipboard}
               className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
             >
               <Mail className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
-              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">Email</span>
-            </a>
+              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">
+                {emailCopied ? 'Copied!' : 'Email'}
+              </span>
+            </button>
             <a
               href="https://github.com/Seryozh"
               target="_blank"
