@@ -1,10 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Github } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink } from 'lucide-react';
+
+type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
 
 export default function Home() {
+  const [activeModal, setActiveModal] = useState<ProjectModal>(null);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white p-6 relative overflow-hidden">
 
@@ -53,40 +56,343 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* The TidesOS Call to Action */}
-          <div className="group relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 to-amber-500 rounded-lg blur opacity-40 group-hover:opacity-100 transition duration-500"></div>
-            <Link
-              href="/tidesos"
-              className="relative flex items-center gap-3 px-8 py-4 bg-slate-900 rounded-lg border border-slate-800 hover:bg-slate-800 transition-all duration-300"
-            >
-              <div className="bg-amber-500/10 p-2 rounded-md">
-                <Sparkles className="w-6 h-6 text-amber-400" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs text-amber-400 font-semibold uppercase tracking-wider">Live Demo</p>
-                <p className="text-white font-medium text-lg">TidesOS NightOps Agent</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-transform ml-4" />
-            </Link>
-          </div>
+        {/* Featured Projects Section */}
+        <div className="w-full max-w-5xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
+            Featured Projects
+          </h2>
 
-          {/* GitHub Link */}
-          <a
-            href="https://github.com/Seryozh/tides-concierge"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-4 bg-slate-900/60 border border-slate-700 rounded-lg hover:border-amber-500/50 hover:bg-slate-800/80 transition-all duration-300 group"
-          >
-            <Github className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
-            <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">
-              View Source Code
-            </span>
-          </a>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* TidesOS Card */}
+            <motion.div
+              whileHover={{ y: -8 }}
+              className="group relative cursor-pointer"
+              onClick={() => setActiveModal('tidesos')}
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-amber-500/10 p-3 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-white">TidesOS</h3>
+                    <p className="text-xs text-amber-400 uppercase tracking-wider">Voice Operations Agent</p>
+                  </div>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                  Autonomous voice firewall managing overnight guest traffic at a major residential complex.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">Live Demo</span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* LogiScan Card */}
+            <motion.div
+              whileHover={{ y: -8 }}
+              className="group relative cursor-pointer"
+              onClick={() => setActiveModal('logiscan')}
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-emerald-500/10 p-3 rounded-lg">
+                    <FileText className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-white">LogiScan AI</h3>
+                    <p className="text-xs text-emerald-400 uppercase tracking-wider">Computer Vision Inventory</p>
+                  </div>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                  Vision-based mobile tool that replaced a two-hour manual inventory audit with automated extraction.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">Case Study</span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Lux Card */}
+            <motion.div
+              whileHover={{ y: -8 }}
+              className="group relative cursor-pointer"
+              onClick={() => setActiveModal('lux')}
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-purple-500/10 p-3 rounded-lg">
+                    <Play className="w-6 h-6 text-purple-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-white">Lux Agentic AI</h3>
+                    <p className="text-xs text-purple-400 uppercase tracking-wider">Autonomous Coding Assistant</p>
+                  </div>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                  Self-healing coding framework for Roblox with 1,000+ downloads, tested via 200K+ subscriber YouTube channel.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">Watch Video</span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </motion.div>
+
+      {/* Modal System */}
+      <AnimatePresence>
+        {activeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setActiveModal(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setActiveModal(null)}
+                className="absolute top-4 right-4 z-10 p-2 bg-slate-800/80 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-400" />
+              </button>
+
+              {/* TidesOS Modal */}
+              {activeModal === 'tidesos' && (
+                <div className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-amber-500/10 p-4 rounded-xl">
+                      <Sparkles className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-white">TidesOS</h2>
+                      <p className="text-amber-400 text-sm uppercase tracking-wider">Voice-First Operations Agent</p>
+                    </div>
+                  </div>
+
+                  <div className="prose prose-invert max-w-none space-y-4 text-slate-300">
+                    <p className="text-base leading-relaxed">
+                      TidesOS is a voice agent built to manage overnight guest traffic at a major residential complex in Miami where I currently work night operations. I use the environment as a live testing ground to stress-test autonomous systems in high-pressure scenarios.
+                    </p>
+                    <p className="text-base leading-relaxed">
+                      The agent mirrors the user's language and handles routine requests according to property protocol. By acting as a voice-driven firewall for repetitive guest queries, the system allows security teams to focus on building safety during their shifts.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <a
+                      href="/tidesos"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-amber-600 hover:bg-amber-500 rounded-xl font-semibold text-white transition-all group"
+                    >
+                      <Sparkles className="w-5 h-5" />
+                      Launch Live Demo
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                    <a
+                      href="https://github.com/Seryozh/tides-concierge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition-all group"
+                    >
+                      <Github className="w-5 h-5" />
+                      View Source Code
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {/* LogiScan Modal */}
+              {activeModal === 'logiscan' && (
+                <div className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-emerald-500/10 p-4 rounded-xl">
+                      <FileText className="w-8 h-8 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-white">LogiScan AI</h2>
+                      <p className="text-emerald-400 text-sm uppercase tracking-wider">Automating Inventory with Computer Vision</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 text-slate-300">
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-3">The Challenge</h3>
+                      <p className="text-base leading-relaxed mb-3">
+                        The residential facility faced a significant time-sink involving manual inventory audits.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Manual Labor:</strong> Matching incoming packages to resident units required two hours of focused manual entry every night.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Data Integrity:</strong> The repetitive nature of the task led to frequent typos and missed entries, resulting in unreliable logs.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Operational Lag:</strong> Without a digital real-time system, there was no immediate visibility into current inventory status.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-3">The Strategy</h3>
+                      <p className="text-base leading-relaxed mb-3">
+                        I developed a mobile-first Progressive Web App (PWA) to replace the paper-and-pen workflow with a vision-driven automated system.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Field-Tested Prototyping:</strong> The system was built and stress-tested in the live, high-pressure environment of the hotel night shift.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Vision Pipeline:</strong> Instead of standard OCR, the tool uses GPT-4o Vision to extract data according to a strict schema.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Modern Stack:</strong> Built using Next.js 15 (App Router), Supabase for database management, and Tailwind CSS for the interface.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-3">The Architecture</h3>
+                      <p className="text-base leading-relaxed mb-3">
+                        The technical foundation focuses on accuracy and speed in real-world conditions.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Schema Adherence:</strong> The vision logic is instructed to ignore irrelevant carrier noise (like FedEx or UPS labels) and extract only the specific internal unit stickers.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Atomic Sync:</strong> Using PostgreSQL composite keys ensures every scan is a single source of truth, preventing duplicate entries during high-volume periods.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Offline Readiness:</strong> A client-focused architecture allows the app to function in storage rooms and basements where Wi-Fi signals are often unreliable.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-3">The Result</h3>
+                      <p className="text-base leading-relaxed mb-3">
+                        LogiScan transformed a tedious chore into a streamlined digital process.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Time Efficiency:</strong> The audit process was reduced from 120 minutes to approximately 20 minutes.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Error Elimination:</strong> Automated extraction removed human error from data entry, achieving a 95% data reliability rate.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-emerald-400">•</span>
+                          <span><strong>Digital Logging:</strong> The tool generated a real-time, searchable log of all inventory, replacing a "pen and paper" process with high-integrity digital data.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <a
+                      href="https://github.com/Seryozh/logiscan-ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-semibold text-white transition-all group"
+                    >
+                      <Github className="w-5 h-5" />
+                      View Source Code
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {/* Lux Modal */}
+              {activeModal === 'lux' && (
+                <div className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-purple-500/10 p-4 rounded-xl">
+                      <Play className="w-8 h-8 text-purple-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-white">Lux Agentic AI</h2>
+                      <p className="text-purple-400 text-sm uppercase tracking-wider">Autonomous Coding Assistant</p>
+                    </div>
+                  </div>
+
+                  <div className="prose prose-invert max-w-none space-y-4 text-slate-300 mb-6">
+                    <p className="text-base leading-relaxed">
+                      Lux is a powerful autonomous coding assistant for the Roblox engine. I leveraged my YouTube channel of 200,000 subscribers to release and field-test the framework, which has secured over 1,000 downloads to date.
+                    </p>
+                    <p className="text-base leading-relaxed">
+                      It moves beyond basic code completion by executing changes directly in-engine and verifying results through a closed-loop agentic system. I designed Lux to be a self-healing assistant that ensures every edit is accurate and never loses sync with the game state.
+                    </p>
+                  </div>
+
+                  {/* Video Embed */}
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 mb-6">
+                    <iframe
+                      src="https://www.youtube.com/embed/ejRCLfsfwD8"
+                      title="Lux Agentic AI Demo"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <a
+                      href="https://youtube.com/shorts/ejRCLfsfwD8?si=9SB3fuX88WBX_ddQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-semibold text-white transition-all group"
+                    >
+                      <Play className="w-5 h-5" />
+                      Watch on YouTube
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                    <a
+                      href="https://github.com/Seryozh/lux-agentic-ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition-all group"
+                    >
+                      <Github className="w-5 h-5" />
+                      View Source Code
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
