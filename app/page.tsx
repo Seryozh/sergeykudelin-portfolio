@@ -2,16 +2,104 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu } from 'lucide-react';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon } from 'lucide-react';
 
 type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white p-6 relative overflow-hidden">
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-      {/* Background Gradient Blob */}
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
+
+  const navItems = [
+    { label: 'Projects', id: 'projects' },
+    { label: 'Approach', id: 'approach' },
+    { label: 'Expertise', id: 'expertise' },
+    { label: 'Contact', id: 'contact' },
+  ];
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white relative overflow-hidden">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-slate-950/70 border-b border-slate-800/50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          {/* Logo */}
+          <motion.button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent hover:from-amber-300 hover:to-amber-400 transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            SK
+          </motion.button>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <motion.button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors relative group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-400 group-hover:w-full transition-all duration-300" />
+              </motion.button>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-slate-300 hover:text-amber-400 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {mobileMenuOpen ? (
+              <XIcon className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </motion.button>
+        </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-slate-800/50 bg-slate-900/80"
+            >
+              <nav className="flex flex-col p-4 gap-2">
+                {navItems.map((item) => (
+                  <motion.button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="px-4 py-3 text-sm font-medium text-slate-300 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg transition-colors text-left"
+                    whileHover={{ x: 4 }}
+                  >
+                    {item.label}
+                  </motion.button>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Add padding-top to main content to account for fixed header */}
+      <div className="w-full pt-20 flex flex-col items-center justify-center p-6 relative overflow-hidden flex-1">
+        {/* Background Gradient Blob */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -57,7 +145,7 @@ export default function Home() {
         </div>
 
         {/* Featured Projects Section */}
-        <div className="w-full max-w-5xl">
+        <div id="projects" className="w-full max-w-5xl">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
             Featured Projects
           </h2>
@@ -148,6 +236,7 @@ export default function Home() {
 
         {/* The Approach Section */}
         <motion.div
+          id="approach"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -166,6 +255,7 @@ export default function Home() {
 
         {/* Technical Expertise Section */}
         <motion.div
+          id="expertise"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -277,6 +367,7 @@ export default function Home() {
 
         {/* Contact Section */}
         <motion.div
+          id="contact"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -348,6 +439,7 @@ export default function Home() {
           </div>
         </motion.div>
       </motion.div>
+      </div>
 
       {/* Footer */}
       <motion.footer
@@ -355,7 +447,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-5xl mt-24 mb-8 border-t border-slate-800 pt-8"
+        className="w-full max-w-5xl mt-12 mb-8 border-t border-slate-800 pt-8"
       >
         <div className="text-center">
           <h3 className="text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-4">Built With</h3>
