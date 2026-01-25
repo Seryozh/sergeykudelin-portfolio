@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'next/navigation';
+import SecurityGate from './SecurityGate';
 
 // SpeechRecognition types
 interface SpeechRecognitionEvent {
@@ -31,6 +33,8 @@ declare global {
 }
 
 export default function TidesOSPage() {
+  const searchParams = useSearchParams();
+  const [showSecurityGate, setShowSecurityGate] = useState(!!searchParams.get('key'));
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing' | 'error'>('idle');
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -479,7 +483,15 @@ export default function TidesOSPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4 overflow-hidden font-mono">
+    <>
+      <AnimatePresence>
+        {showSecurityGate && (
+          <SecurityGate onComplete={() => setShowSecurityGate(false)} />
+        )}
+      </AnimatePresence>
+
+      {!showSecurityGate && (
+        <main className="relative flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4 overflow-hidden font-mono">
       {/* Scanline overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -909,5 +921,7 @@ export default function TidesOSPage() {
         )}
       </AnimatePresence>
     </main>
+      )}
+    </>
   );
 }

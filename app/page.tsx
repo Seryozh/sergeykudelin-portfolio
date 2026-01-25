@@ -10,6 +10,9 @@ export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [currentSection, setCurrentSection] = useState(0);
+
+  const sections = ['hero', 'projects', 'approach', 'expertise', 'articles', 'contact'];
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -20,6 +23,18 @@ export default function Home() {
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const newSection = Math.round(scrollPosition / windowHeight);
+      setCurrentSection(Math.min(newSection, sections.length - 1));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections.length]);
 
   const copyEmailToClipboard = async () => {
     try {
@@ -48,7 +63,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="bg-slate-950 text-white snap-y snap-mandatory overflow-y-scroll h-screen">
+    <main className="bg-slate-950 text-white snap-container">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-gradient-to-b from-slate-950/95 to-slate-950/70 border-b border-amber-500/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -119,6 +134,35 @@ export default function Home() {
           )}
         </AnimatePresence>
       </header>
+
+      {/* Section Progress Indicator */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
+        {sections.map((section, index) => (
+          <button
+            key={section}
+            onClick={() => {
+              const element = document.getElementById(section === 'hero' ? '' : section);
+              if (section === 'hero') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="group relative"
+          >
+            <div
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentSection === index
+                  ? 'bg-amber-400 scale-150'
+                  : 'bg-slate-600 hover:bg-slate-400'
+              }`}
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              {section === 'hero' ? 'Home' : section.charAt(0).toUpperCase() + section.slice(1)}
+            </span>
+          </button>
+        ))}
+      </div>
 
       {/* Hero Section */}
       <section className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden">
@@ -354,7 +398,7 @@ export default function Home() {
       </section>
 
       {/* Technical Expertise Section */}
-      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -362,7 +406,7 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
             Technical Expertise
           </h2>
 

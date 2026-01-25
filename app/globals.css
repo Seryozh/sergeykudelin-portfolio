@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+/* Smooth scroll snap with controlled speed */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.snap-container section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
