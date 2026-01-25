@@ -297,30 +297,40 @@ export default function TidesOSPage() {
         throw new Error(`Server error: ${response.status} ${response.statusText}`);
       }
 
-      // Parse JSON response: { transcript, message, audio_base64 }
-      const data = await response.json();
-      console.log('[DEBUG] Response data:', data);
+      // Extract text from headers (URL-encoded)
+      let userText = 'Audio Message';
+      let aiText = '...';
 
-      // Update chat history with transcript and message
-      if (data.transcript && data.message) {
-        setMessages(prev => [
-          ...prev,
-          { role: 'user', content: data.transcript },
-          { role: 'assistant', content: data.message },
-        ]);
-        setAiResponse(data.message);
+      try {
+        const encodedUserText = response.headers.get('x-user-transcript');
+        const encodedAiText = response.headers.get('x-ai-message');
+
+        if (encodedUserText) {
+          userText = decodeURIComponent(encodedUserText);
+        }
+        if (encodedAiText) {
+          aiText = decodeURIComponent(encodedAiText);
+        }
+      } catch (decodeError) {
+        console.warn('[DEBUG] Error decoding headers:', decodeError);
       }
 
-      if (data.audio_base64) {
-        // Convert Base64 string to binary Byte Array
-        const binaryString = atob(data.audio_base64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
-        }
+      console.log('[DEBUG] User transcript:', userText);
+      console.log('[DEBUG] AI message:', aiText);
 
-        // Create the Audio Blob
-        const responseBlob = new Blob([bytes], { type: 'audio/mpeg' });
+      // Update chat history
+      setMessages(prev => [
+        ...prev,
+        { role: 'user', content: userText },
+        { role: 'assistant', content: aiText },
+      ]);
+      setAiResponse(aiText);
+
+      // Get audio blob directly from response body
+      const responseBlob = await response.blob();
+      console.log('[DEBUG] Response blob size:', responseBlob.size, 'bytes');
+
+      if (responseBlob.size > 0) {
         const audioUrl = URL.createObjectURL(responseBlob);
         const audio = audioElementRef.current || new Audio();
         audio.src = audioUrl;
