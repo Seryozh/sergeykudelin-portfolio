@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink } from 'lucide-react';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu } from 'lucide-react';
 
 type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
 
@@ -145,6 +145,208 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+
+        {/* The Approach Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl mt-24"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
+            The Approach
+          </h2>
+          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10">
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
+              <span className="text-amber-400 font-semibold">Deterministic Systems for a chaotic reality.</span> I build for the edge cases. Whether I am managing a community of 200,000 subscribers or a high-volume hotel front desk, I believe the best software is stress-tested against real human behavior. I focus on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Technical Expertise Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="w-full max-w-5xl mt-24"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
+            Technical Expertise
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Programming Languages */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-blue-500/10 p-2 rounded-lg">
+                  <Code2 className="w-5 h-5 text-blue-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Programming Languages</h3>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300">
+                <li>
+                  <span className="text-blue-400 font-semibold">TypeScript / JavaScript:</span> Advanced proficiency in ES6+, asynchronous patterns, and type-safe application architecture.
+                </li>
+                <li>
+                  <span className="text-blue-400 font-semibold">Python:</span> Automation scripts, data processing pipelines, and AI integrations using FastAPI and Flask.
+                </li>
+                <li>
+                  <span className="text-blue-400 font-semibold">SQL:</span> Expert management of PostgreSQL, including complex joins, indexing strategies, and atomic transactions.
+                </li>
+                <li>
+                  <span className="text-blue-400 font-semibold">Lua:</span> Specialized development for the Roblox engine, focusing on high-performance game logic and system automation.
+                </li>
+              </ul>
+            </div>
+
+            {/* AI & Agentic Engineering */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-purple-500/10 p-2 rounded-lg">
+                  <Cpu className="w-5 h-5 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white">AI & Agentic Engineering</h3>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300">
+                <li>
+                  <span className="text-purple-400 font-semibold">Agentic Frameworks:</span> Designing closed-loop systems with recursive planning, tool-use, and self-correction logic.
+                </li>
+                <li>
+                  <span className="text-purple-400 font-semibold">LLM Integration:</span> Extensive experience with OpenAI (GPT-4o/Vision), Anthropic, and OpenRouter APIs.
+                </li>
+                <li>
+                  <span className="text-purple-400 font-semibold">RAG & Vector Data:</span> Implementing Retrieval-Augmented Generation using Supabase pgvector and semantic search.
+                </li>
+                <li>
+                  <span className="text-purple-400 font-semibold">Prompt Engineering:</span> Crafting high-precision system prompts with strict schema adherence to ensure deterministic outputs.
+                </li>
+              </ul>
+            </div>
+
+            {/* Full-Stack & Systems Architecture */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-emerald-500/10 p-2 rounded-lg">
+                  <Layers className="w-5 h-5 text-emerald-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Full-Stack & Systems Architecture</h3>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300">
+                <li>
+                  <span className="text-emerald-400 font-semibold">Frontend:</span> Next.js 15 (App Router), React, Tailwind CSS, Framer Motion, and mobile-first PWA architecture.
+                </li>
+                <li>
+                  <span className="text-emerald-400 font-semibold">Backend:</span> Node.js, serverless functions, and RESTful API design.
+                </li>
+                <li>
+                  <span className="text-emerald-400 font-semibold">Database & Auth:</span> Full-scale Supabase implementation, including Realtime, Row Level Security (RLS), and complex Auth flows.
+                </li>
+                <li>
+                  <span className="text-emerald-400 font-semibold">State Management:</span> Managing complex application states using React Context, Zustand, and persistent storage.
+                </li>
+              </ul>
+            </div>
+
+            {/* Infrastructure & Professional Tools */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-amber-500/10 p-2 rounded-lg">
+                  <Database className="w-5 h-5 text-amber-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Infrastructure & Professional Tools</h3>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300">
+                <li>
+                  <span className="text-amber-400 font-semibold">DevOps:</span> CI/CD via GitHub Actions, Vercel deployments, and environment configuration.
+                </li>
+                <li>
+                  <span className="text-amber-400 font-semibold">Containers & Cloud:</span> Fundamental knowledge of Docker and managing serverless infrastructure.
+                </li>
+                <li>
+                  <span className="text-amber-400 font-semibold">Workflow Automation:</span> Building enterprise-grade automations using n8n, Zapier, and custom webhooks.
+                </li>
+                <li>
+                  <span className="text-amber-400 font-semibold">Engineering Tools:</span> Git, Postman, Cursor, and Figma for design-to-code workflows.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Contact Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="w-full max-w-5xl mt-24 mb-16"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-amber-500/90">
+            Let's Build Something
+          </h2>
+          <p className="text-slate-300 text-center mb-8 max-w-2xl mx-auto">
+            I am currently located in the Miami area and available for challenging full-time roles or high-impact freelance projects.
+          </p>
+
+          {/* Focus Areas */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 mb-8">
+            <h3 className="text-lg font-semibold text-white mb-4">Focus Areas</h3>
+            <ul className="space-y-2 text-sm text-slate-300">
+              <li className="flex gap-2">
+                <span className="text-amber-400">•</span>
+                <span>Operational automation for high-volume environments.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-amber-400">•</span>
+                <span>Teams building AI agents for real-world deployment.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-amber-400">•</span>
+                <span>Projects where the interaction between AI and human judgment is critical.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Links */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <a
+              href="mailto:sergey@sergeykudelin.com"
+              className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
+            >
+              <Mail className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
+              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">Email</span>
+            </a>
+            <a
+              href="https://github.com/Seryozh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
+            >
+              <Github className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
+              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">GitHub</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/sergey-kudelin/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
+            >
+              <Linkedin className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
+              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">LinkedIn</span>
+            </a>
+            <a
+              href="https://www.youtube.com/@SergeRoblox"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
+            >
+              <Youtube className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
+              <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">YouTube</span>
+            </a>
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Modal System */}
