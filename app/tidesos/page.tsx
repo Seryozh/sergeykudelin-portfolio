@@ -286,17 +286,57 @@ export default function TidesOSPage() {
     formData.append('agent_persona', 'tides');
     formData.append('session_id', sessionIdRef.current);
 
-    try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: 'POST',
-        body: formData,
-      });
+    const MAX_RETRIES = 3;
+    let attempt = 0;
+    let response: Response | null = null;
 
-      console.log('[DEBUG] Response status:', response.status);
+    // RETRY LOOP for network errors
+    while (attempt < MAX_RETRIES) {
+      try {
+        response = await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          body: formData,
+        });
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        console.log('[DEBUG] Response status:', response.status);
+
+        // If successful, break the loop
+        if (response.ok) break;
+
+        // If server error (5xx), throw to retry
+        if (response.status >= 500) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
+        // If client error (4xx), don't retry, just break
+        break;
+
+      } catch (err) {
+        attempt++;
+        console.warn(`[DEBUG] Attempt ${attempt}/${MAX_RETRIES} failed:`, err);
+
+        if (attempt >= MAX_RETRIES) {
+          console.error('[DEBUG] Max retries reached. Giving up.');
+          throw err; // Re-throw to be caught by outer try-catch
+        }
+
+        // Exponential backoff: wait before retrying (1s, 2s, 4s)
+        const backoffDelay = Math.pow(2, attempt - 1) * 1000;
+        console.log(`[DEBUG] Waiting ${backoffDelay}ms before retry...`);
+        await new Promise(res => setTimeout(res, backoffDelay));
       }
+    }
+
+    // Ensure response exists before continuing
+    if (!response) {
+      throw new Error('No response received after retries');
+    }
+
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
+    }
+
+    try {
 
       // Extract text from headers (URL-encoded)
       let userText = 'Audio Message';
