@@ -1,10 +1,35 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, TrendingUp } from 'lucide-react';
 
 type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
+
+// Counter component for statistics
+const Counter = ({ from = 0, to, duration = 2, suffix = '' }: { from?: number; to: number; duration?: number; suffix?: string }) => {
+  const [count, setCount] = useState(from);
+
+  useEffect(() => {
+    let start: number;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / (duration * 1000), 1);
+      setCount(Math.floor(from + (to - from) * progress));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [from, to, duration]);
+
+  return <span>{count.toLocaleString()}{suffix}</span>;
+};
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
@@ -22,6 +47,7 @@ export default function Home() {
     { label: 'Projects', id: 'projects' },
     { label: 'Approach', id: 'approach' },
     { label: 'Expertise', id: 'expertise' },
+    { label: 'Articles', id: 'articles' },
     { label: 'Contact', id: 'contact' },
   ];
 
@@ -100,6 +126,31 @@ export default function Home() {
 
       {/* Add padding-top to main content to account for fixed header */}
       <div className="w-full pt-32 flex flex-col items-center justify-center p-6 relative overflow-hidden flex-1">
+        {/* Floating Particles Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-amber-400/20 rounded-full"
+              initial={{
+                x: Math.random() * 1000,
+                y: Math.random() * 1000,
+                opacity: Math.random() * 0.5,
+              }}
+              animate={{
+                x: Math.random() * 1000,
+                y: Math.random() * 1000,
+                opacity: [Math.random() * 0.5, Math.random() * 0.8, Math.random() * 0.5],
+              }}
+              transition={{
+                duration: 15 + Math.random() * 10,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          ))}
+        </div>
+
         {/* Background Gradient Blob */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -172,6 +223,21 @@ export default function Home() {
                 <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Autonomous voice firewall managing overnight guest traffic at a major residential complex.
                 </p>
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  whileHover={{ opacity: 1, height: 'auto' }}
+                  className="overflow-hidden mb-4"
+                >
+                  <div className="pt-4 border-t border-amber-500/20">
+                    <p className="text-xs text-amber-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Next.js 15</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">React</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">OpenAI Realtime</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Web Audio API</span>
+                    </div>
+                  </div>
+                </motion.div>
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">Live Demo</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
@@ -199,6 +265,21 @@ export default function Home() {
                 <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Vision-based mobile tool that replaced a two-hour manual inventory audit with automated extraction.
                 </p>
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  whileHover={{ opacity: 1, height: 'auto' }}
+                  className="overflow-hidden mb-4"
+                >
+                  <div className="pt-4 border-t border-emerald-500/20">
+                    <p className="text-xs text-emerald-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">Next.js 15</span>
+                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">PWA</span>
+                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">GPT-4o Vision</span>
+                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">Supabase</span>
+                    </div>
+                  </div>
+                </motion.div>
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">Case Study</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
@@ -226,6 +307,21 @@ export default function Home() {
                 <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Self-healing coding framework for Roblox with 1,000+ downloads, tested via 200K+ subscriber YouTube channel.
                 </p>
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  whileHover={{ opacity: 1, height: 'auto' }}
+                  className="overflow-hidden mb-4"
+                >
+                  <div className="pt-4 border-t border-purple-500/20">
+                    <p className="text-xs text-purple-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">TypeScript</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Luau</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">GPT-4o</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Agentic Systems</span>
+                    </div>
+                  </div>
+                </motion.div>
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">Watch Video</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
@@ -234,6 +330,85 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+
+        {/* Impact Statistics Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl mt-24"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
+            Real-World Impact
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {/* LogiScan Time Savings */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="group relative bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-6 hover:border-emerald-400/50 transition-all duration-300"
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
+              <div className="relative">
+                <TrendingUp className="w-8 h-8 text-emerald-400 mb-3" />
+                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <Counter to={600} duration={2} suffix="%" />
+                </p>
+                <p className="text-sm text-slate-300">Time Savings</p>
+                <p className="text-xs text-slate-400 mt-2">120 → 20 mins per audit</p>
+              </div>
+            </motion.div>
+
+            {/* Lux Downloads */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-xl p-6 hover:border-purple-400/50 transition-all duration-300"
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
+              <div className="relative">
+                <FileText className="w-8 h-8 text-purple-400 mb-3" />
+                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <Counter to={1000} duration={2} suffix="+" />
+                </p>
+                <p className="text-sm text-slate-300">Framework Downloads</p>
+                <p className="text-xs text-slate-400 mt-2">Lux Agentic AI</p>
+              </div>
+            </motion.div>
+
+            {/* YouTube Subscribers */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="group relative bg-gradient-to-br from-red-500/10 to-red-600/5 border border-red-500/20 rounded-xl p-6 hover:border-red-400/50 transition-all duration-300"
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-red-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
+              <div className="relative">
+                <Youtube className="w-8 h-8 text-red-400 mb-3" />
+                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <Counter to={200000} duration={2.5} suffix="+" />
+                </p>
+                <p className="text-sm text-slate-300">YouTube Subscribers</p>
+                <p className="text-xs text-slate-400 mt-2">SergeRoblox Channel</p>
+              </div>
+            </motion.div>
+
+            {/* Data Reliability */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-6 hover:border-blue-400/50 transition-all duration-300"
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
+              <div className="relative">
+                <Sparkles className="w-8 h-8 text-blue-400 mb-3" />
+                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <Counter to={95} duration={2} suffix="%" />
+                </p>
+                <p className="text-sm text-slate-300">Data Reliability</p>
+                <p className="text-xs text-slate-400 mt-2">LogiScan accuracy rate</p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
 
         {/* The Approach Section */}
         <motion.div
@@ -364,6 +539,60 @@ export default function Home() {
               </ul>
             </div>
           </div>
+        </motion.div>
+
+        {/* Articles Section */}
+        <motion.div
+          id="articles"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl mt-24"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
+            Engineering Deep-Dives
+          </h2>
+
+          <motion.a
+            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -8 }}
+            className="group block w-full"
+          >
+            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-2xl p-8 hover:border-amber-400/50 transition-all duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
+              <div className="relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-amber-500/10 p-3 rounded-lg">
+                      <BookOpen className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                        The Therac-25 Lesson
+                      </h3>
+                      <p className="text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                </div>
+
+                <p className="text-slate-300 text-base leading-relaxed mb-6">
+                  Why AI Agents Need a "Circuit Breaker" Architecture. Moving beyond "Prompt Engineering" to "Systems Engineering" in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
+                </p>
+
+                <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <span>4 min read</span>
+                  <span>•</span>
+                  <span>Jan 15, 2026</span>
+                  <span>•</span>
+                  <span className="text-amber-400 font-medium">Medium</span>
+                </div>
+              </div>
+            </div>
+          </motion.a>
         </motion.div>
 
         {/* Contact Section */}

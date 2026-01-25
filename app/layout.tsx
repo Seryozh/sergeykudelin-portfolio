@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sergey Kudelin | AI Voice Agent",
-  description: "AI-powered voice assistant for professional demonstrations",
+  title: "Sergey Kudelin | AI Automation Engineer",
+  description: "Building autonomous systems for high-pressure environments. Voice agents, computer vision, agentic AI, and deterministic systems.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon-sk.svg",
   },
 };
 
