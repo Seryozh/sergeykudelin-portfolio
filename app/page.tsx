@@ -25,15 +25,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const scrollPosition = target.scrollTop;
       const windowHeight = window.innerHeight;
       const newSection = Math.round(scrollPosition / windowHeight);
       setCurrentSection(Math.min(newSection, sections.length - 1));
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll);
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
   }, [sections.length]);
 
   const copyEmailToClipboard = async () => {
@@ -398,7 +402,7 @@ export default function Home() {
       </section>
 
       {/* Technical Expertise Section */}
-      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-20">
+      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -406,11 +410,11 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-amber-500/90">
             Technical Expertise
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Programming Languages */}
             <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">

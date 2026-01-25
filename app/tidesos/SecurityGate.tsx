@@ -13,11 +13,11 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
   const [progress, setProgress] = useState(0);
 
   const steps = [
-    { text: '[INFO] Checking Security Key...', delay: 500 },
-    { text: '[SUCCESS] Security Token Verified', delay: 1000 },
-    { text: '[INFO] Establishing Encrypted Tunnel...', delay: 1500 },
-    { text: '[INFO] Decrypting Session Context...', delay: 2000 },
-    { text: '[ACCESS GRANTED] Redirecting to TidesOS Operations...', delay: 2500 },
+    { text: 'Verifying access credentials...', delay: 500 },
+    { text: 'Access granted. Loading project data...', delay: 1000 },
+    { text: 'Initializing case study environment...', delay: 1500 },
+    { text: 'Preparing interactive demo...', delay: 2000 },
+    { text: 'Ready. Redirecting to TidesOS overview...', delay: 2500 },
   ];
 
   useEffect(() => {
@@ -66,9 +66,9 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
           transition={{ delay: 0.2 }}
           className="flex items-center justify-center gap-3 mb-12"
         >
-          <Shield className="w-8 h-8 text-emerald-400" />
-          <h1 className="text-2xl md:text-3xl font-black text-emerald-400 uppercase tracking-tight font-mono">
-            Security Verification
+          <Shield className="w-8 h-8 text-amber-400" />
+          <h1 className="text-2xl md:text-3xl font-black text-amber-400 uppercase tracking-tight font-mono">
+            Loading TidesOS
           </h1>
         </motion.div>
 
@@ -77,19 +77,19 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-900 border border-emerald-500/30 rounded-xl p-6 md:p-8 shadow-2xl shadow-emerald-500/10"
+          className="bg-slate-900 border border-amber-500/30 rounded-xl p-6 md:p-8 shadow-2xl shadow-amber-500/10"
         >
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-emerald-400 font-mono uppercase tracking-wider">
-                Authentication Progress
+              <span className="text-xs text-amber-400 font-mono uppercase tracking-wider">
+                Loading Progress
               </span>
-              <span className="text-xs text-emerald-400 font-mono">{progress}%</span>
+              <span className="text-xs text-amber-400 font-mono">{progress}%</span>
             </div>
             <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                className="h-full bg-gradient-to-r from-amber-500 to-amber-400"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.1 }}
@@ -109,9 +109,9 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
                   transition={{ duration: 0.3 }}
                   className="flex items-center gap-3"
                 >
-                  {s.text.includes('SUCCESS') || s.text.includes('GRANTED') ? (
-                    <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                  ) : s.text.includes('INFO') ? (
+                  {s.text.includes('granted') || s.text.includes('Ready') ? (
+                    <Check className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  ) : (
                     <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
                       <motion.div
                         className="w-2 h-2 bg-amber-400 rounded-full"
@@ -119,15 +119,11 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
                         transition={{ duration: 1, repeat: Infinity }}
                       />
                     </div>
-                  ) : (
-                    <Lock className="w-4 h-4 text-slate-400 flex-shrink-0" />
                   )}
                   <span
                     className={
-                      s.text.includes('SUCCESS')
-                        ? 'text-emerald-400'
-                        : s.text.includes('GRANTED')
-                        ? 'text-emerald-300 font-bold'
+                      s.text.includes('granted') || s.text.includes('Ready')
+                        ? 'text-amber-400 font-semibold'
                         : 'text-slate-300'
                     }
                   >
@@ -142,7 +138,7 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
               <motion.div
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
-                className="text-emerald-400"
+                className="text-amber-400"
               >
                 ▊
               </motion.div>
@@ -155,9 +151,9 @@ export default function SecurityGate({ onComplete }: SecurityGateProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="text-center mt-8 text-slate-500 text-xs font-mono uppercase tracking-wider"
+          className="text-center mt-8 text-slate-500 text-xs font-mono tracking-wider"
         >
-          Encrypted Connection • 256-bit AES
+          Secure connection established
         </motion.p>
       </div>
     </motion.div>

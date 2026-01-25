@@ -4,6 +4,11 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
+  // Don't intercept the restricted page itself to avoid redirect loop
+  if (pathname === '/tidesos/restricted') {
+    return NextResponse.next()
+  }
+
   // Target the TidesOS project path specifically
   if (pathname.startsWith('/tidesos')) {
     const securityKey = searchParams.get('key')
