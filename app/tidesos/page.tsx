@@ -36,6 +36,7 @@ export default function TidesOSPage() {
   const [aiResponse, setAiResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const [showMobileLog, setShowMobileLog] = useState(false);
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const sessionIdRef = useRef<string>('');
@@ -461,6 +462,36 @@ export default function TidesOSPage() {
         </div>
       </div>
 
+      {/* Chat Log - Right Side */}
+      {messages.length > 0 && (
+        <div className="absolute top-4 right-4 z-20 hidden lg:block w-80 max-h-[60vh]">
+          <div className="border border-amber-500/30 bg-slate-900/80 rounded backdrop-blur-sm overflow-hidden">
+            <div className="flex items-center gap-2 px-3 py-2 border-b border-amber-500/20">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <span className="text-amber-500/80 text-[10px] uppercase tracking-widest">Comms Log</span>
+              <span className="text-amber-500/40 text-[10px] ml-auto">{messages.length} msgs</span>
+            </div>
+            <div className="overflow-y-auto max-h-[calc(60vh-2.5rem)] p-2 space-y-2 scrollbar-thin scrollbar-thumb-amber-500/20 scrollbar-track-transparent">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`text-[11px] leading-relaxed ${
+                    msg.role === 'user'
+                      ? 'text-amber-500/70 pl-2 border-l border-amber-500/30'
+                      : 'text-amber-100/60 pl-2 border-l border-green-500/30'
+                  }`}
+                >
+                  <span className="text-[9px] uppercase tracking-wider opacity-50 block mb-0.5">
+                    {msg.role === 'user' ? '> YOU' : '< AGENT'}
+                  </span>
+                  {msg.content}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -760,6 +791,62 @@ export default function TidesOSPage() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Mobile Chat Log Toggle */}
+      {messages.length > 0 && (
+        <button
+          onClick={() => setShowMobileLog(!showMobileLog)}
+          className="absolute top-4 right-4 z-30 lg:hidden border border-amber-500/30 bg-slate-900/80 rounded px-2.5 py-1.5 backdrop-blur-sm"
+        >
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            <span className="text-amber-500/80 text-[10px] uppercase tracking-wider">Log</span>
+            <span className="text-amber-400 text-[10px]">({messages.length})</span>
+          </div>
+        </button>
+      )}
+
+      {/* Mobile Chat Log Panel */}
+      <AnimatePresence>
+        {showMobileLog && messages.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-14 right-4 left-4 z-30 lg:hidden max-h-[50vh]"
+          >
+            <div className="border border-amber-500/30 bg-slate-900/95 rounded backdrop-blur-sm overflow-hidden">
+              <div className="flex items-center gap-2 px-3 py-2 border-b border-amber-500/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <span className="text-amber-500/80 text-[10px] uppercase tracking-widest">Comms Log</span>
+                <button
+                  onClick={() => setShowMobileLog(false)}
+                  className="text-amber-500/50 text-xs ml-auto hover:text-amber-400"
+                >
+                  [ X ]
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(50vh-2.5rem)] p-2 space-y-2">
+                {messages.map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`text-[11px] leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'text-amber-500/70 pl-2 border-l border-amber-500/30'
+                        : 'text-amber-100/60 pl-2 border-l border-green-500/30'
+                    }`}
+                  >
+                    <span className="text-[9px] uppercase tracking-wider opacity-50 block mb-0.5">
+                      {msg.role === 'user' ? '> YOU' : '< AGENT'}
+                    </span>
+                    {msg.content}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
