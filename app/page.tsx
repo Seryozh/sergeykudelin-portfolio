@@ -70,7 +70,7 @@ export default function Home() {
               onClick={() => setActiveModal('tidesos')}
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-amber-500/10 p-3 rounded-lg">
                     <Sparkles className="w-6 h-6 text-amber-400" />
@@ -80,10 +80,10 @@ export default function Home() {
                     <p className="text-xs text-amber-400 uppercase tracking-wider">Voice Operations Agent</p>
                   </div>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Autonomous voice firewall managing overnight guest traffic at a major residential complex.
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                   <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">Live Demo</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
                 </div>
@@ -97,7 +97,7 @@ export default function Home() {
               onClick={() => setActiveModal('logiscan')}
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-emerald-500/10 p-3 rounded-lg">
                     <FileText className="w-6 h-6 text-emerald-400" />
@@ -107,10 +107,10 @@ export default function Home() {
                     <p className="text-xs text-emerald-400 uppercase tracking-wider">Computer Vision Inventory</p>
                   </div>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Vision-based mobile tool that replaced a two-hour manual inventory audit with automated extraction.
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                   <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">Case Study</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                 </div>
@@ -124,7 +124,7 @@ export default function Home() {
               onClick={() => setActiveModal('lux')}
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300">
+              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-purple-500/10 p-3 rounded-lg">
                     <Play className="w-6 h-6 text-purple-400" />
@@ -134,10 +134,10 @@ export default function Home() {
                     <p className="text-xs text-purple-400 uppercase tracking-wider">Autonomous Coding Assistant</p>
                   </div>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
                   Self-healing coding framework for Roblox with 1,000+ downloads, tested via 200K+ subscriber YouTube channel.
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                   <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">Watch Video</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
                 </div>
