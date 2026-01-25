@@ -28,30 +28,30 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white relative overflow-hidden">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-slate-950/70 border-b border-slate-800/50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-gradient-to-b from-slate-950/95 to-slate-950/70 border-b border-amber-500/10">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           {/* Logo */}
           <motion.button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent hover:from-amber-300 hover:to-amber-400 transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="text-2xl font-black bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent hover:from-amber-300 hover:via-amber-200 hover:to-amber-300 transition-all duration-300"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
           >
             SK
           </motion.button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors relative group"
+                className="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-amber-300 transition-all duration-300 relative group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-400 group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-1 left-0 w-0 h-1 bg-gradient-to-r from-amber-400 to-amber-300 group-hover:w-full transition-all duration-300 rounded-full" />
               </motion.button>
             ))}
           </nav>
@@ -59,9 +59,9 @@ export default function Home() {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-amber-400 transition-colors"
+            className="md:hidden p-2.5 text-slate-300 hover:text-amber-300 transition-colors duration-300"
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.9 }}
           >
             {mobileMenuOpen ? (
               <XIcon className="w-6 h-6" />
@@ -78,15 +78,16 @@ export default function Home() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-slate-800/50 bg-slate-900/80"
+              transition={{ duration: 0.3 }}
+              className="md:hidden border-t border-amber-500/10 bg-slate-900/80 backdrop-blur-sm"
             >
               <nav className="flex flex-col p-4 gap-2">
                 {navItems.map((item) => (
                   <motion.button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="px-4 py-3 text-sm font-medium text-slate-300 hover:text-amber-400 hover:bg-slate-800/50 rounded-lg transition-colors text-left"
-                    whileHover={{ x: 4 }}
+                    className="px-4 py-3 text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-amber-500/5 rounded-lg transition-all duration-300 text-left border border-transparent hover:border-amber-500/20"
+                    whileHover={{ x: 6 }}
                   >
                     {item.label}
                   </motion.button>
