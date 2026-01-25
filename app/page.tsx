@@ -99,7 +99,7 @@ export default function Home() {
       </header>
 
       {/* Add padding-top to main content to account for fixed header */}
-      <div className="w-full pt-20 flex flex-col items-center justify-center p-6 relative overflow-hidden flex-1">
+      <div className="w-full pt-32 flex flex-col items-center justify-center p-6 relative overflow-hidden flex-1">
         {/* Background Gradient Blob */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -249,7 +249,7 @@ export default function Home() {
           </h2>
           <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10">
             <p className="text-slate-300 text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
-              <span className="text-amber-400 font-semibold">Deterministic Systems for a chaotic reality.</span> I build for the edge cases, focusing on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
+              <span className="text-amber-400 font-semibold">Deterministic systems for a chaotic reality.</span> I build for the edge cases, focusing on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
             </p>
           </div>
         </motion.div>
