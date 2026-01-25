@@ -402,7 +402,7 @@ export default function Home() {
       </section>
 
       {/* Technical Expertise Section */}
-      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-12">
+      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -410,20 +410,20 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-amber-500/90">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-5 text-amber-500/90">
             Technical Expertise
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Programming Languages */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-blue-500/10 p-2 rounded-lg">
-                  <Code2 className="w-5 h-5 text-blue-400" />
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-blue-500/10 p-1.5 rounded-lg">
+                  <Code2 className="w-4 h-4 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Programming Languages</h3>
+                <h3 className="text-base font-bold text-white">Programming Languages</h3>
               </div>
-              <ul className="space-y-3 text-sm text-slate-300">
+              <ul className="space-y-2 text-sm text-slate-300">
                 <li>
                   <span className="text-blue-400 font-semibold">TypeScript / JavaScript:</span> Advanced proficiency in ES6+, asynchronous patterns, and type-safe application architecture.
                 </li>
@@ -440,14 +440,14 @@ export default function Home() {
             </div>
 
             {/* AI & Agentic Engineering */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-purple-500/10 p-2 rounded-lg">
-                  <Cpu className="w-5 h-5 text-purple-400" />
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-purple-500/10 p-1.5 rounded-lg">
+                  <Cpu className="w-4 h-4 text-purple-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white">AI & Agentic Engineering</h3>
+                <h3 className="text-base font-bold text-white">AI & Agentic Engineering</h3>
               </div>
-              <ul className="space-y-3 text-sm text-slate-300">
+              <ul className="space-y-2 text-sm text-slate-300">
                 <li>
                   <span className="text-purple-400 font-semibold">Agentic Frameworks:</span> Designing closed-loop systems with recursive planning, tool-use, and self-correction logic.
                 </li>
@@ -464,14 +464,14 @@ export default function Home() {
             </div>
 
             {/* Full-Stack & Systems Architecture */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-emerald-500/10 p-2 rounded-lg">
-                  <Layers className="w-5 h-5 text-emerald-400" />
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-emerald-500/10 p-1.5 rounded-lg">
+                  <Layers className="w-4 h-4 text-emerald-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Full-Stack & Systems Architecture</h3>
+                <h3 className="text-base font-bold text-white">Full-Stack & Systems Architecture</h3>
               </div>
-              <ul className="space-y-3 text-sm text-slate-300">
+              <ul className="space-y-2 text-sm text-slate-300">
                 <li>
                   <span className="text-emerald-400 font-semibold">Frontend:</span> Next.js 15 (App Router), React, Tailwind CSS, Framer Motion, and mobile-first PWA architecture.
                 </li>
@@ -488,14 +488,14 @@ export default function Home() {
             </div>
 
             {/* Infrastructure & Professional Tools */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-amber-500/10 p-2 rounded-lg">
-                  <Database className="w-5 h-5 text-amber-400" />
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 hover:bg-slate-900/80 transition-all duration-300">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-amber-500/10 p-1.5 rounded-lg">
+                  <Database className="w-4 h-4 text-amber-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Infrastructure & Professional Tools</h3>
+                <h3 className="text-base font-bold text-white">Infrastructure & Professional Tools</h3>
               </div>
-              <ul className="space-y-3 text-sm text-slate-300">
+              <ul className="space-y-2 text-sm text-slate-300">
                 <li>
                   <span className="text-amber-400 font-semibold">DevOps:</span> CI/CD via GitHub Actions, Vercel deployments, and environment configuration.
                 </li>
