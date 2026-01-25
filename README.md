@@ -5,17 +5,17 @@
 
 ---
 
-## ⚡ The Problem
+## The Problem
 
 Overnight operations at large residential complexes are defined by volume and repetition. Security teams get overwhelmed by hundreds of identical queries about keys, towels, and access codes. This buries actual security incidents under noise.
 
-## 🛡️ The Solution
+## The Solution
 
 **TidesOS** is an autonomous voice firewall deployed at Tides Residential. It handles the initial operational traffic from 10 PM to 6 AM. This allows human security teams to focus on high-priority physical threats.
 
 It enforces strict property protocols by distinguishing between operational tasks (Security) and hospitality requests (Caretaker) in real-time.
 
-## 🚀 Capabilities
+## Capabilities
 
 **Fast Voice Interface:** Built for speed. Users speak naturally and the agent responds instantly in English or Rioplatense Spanish (mirroring the user's dialect).
 
@@ -25,7 +25,7 @@ It enforces strict property protocols by distinguishing between operational task
 
 **Production Ready:** Deployed in a live, high-traffic environment handling real-world acoustic conditions and ambiguous user intents.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS
 
@@ -35,7 +35,7 @@ It enforces strict property protocols by distinguishing between operational task
 
 **Infrastructure:** Supabase, Vercel
 
-## 📦 Setup
+## Setup
 
 ```bash
 # Clone the repository
@@ -48,7 +48,7 @@ npm install
 npm run dev
 ```
 
-## 👨‍💻 About
+## About
 
 Built by [Sergey Kudelin](https://github.com/Seryozh). I build autonomous systems for high-pressure environments.
 
