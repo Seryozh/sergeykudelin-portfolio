@@ -1,35 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen } from 'lucide-react';
 
 type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
-
-// Counter component for statistics
-const Counter = ({ from = 0, to, duration = 2, suffix = '' }: { from?: number; to: number; duration?: number; suffix?: string }) => {
-  const [count, setCount] = useState(from);
-
-  useEffect(() => {
-    let start: number;
-    let animationFrame: number;
-
-    const animate = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / (duration * 1000), 1);
-      setCount(Math.floor(from + (to - from) * progress));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [from, to, duration]);
-
-  return <span>{count.toLocaleString()}{suffix}</span>;
-};
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
@@ -330,85 +305,6 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-
-        {/* Impact Statistics Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl mt-24"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
-            Real-World Impact
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* LogiScan Time Savings */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="group relative bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-6 hover:border-emerald-400/50 transition-all duration-300"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
-              <div className="relative">
-                <TrendingUp className="w-8 h-8 text-emerald-400 mb-3" />
-                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  <Counter to={600} duration={2} suffix="%" />
-                </p>
-                <p className="text-sm text-slate-300">Time Savings</p>
-                <p className="text-xs text-slate-400 mt-2">120 → 20 mins per audit</p>
-              </div>
-            </motion.div>
-
-            {/* Lux Downloads */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-xl p-6 hover:border-purple-400/50 transition-all duration-300"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
-              <div className="relative">
-                <FileText className="w-8 h-8 text-purple-400 mb-3" />
-                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  <Counter to={1000} duration={2} suffix="+" />
-                </p>
-                <p className="text-sm text-slate-300">Framework Downloads</p>
-                <p className="text-xs text-slate-400 mt-2">Lux Agentic AI</p>
-              </div>
-            </motion.div>
-
-            {/* YouTube Subscribers */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="group relative bg-gradient-to-br from-red-500/10 to-red-600/5 border border-red-500/20 rounded-xl p-6 hover:border-red-400/50 transition-all duration-300"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-red-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
-              <div className="relative">
-                <Youtube className="w-8 h-8 text-red-400 mb-3" />
-                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  <Counter to={200000} duration={2.5} suffix="+" />
-                </p>
-                <p className="text-sm text-slate-300">YouTube Subscribers</p>
-                <p className="text-xs text-slate-400 mt-2">SergeRoblox Channel</p>
-              </div>
-            </motion.div>
-
-            {/* Data Reliability */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-6 hover:border-blue-400/50 transition-all duration-300"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500" />
-              <div className="relative">
-                <Sparkles className="w-8 h-8 text-blue-400 mb-3" />
-                <p className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  <Counter to={95} duration={2} suffix="%" />
-                </p>
-                <p className="text-sm text-slate-300">Data Reliability</p>
-                <p className="text-xs text-slate-400 mt-2">LogiScan accuracy rate</p>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
 
         {/* The Approach Section */}
         <motion.div
