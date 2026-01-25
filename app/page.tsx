@@ -48,7 +48,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white relative overflow-hidden">
+    <main className="bg-slate-950 text-white snap-y snap-mandatory overflow-y-scroll h-screen">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-gradient-to-b from-slate-950/95 to-slate-950/70 border-b border-amber-500/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -120,8 +120,8 @@ export default function Home() {
         </AnimatePresence>
       </header>
 
-      {/* Add padding-top to main content to account for fixed header */}
-      <div className="w-full pt-32 flex flex-col items-center justify-center p-6 relative overflow-hidden flex-1">
+      {/* Hero Section */}
+      <section className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden">
         {/* Floating Particles Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(15)].map((_, i) => (
@@ -151,12 +151,13 @@ export default function Home() {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="z-10 text-center max-w-3xl"
-      >
+      <div className="w-full h-full flex items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="z-10 text-center max-w-3xl"
+        >
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
           Sergey Kudelin
         </h1>
@@ -191,9 +192,13 @@ export default function Home() {
             environments so humans can focus on decisions that actually need judgment.
           </p>
         </div>
+        </motion.div>
+      </div>
+      </section>
 
-        {/* Featured Projects Section */}
-        <div id="projects" className="w-full max-w-5xl">
+      {/* Featured Projects Section */}
+      <section id="projects" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+        <div className="w-full max-w-5xl z-10">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
             Featured Projects
           </h2>
@@ -326,15 +331,16 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+      </section>
 
-        {/* The Approach Section */}
+      {/* The Approach Section */}
+      <section id="approach" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
         <motion.div
-          id="approach"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl mt-24"
+          className="w-full max-w-5xl z-10"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
             The Approach
@@ -345,15 +351,16 @@ export default function Home() {
             </p>
           </div>
         </motion.div>
+      </section>
 
-        {/* Technical Expertise Section */}
+      {/* Technical Expertise Section */}
+      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
         <motion.div
-          id="expertise"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-full max-w-5xl mt-24"
+          className="w-full max-w-5xl z-10"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
             Technical Expertise
@@ -457,15 +464,16 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
+      </section>
 
-        {/* Articles Section */}
+      {/* Articles Section */}
+      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
         <motion.div
-          id="articles"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl mt-24"
+          className="w-full max-w-5xl z-10"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
             Engineering Deep-Dives
@@ -511,15 +519,16 @@ export default function Home() {
             </div>
           </motion.a>
         </motion.div>
+      </section>
 
-        {/* Contact Section */}
+      {/* Contact Section */}
+      <section id="contact" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
         <motion.div
-          id="contact"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="w-full max-w-5xl mt-24 mb-16"
+          className="w-full max-w-5xl z-10"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-amber-500/90">
             Let's Build Something
@@ -587,17 +596,17 @@ export default function Home() {
             </a>
           </div>
         </motion.div>
-      </motion.div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-5xl mt-24 mb-8 border-t border-slate-800 pt-8"
-      >
+      <footer className="snap-start flex items-center justify-center relative overflow-hidden p-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl border-t border-slate-800 pt-8"
+        >
         <div className="text-center">
           <h3 className="text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-4">Built With</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -622,7 +631,8 @@ export default function Home() {
             Designed for performance. Built with modern web technologies. Deployed on Vercel.
           </p>
         </div>
-      </motion.footer>
+        </motion.div>
+      </footer>
 
       {/* Modal System */}
       <AnimatePresence>
