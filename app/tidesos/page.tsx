@@ -35,9 +35,10 @@ export default function TidesOSPage() {
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [history, setHistory] = useState<any[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const sessionIdRef = useRef<string>('');
   const isRecordingRef = useRef(false);
   const streamRef = useRef<MediaStream | null>(null);
   const audioElementRef = useRef<HTMLAudioElement | null>(null);
@@ -50,6 +51,12 @@ export default function TidesOSPage() {
   const audioBuffersRef = useRef<Float32Array[]>([]);
 
   const N8N_WEBHOOK_URL = 'https://sergeykudelin.app.n8n.cloud/webhook/f250b163-1094-4a70-970b-b878ecc860e2';
+
+  // Generate session ID on mount
+  useEffect(() => {
+    sessionIdRef.current = crypto.randomUUID();
+    console.log('[DEBUG] Session ID:', sessionIdRef.current);
+  }, []);
 
   // Request mic permission on page load and KEEP the stream alive
   useEffect(() => {
@@ -272,13 +279,11 @@ export default function TidesOSPage() {
     const audioBlob = encodeWAV(combinedBuffer, sampleRate);
     console.log('[DEBUG] WAV blob size:', audioBlob.size, 'bytes');
 
-    const recentHistory = history.slice(-6);
-
     const formData = new FormData();
     formData.append('audio', audioBlob, 'voice_input.wav');
     formData.append('company', 'TidesOS');
     formData.append('agent_persona', 'tides');
-    formData.append('history', JSON.stringify(recentHistory));
+    formData.append('session_id', sessionIdRef.current);
 
     try {
       const response = await fetch(N8N_WEBHOOK_URL, {
@@ -292,33 +297,25 @@ export default function TidesOSPage() {
         throw new Error(`Server error: ${response.status} ${response.statusText}`);
       }
 
-      const data = await response.json();
-      console.log('[DEBUG] Response data:', data);
+      // Get audio blob directly from response
+      const responseBlob = await response.blob();
+      console.log('[DEBUG] Response blob size:', responseBlob.size, 'bytes');
 
-      if (data.text) {
-        setAiResponse(data.text);
-      }
-
-      if (data.text && data.userTranscript) {
-        setHistory(prev => [
-          ...prev,
-          { role: 'user', content: data.userTranscript },
-          { role: 'assistant', content: data.text },
-        ]);
-      }
-
-      if (data.audio) {
-        const audioSource = `data:audio/mpeg;base64,${data.audio}`;
+      if (responseBlob.size > 0) {
+        const audioUrl = URL.createObjectURL(responseBlob);
         const audio = audioElementRef.current || new Audio();
-        audio.src = audioSource;
+        audio.src = audioUrl;
 
         audio.onerror = (e) => {
           console.error('[DEBUG] Audio playback error:', e);
+          URL.revokeObjectURL(audioUrl);
           setErrorMessage('Audio playback failed');
           setStatus('error');
         };
 
         audio.onended = async () => {
+          URL.revokeObjectURL(audioUrl);
+
           try {
             const newStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             streamRef.current = newStream;
@@ -328,7 +325,6 @@ export default function TidesOSPage() {
           }
 
           setStatus('idle');
-          setTimeout(() => setAiResponse(''), 3000);
         };
 
         setStatus('playing');
@@ -339,12 +335,14 @@ export default function TidesOSPage() {
           if (playPromise !== undefined) {
             playPromise.catch((e) => {
               console.error('[DEBUG] Audio play() failed:', e);
+              URL.revokeObjectURL(audioUrl);
               setErrorMessage('Audio playback blocked. Try using PC.');
               setStatus('error');
             });
           }
         } catch (e) {
           console.error('[DEBUG] Audio play error:', e);
+          URL.revokeObjectURL(audioUrl);
           setErrorMessage('Audio playback failed');
           setStatus('error');
         }
