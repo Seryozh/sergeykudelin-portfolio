@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams } from 'next/navigation';
 import SecurityGate from './SecurityGate';
+import SearchParamsWrapper from './SearchParamsWrapper';
 
 // SpeechRecognition types
 interface SpeechRecognitionEvent {
@@ -32,9 +32,8 @@ declare global {
   }
 }
 
-export default function TidesOSPage() {
-  const searchParams = useSearchParams();
-  const [showSecurityGate, setShowSecurityGate] = useState(!!searchParams.get('key'));
+function TidesOSContent({ hasKey }: { hasKey: boolean }) {
+  const [showSecurityGate, setShowSecurityGate] = useState(hasKey);
   const [status, setStatus] = useState<'idle' | 'recording' | 'processing' | 'playing' | 'error'>('idle');
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -923,5 +922,15 @@ export default function TidesOSPage() {
     </main>
       )}
     </>
+  );
+}
+
+export default function TidesOSPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
+      <SearchParamsWrapper>
+        {(hasKey) => <TidesOSContent hasKey={hasKey} />}
+      </SearchParamsWrapper>
+    </Suspense>
   );
 }
