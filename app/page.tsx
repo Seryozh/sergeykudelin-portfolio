@@ -596,7 +596,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-5xl mt-12 mb-8 border-t border-slate-800 pt-8"
+        className="w-full max-w-5xl mt-24 mb-8 border-t border-slate-800 pt-8"
       >
         <div className="text-center">
           <h3 className="text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-4">Built With</h3>
