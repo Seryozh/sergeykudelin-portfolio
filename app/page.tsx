@@ -872,17 +872,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/tides-concierge"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-amber-600 hover:bg-amber-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Full Case Study
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                  <div className="flex justify-center mt-6 sm:mt-8">
                     <a
                       href="https://github.com/Seryozh/tides-concierge"
                       target="_blank"
@@ -1046,17 +1036,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/logiscan-ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-emerald-600 hover:bg-emerald-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Full Case Study
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                  <div className="flex justify-center mt-6 sm:mt-8">
                     <a
                       href="https://github.com/Seryozh/logiscan-ai"
                       target="_blank"
@@ -1249,17 +1229,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/lux-agentic-ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-purple-600 hover:bg-purple-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Full Case Study
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                  <div className="flex justify-center mt-6 sm:mt-8">
                     <a
                       href="https://github.com/Seryozh/lux-agentic-ai"
                       target="_blank"
