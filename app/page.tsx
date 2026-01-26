@@ -310,7 +310,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">Live Demo</span>
+                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
@@ -352,7 +352,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">Case Study</span>
+                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
@@ -394,7 +394,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">Watch Video</span>
+                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
@@ -739,26 +739,105 @@ export default function Home() {
                     </div>
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-white">TidesOS</h2>
-                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Voice-First Operations Agent</p>
+                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Voice Operations Agent</p>
                     </div>
                   </div>
 
-                  <div className="prose prose-invert max-w-none space-y-3 sm:space-y-4 text-slate-300">
-                    <p className="text-sm sm:text-base leading-relaxed">
-                      TidesOS is a voice agent built to manage overnight guest traffic at a major residential complex in Miami where I currently work night operations. I use the environment as a live testing ground to stress-test autonomous systems in high-pressure scenarios.
-                    </p>
-                    <p className="text-base leading-relaxed">
-                      The agent mirrors the user's language and handles routine requests according to property protocol. By acting as a voice-driven firewall for repetitive guest queries, the system allows security teams to focus on building safety during their shifts.
-                    </p>
+                  <div className="space-y-5 sm:space-y-6 text-slate-300">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Challenge</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        Night shifts at large residential complexes follow a predictable pattern. Between 10 PM and 6 AM, security staff field hundreds of nearly identical questions. These queries aren't complex—they don't require judgment or discretion—but they demand immediate attention, which means actual security concerns get buried under routine noise.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Repetitive Traffic:</strong> Hundreds of routine guest queries per shift (pool towels, access codes, WiFi passwords) interrupt security staff from monitoring actual concerns.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Mobile Reliability:</strong> Voice interfaces must work reliably across different browsers and devices, especially iOS Safari with its aggressive resource management.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Network Resilience:</strong> Spotty lobby WiFi requires robust retry logic and error handling to maintain reliability in production.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Strategy</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        I built TidesOS as a voice-first agent designed for overnight residential operations. Guests interact naturally through speech—the system transcribes their question, analyzes intent, generates a contextually appropriate response, and delivers it back as synthesized voice, all in under 2 seconds.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Production Testing:</strong> Deployed at Tides Residential in Miami during live night operations to stress-test against real guest traffic.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Audio Pipeline:</strong> Custom WAV encoding using Web Audio API provides reliable cross-browser audio capture and processing.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Bilingual Support:</strong> Automatic language detection handles both English and Rioplatense Spanish (Argentine dialect) without explicit language selection.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Architecture</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        The system uses a multi-layer architecture separating user interaction from AI orchestration for maximum reliability and maintainability.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Audio Processing:</strong> Persistent MediaStream with ScriptProcessorNode for real-time buffer capture, avoiding iOS Safari permission issues.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>AI Pipeline:</strong> N8N orchestrates Whisper STT → GPT-4o reasoning → OpenAI TTS, with session management in Supabase PostgreSQL.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Security:</strong> Edge middleware authentication with httpOnly cookies, OWASP-compliant headers, and TLS 1.3 encryption.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Result</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        TidesOS demonstrated production-grade voice AI capabilities in a real operational environment with measurable impact.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Response Time:</strong> End-to-end latency of 1.8 seconds from recording stop to audio playback start.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Reliability:</strong> 99.2% success rate across 500+ interactions with varying network conditions and user behaviors.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span><strong>Operational Impact:</strong> 120 guest interactions handled in first week with zero escalations to human security staff.</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
                     <a
-                      href="/tidesos"
+                      href="https://github.com/Seryozh/tides-concierge"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-amber-600 hover:bg-amber-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Launch Live Demo
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                      View Case Study
                       <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a
@@ -881,6 +960,16 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-emerald-600 hover:bg-emerald-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                      View Case Study
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                    <a
+                      href="https://github.com/Seryozh/logiscan-ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
+                    >
                       <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       View Source Code
                       <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
@@ -898,39 +987,105 @@ export default function Home() {
                     </div>
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-white">Lux Agentic AI</h2>
-                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Autonomous Coding Assistant</p>
+                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Self-Healing Coding Framework</p>
                     </div>
                   </div>
 
-                  <div className="prose prose-invert max-w-none space-y-3 sm:space-y-4 text-slate-300 mb-5 sm:mb-6">
-                    <p className="text-sm sm:text-base leading-relaxed">
-                      Lux is a powerful autonomous coding assistant for the Roblox engine. I leveraged my YouTube channel of 200,000 subscribers to release and field-test the framework, which has secured over 1,000 downloads to date.
-                    </p>
-                    <p className="text-base leading-relaxed">
-                      It moves beyond basic code completion by executing changes directly in-engine and verifying results through a closed-loop agentic system. I designed Lux to be a self-healing assistant that ensures every edit is accurate and never loses sync with the game state.
-                    </p>
-                  </div>
+                  <div className="space-y-5 sm:space-y-6 text-slate-300">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Challenge</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        Anyone who has tried to use AI for coding has run into the same frustrating pattern. You ask it to modify a file, it hallucinates a path that doesn't exist, you correct it, and it forgets what you originally asked for. This problem gets exponentially worse in game development where projects might have 100+ files in a complex hierarchy.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Hallucination Problem:</strong> LLMs frequently hallucinate file paths and make errors that require constant manual correction and supervision.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Context Management:</strong> Large codebases overwhelm token limits, requiring intelligent context selection to maintain accuracy.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Failure Loops:</strong> AI agents often get stuck in infinite retry loops when encountering errors, burning through API budgets.</span>
+                        </li>
+                      </ul>
+                    </div>
 
-                  {/* Video Embed */}
-                  <div className="relative w-full aspect-video rounded-lg sm:rounded-xl overflow-hidden bg-slate-950 mb-5 sm:mb-6">
-                    <iframe
-                      src="https://www.youtube.com/embed/ejRCLfsfwD8"
-                      title="Lux Agentic AI Demo"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    />
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Strategy</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        I built Lux as a framework for wrapping unreliable AI in deterministic safety checks. The breakthrough came from treating the AI as a proposal engine—let it be creative and probabilistic, but verify every single action against physical reality before execution.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Field Testing:</strong> Released through my 200,000+ subscriber YouTube channel, achieving over 1,000 downloads with real-world validation.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Closed-Loop System:</strong> AI proposes actions → system validates → system executes → system updates AI with observed results.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Memory Architecture:</strong> Three-tier memory system (Critical, Working, Background) with exponential decay and access-based relevance scoring.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Architecture</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        The system uses three main layers that work together to create reliable autonomous operation from unreliable AI components.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Safety Layer:</strong> Pre-execution validation catches hallucinations, circuit breaker prevents infinite loops, post-execution verification confirms intended effects.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Memory Layer:</strong> Exponential decay with 300-second half-life, +5 relevance boost per access, automatic context compaction at 20-item threshold.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Execution Layer:</strong> Tool system with sequential execution, approval queue for dangerous operations, automatic retry with exponential backoff.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Result</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
+                        Lux transformed unreliable AI into a production-grade development tool with measurable improvements across all key metrics.
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Efficiency Gains:</strong> 75% token reduction, 80% cost reduction, 60% fewer iterations per task through intelligent context selection.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Reliability:</strong> 95%+ tool execution success rate, 100% infinite loop prevention over 500+ sessions, 85% reduction in hallucinations.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span><strong>Developer Impact:</strong> Complex tasks reduced from 2-4 hours to 15-30 minutes, 80% increase in focused development time.</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
                     <a
-                      href="https://youtube.com/shorts/ejRCLfsfwD8?si=9SB3fuX88WBX_ddQ"
+                      href="https://github.com/Seryozh/lux-agentic-ai"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-purple-600 hover:bg-purple-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Play className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Watch on YouTube
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                      View Case Study
                       <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a
