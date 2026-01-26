@@ -14,6 +14,28 @@ export default function Home() {
 
   const sections = ['hero', 'projects', 'approach', 'expertise', 'articles', 'contact'];
 
+  // Handle URL query params for direct modal links
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const project = params.get('project');
+    if (project === 'tidesos' || project === 'logiscan' || project === 'lux') {
+      setActiveModal(project);
+    }
+  }, []);
+
+  // Update URL when modal opens/closes
+  useEffect(() => {
+    if (activeModal) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('project', activeModal);
+      window.history.pushState({}, '', url.toString());
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('project');
+      window.history.pushState({}, '', url.toString());
+    }
+  }, [activeModal]);
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -70,11 +92,11 @@ export default function Home() {
     <main className="bg-slate-950 text-white snap-container">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-gradient-to-b from-slate-950/95 to-slate-950/70 border-b border-amber-500/10">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-5 flex items-center justify-between">
           {/* Logo */}
           <motion.button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-2xl font-black bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent hover:from-amber-300 hover:via-amber-200 hover:to-amber-300 transition-all duration-300"
+            className="text-xl sm:text-2xl font-black bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent hover:from-amber-300 hover:via-amber-200 hover:to-amber-300 transition-all duration-300"
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
           >
@@ -140,7 +162,7 @@ export default function Home() {
       </header>
 
       {/* Section Progress Indicator */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
+      <div className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
         {sections.map((section, index) => (
           <button
             key={section}
@@ -169,7 +191,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden pt-16">
         {/* Floating Particles Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(15)].map((_, i) => (
@@ -199,25 +221,25 @@ export default function Home() {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full h-full flex items-center justify-center p-6">
+      <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="z-10 text-center max-w-3xl"
         >
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4">
           Sergey Kudelin
         </h1>
-        <p className="text-slate-400 text-lg md:text-xl mb-6 tracking-wide">
+        <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-4 sm:mb-6 tracking-wide">
           AI Automation Engineer
         </p>
-        <p className="text-amber-500/80 text-base md:text-lg mb-12 font-medium max-w-xl mx-auto leading-relaxed">
+        <p className="text-amber-500/80 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 font-medium max-w-xl mx-auto leading-relaxed">
           I build autonomous systems for high pressure environments.
         </p>
 
         {/* Bio Section */}
-        <div className="mb-12 text-left max-w-2xl mx-auto space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
+        <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
           <p>
             I'm a builder. I spent years growing a{' '}
             <a
@@ -245,13 +267,13 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section id="projects" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+      <section id="projects" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
         <div className="w-full max-w-5xl z-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
             Featured Projects
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* TidesOS Card */}
             <motion.div
               whileHover={{ y: -8 }}
@@ -382,7 +404,7 @@ export default function Home() {
       </section>
 
       {/* The Approach Section */}
-      <section id="approach" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+      <section id="approach" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -390,11 +412,11 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-amber-500/90">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
             The Approach
           </h2>
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10">
-            <p className="text-slate-300 text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
+          <div className="bg-slate-900/60 border border-slate-800 rounded-xl sm:rounded-2xl p-5 sm:p-8 md:p-10">
+            <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
               <span className="text-amber-400 font-semibold">Deterministic systems for a chaotic reality.</span> I build for the edge cases, focusing on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
             </p>
           </div>
@@ -402,7 +424,7 @@ export default function Home() {
       </section>
 
       {/* Technical Expertise Section */}
-      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6 py-8">
+      <section id="expertise" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -410,11 +432,11 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-5 text-amber-500/90">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-5 text-amber-500/90">
             Technical Expertise
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {/* Programming Languages */}
             <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 hover:bg-slate-900/80 transition-all duration-300">
               <div className="flex items-center gap-2 mb-3">
@@ -515,7 +537,7 @@ export default function Home() {
       </section>
 
       {/* Articles Section */}
-      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -523,7 +545,7 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-amber-500/90">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
             Engineering Deep-Dives
           </h2>
 
@@ -534,25 +556,25 @@ export default function Home() {
             whileHover={{ y: -8 }}
             className="group block w-full"
           >
-            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-2xl p-8 hover:border-amber-400/50 transition-all duration-300">
+            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
               <div className="relative">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-amber-500/10 p-3 rounded-lg">
-                      <BookOpen className="w-6 h-6 text-amber-400" />
+                <div className="flex items-start justify-between mb-4 gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
+                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
                         The Therac-25 Lesson
                       </h3>
-                      <p className="text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
+                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
                 </div>
 
-                <p className="text-slate-300 text-base leading-relaxed mb-6">
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                   Why AI Agents Need a "Circuit Breaker" Architecture. Moving beyond "Prompt Engineering" to "Systems Engineering" in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
                 </p>
 
@@ -570,7 +592,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden p-6">
+      <section id="contact" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -578,15 +600,15 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="w-full max-w-5xl z-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-amber-500/90">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-6 text-amber-500/90">
             Let's Build Something
           </h2>
-          <p className="text-slate-300 text-center mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-300 text-sm sm:text-base text-center mb-6 sm:mb-8 max-w-2xl mx-auto">
             I am currently located in the Miami area and available for challenging full-time roles or high-impact freelance projects.
           </p>
 
           {/* Focus Areas */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 mb-8">
+          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
             <h3 className="text-lg font-semibold text-white mb-4">Focus Areas</h3>
             <ul className="space-y-2 text-sm text-slate-300">
               <li className="flex gap-2">
@@ -647,7 +669,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="snap-start flex items-center justify-center relative overflow-hidden p-6 py-12">
+      <footer className="snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -656,8 +678,8 @@ export default function Home() {
           className="w-full max-w-5xl border-t border-slate-800 pt-8"
         >
         <div className="text-center">
-          <h3 className="text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-4">Built With</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <h3 className="text-xs sm:text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-3 sm:mb-4">Built With</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
               <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Frontend</p>
               <p className="text-sm text-slate-200 font-medium">React 19, Next.js 15</p>
@@ -689,7 +711,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
             onClick={() => setActiveModal(null)}
           >
             <motion.div
@@ -697,32 +719,32 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl"
+              className="relative w-full max-w-4xl max-h-[95vh] my-auto overflow-y-auto bg-slate-900 rounded-xl sm:rounded-2xl border border-slate-800 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
                 onClick={() => setActiveModal(null)}
-                className="absolute top-4 right-4 z-10 p-2 bg-slate-800/80 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors"
+                className="sticky top-3 sm:top-4 right-3 sm:right-4 float-right z-10 p-2 bg-slate-800/80 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors"
               >
-                <X className="w-5 h-5 text-slate-400" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
               </button>
 
               {/* TidesOS Modal */}
               {activeModal === 'tidesos' && (
-                <div className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-amber-500/10 p-4 rounded-xl">
-                      <Sparkles className="w-8 h-8 text-amber-400" />
+                <div className="p-5 sm:p-8 clear-both">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                    <div className="bg-amber-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
+                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold text-white">TidesOS</h2>
-                      <p className="text-amber-400 text-sm uppercase tracking-wider">Voice-First Operations Agent</p>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">TidesOS</h2>
+                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Voice-First Operations Agent</p>
                     </div>
                   </div>
 
-                  <div className="prose prose-invert max-w-none space-y-4 text-slate-300">
-                    <p className="text-base leading-relaxed">
+                  <div className="prose prose-invert max-w-none space-y-3 sm:space-y-4 text-slate-300">
+                    <p className="text-sm sm:text-base leading-relaxed">
                       TidesOS is a voice agent built to manage overnight guest traffic at a major residential complex in Miami where I currently work night operations. I use the environment as a live testing ground to stress-test autonomous systems in high-pressure scenarios.
                     </p>
                     <p className="text-base leading-relaxed">
@@ -730,24 +752,24 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
                     <a
                       href="/tidesos"
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-amber-600 hover:bg-amber-500 rounded-xl font-semibold text-white transition-all group"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-amber-600 hover:bg-amber-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Sparkles className="w-5 h-5" />
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
                       Launch Live Demo
-                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a
                       href="https://github.com/Seryozh/tides-concierge"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition-all group"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Github className="w-5 h-5" />
+                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       View Source Code
-                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                   </div>
                 </div>
@@ -755,21 +777,21 @@ export default function Home() {
 
               {/* LogiScan Modal */}
               {activeModal === 'logiscan' && (
-                <div className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-emerald-500/10 p-4 rounded-xl">
-                      <FileText className="w-8 h-8 text-emerald-400" />
+                <div className="p-5 sm:p-8 clear-both">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                    <div className="bg-emerald-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
+                      <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold text-white">LogiScan AI</h2>
-                      <p className="text-emerald-400 text-sm uppercase tracking-wider">Automating Inventory with Computer Vision</p>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">LogiScan AI</h2>
+                      <p className="text-emerald-400 text-xs sm:text-sm uppercase tracking-wider">Automating Inventory with Computer Vision</p>
                     </div>
                   </div>
 
-                  <div className="space-y-6 text-slate-300">
+                  <div className="space-y-5 sm:space-y-6 text-slate-300">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-3">The Challenge</h3>
-                      <p className="text-base leading-relaxed mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Challenge</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
                         The residential facility faced a significant time-sink involving manual inventory audits.
                       </p>
                       <ul className="space-y-2 text-sm">
@@ -789,8 +811,8 @@ export default function Home() {
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-3">The Strategy</h3>
-                      <p className="text-base leading-relaxed mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Strategy</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
                         I developed a mobile-first Progressive Web App (PWA) to replace the paper-and-pen workflow with a vision-driven automated system.
                       </p>
                       <ul className="space-y-2 text-sm">
@@ -810,8 +832,8 @@ export default function Home() {
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-3">The Architecture</h3>
-                      <p className="text-base leading-relaxed mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Architecture</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
                         The technical foundation focuses on accuracy and speed in real-world conditions.
                       </p>
                       <ul className="space-y-2 text-sm">
@@ -831,8 +853,8 @@ export default function Home() {
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-3">The Result</h3>
-                      <p className="text-base leading-relaxed mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">The Result</h3>
+                      <p className="text-sm sm:text-base leading-relaxed mb-2 sm:mb-3">
                         LogiScan transformed a tedious chore into a streamlined digital process.
                       </p>
                       <ul className="space-y-2 text-sm">
@@ -852,16 +874,16 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
                     <a
                       href="https://github.com/Seryozh/logiscan-ai"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-semibold text-white transition-all group"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-emerald-600 hover:bg-emerald-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Github className="w-5 h-5" />
+                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       View Source Code
-                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                   </div>
                 </div>
@@ -869,19 +891,19 @@ export default function Home() {
 
               {/* Lux Modal */}
               {activeModal === 'lux' && (
-                <div className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-purple-500/10 p-4 rounded-xl">
-                      <Play className="w-8 h-8 text-purple-400" />
+                <div className="p-5 sm:p-8 clear-both">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                    <div className="bg-purple-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
+                      <Play className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold text-white">Lux Agentic AI</h2>
-                      <p className="text-purple-400 text-sm uppercase tracking-wider">Autonomous Coding Assistant</p>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Lux Agentic AI</h2>
+                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Autonomous Coding Assistant</p>
                     </div>
                   </div>
 
-                  <div className="prose prose-invert max-w-none space-y-4 text-slate-300 mb-6">
-                    <p className="text-base leading-relaxed">
+                  <div className="prose prose-invert max-w-none space-y-3 sm:space-y-4 text-slate-300 mb-5 sm:mb-6">
+                    <p className="text-sm sm:text-base leading-relaxed">
                       Lux is a powerful autonomous coding assistant for the Roblox engine. I leveraged my YouTube channel of 200,000 subscribers to release and field-test the framework, which has secured over 1,000 downloads to date.
                     </p>
                     <p className="text-base leading-relaxed">
@@ -890,7 +912,7 @@ export default function Home() {
                   </div>
 
                   {/* Video Embed */}
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 mb-6">
+                  <div className="relative w-full aspect-video rounded-lg sm:rounded-xl overflow-hidden bg-slate-950 mb-5 sm:mb-6">
                     <iframe
                       src="https://www.youtube.com/embed/ejRCLfsfwD8"
                       title="Lux Agentic AI Demo"
@@ -900,26 +922,26 @@ export default function Home() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
                     <a
                       href="https://youtube.com/shorts/ejRCLfsfwD8?si=9SB3fuX88WBX_ddQ"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-semibold text-white transition-all group"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-purple-600 hover:bg-purple-500 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Play className="w-5 h-5" />
+                      <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                       Watch on YouTube
-                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                     <a
                       href="https://github.com/Seryozh/lux-agentic-ai"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition-all group"
+                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
                     >
-                      <Github className="w-5 h-5" />
+                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       View Source Code
-                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                   </div>
                 </div>
