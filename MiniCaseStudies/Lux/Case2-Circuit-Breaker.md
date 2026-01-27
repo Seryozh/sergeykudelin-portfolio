@@ -4,7 +4,7 @@ The main case study claims "100% success rate at preventing runaway loops" over 
 
 ## The Problem
 
-LLMs get stuck in error loops. The pattern is always the same:
+LLMs get stuck in error loops. The pattern is always the same.
 
 1. AI tries to read script at path "ServerScriptService.MainScript"
 2. Path doesn't exist, tool returns error
