@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Target the TidesOS project path specifically
+  //Target the TidesOS project path specifically
   if (pathname.startsWith('/tidesos')) {
     const securityKey = searchParams.get('key')
     const isAuthorized = request.cookies.has('tides_access_granted')
