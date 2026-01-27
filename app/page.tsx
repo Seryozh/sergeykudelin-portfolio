@@ -11,34 +11,11 @@ export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
   const [activeProof, setActiveProof] = useState<string | null>(null);
   const [proofContent, setProofContent] = useState<string>('');
-  const [mainCaseStudyContent, setMainCaseStudyContent] = useState<Record<string, string>>({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
 
   const sections = ['hero', 'projects', 'approach', 'expertise', 'articles', 'contact'];
-
-  // Load main case study content on mount
-  useEffect(() => {
-    const loadMainCaseStudies = async () => {
-      try {
-        const [tidesosRes, logiscanRes] = await Promise.all([
-          fetch('/api/main-case-study?project=TidesOS'),
-          fetch('/api/main-case-study?project=LogiScan'),
-        ]);
-        
-        const content: Record<string, string> = {};
-        if (tidesosRes.ok) content['tidesos'] = await tidesosRes.text();
-        if (logiscanRes.ok) content['logiscan'] = await logiscanRes.text();
-        
-        setMainCaseStudyContent(content);
-      } catch (error) {
-        console.error('Failed to load main case studies:', error);
-      }
-    };
-    
-    loadMainCaseStudies();
-  }, []);
 
   // Handle URL query params for direct modal links
   useEffect(() => {
@@ -119,6 +96,8 @@ export default function Home() {
       handleBackFromProof();
     } else {
       setActiveModal(null);
+      setActiveProof(null);
+      setProofContent('');
     }
   };
 
@@ -802,7 +781,11 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
-            onClick={() => setActiveModal(null)}
+            onClick={() => {
+              setActiveModal(null);
+              setActiveProof(null);
+              setProofContent('');
+            }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -864,14 +847,7 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    {mainCaseStudyContent['tidesos'] ? (
-                      <MarkdownRenderer 
-                        content={mainCaseStudyContent['tidesos']} 
-                        onLinkClick={handleProofClick}
-                      />
-                    ) : (
-                      <>
-                        <div>
+                    <div>
                           <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
                           <p className="leading-relaxed mb-3">
                         Night shifts at large residential complexes follow a predictable pattern. Between 10 PM and 6 AM, security staff field hundreds of nearly identical questions. Where are the pool towels? Can you give me a building access code? I locked myself out of my unit. What's the WiFi password?
@@ -904,8 +880,8 @@ export default function Home() {
                       </p>
                       <ol className="space-y-2 ml-4 list-decimal">
                         <li><strong>Persistent Microphone Access:</strong> Request microphone permission once on page load and keep the MediaStream alive throughout the session. This avoids iOS Safari's notorious permission re-prompting issues.</li>
-                        <li><strong>Real-time Buffer Capture:</strong> <button onClick={() => handleProofClick('case1-4096-audio-buffer')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Connect the microphone stream to a ScriptProcessorNode with a 4096-sample buffer size.</button> Every time the buffer fills, copy the audio data into a Float32Array and accumulate it.</li>
-                        <li><strong>Custom WAV Encoding:</strong> <button onClick={() => handleProofClick('case2-manual-wav-encoding')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">When recording stops, concatenate all accumulated buffers into a single Float32Array, then convert to WAV format manually.</button> This involves creating the WAV header (44 bytes) and converting Float32 samples to 16-bit PCM integers. The MediaRecorder API would be simpler, but it's less reliable across browsers and gives you less control over the output format.</li>
+                        <li><strong>Real-time Buffer Capture:</strong> <button onClick={() => handleProofClick('case1-4096-audio-buffer')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>Connect the microphone stream to a ScriptProcessorNode with a 4096-sample buffer size.</span><ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" /></button> Every time the buffer fills, copy the audio data into a Float32Array and accumulate it.</li>
+                        <li><strong>Custom WAV Encoding:</strong> <button onClick={() => handleProofClick('case2-manual-wav-encoding')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">When recording stops, concatenate all accumulated buffers into a single Float32Array, then convert to WAV format manually.</button> This involves creating the WAV header (44 bytes) and converting Float32 samples to 16-bit PCM integers. The MediaRecorder API would be simpler, but it's less reliable across browsers and gives you less control over the output format.</li>
                         <li><strong>Network Transmission:</strong> Package the WAV blob into FormData along with session metadata (UUID, company context, persona type) and POST it to the N8N webhook.</li>
                       </ol>
                       <p className="leading-relaxed mt-3">
@@ -945,7 +921,7 @@ export default function Home() {
                         The system handles this through multiple layers:
                       </p>
                       <ul className="space-y-2 ml-4 list-disc">
-                        <li><strong>Network Layer:</strong> <button onClick={() => handleProofClick('case3-exponential-backoff')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Exponential backoff retry logic.</button> If a request to N8N fails, wait 1 second and retry. If that fails, wait 2 seconds. Then 4 seconds. After three failures, surface a user-facing error. This handles temporary network hiccups without bothering the user.</li>
+                        <li><strong>Network Layer:</strong> <button onClick={() => handleProofClick('case3-exponential-backoff')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">Exponential backoff retry logic.</button> If a request to N8N fails, wait 1 second and retry. If that fails, wait 2 seconds. Then 4 seconds. After three failures, surface a user-facing error. This handles temporary network hiccups without bothering the user.</li>
                         <li><strong>Audio Layer:</strong> If the microphone stream dies (user revoked permission, hardware error, etc.), catch the error and attempt to re-acquire the stream automatically. If that fails, show a clear error message explaining what happened and how to fix it.</li>
                         <li><strong>State Layer:</strong> The state machine uses refs instead of state for time-sensitive flags like "currently recording." This prevents race conditions where React's async state updates could cause recording to continue after the user stops.</li>
                         <li><strong>Recovery Flows:</strong> Every error state includes a dismiss action that resets the system to idle. Dismissing an error also attempts to pre-acquire a fresh microphone stream so the next interaction starts cleanly.</li>
@@ -961,7 +937,7 @@ export default function Home() {
                         Building for iOS Safari is its own special challenge. Safari doesn't support some audio APIs the same way Chrome does. It requires user gestures to resume audio contexts. It aggressively revokes microphone permissions between interactions if you're not careful.
                       </p>
                       <p className="leading-relaxed">
-                        <button onClick={() => handleProofClick('case7-persistent-mediastream')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The solution: Detect vendor-prefixed APIs and fall back automatically, tie audio context resume calls to user interactions, never release the MediaStream between recordings,</button> and use touch-optimized button sizes (160x160px) to ensure reliable mobile taps. The same codebase runs on iOS Safari, Android Chrome, desktop Chrome/Firefox/Edge without conditional logic.
+                        <button onClick={() => handleProofClick('case7-persistent-mediastream')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The solution: Detect vendor-prefixed APIs and fall back automatically, tie audio context resume calls to user interactions, never release the MediaStream between recordings,</button> and use touch-optimized button sizes (160x160px) to ensure reliable mobile taps. The same codebase runs on iOS Safari, Android Chrome, desktop Chrome/Firefox/Edge without conditional logic.
                       </p>
                     </div>
 
@@ -971,7 +947,7 @@ export default function Home() {
                         The system runs in a production environment with real guest data, so security isn't optional.
                       </p>
                       <p className="leading-relaxed mb-3">
-                        <strong>Authentication:</strong> <button onClick={() => handleProofClick('case5-edge-middleware-auth')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The demo is gated behind cookie-based authentication using Next.js Edge Middleware.</button> Access requires a URL parameter key that sets an httpOnly cookie with a 7-day TTL. Edge middleware intercepts every request and validates the cookie before serving protected routes.
+                        <strong>Authentication:</strong> <button onClick={() => handleProofClick('case5-edge-middleware-auth')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The demo is gated behind cookie-based authentication using Next.js Edge Middleware.</button> Access requires a URL parameter key that sets an httpOnly cookie with a 7-day TTL. Edge middleware intercepts every request and validates the cookie before serving protected routes.
                       </p>
                       <p className="leading-relaxed mb-3">
                         <strong>HTTP Headers:</strong> Standard OWASP protections are configured at the Next.js level: X-Content-Type-Options: nosniff prevents MIME confusion attacks, X-Frame-Options: DENY blocks clickjacking, X-XSS-Protection: 1; mode=block enables browser XSS filters, Strict-Transport-Security enforces HTTPS, and Permissions-Policy locks down camera/geolocation while allowing microphone.
@@ -997,11 +973,11 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">Performance Characteristics</h3>
                       <p className="leading-relaxed mb-3">
-                        <strong>Latency:</strong> <button onClick={() => handleProofClick('case6-interaction-speed')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">From the moment recording stops to the moment audio playback begins averages 1.8 seconds.</button> This breaks down as: Network upload (WAV file) ~200ms, Whisper transcription ~400ms, GPT-4o reasoning ~800ms, TTS generation ~300ms, Network download (audio blob) ~100ms, Audio decode + playback start ~200ms.
+                        <strong>Latency:</strong> <button onClick={() => handleProofClick('case6-interaction-speed')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">From the moment recording stops to the moment audio playback begins averages 1.8 seconds.</button> This breaks down as: Network upload (WAV file) ~200ms, Whisper transcription ~400ms, GPT-4o reasoning ~800ms, TTS generation ~300ms, Network download (audio blob) ~100ms, Audio decode + playback start ~200ms.
                       </p>
                       <ul className="space-y-2">
                         <li><strong>Audio Quality:</strong> 44.1kHz sample rate at 16-bit depth (CD quality, overkill for voice, but eliminates any quality concerns)</li>
-                        <li><strong>Reliability:</strong> <button onClick={() => handleProofClick('case9-success-rate')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">99.2% success rate in field testing</button> across 500+ interactions with varying network conditions, device types, and user behaviors</li>
+                        <li><strong>Reliability:</strong> <button onClick={() => handleProofClick('case9-success-rate')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">99.2% success rate in field testing</button> across 500+ interactions with varying network conditions, device types, and user behaviors</li>
                         <li><strong>Browser Support:</strong> Works on iOS Safari 14+, Chrome 90+, Firefox 88+, Edge 90+ (covers 95%+ of modern device combinations)</li>
                       </ul>
                     </div>
@@ -1029,7 +1005,7 @@ export default function Home() {
                       </p>
                       <ul className="space-y-2 ml-4 list-disc">
                         <li><strong>120 total interactions</strong> handled by the voice agent</li>
-                        <li><button onClick={() => handleProofClick('case10-zero-escalations')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer"><strong>0 escalations</strong> to human security staff (all queries resolved autonomously)</button></li>
+                        <li><button onClick={() => handleProofClick('case10-zero-escalations')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group"><strong>0 escalations</strong> to human security staff (all queries resolved autonomously)</button></li>
                         <li><strong>Average interaction time: 47 seconds</strong> (compared to 3-5 minutes for human-handled queries)</li>
                         <li><strong>Guest satisfaction:</strong> No complaints (measured by zero follow-up calls to the desk)</li>
                       </ul>
@@ -1041,7 +1017,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">What I Learned</h3>
                       <ul className="space-y-3 ml-4 list-disc">
-                        <li><strong>Voice interfaces need to show what they're thinking:</strong> <button onClick={() => handleProofClick('case8-end-to-end-latency')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Silent processing feels broken.</button> Users need constant feedback about what state the system is in. Live transcription during recording, visual spinners during processing, and synchronized text during playback all contribute to the perception of responsiveness.</li>
+                        <li><strong>Voice interfaces need to show what they're thinking:</strong> <button onClick={() => handleProofClick('case8-end-to-end-latency')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">Silent processing feels broken.</button> Users need constant feedback about what state the system is in. Live transcription during recording, visual spinners during processing, and synchronized text during playback all contribute to the perception of responsiveness.</li>
                         <li><strong>Mobile Safari is the final boss:</strong> If it works on iOS Safari, it'll work everywhere. The combination of aggressive resource management, strict permission models, and quirky audio API behavior makes Safari the hardest target. But solving for Safari makes the system more robust overall.</li>
                         <li><strong>Context is everything for voice agents:</strong> Without session memory, every question has to be self-contained. Multi-turn conversations feel natural, but they require careful architecture.</li>
                         <li><strong>Network resilience isn't optional:</strong> In a perfect world with perfect WiFi, you don't need retry logic. In a hotel lobby at 2 AM with 30 guests streaming Netflix, network requests fail regularly. Exponential backoff retry makes the difference between a reliable system and one that randomly breaks.</li>
@@ -1057,7 +1033,7 @@ export default function Home() {
                       </p>
                       <h4 className="font-bold mb-2">Why N8N instead of direct OpenAI API calls?</h4>
                       <p className="leading-relaxed mb-3">
-                        <button onClick={() => handleProofClick('case4-decoupled-architecture')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Separation of concerns.</button> The frontend handles user interaction and audio processing. N8N handles AI orchestration. This means I can modify the AI pipeline (swap GPT-4o for Claude, add RAG lookups, change TTS providers) without touching the frontend.
+                        <button onClick={() => handleProofClick('case4-decoupled-architecture')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">Separation of concerns.</button> The frontend handles user interaction and audio processing. N8N handles AI orchestration. This means I can modify the AI pipeline (swap GPT-4o for Claude, add RAG lookups, change TTS providers) without touching the frontend.
                       </p>
                       <h4 className="font-bold mb-2">Why persistent MediaStream instead of acquiring it per interaction?</h4>
                       <p className="leading-relaxed">
@@ -1107,9 +1083,7 @@ export default function Home() {
                         <div><strong>Session persistence:</strong> 7 days</div>
                         <div><strong>Error recovery time:</strong> &lt;3s</div>
                       </div>
-                        </div>
-                      </>
-                    )}
+                    </div>
                   </div>
 
                   <div className="flex justify-center mt-6 sm:mt-8">
@@ -1141,14 +1115,7 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    {mainCaseStudyContent['logiscan'] ? (
-                      <MarkdownRenderer 
-                        content={mainCaseStudyContent['logiscan']} 
-                        onLinkClick={handleProofClick}
-                      />
-                    ) : (
-                      <>
-                        <div>
+                    <div>
                           <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
                           <p className="leading-relaxed mb-3">
                           Picture this: every morning, someone walks into a storage room filled with packages stacked on shelves. They're holding a clipboard with a printout of what should be there. For the next two hours, they manually check each package against the list, squinting at tracking numbers, comparing unit codes, and marking items off one by one.
@@ -1196,7 +1163,7 @@ export default function Home() {
                         The solution was client-side image compression. Before anything gets sent to the server, JavaScript runs in the browser, loads the image onto an HTML5 canvas, scales it down to 2500px width while preserving aspect ratio, and exports it as a JPEG at 80% quality.
                       </p>
                       <p className="leading-relaxed">
-                        This single preprocessing step reduces file size by 95%. <button onClick={() => handleProofClick('case2')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">A 10MB photo becomes 500KB. Upload time drops from 10 seconds to under 2 seconds.</button> API costs drop by about 90%. The compression happens instantly on the phone. The user never sees it. They just get faster results and lower costs.
+                        This single preprocessing step reduces file size by 95%. <button onClick={() => handleProofClick('case2')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">A 10MB photo becomes 500KB. Upload time drops from 10 seconds to under 2 seconds.</button> API costs drop by about 90%. The compression happens instantly on the phone. The user never sees it. They just get faster results and lower costs.
                       </p>
                     </div>
 
@@ -1206,7 +1173,7 @@ export default function Home() {
                         Once the AI extracts data from the image (unit codes and tracking numbers), you need to match it against your inventory database. The naive approach would query the database for each scanned item. This works, but it's slow. Every match requires a database round trip. If you scan 10 items in one photo, that's 10 separate queries. Add in network latency (especially in a basement with bad WiFi), and you're waiting several seconds for results.
                       </p>
                       <p className="leading-relaxed">
-                        Instead, I built a client-side matching engine. When the app loads, it fetches the entire inventory once and stores it in memory. <button onClick={() => handleProofClick('case4')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">When a scan completes, the matching happens locally in JavaScript. No database queries. No network calls. The matching completes in under 10 milliseconds.</button> The user gets instant feedback. The green "verified" cards appear immediately, along with haptic feedback and a success sound. This is what I mean by "client-side intelligence." The AI runs on the server, but the business logic runs on the device.
+                        Instead, I built a client-side matching engine. When the app loads, it fetches the entire inventory once and stores it in memory. <button onClick={() => handleProofClick('case4')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">When a scan completes, the matching happens locally in JavaScript. No database queries. No network calls. The matching completes in under 10 milliseconds.</button> The user gets instant feedback. The green "verified" cards appear immediately, along with haptic feedback and a success sound. This is what I mean by "client-side intelligence." The AI runs on the server, but the business logic runs on the device.
                       </p>
                     </div>
 
@@ -1229,7 +1196,7 @@ export default function Home() {
                         The key architectural decision was separating concerns. The AI is good at one thing: extracting data from images. So let it do that. The client is good at one thing: fast local data processing. So let it do that.
                       </p>
                       <p className="leading-relaxed">
-                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. <button onClick={() => handleProofClick('case5')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Learn how this eliminates 50-100 database queries per audit session.</button>
+                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. <button onClick={() => handleProofClick('case5')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">Learn how this eliminates 50-100 database queries per audit session.</button>
                       </p>
                     </div>
 
@@ -1258,10 +1225,10 @@ export default function Home() {
                         The impact was immediate and measurable:
                       </p>
                       <ul className="space-y-2">
-                        <li><strong>Time:</strong> <button onClick={() => handleProofClick('case1')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The manual audit process took 120 minutes per day. With LogiScan, it takes about 20 minutes. That's an 83% reduction.</button> 100 minutes saved daily.</li>
+                        <li><strong>Time:</strong> <button onClick={() => handleProofClick('case1')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The manual audit process took 120 minutes per day. With LogiScan, it takes about 20 minutes. That's an 83% reduction.</button> 100 minutes saved daily.</li>
                         <li><strong>Accuracy:</strong> Manual audits had human error. Misread tracking numbers, skipped packages, incorrect check marks. The system hits 95% extraction accuracy, and the composite key matching prevents false positives.</li>
                         <li><strong>Visibility:</strong> Before, inventory status was on paper or in a spreadsheet that got updated once a day. Now, it's in a real-time PostgreSQL database. You can query it, build reports on it, track trends over time.</li>
-                        <li><strong>Cost:</strong> <button onClick={() => handleProofClick('case3')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The image compression optimization reduced Vision API costs by roughly 90%. A 10MB photo compresses to 500KB before upload.</button> The client-side matching eliminated 50 to 100 database queries per audit session.</li>
+                        <li><strong>Cost:</strong> <button onClick={() => handleProofClick('case3')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The image compression optimization reduced Vision API costs by roughly 90%. A 10MB photo compresses to 500KB before upload.</button> The client-side matching eliminated 50 to 100 database queries per audit session.</li>
                       </ul>
                     </div>
 
@@ -1285,12 +1252,12 @@ export default function Home() {
                         Context awareness. Traditional OCR extracts everything. GPT-4o understands instructions. I can tell it "ignore the FedEx label, only look at the white sticker" and it does. That level of filtering would require complex post-processing with traditional OCR.
                       </p>
                       <p className="leading-relaxed mb-3">
-                        <button onClick={() => handleProofClick('case6')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The trade-off is cost and speed. GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it.</button> I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.
+                        <button onClick={() => handleProofClick('case6')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The trade-off is cost and speed. GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it.</button> I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.
                       </p>
 
                       <h4 className="font-bold mt-4 mb-2">Why PWA instead of a native app?</h4>
                       <p className="leading-relaxed">
-                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. <button onClick={() => handleProofClick('case5')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. This eliminates 50-100 database queries per audit session.</button>
+                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. <button onClick={() => handleProofClick('case5')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. This eliminates 50-100 database queries per audit session.</button>
                       </p>
                     </div>
 
@@ -1308,7 +1275,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Takeaway</h3>
                       <p className="leading-relaxed mb-3">
-                        The trade-off is cost and speed. <button onClick={() => handleProofClick('case6')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it. I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.</button>
+                        The trade-off is cost and speed. <button onClick={() => handleProofClick('case6')} className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer hover:gap-1.5 group">GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it. I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.</button>
                       </p>
                       <p className="leading-relaxed">
                         The technical work involved: Understanding the constraints (spotty WiFi, mobile devices, messy data), making architectural trade-offs (server-side AI, client-side matching), optimizing for the bottlenecks (image compression, local data processing), and shipping something that actually works in production. The result is a system that saves 100 minutes per day, runs on any device with a web browser, and replaces a manual process with an automated one. That's the kind of engineering I like doing. Not building for scale I don't need, not chasing technologies because they're trendy, but solving real problems with appropriate tools.
@@ -1337,9 +1304,7 @@ export default function Home() {
                         <div><strong>Data accuracy:</strong> ~80% → 95% (15% improvement)</div>
                         <div><strong>API cost per scan:</strong> ~$0.20 → ~$0.02 (90% reduction)</div>
                       </div>
-                        </div>
-                      </>
-                    )}
+                    </div>
                   </div>
 
                   <div className="flex justify-center mt-6 sm:mt-8">
