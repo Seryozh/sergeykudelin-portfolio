@@ -2,24 +2,57 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen } from 'lucide-react';
+import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, ArrowLeft } from 'lucide-react';
+import { MarkdownRenderer } from './components/MarkdownRenderer';
 
 type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
+  const [activeProof, setActiveProof] = useState<string | null>(null);
+  const [proofContent, setProofContent] = useState<string>('');
+  const [mainCaseStudyContent, setMainCaseStudyContent] = useState<Record<string, string>>({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
 
   const sections = ['hero', 'projects', 'approach', 'expertise', 'articles', 'contact'];
 
+  // Load main case study content on mount
+  useEffect(() => {
+    const loadMainCaseStudies = async () => {
+      try {
+        const [tidesosRes, logiscanRes] = await Promise.all([
+          fetch('/api/main-case-study?project=TidesOS'),
+          fetch('/api/main-case-study?project=LogiScan'),
+        ]);
+        
+        const content: Record<string, string> = {};
+        if (tidesosRes.ok) content['tidesos'] = await tidesosRes.text();
+        if (logiscanRes.ok) content['logiscan'] = await logiscanRes.text();
+        
+        setMainCaseStudyContent(content);
+      } catch (error) {
+        console.error('Failed to load main case studies:', error);
+      }
+    };
+    
+    loadMainCaseStudies();
+  }, []);
+
   // Handle URL query params for direct modal links
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const project = params.get('project');
+    const proof = params.get('proof');
+    
     if (project === 'tidesos' || project === 'logiscan' || project === 'lux') {
       setActiveModal(project);
+      
+      if (proof) {
+        setActiveProof(proof);
+        loadProofContent(project, proof);
+      }
     }
   }, []);
 
@@ -28,23 +61,80 @@ export default function Home() {
     if (activeModal) {
       const url = new URL(window.location.href);
       url.searchParams.set('project', activeModal);
+      
+      if (activeProof) {
+        url.searchParams.set('proof', activeProof);
+      } else {
+        url.searchParams.delete('proof');
+      }
+      
       window.history.pushState({}, '', url.toString());
     } else {
       const url = new URL(window.location.href);
       url.searchParams.delete('project');
+      url.searchParams.delete('proof');
       window.history.pushState({}, '', url.toString());
     }
-  }, [activeModal]);
+  }, [activeModal, activeProof]);
+
+  // Load proof content from markdown files
+  const loadProofContent = async (project: string, proof: string) => {
+    try {
+      // Map project names and proof IDs to file paths
+      const projectPaths: Record<string, string> = {
+        'tidesos': 'TidesOS',
+        'logiscan': 'LogiScan',
+      };
+      
+      const projectPath = projectPaths[project];
+      if (!projectPath) return;
+      
+      const response = await fetch(`/api/proof?project=${projectPath}&proof=${proof}`);
+      if (response.ok) {
+        const content = await response.text();
+        setProofContent(content);
+      }
+    } catch (error) {
+      console.error('Failed to load proof content:', error);
+    }
+  };
+
+  // Handle proof link clicks
+  const handleProofClick = (proofId: string) => {
+    setActiveProof(proofId);
+    if (activeModal) {
+      loadProofContent(activeModal, proofId);
+    }
+  };
+
+  // Handle back from proof
+  const handleBackFromProof = () => {
+    setActiveProof(null);
+    setProofContent('');
+  };
+
+  // Handle closing modal/proof
+  const handleCloseModal = () => {
+    if (activeProof) {
+      handleBackFromProof();
+    } else {
+      setActiveModal(null);
+    }
+  };
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setActiveModal(null);
+        if (activeProof) {
+          handleBackFromProof();
+        } else {
+          setActiveModal(null);
+        }
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [activeProof]);
 
   useEffect(() => {
     const handleScroll = (e: Event) => {
@@ -724,14 +814,44 @@ export default function Home() {
             >
               {/* Close Button */}
               <button
-                onClick={() => setActiveModal(null)}
+                onClick={handleCloseModal}
                 className="sticky top-3 sm:top-4 right-3 sm:right-4 float-right z-10 p-2 bg-slate-800/80 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors"
               >
                 <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
               </button>
 
+              {/* Proof View */}
+              <AnimatePresence mode="wait">
+                {activeProof && proofContent && (
+                  <motion.div
+                    key="proof-view"
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-5 sm:p-8 clear-both"
+                  >
+                    {/* Back Button */}
+                    <button
+                      onClick={handleBackFromProof}
+                      className="flex items-center gap-2 mb-6 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-slate-800/50 rounded-lg transition-all duration-300 border border-slate-700 hover:border-amber-500/50"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Back to Case Study
+                    </button>
+
+                    <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
+                      <MarkdownRenderer 
+                        content={proofContent} 
+                        onLinkClick={handleProofClick}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* TidesOS Modal */}
-              {activeModal === 'tidesos' && (
+              {activeModal === 'tidesos' && !activeProof && (
                 <div className="p-5 sm:p-8 clear-both">
                   <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                     <div className="bg-amber-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
@@ -744,9 +864,16 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
-                      <p className="leading-relaxed mb-3">
+                    {mainCaseStudyContent['tidesos'] ? (
+                      <MarkdownRenderer 
+                        content={mainCaseStudyContent['tidesos']} 
+                        onLinkClick={handleProofClick}
+                      />
+                    ) : (
+                      <>
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
+                          <p className="leading-relaxed mb-3">
                         Night shifts at large residential complexes follow a predictable pattern. Between 10 PM and 6 AM, security staff field hundreds of nearly identical questions. Where are the pool towels? Can you give me a building access code? I locked myself out of my unit. What's the WiFi password?
                       </p>
                       <p className="leading-relaxed mb-3">
@@ -980,7 +1107,9 @@ export default function Home() {
                         <div><strong>Session persistence:</strong> 7 days</div>
                         <div><strong>Error recovery time:</strong> &lt;3s</div>
                       </div>
-                    </div>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="flex justify-center mt-6 sm:mt-8">
@@ -999,7 +1128,7 @@ export default function Home() {
               )}
 
               {/* LogiScan Modal */}
-              {activeModal === 'logiscan' && (
+              {activeModal === 'logiscan' && !activeProof && (
                 <div className="p-5 sm:p-8 clear-both">
                   <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                     <div className="bg-emerald-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
@@ -1012,11 +1141,18 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
-                      <p className="leading-relaxed mb-3">
-                        Picture this: every morning, someone walks into a storage room filled with packages stacked on shelves. They're holding a clipboard with a printout of what should be there. For the next two hours, they manually check each package against the list, squinting at tracking numbers, comparing unit codes, and marking items off one by one.
-                      </p>
+                    {mainCaseStudyContent['logiscan'] ? (
+                      <MarkdownRenderer 
+                        content={mainCaseStudyContent['logiscan']} 
+                        onLinkClick={handleProofClick}
+                      />
+                    ) : (
+                      <>
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Problem</h3>
+                          <p className="leading-relaxed mb-3">
+                          Picture this: every morning, someone walks into a storage room filled with packages stacked on shelves. They're holding a clipboard with a printout of what should be there. For the next two hours, they manually check each package against the list, squinting at tracking numbers, comparing unit codes, and marking items off one by one.
+                        </p>
                       <p className="leading-relaxed mb-3">
                         This was the reality. 120 minutes of manual work. Every single day.
                       </p>
@@ -1201,7 +1337,9 @@ export default function Home() {
                         <div><strong>Data accuracy:</strong> ~80% → 95% (15% improvement)</div>
                         <div><strong>API cost per scan:</strong> ~$0.20 → ~$0.02 (90% reduction)</div>
                       </div>
-                    </div>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="flex justify-center mt-6 sm:mt-8">
@@ -1220,7 +1358,7 @@ export default function Home() {
               )}
 
               {/* Lux Modal */}
-              {activeModal === 'lux' && (
+              {activeModal === 'lux' && !activeProof && (
                 <div className="p-5 sm:p-8 clear-both">
                   <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                     <div className="bg-purple-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
