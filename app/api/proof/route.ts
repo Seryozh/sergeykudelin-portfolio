@@ -41,8 +41,8 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Proof not found', { status: 404 });
     }
 
-    // Construct the file path - go up to the root directory
-    const filePath = path.join(process.cwd(), '..', 'MiniCaseStudies', project, 'MiniCaseStudies', fileName);
+    // Construct the file path within the project directory
+    const filePath = path.join(process.cwd(), 'MiniCaseStudies', project, 'MiniCaseStudies', fileName);
     
     const content = await fs.readFile(filePath, 'utf-8');
     

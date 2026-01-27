@@ -904,8 +904,8 @@ export default function Home() {
                       </p>
                       <ol className="space-y-2 ml-4 list-decimal">
                         <li><strong>Persistent Microphone Access:</strong> Request microphone permission once on page load and keep the MediaStream alive throughout the session. This avoids iOS Safari's notorious permission re-prompting issues.</li>
-                        <li><strong>Real-time Buffer Capture:</strong> Connect the microphone stream to a ScriptProcessorNode with a 4096-sample buffer size. Every time the buffer fills, copy the audio data into a Float32Array and accumulate it.</li>
-                        <li><strong>Custom WAV Encoding:</strong> When recording stops, concatenate all accumulated buffers into a single Float32Array, then convert to WAV format manually. This involves creating the WAV header (44 bytes) and converting Float32 samples to 16-bit PCM integers. The MediaRecorder API would be simpler, but it's less reliable across browsers and gives you less control over the output format.</li>
+                        <li><strong>Real-time Buffer Capture:</strong> <button onClick={() => handleProofClick('case1-4096-audio-buffer')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Connect the microphone stream to a ScriptProcessorNode with a 4096-sample buffer size.</button> Every time the buffer fills, copy the audio data into a Float32Array and accumulate it.</li>
+                        <li><strong>Custom WAV Encoding:</strong> <button onClick={() => handleProofClick('case2-manual-wav-encoding')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">When recording stops, concatenate all accumulated buffers into a single Float32Array, then convert to WAV format manually.</button> This involves creating the WAV header (44 bytes) and converting Float32 samples to 16-bit PCM integers. The MediaRecorder API would be simpler, but it's less reliable across browsers and gives you less control over the output format.</li>
                         <li><strong>Network Transmission:</strong> Package the WAV blob into FormData along with session metadata (UUID, company context, persona type) and POST it to the N8N webhook.</li>
                       </ol>
                       <p className="leading-relaxed mt-3">
@@ -945,7 +945,7 @@ export default function Home() {
                         The system handles this through multiple layers:
                       </p>
                       <ul className="space-y-2 ml-4 list-disc">
-                        <li><strong>Network Layer:</strong> Exponential backoff retry logic. If a request to N8N fails, wait 1 second and retry. If that fails, wait 2 seconds. Then 4 seconds. After three failures, surface a user-facing error. This handles temporary network hiccups without bothering the user.</li>
+                        <li><strong>Network Layer:</strong> <button onClick={() => handleProofClick('case3-exponential-backoff')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Exponential backoff retry logic.</button> If a request to N8N fails, wait 1 second and retry. If that fails, wait 2 seconds. Then 4 seconds. After three failures, surface a user-facing error. This handles temporary network hiccups without bothering the user.</li>
                         <li><strong>Audio Layer:</strong> If the microphone stream dies (user revoked permission, hardware error, etc.), catch the error and attempt to re-acquire the stream automatically. If that fails, show a clear error message explaining what happened and how to fix it.</li>
                         <li><strong>State Layer:</strong> The state machine uses refs instead of state for time-sensitive flags like "currently recording." This prevents race conditions where React's async state updates could cause recording to continue after the user stops.</li>
                         <li><strong>Recovery Flows:</strong> Every error state includes a dismiss action that resets the system to idle. Dismissing an error also attempts to pre-acquire a fresh microphone stream so the next interaction starts cleanly.</li>
@@ -961,7 +961,7 @@ export default function Home() {
                         Building for iOS Safari is its own special challenge. Safari doesn't support some audio APIs the same way Chrome does. It requires user gestures to resume audio contexts. It aggressively revokes microphone permissions between interactions if you're not careful.
                       </p>
                       <p className="leading-relaxed">
-                        The solution: Detect vendor-prefixed APIs and fall back automatically, tie audio context resume calls to user interactions, never release the MediaStream between recordings, and use touch-optimized button sizes (160x160px) to ensure reliable mobile taps. The same codebase runs on iOS Safari, Android Chrome, desktop Chrome/Firefox/Edge without conditional logic.
+                        <button onClick={() => handleProofClick('case7-persistent-mediastream')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The solution: Detect vendor-prefixed APIs and fall back automatically, tie audio context resume calls to user interactions, never release the MediaStream between recordings,</button> and use touch-optimized button sizes (160x160px) to ensure reliable mobile taps. The same codebase runs on iOS Safari, Android Chrome, desktop Chrome/Firefox/Edge without conditional logic.
                       </p>
                     </div>
 
@@ -971,7 +971,7 @@ export default function Home() {
                         The system runs in a production environment with real guest data, so security isn't optional.
                       </p>
                       <p className="leading-relaxed mb-3">
-                        <strong>Authentication:</strong> The demo is gated behind cookie-based authentication using Next.js Edge Middleware. Access requires a URL parameter key that sets an httpOnly cookie with a 7-day TTL. Edge middleware intercepts every request and validates the cookie before serving protected routes.
+                        <strong>Authentication:</strong> <button onClick={() => handleProofClick('case5-edge-middleware-auth')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The demo is gated behind cookie-based authentication using Next.js Edge Middleware.</button> Access requires a URL parameter key that sets an httpOnly cookie with a 7-day TTL. Edge middleware intercepts every request and validates the cookie before serving protected routes.
                       </p>
                       <p className="leading-relaxed mb-3">
                         <strong>HTTP Headers:</strong> Standard OWASP protections are configured at the Next.js level: X-Content-Type-Options: nosniff prevents MIME confusion attacks, X-Frame-Options: DENY blocks clickjacking, X-XSS-Protection: 1; mode=block enables browser XSS filters, Strict-Transport-Security enforces HTTPS, and Permissions-Policy locks down camera/geolocation while allowing microphone.
@@ -997,11 +997,11 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">Performance Characteristics</h3>
                       <p className="leading-relaxed mb-3">
-                        <strong>Latency:</strong> From the moment recording stops to the moment audio playback begins averages 1.8 seconds. This breaks down as: Network upload (WAV file) ~200ms, Whisper transcription ~400ms, GPT-4o reasoning ~800ms, TTS generation ~300ms, Network download (audio blob) ~100ms, Audio decode + playback start ~200ms.
+                        <strong>Latency:</strong> <button onClick={() => handleProofClick('case6-interaction-speed')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">From the moment recording stops to the moment audio playback begins averages 1.8 seconds.</button> This breaks down as: Network upload (WAV file) ~200ms, Whisper transcription ~400ms, GPT-4o reasoning ~800ms, TTS generation ~300ms, Network download (audio blob) ~100ms, Audio decode + playback start ~200ms.
                       </p>
                       <ul className="space-y-2">
                         <li><strong>Audio Quality:</strong> 44.1kHz sample rate at 16-bit depth (CD quality, overkill for voice, but eliminates any quality concerns)</li>
-                        <li><strong>Reliability:</strong> 99.2% success rate in field testing across 500+ interactions with varying network conditions, device types, and user behaviors</li>
+                        <li><strong>Reliability:</strong> <button onClick={() => handleProofClick('case9-success-rate')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">99.2% success rate in field testing</button> across 500+ interactions with varying network conditions, device types, and user behaviors</li>
                         <li><strong>Browser Support:</strong> Works on iOS Safari 14+, Chrome 90+, Firefox 88+, Edge 90+ (covers 95%+ of modern device combinations)</li>
                       </ul>
                     </div>
@@ -1029,7 +1029,7 @@ export default function Home() {
                       </p>
                       <ul className="space-y-2 ml-4 list-disc">
                         <li><strong>120 total interactions</strong> handled by the voice agent</li>
-                        <li><strong>0 escalations</strong> to human security staff (all queries resolved autonomously)</li>
+                        <li><button onClick={() => handleProofClick('case10-zero-escalations')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer"><strong>0 escalations</strong> to human security staff (all queries resolved autonomously)</button></li>
                         <li><strong>Average interaction time: 47 seconds</strong> (compared to 3-5 minutes for human-handled queries)</li>
                         <li><strong>Guest satisfaction:</strong> No complaints (measured by zero follow-up calls to the desk)</li>
                       </ul>
@@ -1041,7 +1041,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">What I Learned</h3>
                       <ul className="space-y-3 ml-4 list-disc">
-                        <li><strong>Voice interfaces need to show what they're thinking:</strong> Silent processing feels broken. Users need constant feedback about what state the system is in. Live transcription during recording, visual spinners during processing, and synchronized text during playback all contribute to the perception of responsiveness.</li>
+                        <li><strong>Voice interfaces need to show what they're thinking:</strong> <button onClick={() => handleProofClick('case8-end-to-end-latency')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Silent processing feels broken.</button> Users need constant feedback about what state the system is in. Live transcription during recording, visual spinners during processing, and synchronized text during playback all contribute to the perception of responsiveness.</li>
                         <li><strong>Mobile Safari is the final boss:</strong> If it works on iOS Safari, it'll work everywhere. The combination of aggressive resource management, strict permission models, and quirky audio API behavior makes Safari the hardest target. But solving for Safari makes the system more robust overall.</li>
                         <li><strong>Context is everything for voice agents:</strong> Without session memory, every question has to be self-contained. Multi-turn conversations feel natural, but they require careful architecture.</li>
                         <li><strong>Network resilience isn't optional:</strong> In a perfect world with perfect WiFi, you don't need retry logic. In a hotel lobby at 2 AM with 30 guests streaming Netflix, network requests fail regularly. Exponential backoff retry makes the difference between a reliable system and one that randomly breaks.</li>
@@ -1057,7 +1057,7 @@ export default function Home() {
                       </p>
                       <h4 className="font-bold mb-2">Why N8N instead of direct OpenAI API calls?</h4>
                       <p className="leading-relaxed mb-3">
-                        Separation of concerns. The frontend handles user interaction and audio processing. N8N handles AI orchestration. This means I can modify the AI pipeline (swap GPT-4o for Claude, add RAG lookups, change TTS providers) without touching the frontend.
+                        <button onClick={() => handleProofClick('case4-decoupled-architecture')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Separation of concerns.</button> The frontend handles user interaction and audio processing. N8N handles AI orchestration. This means I can modify the AI pipeline (swap GPT-4o for Claude, add RAG lookups, change TTS providers) without touching the frontend.
                       </p>
                       <h4 className="font-bold mb-2">Why persistent MediaStream instead of acquiring it per interaction?</h4>
                       <p className="leading-relaxed">
@@ -1196,7 +1196,7 @@ export default function Home() {
                         The solution was client-side image compression. Before anything gets sent to the server, JavaScript runs in the browser, loads the image onto an HTML5 canvas, scales it down to 2500px width while preserving aspect ratio, and exports it as a JPEG at 80% quality.
                       </p>
                       <p className="leading-relaxed">
-                        This single preprocessing step reduces file size by 95%. A 10MB photo becomes 500KB. Upload time drops from 10 seconds to under 2 seconds. API costs drop by about 90%. The compression happens instantly on the phone. The user never sees it. They just get faster results and lower costs.
+                        This single preprocessing step reduces file size by 95%. <button onClick={() => handleProofClick('case2')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">A 10MB photo becomes 500KB. Upload time drops from 10 seconds to under 2 seconds.</button> API costs drop by about 90%. The compression happens instantly on the phone. The user never sees it. They just get faster results and lower costs.
                       </p>
                     </div>
 
@@ -1206,7 +1206,7 @@ export default function Home() {
                         Once the AI extracts data from the image (unit codes and tracking numbers), you need to match it against your inventory database. The naive approach would query the database for each scanned item. This works, but it's slow. Every match requires a database round trip. If you scan 10 items in one photo, that's 10 separate queries. Add in network latency (especially in a basement with bad WiFi), and you're waiting several seconds for results.
                       </p>
                       <p className="leading-relaxed">
-                        Instead, I built a client-side matching engine. When the app loads, it fetches the entire inventory once and stores it in memory. When a scan completes, the matching happens locally in JavaScript. No database queries. No network calls. The matching completes in under 10 milliseconds. The user gets instant feedback. The green "verified" cards appear immediately, along with haptic feedback and a success sound. This is what I mean by "client-side intelligence." The AI runs on the server, but the business logic runs on the device.
+                        Instead, I built a client-side matching engine. When the app loads, it fetches the entire inventory once and stores it in memory. <button onClick={() => handleProofClick('case4')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">When a scan completes, the matching happens locally in JavaScript. No database queries. No network calls. The matching completes in under 10 milliseconds.</button> The user gets instant feedback. The green "verified" cards appear immediately, along with haptic feedback and a success sound. This is what I mean by "client-side intelligence." The AI runs on the server, but the business logic runs on the device.
                       </p>
                     </div>
 
@@ -1229,7 +1229,7 @@ export default function Home() {
                         The key architectural decision was separating concerns. The AI is good at one thing: extracting data from images. So let it do that. The client is good at one thing: fast local data processing. So let it do that.
                       </p>
                       <p className="leading-relaxed">
-                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results.
+                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. <button onClick={() => handleProofClick('case5')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">Learn how this eliminates 50-100 database queries per audit session.</button>
                       </p>
                     </div>
 
@@ -1258,10 +1258,10 @@ export default function Home() {
                         The impact was immediate and measurable:
                       </p>
                       <ul className="space-y-2">
-                        <li><strong>Time:</strong> The manual audit process took 120 minutes per day. With LogiScan, it takes about 20 minutes. That's an 83% reduction. 100 minutes saved daily.</li>
+                        <li><strong>Time:</strong> <button onClick={() => handleProofClick('case1')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The manual audit process took 120 minutes per day. With LogiScan, it takes about 20 minutes. That's an 83% reduction.</button> 100 minutes saved daily.</li>
                         <li><strong>Accuracy:</strong> Manual audits had human error. Misread tracking numbers, skipped packages, incorrect check marks. The system hits 95% extraction accuracy, and the composite key matching prevents false positives.</li>
                         <li><strong>Visibility:</strong> Before, inventory status was on paper or in a spreadsheet that got updated once a day. Now, it's in a real-time PostgreSQL database. You can query it, build reports on it, track trends over time.</li>
-                        <li><strong>Cost:</strong> The image compression optimization reduced Vision API costs by roughly 90%. The client-side matching eliminated 50 to 100 database queries per audit session.</li>
+                        <li><strong>Cost:</strong> <button onClick={() => handleProofClick('case3')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The image compression optimization reduced Vision API costs by roughly 90%. A 10MB photo compresses to 500KB before upload.</button> The client-side matching eliminated 50 to 100 database queries per audit session.</li>
                       </ul>
                     </div>
 
@@ -1285,12 +1285,12 @@ export default function Home() {
                         Context awareness. Traditional OCR extracts everything. GPT-4o understands instructions. I can tell it "ignore the FedEx label, only look at the white sticker" and it does. That level of filtering would require complex post-processing with traditional OCR.
                       </p>
                       <p className="leading-relaxed mb-3">
-                        The trade-off is cost and speed. GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it. I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.
+                        <button onClick={() => handleProofClick('case6')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The trade-off is cost and speed. GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it.</button> I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.
                       </p>
 
                       <h4 className="font-bold mt-4 mb-2">Why PWA instead of a native app?</h4>
                       <p className="leading-relaxed">
-                        Deployment. A PWA is just a URL. No app store submission, no review process, no separate iOS and Android codebases. I write it once in React, and it works everywhere. Users install it by adding it to their home screen. Updates happen automatically (no "please update the app" nag screens). And it works offline for critical functionality. The trade-off is limited access to native APIs. But for this use case (camera access and data processing), web APIs are sufficient.
+                        This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. <button onClick={() => handleProofClick('case5')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, &lt;10ms) → Display Results. This eliminates 50-100 database queries per audit session.</button>
                       </p>
                     </div>
 
@@ -1308,7 +1308,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-white mb-3">The Takeaway</h3>
                       <p className="leading-relaxed mb-3">
-                        LogiScan AI isn't a product looking for a market. It's a solution to a real operational problem that I observed, analyzed, and fixed.
+                        The trade-off is cost and speed. <button onClick={() => handleProofClick('case6')} className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer">GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it. I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.</button>
                       </p>
                       <p className="leading-relaxed">
                         The technical work involved: Understanding the constraints (spotty WiFi, mobile devices, messy data), making architectural trade-offs (server-side AI, client-side matching), optimizing for the bottlenecks (image compression, local data processing), and shipping something that actually works in production. The result is a system that saves 100 minutes per day, runs on any device with a web browser, and replaces a manual process with an automated one. That's the kind of engineering I like doing. Not building for scale I don't need, not chasing technologies because they're trendy, but solving real problems with appropriate tools.

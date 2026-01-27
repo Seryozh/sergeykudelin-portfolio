@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Construct the file path - go up to the root directory
-    const filePath = path.join(process.cwd(), '..', 'MiniCaseStudies', project, 'MainCaseStudy');
+    // Construct the file path within the project directory
+    const filePath = path.join(process.cwd(), 'MiniCaseStudies', project, 'MainCaseStudy');
     
     const content = await fs.readFile(filePath, 'utf-8');
     
