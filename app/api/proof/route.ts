@@ -33,6 +33,14 @@ export async function GET(request: NextRequest) {
         'case4': 'Case4.md',
         'case5': 'Case5.md',
         'case6': 'Case6.md',
+      },
+      'Lux': {
+        'case1-token-efficiency': 'Case1-Token-Efficiency.md',
+        'case2-circuit-breaker': 'Case2-Circuit-Breaker.md',
+        'case3-path-validation': 'Case3-Path-Validation.md',
+        'case4-memory-decay': 'Case4-Memory-Decay.md',
+        'case5-decision-memory': 'Case5-Decision-Memory.md',
+        'case6-hallucination-reduction': 'Case6-Hallucination-Reduction.md',
       }
     };
 
@@ -42,7 +50,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Construct the file path within the project directory
-    const filePath = path.join(process.cwd(), 'MiniCaseStudies', project, 'MiniCaseStudies', fileName);
+    // Lux has files directly in the folder, TidesOS and LogiScan have a MiniCaseStudies subfolder
+    const subDir = project === 'Lux' ? '' : 'MiniCaseStudies';
+    const filePath = path.join(process.cwd(), 'MiniCaseStudies', project, subDir, fileName);
     
     const content = await fs.readFile(filePath, 'utf-8');
     

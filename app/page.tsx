@@ -61,6 +61,7 @@ export default function Home() {
       const projectPaths: Record<string, string> = {
         'tidesos': 'TidesOS',
         'logiscan': 'LogiScan',
+        'lux': 'Lux',
       };
       
       const projectPath = projectPaths[project];
@@ -1413,7 +1414,7 @@ export default function Home() {
                         <strong>Critical Memory</strong> holds things that never decay. User goals, architectural decisions, key findings. This is maybe 5-10 items max. Small enough to always include in context.
                       </p>
                       <p className="leading-relaxed mb-3">
-                        <strong>Working Memory</strong> holds recent observations scored by relevance. Each item gets a base relevance score (100 for user goals, 80 for script reads, 70 for tool results). Then exponential decay kicks in: relevance = base × (0.5 ^ (timeSinceAccess / 300)). Half-life of 5 minutes. Something you accessed 5 minutes ago is worth half as much. But here's the key: every time you access an item, its base score increases by 5 points. Frequently used context stays relevant even as time passes.
+                        <strong>Working Memory</strong> holds recent observations scored by relevance. Each item gets a base relevance score (100 for user goals, 80 for script reads, 70 for tool results). <button onClick={() => handleProofClick('case4-memory-decay')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>Then exponential decay kicks in: relevance = base × (0.5 ^ (timeSinceAccess / 300)). Half-life of 5 minutes. Something you accessed 5 minutes ago is worth half as much.</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button> But here's the key: every time you access an item, its base score increases by 5 points. Frequently used context stays relevant even as time passes.
                       </p>
                       <p className="leading-relaxed mb-3">
                         When working memory exceeds 20 items, the system compacts. Lowest relevance items get summarized and moved to background memory. High relevance items stay in working memory where the AI can see them.
@@ -1443,7 +1444,7 @@ export default function Home() {
                         <li><strong>Half-Open (testing):</strong> Cooldown period expired, allow one test operation, success returns to Closed, failure returns to Open</li>
                       </ul>
                       <p className="leading-relaxed mt-3">
-                        The magic number 5 came from empirical testing. Too low and you get false positives from transient errors. Too high and you waste money on obvious failures. Five consecutive failures is a strong signal that something is fundamentally wrong and human judgment is needed. In 500+ production sessions, the circuit breaker achieved 100% success rate at preventing runaway loops. Every time it tripped, inspection showed it was correct to halt execution. False positive rate of zero.
+                        The magic number 5 came from empirical testing. Too low and you get false positives from transient errors. Too high and you waste money on obvious failures. Five consecutive failures is a strong signal that something is fundamentally wrong and human judgment is needed. <button onClick={() => handleProofClick('case2-circuit-breaker')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>In 500+ production sessions, the circuit breaker achieved 100% success rate at preventing runaway loops. Every time it tripped, inspection showed it was correct to halt execution. False positive rate of zero.</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button>
                       </p>
                     </div>
 
@@ -1459,7 +1460,7 @@ export default function Home() {
                         <li><strong>Syntax passes basic sanity checks?</strong> Count opening and closing brackets, parentheses, braces. They should match. Check for common typos like "funciton" or "retrun".</li>
                       </ul>
                       <p className="leading-relaxed mt-3">
-                        The similar path algorithm is particularly clever. When the AI hallucinates "ServerScriptService.MainScript", the validator extracts path components, scores every known script by substring overlap, finds "ServerScriptService.Main.server" with high overlap, and returns top 3 suggestions to AI. The AI sees: "Path doesn't exist. Did you mean: ServerScriptService.Main.server?" and immediately corrects itself. One iteration instead of five. Validation reduces failed tool calls by 60-70%. The ROI is massive because failed tool calls are pure waste.
+                        The similar path algorithm is particularly clever. When the AI hallucinates "ServerScriptService.MainScript", the validator extracts path components, scores every known script by substring overlap, finds "ServerScriptService.Main.server" with high overlap, and returns top 3 suggestions to AI. The AI sees: "Path doesn't exist. Did you mean: ServerScriptService.Main.server?" and immediately corrects itself. One iteration instead of five. <button onClick={() => handleProofClick('case3-path-validation')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>Validation reduces failed tool calls by 60-70%. The ROI is massive because failed tool calls are pure waste.</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button>
                       </p>
                     </div>
 
@@ -1491,7 +1492,7 @@ export default function Home() {
                         When a new task arrives, find similar historical tasks based on keyword overlap, capability overlap, recency bonus, usage frequency bonus, success rate bonus, minus failure penalty and inefficiency penalty. High similarity + high success rate = strong recommendation. The system tells the AI: "Similar task succeeded before using this approach: get_script → patch_script → verify. Consider using the same pattern."
                       </p>
                       <p className="leading-relaxed">
-                        The interesting emergent behavior is "trauma tracking". Scripts that repeatedly cause failures get flagged. Next time that script appears in context, it's marked with a warning. The AI learns to be more careful with certain files. In practice, this reduces iteration count by 30-50% on repetitive tasks. First time doing something might take 8 iterations. Fifth time doing something similar? Down to 3-4 iterations. The system actually gets better over time.
+                        The interesting emergent behavior is "trauma tracking". Scripts that repeatedly cause failures get flagged. Next time that script appears in context, it's marked with a warning. The AI learns to be more careful with certain files. <button onClick={() => handleProofClick('case5-decision-memory')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>In practice, this reduces iteration count by 30-50% on repetitive tasks. First time doing something might take 8 iterations. Fifth time doing something similar? Down to 3-4 iterations. The system actually gets better over time.</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button>
                       </p>
                     </div>
 
@@ -1517,12 +1518,12 @@ export default function Home() {
                         The quantitative results surprised me. I expected improvement, but not this much:
                       </p>
                       <div className="space-y-2">
-                        <div><strong>Token Efficiency:</strong> 75% reduction (10,000-15,000 → 2,000-4,000 tokens per request)</div>
+                        <div><strong>Token Efficiency:</strong> <button onClick={() => handleProofClick('case1-token-efficiency')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>75% reduction (10,000-15,000 → 2,000-4,000 tokens per request)</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button></div>
                         <div><strong>Cost:</strong> 80% savings ($2-4 → $0.40-0.80 per complex task)</div>
                         <div><strong>Accuracy:</strong> 95%+ successful tool executions (up from 60-70%)</div>
                         <div><strong>Speed:</strong> 60% fewer iterations (8-15 → 3-6 iterations per task)</div>
                         <div><strong>Reliability:</strong> 100% infinite loop prevention over 500+ sessions</div>
-                        <div><strong>Hallucination Reduction:</strong> 85% (from 40-60% to 5-10%)</div>
+                        <div><strong>Hallucination Reduction:</strong> <button onClick={() => handleProofClick('case6-hallucination-reduction')} className="inline text-left text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 hover:decoration-purple-400/60 transition-all cursor-pointer hover:gap-1.5 group"><span>85% (from 40-60% to 5-10%)</span><ExternalLink className="inline w-3 h-3 ml-1 opacity-60 group-hover:opacity-100 transition-opacity" /></button></div>
                         <div><strong>Context Corruption:</strong> 0 incidents</div>
                       </div>
                       <p className="leading-relaxed mt-3">
