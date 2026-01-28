@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     // Map proof IDs to file paths
     const proofFileMap: Record<string, Record<string, string>> = {
       'TidesOS': {
+        'main': 'README.md',
         'case1-4096-audio-buffer': 'Case1-4096-Audio-Buffer.md',
         'case2-manual-wav-encoding': 'Case2-Manual-WAV-Encoding.md',
         'case3-exponential-backoff': 'Case3-Exponential-Backoff.md',
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest) {
         'case10-zero-escalations': 'Case10-Zero-Escalations.md',
       },
       'LogiScan': {
+        'main': 'README.md',
         'case1': 'Case1.md',
         'case2': 'Case2.md',
         'case3': 'Case3.md',
@@ -35,6 +37,7 @@ export async function GET(request: NextRequest) {
         'case6': 'Case6.md',
       },
       'Lux': {
+        'main': 'Main.md',
         'case1-token-efficiency': 'Case1-Token-Efficiency.md',
         'case2-circuit-breaker': 'Case2-Circuit-Breaker.md',
         'case3-path-validation': 'Case3-Path-Validation.md',
@@ -50,9 +53,19 @@ export async function GET(request: NextRequest) {
     }
 
     // Construct the file path within the project directory
-    // Lux has files directly in the folder, TidesOS and LogiScan have a MiniCaseStudies subfolder
-    const subDir = project === 'Lux' ? '' : 'MiniCaseStudies';
-    const filePath = path.join(process.cwd(), 'MiniCaseStudies', project, subDir, fileName);
+    // Main files (README.md, Main.md) are directly in the project folder
+    // Case study files: Lux has files directly in folder, TidesOS and LogiScan have a MiniCaseStudies subfolder
+    let filePath: string;
+    if (proof === 'main') {
+      // Main case study content is in the project root
+      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, fileName);
+    } else if (project === 'Lux') {
+      // Lux case studies are directly in the Lux folder
+      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, fileName);
+    } else {
+      // TidesOS and LogiScan case studies are in a MiniCaseStudies subfolder
+      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, 'MiniCaseStudies', fileName);
+    }
     
     const content = await fs.readFile(filePath, 'utf-8');
     

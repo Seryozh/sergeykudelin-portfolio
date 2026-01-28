@@ -1,11 +1,30 @@
 import React from 'react';
 
+type ThemeColor = 'amber' | 'emerald' | 'purple';
+
 interface MarkdownRendererProps {
   content: string;
   onLinkClick?: (href: string) => void;
+  theme?: ThemeColor;
 }
 
-export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onLinkClick }) => {
+export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onLinkClick, theme = 'amber' }) => {
+  // Theme-based color classes
+  const themeColors = {
+    amber: {
+      link: 'text-amber-400 hover:text-amber-300 decoration-amber-500/30 hover:decoration-amber-400/60',
+      code: 'text-amber-400',
+    },
+    emerald: {
+      link: 'text-emerald-400 hover:text-emerald-300 decoration-emerald-500/30 hover:decoration-emerald-400/60',
+      code: 'text-emerald-400',
+    },
+    purple: {
+      link: 'text-purple-400 hover:text-purple-300 decoration-purple-500/30 hover:decoration-purple-400/60',
+      code: 'text-purple-400',
+    },
+  };
+  const colors = themeColors[theme];
   const parseMarkdown = (text: string): React.ReactNode[] => {
     const lines = text.split('\n');
     const elements: React.ReactNode[] = [];
@@ -106,12 +125,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
                   .toLowerCase()
                   .replace(/case(\d+)-/, 'case$1-')
                   .replace(/_/g, '-');
-                
+
                 parts.push(
                   <button
                     key={`link-${parts.length}`}
                     onClick={() => onLinkClick?.(proofId)}
-                    className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all cursor-pointer"
+                    className={`${colors.link} underline transition-all cursor-pointer`}
                   >
                     {linkText}
                   </button>
@@ -121,7 +140,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
                   <a
                     key={`link-${parts.length}`}
                     href={url}
-                    className="text-amber-400 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all"
+                    className={`${colors.link} underline transition-all`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -162,7 +181,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
           const end = text.indexOf('`', i + 1);
           if (end !== -1) {
             parts.push(
-              <code key={`code-${parts.length}`} className="bg-slate-800/50 px-1.5 py-0.5 rounded text-amber-400 font-mono text-sm">
+              <code key={`code-${parts.length}`} className={`bg-slate-800/50 px-1.5 py-0.5 rounded ${colors.code} font-mono text-sm`}>
                 {text.substring(i + 1, end)}
               </code>
             );
