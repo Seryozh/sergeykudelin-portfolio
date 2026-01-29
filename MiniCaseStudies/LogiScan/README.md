@@ -1,137 +1,58 @@
-## The Problem
+# LogiScan: AI-Powered Package Verification System
 
-Picture this: every morning, someone walks into a storage room filled with packages stacked on shelves. They're holding a clipboard with a printout of what should be there. For the next two hours, they manually check each package against the list, squinting at tracking numbers, comparing unit codes, and marking items off one by one.
+## What It Is
 
-This was the reality. 120 minutes of manual work. Every single day.
+LogiScan is a mobile-first package auditing tool for hotel mailrooms. Staff take photos of shelves with their phones, and GPT-4o Vision automatically extracts unit codes and tracking numbers from package labels. The app matches scanned items against inventory in real-time, showing verified packages (green) and missing packages (red). A typical audit session covers 17 scans with 5-7 items per scan, replacing 20+ minutes of manual clipboard checking with 3-4 minutes of scanning.
 
-The real pain wasn't just the time. It was the errors. A misread tracking number here, a skipped package there. By the end of the shift, you had no real-time visibility into what was actually in inventory versus what the system said should be there.
+The system runs as a Progressive Web App—no app store, no installation. Open the URL, add to home screen, and it works like a native app. All matching happens client-side for instant feedback (sub-10ms), even with spotty WiFi. The AI extraction runs server-side via Next.js Server Actions.
 
-## The Core Challenge
+---
 
-The hard part wasn't just "scan packages." That's the easy way to describe it. The actual technical challenge was this:
+## Technical Challenges & How I Solved Them
 
-**How do you extract structured data from chaotic, noisy images and match it against a database in real time, on a mobile device, in environments with spotty WiFi?**
+### 1. Vision API Cost Optimization
 
-### Challenge 1: The Vision Problem
+**The problem:** iPhone photos are 12MP (4032×3024 pixels), which GPT-4o Vision processes as 42,837 tokens. At $2.50 per million input tokens, that's $0.107 per scan. For 17 scans per audit, that's $1.82 per session—unsustainable for a daily internal tool ($480/year).
 
-When you take a photo of a shelf full of packages, you're capturing everything. Shipping labels from FedEx, UPS stickers, handwritten notes, internal inventory tags, barcodes pointing in different directions. The image is messy.
+**The solution:** Client-side image compression before upload. JavaScript loads the image onto HTML5 Canvas, resizes to 2500px width, exports as JPEG at 80% quality. This happens instantly in the browser before the image even leaves the device. No quality loss for label reading (validated with 100% extraction parity), but file size drops 95%.
 
-Traditional OCR would extract all of it. You'd get back a wall of text with tracking numbers from five different carriers, random dates, employee initials, and whatever else happened to be in frame.
+**The result:** Token count reduced 87% (42,837 → 5,525 tokens). Cost per scan: $0.014. Annual savings: $418. Upload time also dropped from 16 seconds to 0.8 seconds on typical hotel WiFi.
 
-What you actually need is this: the unit code and the last four digits of the internal tracking number from the white sticker. Nothing else matters.
+### 2. Eliminating the N+1 Query Problem
 
-So the first technical decision was choosing GPT-4o Vision instead of conventional OCR. Not because it's trendy, but because I could give it instructions. I wrote a system prompt that essentially says: "Ignore everything except the white internal stickers. They follow this format: Unit on line 1, date on line 2, code on line 3. Extract the unit and the last four characters of the code. That's it." The result? The AI filters out the noise before sending data back to the client. Clean data from the start.
+**The problem:** Traditional server-side validation requires a database query for each scanned item. 17 scans × 5 items = 85 queries per audit session. Each query adds 50-200ms latency. Total wasted time: 4-12 seconds per audit, plus high database load.
 
-### Challenge 2: The Bandwidth Problem
+**The solution:** Client-side architecture. On page load, fetch entire inventory once and store in React state (~100 packages, 8KB). When scan completes, match locally using JavaScript array search. No database queries during scanning. Matching happens in <1ms.
 
-Mobile phone cameras take high-resolution photos. We're talking 5MB to 15MB per image. When you're scanning 20 shelves in a session, that's 100MB to 300MB of upload bandwidth.
+**The result:** Query reduction from 86 → 1 per audit (98.8% reduction). Instant visual feedback. Zero network dependency for matching. Database connection pool never exhausted even with concurrent users.
 
-Two issues with that: It's slow (upload times alone could take 30+ seconds per scan) and it's expensive (OpenAI's Vision API charges based on image resolution. Bigger images mean more tokens, which means higher costs per scan).
+---
 
-The solution was client-side image compression. Before anything gets sent to the server, JavaScript runs in the browser, loads the image onto an HTML5 canvas, scales it down to 2500px width while preserving aspect ratio, and exports it as a JPEG at 80% quality.
-
-This single preprocessing step reduces file size by 95%. [A 10MB photo becomes 500KB. Upload time drops from 10 seconds to under 2 seconds.](case2.md) API costs drop by about 90%. The compression happens instantly on the phone. The user never sees it. They just get faster results and lower costs.
-
-### Challenge 3: The Matching Problem
-
-Once the AI extracts data from the image (unit codes and tracking numbers), you need to match it against your inventory database. The naive approach would query the database for each scanned item. This works, but it's slow. Every match requires a database round trip. If you scan 10 items in one photo, that's 10 separate queries. Add in network latency (especially in a basement with bad WiFi), and you're waiting several seconds for results.
-
-Instead, I built a client-side matching engine. When the app loads, it fetches the entire inventory once and stores it in memory. [When a scan completes, the matching happens locally in JavaScript. No database queries. No network calls. The matching completes in under 10 milliseconds.](case4.md) The user gets instant feedback. The green "verified" cards appear immediately, along with haptic feedback and a success sound. This is what I mean by "client-side intelligence." The AI runs on the server, but the business logic runs on the device.
-
-### Challenge 4: The Offline Problem
-
-WiFi in storage rooms is unpredictable. Sometimes it works. Sometimes it doesn't. Sometimes it drops in the middle of a scan session.
-
-The app needed to handle this. So I built it as a Progressive Web App (PWA) with a service worker that caches the critical routes. When you open the app, the shell loads instantly from the cache. The inventory data gets fetched when WiFi is available, but the UI is already interactive.
-
-You can add it to your phone's home screen like a native app. No app store. No installation process. Just open the URL, tap "Add to Home Screen," and it behaves like any other app. The trade-off is that you need internet for the actual scanning (because the Vision API requires it), but everything else works offline. Progress tracking, missing item calculations, session state, all of that runs locally.
-
-## The Architecture
-
-The key architectural decision was separating concerns. The AI is good at one thing: extracting data from images. So let it do that. The client is good at one thing: fast local data processing. So let it do that.
-
-This hybrid approach gives you the best of both worlds. You get the intelligence of an LLM without the latency of doing everything server-side. The flow: User takes photo → Compress (Canvas API: 10MB → 500KB) → Upload compressed image → Next.js Server sends to GPT-4o Vision → Extract structured JSON → Return to Client → Client-Side Matching (in-memory, <10ms) → Display Results. [Learn how this eliminates 50-100 database queries per audit session.](case5.md)
-
-## The Sync System
-
-The scanning workflow handles the audit process, but there's a second part to this system: getting packages into the database in the first place.
-
-The input is messy. Someone copy-pastes a log from another system with no consistent formatting. Sometimes the tracking number is a USPS code, sometimes it's an Amazon TBA number, sometimes it's a UPS 1Z code. The unit could be anywhere. The guest name could be two words or four.
-
-Writing regex patterns for this would be a nightmare. You'd need dozens of patterns to handle all the variations, and the moment the format changed slightly, everything would break.
-
-Instead, I used GPT-4o as a parser. I gave it example inputs and outputs in the system prompt, set the temperature to 0 (for deterministic results), and let it extract the three fields I care about: unit, guest name, and last four digits of the tracking number.
-
-The AI handles format variations without any code changes. If the input format changes tomorrow, I just update the prompt with a new example. No regex refactoring. No deployment. Once the data is extracted and validated, it goes into the database using an upsert operation with a composite key (unit, last_four) that prevents duplicates.
-
-## The Results
-
-The impact was immediate and measurable:
-
-- **Time:** [The manual audit process took 120 minutes per day. With LogiScan, it takes about 20 minutes. That's an 83% reduction.](case1.md) 100 minutes saved daily.
-
-- **Accuracy:** Manual audits had human error. Misread tracking numbers, skipped packages, incorrect check marks. The system hits 95% extraction accuracy, and the composite key matching prevents false positives.
-
-- **Visibility:** Before, inventory status was on paper or in a spreadsheet that got updated once a day. Now, it's in a real-time PostgreSQL database. You can query it, build reports on it, track trends over time.
-
-- **Cost:** [The image compression optimization reduced Vision API costs by roughly 90%. A 10MB photo compresses to 500KB before upload.](case3.md) The client-side matching eliminated 50 to 100 database queries per audit session.
-
-## Technical Decisions Worth Discussing
-
-### Why Next.js 15 Server Actions?
-
-I could have built a traditional REST API with Express. But Server Actions gave me type safety from client to server without code generation. I write a function on the server, call it from the client, and TypeScript enforces the contract. No route definitions, no HTTP verb management, no manual serialization. For a small internal tool, this was the right trade-off. Less boilerplate, faster iteration.
-
-### Why client-side matching instead of server-side?
-
-Latency. Even a fast database query takes 50-100ms. Add network round trips, and you're at 200-300ms per match. Multiply that by 10 items per scan, and users wait 2-3 seconds for results. Client-side matching happens in under 10ms. The feedback is instant. The user experience is dramatically better.
-
-The trade-off is that you have to load the entire inventory into memory on the client. This works fine for datasets under 500 packages. If the system needed to scale to 10,000+ packages, I'd switch to server-side search with pagination. But for the current use case, client-side is the right call.
-
-### Why GPT-4o instead of traditional OCR?
-
-Context awareness. Traditional OCR extracts everything. GPT-4o understands instructions. I can tell it "ignore the FedEx label, only look at the white sticker" and it does. That level of filtering would require complex post-processing with traditional OCR.
-
-[The trade-off is cost and speed. GPT-4o Vision costs more per image and takes 3-5 seconds to process. But the accuracy gain and development time savings made it worth it.](case6.md) I'd rather pay $0.02 per scan and get clean data than spend weeks building a custom OCR pipeline.
-
-### Why PWA instead of a native app?
-
-Distribution. A PWA works on any device with a web browser. No app store approval. No separate iOS and Android codebases. No installation friction. Open the URL, add to home screen, done. For internal tools, this is almost always the right call.
-
-## What I'd Change with More Time
-
-- **Optimize the matching algorithm:** Right now, it's O(n × m) where n is scanned items and m is inventory size. For small datasets, this is fine. For larger datasets, I'd preprocess the inventory into a hash map to get O(n) matching.
-
-- **Add session persistence:** Currently, session state lives in React state. If you close the app mid-session, you lose progress. I'd add IndexedDB persistence so sessions survive app restarts.
-
-- **Implement batching for the Vision API:** If you scan 5 shelves in a row, the app makes 5 separate API calls. I'd batch these into a single call to reduce latency and cost.
-
-- **Add analytics:** Track metrics like average scan time, error rates by package type, daily audit completion rates. This would help identify bottlenecks and validate the time savings claims.
-
-- **Build an admin dashboard:** Right now, the only way to view inventory data is querying the database directly. A dashboard with search, filters, and export functionality would make the system more useful for non-technical users.
-
-## The Takeaway
-
-The technical work involved: Understanding the constraints (spotty WiFi, mobile devices, messy data), making architectural trade-offs (server-side AI, client-side matching), optimizing for the bottlenecks (image compression, local data processing), and shipping something that actually works in production. The result is a system that saves 100 minutes per day, runs on any device with a web browser, and replaces a manual process with an automated one. That's the kind of engineering I like doing. Not building for scale I don't need, not chasing technologies because they're trendy, but solving real problems with appropriate tools.
-
-## Technical Stack Summary
+## Technical Stack
 
 | Component | Technology |
 |-----------|------------|
 | Frontend | React 19 + Next.js 15 |
-| Language | TypeScript 5 (strict) |
-| Styling | Tailwind CSS 4 |
-| AI/ML | OpenAI GPT-4o (Vision + Text) |
-| Database | PostgreSQL (via Supabase) |
+| AI Vision | OpenAI GPT-4o Vision API |
+| Image Processing | HTML5 Canvas API |
+| Database | PostgreSQL (Supabase) |
 | Deployment | Vercel |
 | PWA | Service Workers + Web Manifest |
 
-## Performance Metrics
+---
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Daily audit time | 120 min | 20 min | 83% reduction |
-| Image upload time | 10-15 sec | 1-2 sec | 85% reduction |
-| Matching latency | N/A (manual) | <10 ms | Real-time |
-| Data accuracy | ~80% | 95% | 15% improvement |
-| API cost per scan | ~$0.20 | ~$0.02 | 90% reduction |
+## Deep Dives Available
+
+Want to see the engineering details? Full case studies with measured results:
+
+### Cost Optimization
+- **[87% Vision API Cost Reduction](MiniCaseStudies/Case1-Vision-API-Cost.md)** - Client-side compression, token economics, quality validation
+
+### Infrastructure Piping
+- **[Client-Side Architecture & N+1 Elimination](MiniCaseStudies/Case2-Client-Side-Architecture.md)** - Sub-1ms matching, 98.8% query reduction, algorithm complexity analysis
+
+---
+
+**Total Scans:** 400+ over 2 weeks of production testing
+**Average Audit Time:** 3-4 minutes (down from 20+ minutes manual)
+**Cost per Audit:** $0.24 (down from $1.82 without optimization)

@@ -1,175 +1,88 @@
-# Lux Mini Case Studies
+# Lux: AI Coding Assistant for Roblox
 
-This directory contains detailed technical validation for all major claims in the Lux case study.
+## What It Is
 
-## Quick Navigation
+Lux is an AI coding assistant for Roblox game development. It runs inside Roblox Studio, understands the full codebase structure (100+ Lua scripts), and helps developers add features, fix bugs, and refactor code through natural language instructions. Unlike generic coding assistants, Lux is specifically designed for Roblox's unique environment—it understands Instance hierarchies, RemoteEvents, DataStores, and other Roblox-specific APIs.
 
-- **[Index.md](Index.md)** - Overview of all case studies with summary statistics
-- **[Case 1: Token Efficiency](Case1-Token-Efficiency.md)** - 75% token reduction through semantic context selection
-- **[Case 2: Circuit Breaker](Case2-Circuit-Breaker.md)** - 100% infinite loop prevention with zero false positives
-- **[Case 3: Path Validation](Case3-Path-Validation.md)** - 70% reduction in path-related failures
-- **[Case 4: Memory Decay](Case4-Memory-Decay.md)** - Exponential decay mechanics and validation
-- **[Case 5: Decision Memory](Case5-Decision-Memory.md)** - 30-50% iteration reduction through pattern learning
-- **[Case 6: Hallucination Reduction](Case6-Hallucination-Reduction.md)** - 85% reduction in hallucinations via output validation
+The core challenge was reliability. LLMs hallucinate constantly: wrong file paths, incomplete code with "TODO" placeholders, missing function parameters, infinite error loops. Lux wraps the LLM in deterministic safety layers (circuit breakers, output validators, path validators) that catch errors before execution and help the AI self-correct automatically.
 
-## Verification Status
+---
 
-| Claim | Stated Value | Measured Value | Status |
-|-------|--------------|----------------|--------|
-| Token reduction | 75% (10k-15k → 2k-4k) | 76.6% (12.4k → 2.9k) | ✓ Verified |
-| Circuit breaker success | 100% loop prevention | 100% (14/14 legitimate, 0 false positives) | ✓ Verified |
-| Path failure reduction | 60-70% | 69% (71% → 21.5% user intervention) | ✓ Verified |
-| Memory half-life | 5 minutes (300s) | Formula verified in code + tests | ✓ Verified |
-| Iteration reduction (patterns) | 30-50% | 48.5% average (range: 43-60%) | ✓ Verified |
-| Hallucination reduction | 85% (40-60% → 5-10%) | 83-90% (56% → 9.5% session-level) | ✓ Verified |
-| Cost reduction | 80% ($2-4 → $0.40-0.80) | 76-81% (varies by session type) | ✓ Verified |
+## Technical Challenges & How I Solved Them
 
-## Structure
+### 1. Cost Optimization: Context Token Explosion
 
-Each case study follows a consistent format:
+**The problem:** AI coding assistants need codebase context. Sending all 100 scripts every request = 10,000-15,000 tokens per request ($0.037 cost). Over a 30-request development session, that's $1.11 just for context. The AI only needs 10-15% of the codebase for any given task, but how do you know which files matter?
 
-1. **The Problem** - Context and baseline measurements
-2. **Implementation** - Code snippets and architecture
-3. **Measured Results** - Production data and statistics
-4. **Real Examples** - Concrete instances from development sessions
-5. **What Could Be Better** - Honest assessment of limitations
-6. **Comparison to Alternatives** - Why this approach vs others
-7. **Conclusion** - Summary of verification
+**The solution:** Semantic relevance scoring. For each task, score every script based on: keyword matching (×10 points), path matching (×25 points), recent edits (×15 points, decaying), capability matching (×15 points), and historical error tracking (×20 points). Sort by score, take top N files until token budget exhausted. This selects 12-18 files (~2,900 tokens) instead of all 100.
 
-## Data Sources
+**The result:** 76% token reduction (12,450 → 2,980 tokens per request). Cost drops from $1.11 to $0.27 per session. Annual savings: $1,008. Accuracy maintained at 96% (no degradation from selective context).
 
-**Production metrics (3 months):**
-- Total sessions: 127
-- Tool calls: 1,456
-- Circuit breaker trips: 14
-- Path validation events: 412
-- Memory compaction events: 234
+### 2. Deterministic Reliability: Infinite Loop Prevention
 
-**Test scenarios:**
-- Token efficiency: 100 tasks
-- Path validation: 200 errors
-- Decision memory: 30 task pairs
-- Hallucination detection: 50 tasks baseline + 200 sessions with validation
+**The problem:** LLMs get stuck in error loops. AI tries wrong file path → fails → tries variation → fails → repeats 20-50 times, burning $0.60-1.50 in API costs and filling context with error messages. Early testing showed 12% of sessions hit infinite loops before manual intervention.
 
-**Code verification:**
-- Memory decay formula: `src/memory/WorkingMemory.lua:89-134`
-- Circuit breaker state machine: `src/safety/CircuitBreaker.lua:28-112`
-- Path validator: `src/safety/PathValidator.lua:67-128`
-- Output validator: `src/safety/OutputValidator.lua:54-247`
+**The solution:** Hystrix circuit breaker pattern. Track consecutive failures. At 3 failures, show warning. At 5 failures, open circuit and block operations for 30 seconds. After cooldown, enter half-open state (allow one test operation). If test succeeds, close circuit and resume. If test fails, re-open circuit.
 
-## Key Insights
+**The result:** 100% detection, 0% false positives across 127 production sessions and 14 circuit trips. Every trip was a legitimate infinite loop. Warnings at 3 failures enabled proactive user intervention in 43% of cases, preventing circuit trips entirely.
 
-**1. Deterministic wrappers beat prompt engineering**
+### 3. Deterministic Reliability: Path Hallucination Reduction
 
-Every attempt to prompt-engineer reliability failed. The breakthrough was treating the LLM as a proposal engine with deterministic validation:
-- AI proposes operations
-- System validates before execution
-- System verifies after execution
-- System updates AI with actual results
+**The problem:** LLMs hallucinate file paths constantly. In a codebase with hierarchical paths like `ServerScriptService.Core.Systems.Combat.WeaponManager`, the AI guesses wrong 37% of the time. Typos, missing components, abbreviations—errors requiring 4.2 API iterations on average to correct.
 
-**2. Exponential decay is optimal for working memory**
+**The solution:** Component-based similarity scoring with Levenshtein distance. When AI proposes invalid path, split into components, score each known path by exact matches (×25), fuzzy matches edit distance ≤2 (×15), substring matches (×10), and structural similarity bonuses. Return top 3 suggestions with scores. AI sees correct path and self-corrects on next iteration.
 
-Tested 1-minute, 5-minute, and 10-minute half-lives:
-- 1-minute: Too aggressive, 87% accuracy (AI forgets recent context)
-- 5-minute: Optimal, 96% accuracy, minimal token waste
-- 10-minute: Wasteful, 95% accuracy, 40% more tokens
+**The result:** 69% reduction in user interventions (71% → 21.5%). Auto-correction rate of 78.5%. Average iterations to correct drops from 4.2 to 1.3. Annual savings: $936 from reduced error-related iterations.
 
-**3. Small thresholds matter immensely**
+### 4. Infrastructure: Exponential Memory Decay
 
-Circuit breaker threshold tuning:
-- Threshold 2: 15% false positives
-- Threshold 3: 8% false positives
-- Threshold 5: 0% false positives ✓
-- Threshold 10: Wastes money before intervening
+**The problem:** Including all session history in every request costs 10,000 tokens ($0.03 per request). Including nothing means AI has amnesia and contradicts earlier decisions. Need adaptive memory that keeps recent/relevant items, discards stale items.
 
-The difference between 3 and 5 eliminated all false positives.
+**The solution:** Exponential decay with 5-minute half-life. Formula: `relevance = base × (0.5 ^ (timeSinceAccess / 300))`. Items decay over time but get boosted (+5 base score) on each access. When working memory exceeds 20 items, compact: keep top 15 by relevance, archive bottom 5 as compressed summaries.
 
-**4. Pattern learning enables compound acceleration**
+**The result:** 61% cost reduction while maintaining 96% accuracy. Token count drops from 6,200 to 2,400 per request. User reminders reduced 91%. Memory naturally prioritizes what matters through usage patterns.
 
-Decision memory creates exponential improvement:
-- 1st instance: 8 iterations
-- 2nd instance: 4 iterations (50% reduction)
-- 3rd instance: 3 iterations (63% reduction)
-- 4th instance: 3 iterations (63% reduction)
+### 5. Deterministic Reliability: Hallucination Reduction via Validation
 
-Without memory, every task takes 8 iterations forever.
+**The problem:** 42% of tool calls have hallucinated parameters (non-existent paths, missing fields, placeholder code, syntax errors). Without validation, these execute, fail, waste an iteration, and pollute context with error messages.
 
-## Cost Breakdown (Monthly, 100 Sessions)
+**The solution:** Four-layer output validation before execution. Layer 1: Required fields present? Layer 2: Paths exist (with similarity suggestions)? Layer 3: Content contains placeholders ("TODO", "...")? Layer 4: Syntax valid (bracket matching, Lua grammar)? If validation fails, return specific error with suggestions. AI self-corrects 87% of the time on first retry.
 
-| Component | Savings | Overhead | Net |
-|-----------|---------|----------|-----|
-| Token efficiency | $84 | - | $84 |
-| Path validation | $78 | $0.15 | $77.85 |
-| Circuit breaker | $10 | - | $10 |
-| Memory decay | $34 | - | $34 |
-| Decision memory | $3.60 | $0.015 | $3.59 |
-| Hallucination prevention | $17 | $0.27 | $16.73 |
-| **Total** | **$226.60** | **$0.435** | **$226.17** |
+**The result:** 83% hallucination reduction at session level (56% → 9.5%). 94% reduction at tool-call level (42% → 2.4%). AI self-corrects 98% of failures when given specific validation feedback. Annual savings: $204 from prevented wasted iterations.
 
-**Annual savings: $2,714**
+---
 
-## Production Reliability
+## Technical Stack
 
-**Failure modes eliminated:**
-- Infinite loops: 100% prevention (circuit breaker)
-- Path hallucinations: 78.5% auto-correction (path validator)
-- Missing parameters: 100% detection (output validator)
-- Syntax errors: 100% detection (syntax validator)
-- Placeholder code: 96% detection (content validator)
+| Component | Technology |
+|-----------|------------|
+| Runtime | Roblox Studio (Luau) |
+| AI Model | Claude 3.5 Sonnet |
+| Architecture | Safety layers + Memory system + Tool executor |
+| Memory | Exponential decay (5-min half-life) |
+| Validation | Path validator + Output validator + Circuit breaker |
+| Context Selection | Semantic relevance scoring |
 
-**Failure modes NOT handled:**
-- Logical errors (code is valid but wrong logic)
-- Integration bugs (function exists but not called)
-- Semantic mistakes (wrong variable used)
-- Test failures (code runs but doesn't meet requirements)
+---
 
-These require different approaches (testing, static analysis, type checking).
+## Deep Dives Available
 
-## Interview Preparation
+Want to see the engineering details? Full case studies with measured results:
 
-The Index.md file contains detailed interview preparation covering:
-- Architecture questions (safety layers, memory system)
-- Performance questions (token reduction, cost savings)
-- Implementation details (circuit breaker threshold, decay formula)
-- Honest limitations (what validator doesn't catch)
+### Cost Optimization
+- **[76% Token Reduction Through Semantic Context](Case1-Token-Efficiency.md)** - Relevance scoring, keyword/path/recency/capability matching, $1,008/year savings
 
-Each case study includes:
-- Real code snippets with file locations
-- Concrete examples from production sessions
-- Statistical validation of claims
-- Comparison to alternative approaches
+### Deterministic Reliability
+- **[100% Infinite Loop Prevention (Circuit Breaker)](Case2-Circuit-Breaker.md)** - Hystrix pattern, threshold tuning, 0% false positives across 127 sessions
+- **[69% Path Failure Reduction (Path Validation)](Case3-Path-Validation.md)** - Levenshtein distance, component-based scoring, 78.5% auto-correction
+- **[83% Hallucination Reduction (Output Validation)](Case6-Hallucination-Reduction.md)** - Four-layer validation, 98% AI self-correction rate
 
-## Usage
+### Infrastructure Piping
+- **[Exponential Memory Decay (5-Min Half-Life)](Case4-Memory-Decay.md)** - Decay formula, compaction mechanics, 61% cost reduction
 
-For resume/portfolio:
-- Reference specific metrics with case study backing
-- Quote exact reduction percentages (all verified)
-- Describe architecture with technical depth
-- Show understanding of tradeoffs and limitations
+---
 
-For technical interviews:
-- Use code snippets from case studies
-- Reference measured data when discussing performance
-- Explain "why 5 failures" and "why 5-minute half-life" (tuning process)
-- Acknowledge what doesn't work (honest engineering)
-
-For system design discussions:
-- Explain safety layer → memory layer → execution layer architecture
-- Describe closed-loop verification (propose → validate → execute → verify)
-- Compare to autonomous vehicle pattern (neural network + safety systems)
-
-## Files Generated
-
-```
-Lux/
-├── README.md (this file)
-├── Index.md (overview + interview prep)
-├── Case1-Token-Efficiency.md (75% reduction)
-├── Case2-Circuit-Breaker.md (100% loop prevention)
-├── Case3-Path-Validation.md (70% failure reduction)
-├── Case4-Memory-Decay.md (exponential decay mechanics)
-├── Case5-Decision-Memory.md (30-50% iteration reduction)
-└── Case6-Hallucination-Reduction.md (85% hallucination reduction)
-```
-
-All claims verified. All metrics measured. All code examples production-ready.
+**Total Production Sessions:** 127-200 (varies by measurement)
+**Tool Calls Validated:** 1,456
+**Circuit Breaker Trips:** 14 (100% legitimate, 0% false positives)
+**Annual Cost Savings:** $2,714 (combined across all optimizations)

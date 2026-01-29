@@ -119,11 +119,11 @@ The quantitative results surprised me. I expected improvement, but not this much
 - **Cost:** 80% savings ($2-4 → $0.40-0.80 per complex task)
 - **Accuracy:** 95%+ successful tool executions (up from 60-70%)
 - **Speed:** 60% fewer iterations (8-15 → 3-6 iterations per task)
-- **Reliability:** 100% infinite loop prevention over 500+ sessions
+- **Reliability:** 100% infinite loop prevention (14 circuit breaker trips, all legitimate)
 - **Hallucination Reduction:** [85% (from 40-60% to 5-10%)](case6-hallucination-reduction.md)
 - **Context Corruption:** 0 incidents
 
-The cost savings compound. A typical development session is 10-20 requests. At baseline, that's $30-60 per session. With Lux, it's $4-8 per session. Over 100 sessions, you save $2,600-5,200. But the real value isn't just money. It's developer time. Tasks that took 20-40 minutes now take 2-5 minutes. Complex multi-hour tasks now take 15-30 minutes. The productivity multiplier is real.
+The cost savings are measurable. Token reduction (75%) directly translates to API cost reduction when using Claude or GPT-4 for code assistance. But the real value isn't just money—it's developer time. Reducing iterations from 8-15 to 3-6 per task means less waiting and more building.
 
 ## What I Learned
 
