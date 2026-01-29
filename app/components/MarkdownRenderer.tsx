@@ -119,8 +119,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
               // Check if it's a proof link (ends with .md)
               if (url.endsWith('.md')) {
                 const proofId = url
-                  .replace('MiniCaseStudies/TidesOS/MiniCaseStudies/', '')
-                  .replace('MiniCaseStudies/LogiScan/MiniCaseStudies/', '')
+                  .replace(/^MiniCaseStudies\/[^\/]+\/MiniCaseStudies\//, '') // Remove nested MiniCaseStudies path
+                  .replace(/^MiniCaseStudies\//, '') // Remove simple MiniCaseStudies prefix
                   .replace('.md', '')
                   .toLowerCase()
                   .replace(/case(\d+)-/, 'case$1-')
