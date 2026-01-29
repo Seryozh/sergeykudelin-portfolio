@@ -126,6 +126,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
                   .replace(/case(\d+)-/, 'case$1-')
                   .replace(/_/g, '-');
 
+                console.log('MarkdownRenderer: Converting URL', url, '→', proofId);
+
                 parts.push(
                   <button
                     key={`link-${parts.length}`}
