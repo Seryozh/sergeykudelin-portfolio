@@ -27,15 +27,31 @@ export default function Home() {
   // Handle URL query params for direct modal links
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const project = params.get('project');
-    const proof = params.get('proof');
-    
-    if (project === 'tidesos' || project === 'logiscan' || project === 'lux') {
-      setActiveModal(project);
-      
-      if (proof) {
+    const projectParam = params.get('project');
+
+    if (!projectParam) return;
+
+    // Check if URL format is project/proof (e.g., "logiscan/vision-api-cost")
+    if (projectParam.includes('/')) {
+      const [project, proof] = projectParam.split('/');
+
+      if (project === 'tidesos' || project === 'logiscan' || project === 'lux') {
+        setActiveModal(project);
         setActiveProof(proof);
         loadProofContent(project, proof);
+      }
+    }
+    // Otherwise check legacy format with separate proof param
+    else {
+      const proof = params.get('proof');
+
+      if (projectParam === 'tidesos' || projectParam === 'logiscan' || projectParam === 'lux') {
+        setActiveModal(projectParam);
+
+        if (proof) {
+          setActiveProof(proof);
+          loadProofContent(projectParam, proof);
+        }
       }
     }
   }, []);
@@ -44,19 +60,19 @@ export default function Home() {
   useEffect(() => {
     if (activeModal) {
       const url = new URL(window.location.href);
-      url.searchParams.set('project', activeModal);
-      
+
       if (activeProof) {
-        url.searchParams.set('proof', activeProof);
+        // Use project/proof format
+        url.searchParams.set('project', `${activeModal}/${activeProof}`);
       } else {
-        url.searchParams.delete('proof');
+        // Just project
+        url.searchParams.set('project', activeModal);
       }
-      
+
       window.history.pushState({}, '', url.toString());
     } else {
       const url = new URL(window.location.href);
       url.searchParams.delete('project');
-      url.searchParams.delete('proof');
       window.history.pushState({}, '', url.toString());
     }
   }, [activeModal, activeProof]);
