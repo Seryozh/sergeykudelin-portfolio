@@ -53,6 +53,6 @@ Want to see the engineering details? Full case studies with measured results:
 
 ---
 
-**Total Scans:** 400+ over 2 weeks of production testing
+**Total Scans:** 400+ over 2 weeks of production testing.
 **Average Audit Time:** 3-4 minutes (down from 20+ minutes manual)
 **Cost per Audit:** $0.24 (down from $1.82 without optimization)
