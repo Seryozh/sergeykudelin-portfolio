@@ -16,33 +16,20 @@ export async function GET(request: NextRequest) {
     const proofFileMap: Record<string, Record<string, string>> = {
       'TidesOS': {
         'main': 'README.md',
-        'case1-4096-audio-buffer': 'Case1-4096-Audio-Buffer.md',
-        'case2-manual-wav-encoding': 'Case2-Manual-WAV-Encoding.md',
-        'case3-exponential-backoff': 'Case3-Exponential-Backoff.md',
-        'case4-decoupled-architecture': 'Case4-Decoupled-Architecture.md',
-        'case5-edge-middleware-auth': 'Case5-Edge-Middleware-Auth.md',
-        'case6-interaction-speed': 'Case6-Interaction-Speed.md',
-        'case7-persistent-mediastream': 'Case7-Persistent-MediaStream.md',
-        'case8-end-to-end-latency': 'Case8-End-to-End-Latency.md',
-        'case9-success-rate': 'Case9-Success-Rate.md',
-        'case10-zero-escalations': 'Case10-Zero-Escalations.md',
+        'case1-cross-browser-audio': 'Case1-Cross-Browser-Audio.md',
+        'case2-exponential-backoff': 'Case2-Exponential-Backoff.md',
       },
       'LogiScan': {
         'main': 'README.md',
-        'case1': 'Case1.md',
-        'case2': 'Case2.md',
-        'case3': 'Case3.md',
-        'case4': 'Case4.md',
-        'case5': 'Case5.md',
-        'case6': 'Case6.md',
+        'case1-vision-api-cost': 'Case1-Vision-API-Cost.md',
+        'case2-client-side-architecture': 'Case2-Client-Side-Architecture.md',
       },
       'Lux': {
-        'main': 'Main.md',
+        'main': 'README.md',
         'case1-token-efficiency': 'Case1-Token-Efficiency.md',
         'case2-circuit-breaker': 'Case2-Circuit-Breaker.md',
         'case3-path-validation': 'Case3-Path-Validation.md',
         'case4-memory-decay': 'Case4-Memory-Decay.md',
-        'case5-decision-memory': 'Case5-Decision-Memory.md',
         'case6-hallucination-reduction': 'Case6-Hallucination-Reduction.md',
       }
     };
