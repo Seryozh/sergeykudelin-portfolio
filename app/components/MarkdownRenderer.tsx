@@ -164,9 +164,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, onL
           }
           const end = text.indexOf('**', i + 2);
           if (end !== -1) {
+            const boldContent = text.substring(i + 2, end);
             parts.push(
               <strong key={`bold-${parts.length}`} className="font-bold">
-                {text.substring(i + 2, end)}
+                {parseInline(boldContent)}
               </strong>
             );
             i = end + 2;
