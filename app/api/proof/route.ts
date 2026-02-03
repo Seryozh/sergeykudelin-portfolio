@@ -14,23 +14,11 @@ export async function GET(request: NextRequest) {
   try {
     // Map proof IDs to file paths
     const proofFileMap: Record<string, Record<string, string>> = {
-      'TidesOS': {
-        'main': 'README.md',
-        'case1-cross-browser-audio': 'Case1-Cross-Browser-Audio.md',
-        'case2-exponential-backoff': 'Case2-Exponential-Backoff.md',
-      },
       'LogiScan': {
         'main': 'README.md',
-        'case1-vision-api-cost': 'Case1-Vision-API-Cost.md',
-        'case2-client-side-architecture': 'Case2-Client-Side-Architecture.md',
       },
       'Lux': {
         'main': 'README.md',
-        'case1-token-efficiency': 'Case1-Token-Efficiency.md',
-        'case2-circuit-breaker': 'Case2-Circuit-Breaker.md',
-        'case3-path-validation': 'Case3-Path-Validation.md',
-        'case4-memory-decay': 'Case4-Memory-Decay.md',
-        'case6-hallucination-reduction': 'Case6-Hallucination-Reduction.md',
       }
     };
 
@@ -40,19 +28,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Construct the file path within the project directory
-    // Main files (README.md, Main.md) are directly in the project folder
-    // Case study files: Lux has files directly in folder, TidesOS and LogiScan have a MiniCaseStudies subfolder
-    let filePath: string;
-    if (proof === 'main') {
-      // Main case study content is in the project root
-      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, fileName);
-    } else if (project === 'Lux') {
-      // Lux case studies are directly in the Lux folder
-      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, fileName);
-    } else {
-      // TidesOS and LogiScan case studies are in a MiniCaseStudies subfolder
-      filePath = path.join(process.cwd(), 'MiniCaseStudies', project, 'MiniCaseStudies', fileName);
-    }
+    let filePath = path.join(process.cwd(), 'MiniCaseStudies', project, fileName);
     
     const content = await fs.readFile(filePath, 'utf-8');
     

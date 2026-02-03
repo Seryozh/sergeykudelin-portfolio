@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, ArrowLeft } from 'lucide-react';
 import { MarkdownRenderer } from './components/MarkdownRenderer';
 
-type ProjectModal = 'tidesos' | 'logiscan' | 'lux' | null;
+type ProjectModal = 'concierge' | 'logiscan' | 'lux' | null;
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<ProjectModal>(null);
@@ -17,7 +17,7 @@ export default function Home() {
   const [currentSection, setCurrentSection] = useState(0);
 
   const projectPaths: Record<string, string> = {
-    'tidesos': 'TidesOS',
+    'concierge': 'TidesOS',
     'logiscan': 'LogiScan',
     'lux': 'Lux',
   };
@@ -35,8 +35,8 @@ export default function Home() {
     if (projectParam.includes('/')) {
       const [project, proof] = projectParam.split('/');
 
-      if (project === 'tidesos' || project === 'logiscan' || project === 'lux') {
-        setActiveModal(project);
+      if (project === 'concierge' || project === 'logiscan' || project === 'lux') {
+        setActiveModal(project as ProjectModal);
         setActiveProof(proof);
         loadProofContent(project, proof);
       }
@@ -45,8 +45,8 @@ export default function Home() {
     else {
       const proof = params.get('proof');
 
-      if (projectParam === 'tidesos' || projectParam === 'logiscan' || projectParam === 'lux') {
-        setActiveModal(projectParam);
+      if (projectParam === 'concierge' || projectParam === 'logiscan' || projectParam === 'lux') {
+        setActiveModal(projectParam as ProjectModal);
 
         if (proof) {
           setActiveProof(proof);
@@ -197,6 +197,36 @@ export default function Home() {
     { label: 'Articles', id: 'articles' },
     { label: 'Contact', id: 'contact' },
   ];
+
+  const luxDescription = `## 1. Lux (Luxembourg) - Agentic AI for Game Development
+**The Challenge:** Roblox Studio plugins are restricted to one-way outbound HTTP requests, making real-time bidirectional AI interaction (like reading/writing code) technically impossible for standard architectures.
+**The Solution:** I engineered a novel **polling-bridge pattern** using Python's \`asyncio.Event\` synchronization. This allows a FastAPI backend to "pause" an AI agent's execution while waiting for the plugin to respond with game data, effectively creating a bidirectional bridge over a one-way protocol.
+**Key Results:**
+- **1,500+ Downloads** since Jan 2026.
+- **Cost Reduction:** Implemented a two-model orchestration system (Orchestrator + Worker) that uses cheaper models for planning and expensive models only for code generation.
+- **Agentic Workflow:** Built with LangGraph to handle complex, multi-step game modifications through natural language.
+
+[Link Github](https://github.com/Seryozh/lux-agentic-ai)`;
+
+  const logiscanDescription = `## 2. LogiScan AI - Computer Vision Logistics Intelligence
+**The Challenge:** Manual package auditing at Tides Residential took over 2 hours per shift and was prone to human error. Standard OCR failed due to messy, overlapping labels in high-pressure environments.
+**The Solution:** A mobile-first PWA that leverages **GPT-4o Vision** to identify internal sorting stickers while ignoring carrier noise. I optimized the pipeline with client-side image compression (reducing bandwidth by 95%) and atomic PostgreSQL upserts to ensure data integrity.
+**Key Results:**
+- **83% Time Reduction:** Cut audit time from 120 minutes to ~20 minutes.
+- **95%+ Accuracy:** Outperformed manual checks and traditional barcode scanners.
+- **Zero Hardware Cost:** Transformed existing staff smartphones into enterprise-grade scanners.
+
+[Link Github](https://github.com/Seryozh/logiscan-ai)`;
+
+  const conciergeDescription = `## 3. Tides Virtual Concierge - Multimodal AI Assistant
+**The Challenge:** Overnight shifts faced language barriers (Spanish-speaking residents) and repetitive inquiries that distracted staff from security duties.
+**The Solution:** A bilingual, voice-first AI assistant built with **Next.js 16 (Edge Runtime)** for sub-200ms latency. It integrates OpenAI Whisper (STT), GPT-4o (Reasoning), and ElevenLabs (TTS) with direct tool-calling access to the building's Supabase database.
+**Key Results:**
+- **Bilingual Automation:** Seamlessly handles inquiries in English and Spanish.
+- **Real-time Data:** Residents can check package status or log pickups via voice, with the AI performing live database operations.
+- **Production-Ready:** Features session persistence, edge computing for speed, and a custom-designed "Orb" UI for visual feedback.
+
+[Link Github](https://github.com/Seryozh/tides-concierge)`;
 
   return (
     <main className="bg-slate-950 text-white snap-container">
@@ -384,44 +414,44 @@ export default function Home() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* TidesOS Card */}
+            {/* Lux Card */}
             <motion.div
               whileHover={{ y: -8 }}
               className="group relative cursor-pointer"
-              onClick={() => setActiveModal('tidesos')}
+              onClick={() => setActiveModal('lux')}
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
               <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-amber-500/10 p-3 rounded-lg">
-                    <Sparkles className="w-6 h-6 text-amber-400" />
+                  <div className="bg-purple-500/10 p-3 rounded-lg">
+                    <Play className="w-6 h-6 text-purple-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white">TidesOS</h3>
-                    <p className="text-xs text-amber-400 uppercase tracking-wider">Voice Operations Agent</p>
+                    <h3 className="text-lg font-bold text-white">Lux Agentic AI</h3>
+                    <p className="text-xs text-purple-400 uppercase tracking-wider">Autonomous Coding Assistant</p>
                   </div>
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
-                  Autonomous voice firewall managing overnight guest traffic at a major residential complex.
+                  Self-healing coding framework for Roblox with 1,500+ downloads, tested via 200K+ subscriber YouTube channel.
                 </p>
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   whileHover={{ opacity: 1, height: 'auto' }}
                   className="overflow-hidden mb-4"
                 >
-                  <div className="pt-4 border-t border-amber-500/20">
-                    <p className="text-xs text-amber-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
+                  <div className="pt-4 border-t border-purple-500/20">
+                    <p className="text-xs text-purple-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
                     <div className="grid grid-cols-2 gap-2">
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Next.js 15</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">React</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">OpenAI Realtime</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Web Audio API</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Python</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">FastAPI</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">LangGraph</span>
+                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">GPT-4o</span>
                     </div>
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </motion.div>
@@ -457,55 +487,55 @@ export default function Home() {
                       <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">Next.js 15</span>
                       <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">PWA</span>
                       <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">GPT-4o Vision</span>
-                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">Supabase</span>
+                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">PostgreSQL</span>
                     </div>
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
+                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </motion.div>
 
-            {/* Lux Card */}
+            {/* Tides Virtual Concierge Card */}
             <motion.div
               whileHover={{ y: -8 }}
               className="group relative cursor-pointer"
-              onClick={() => setActiveModal('lux')}
+              onClick={() => setActiveModal('concierge')}
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
               <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-purple-500/10 p-3 rounded-lg">
-                    <Play className="w-6 h-6 text-purple-400" />
+                  <div className="bg-amber-500/10 p-3 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-amber-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white">Lux Agentic AI</h3>
-                    <p className="text-xs text-purple-400 uppercase tracking-wider">Autonomous Coding Assistant</p>
+                    <h3 className="text-lg font-bold text-white">Virtual Concierge</h3>
+                    <p className="text-xs text-amber-400 uppercase tracking-wider">Multimodal AI Assistant</p>
                   </div>
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
-                  Self-healing coding framework for Roblox with 1,000+ downloads, tested via 200K+ subscriber YouTube channel.
+                  Bilingual, voice-first AI assistant managing residential inquiries with sub-200ms latency.
                 </p>
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   whileHover={{ opacity: 1, height: 'auto' }}
                   className="overflow-hidden mb-4"
                 >
-                  <div className="pt-4 border-t border-purple-500/20">
-                    <p className="text-xs text-purple-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
+                  <div className="pt-4 border-t border-amber-500/20">
+                    <p className="text-xs text-amber-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
                     <div className="grid grid-cols-2 gap-2">
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">TypeScript</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Luau</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">GPT-4o</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Agentic Systems</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Next.js 16</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Edge Runtime</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Whisper/TTS</span>
+                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Supabase</span>
                     </div>
                   </div>
                 </motion.div>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">View Case Study</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
+                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </motion.div>
@@ -874,38 +904,25 @@ export default function Home() {
                 )}
               </AnimatePresence>
 
-              {/* TidesOS Modal */}
-              {activeModal === 'tidesos' && !activeProof && (
+              {/* Lux Modal */}
+              {activeModal === 'lux' && !activeProof && (
                 <div className="p-5 sm:p-8 clear-both">
                   <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                    <div className="bg-amber-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
-                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
+                    <div className="bg-purple-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
+                      <Play className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                     </div>
                     <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white">TidesOS</h2>
-                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Building a Voice Agent for Overnight Operations</p>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Lux Agentic AI</h2>
+                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Agentic AI for Game Development</p>
                     </div>
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
                     <MarkdownRenderer
-                      content={mainContent}
+                      content={luxDescription}
                       onLinkClick={handleProofClick}
-                      theme="amber"
+                      theme="purple"
                     />
-                  </div>
-
-                  <div className="flex justify-center mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/tides-concierge"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Source Code
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
                   </div>
                 </div>
               )}
@@ -919,65 +936,39 @@ export default function Home() {
                     </div>
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-white">LogiScan AI</h2>
-                      <p className="text-emerald-400 text-xs sm:text-sm uppercase tracking-wider">Building an Intelligent Inventory System from Scratch</p>
+                      <p className="text-emerald-400 text-xs sm:text-sm uppercase tracking-wider">Computer Vision Logistics Intelligence</p>
                     </div>
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
                     <MarkdownRenderer
-                      content={mainContent}
+                      content={logiscanDescription}
                       onLinkClick={handleProofClick}
                       theme="emerald"
                     />
                   </div>
-
-                  <div className="flex justify-center mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/logiscan-ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Source Code
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </div>
                 </div>
               )}
 
-              {/* Lux Modal */}
-              {activeModal === 'lux' && !activeProof && (
+              {/* Concierge Modal */}
+              {activeModal === 'concierge' && !activeProof && (
                 <div className="p-5 sm:p-8 clear-both">
                   <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                    <div className="bg-purple-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
-                      <Play className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
+                    <div className="bg-amber-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
+                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
                     </div>
                     <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Lux Agentic AI</h2>
-                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Building a Self-Healing AI Agent for Game Development</p>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Virtual Concierge</h2>
+                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Multimodal AI Assistant</p>
                     </div>
                   </div>
 
                   <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
                     <MarkdownRenderer
-                      content={mainContent}
+                      content={conciergeDescription}
                       onLinkClick={handleProofClick}
-                      theme="purple"
+                      theme="amber"
                     />
-                  </div>
-
-                  <div className="flex justify-center mt-6 sm:mt-8">
-                    <a
-                      href="https://github.com/Seryozh/lux-agentic-ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 sm:py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all group"
-                    >
-                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-                      View Source Code
-                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
                   </div>
                 </div>
               )}
