@@ -2,159 +2,39 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, Github, FileText, Play, X, ExternalLink, Mail, Linkedin, Youtube, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, ArrowLeft } from 'lucide-react';
-import { MarkdownRenderer } from './components/MarkdownRenderer';
-
-type ProjectModal = 'concierge' | 'logiscan' | 'lux' | null;
+import { ArrowRight, Mail, Linkedin, Youtube, Github, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, Zap, ExternalLink, Play } from 'lucide-react';
+import Overlay from './components/Overlay';
+import LuxDescription from './components/LuxDescription';
+import LuxDemo from './components/LuxDemo';
 
 export default function Home() {
-  const [activeModal, setActiveModal] = useState<ProjectModal>(null);
-  const [activeProof, setActiveProof] = useState<string | null>(null);
-  const [proofContent, setProofContent] = useState<string>('');
-  const [mainContent, setMainContent] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
+  const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | null>(null);
 
-  const projectPaths: Record<string, string> = {
-    'concierge': 'TidesOS',
-    'logiscan': 'LogiScan',
-    'lux': 'Lux',
-  };
+  const sections = ['hero', 'lux', 'approach', 'expertise', 'articles', 'contact'];
 
-  const sections = ['hero', 'projects', 'approach', 'expertise', 'articles', 'contact'];
-
-  // Handle URL query params for direct modal links
+  // Handle URL hash for deep linking
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const projectParam = params.get('project');
-
-    if (!projectParam) return;
-
-    // Check if URL format is project/proof (e.g., "logiscan/vision-api-cost")
-    if (projectParam.includes('/')) {
-      const [project, proof] = projectParam.split('/');
-
-      if (project === 'concierge' || project === 'logiscan' || project === 'lux') {
-        setActiveModal(project as ProjectModal);
-        setActiveProof(proof);
-        loadProofContent(project, proof);
-      }
-    }
-    // Otherwise check legacy format with separate proof param
-    else {
-      const proof = params.get('proof');
-
-      if (projectParam === 'concierge' || projectParam === 'logiscan' || projectParam === 'lux') {
-        setActiveModal(projectParam as ProjectModal);
-
-        if (proof) {
-          setActiveProof(proof);
-          loadProofContent(projectParam, proof);
-        }
-      }
-    }
-  }, []);
-
-  // Update URL when modal opens/closes
-  useEffect(() => {
-    if (activeModal) {
-      const url = new URL(window.location.href);
-
-      if (activeProof) {
-        // Use project/proof format
-        url.searchParams.set('project', `${activeModal}/${activeProof}`);
-      } else {
-        // Just project
-        url.searchParams.set('project', activeModal);
-      }
-
-      window.history.pushState({}, '', url.toString());
-    } else {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('project');
-      window.history.pushState({}, '', url.toString());
-    }
-  }, [activeModal, activeProof]);
-
-  // Load main case study content when modal opens
-  const loadMainContent = async (project: string) => {
-    try {
-      const projectPath = projectPaths[project];
-      if (!projectPath) return;
-
-      const response = await fetch(`/api/proof?project=${projectPath}&proof=main`);
-      if (response.ok) {
-        const content = await response.text();
-        setMainContent(content);
-      }
-    } catch (error) {
-      console.error('Failed to load main content:', error);
-    }
-  };
-
-  // Load main content when modal opens
-  useEffect(() => {
-    if (activeModal && !activeProof) {
-      loadMainContent(activeModal);
-    }
-  }, [activeModal, activeProof]);
-
-  // Load proof content from markdown files
-  const loadProofContent = async (project: string, proof: string) => {
-    try {
-      const projectPath = projectPaths[project];
-      if (!projectPath) return;
-
-      const response = await fetch(`/api/proof?project=${projectPath}&proof=${proof}`);
-      if (response.ok) {
-        const content = await response.text();
-        setProofContent(content);
-      }
-    } catch (error) {
-      console.error('Failed to load proof content:', error);
-    }
-  };
-
-  // Handle proof link clicks
-  const handleProofClick = (proofId: string) => {
-    setActiveProof(proofId);
-    if (activeModal) {
-      loadProofContent(activeModal, proofId);
-    }
-  };
-
-  // Handle back from proof
-  const handleBackFromProof = () => {
-    setActiveProof(null);
-    setProofContent('');
-  };
-
-  // Handle closing modal/proof
-  const handleCloseModal = () => {
-    if (activeProof) {
-      handleBackFromProof();
-    } else {
-      setActiveModal(null);
-      setActiveProof(null);
-      setProofContent('');
-      setMainContent('');
-    }
-  };
-
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        if (activeProof) {
-          handleBackFromProof();
-        } else {
-          setActiveModal(null);
-        }
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash === '#lux-demo') {
+        setActiveOverlay('lux-demo');
+      } else if (hash.startsWith('#lux-')) {
+        setActiveOverlay('lux-description');
+        // Small delay to allow modal to open before scrolling
+        setTimeout(() => {
+          const element = document.getElementById(hash.substring(1));
+          if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [activeProof]);
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   useEffect(() => {
     const handleScroll = (e: Event) => {
@@ -191,42 +71,12 @@ export default function Home() {
   };
 
   const navItems = [
-    { label: 'Projects', id: 'projects' },
+    { label: 'Lux', id: 'lux' },
     { label: 'Approach', id: 'approach' },
     { label: 'Expertise', id: 'expertise' },
     { label: 'Articles', id: 'articles' },
     { label: 'Contact', id: 'contact' },
   ];
-
-  const luxDescription = `## 1. Lux (Luxembourg) - Agentic AI for Game Development
-**The Challenge:** Roblox Studio plugins are restricted to one-way outbound HTTP requests, making real-time bidirectional AI interaction (like reading/writing code) technically impossible for standard architectures.
-**The Solution:** I engineered a novel **polling-bridge pattern** using Python's \`asyncio.Event\` synchronization. This allows a FastAPI backend to "pause" an AI agent's execution while waiting for the plugin to respond with game data, effectively creating a bidirectional bridge over a one-way protocol.
-**Key Results:**
-- **1,500+ Downloads** since Jan 2026.
-- **Cost Reduction:** Implemented a two-model orchestration system (Orchestrator + Worker) that uses cheaper models for planning and expensive models only for code generation.
-- **Agentic Workflow:** Built with LangGraph to handle complex, multi-step game modifications through natural language.
-
-[Link Github](https://github.com/Seryozh/lux-agentic-ai)`;
-
-  const logiscanDescription = `## 2. LogiScan AI - Computer Vision Logistics Intelligence
-**The Challenge:** Manual package auditing at Tides Residential took over 2 hours per shift and was prone to human error. Standard OCR failed due to messy, overlapping labels in high-pressure environments.
-**The Solution:** A mobile-first PWA that leverages **GPT-4o Vision** to identify internal sorting stickers while ignoring carrier noise. I optimized the pipeline with client-side image compression (reducing bandwidth by 95%) and atomic PostgreSQL upserts to ensure data integrity.
-**Key Results:**
-- **83% Time Reduction:** Cut audit time from 120 minutes to ~20 minutes.
-- **95%+ Accuracy:** Outperformed manual checks and traditional barcode scanners.
-- **Zero Hardware Cost:** Transformed existing staff smartphones into enterprise-grade scanners.
-
-[Link Github](https://github.com/Seryozh/logiscan-ai)`;
-
-  const conciergeDescription = `## 3. Tides Virtual Concierge - Multimodal AI Assistant
-**The Challenge:** Overnight shifts faced language barriers (Spanish-speaking residents) and repetitive inquiries that distracted staff from security duties.
-**The Solution:** A bilingual, voice-first AI assistant built with **Next.js 16 (Edge Runtime)** for sub-200ms latency. It integrates OpenAI Whisper (STT), GPT-4o (Reasoning), and ElevenLabs (TTS) with direct tool-calling access to the building's Supabase database.
-**Key Results:**
-- **Bilingual Automation:** Seamlessly handles inquiries in English and Spanish.
-- **Real-time Data:** Residents can check package status or log pickups via voice, with the AI performing live database operations.
-- **Production-Ready:** Features session persistence, edge computing for speed, and a custom-designed "Orb" UI for visual feedback.
-
-[Link Github](https://github.com/Seryozh/tides-concierge)`;
 
   return (
     <main className="bg-slate-950 text-white snap-container">
@@ -358,189 +208,122 @@ export default function Home() {
         </div>
 
         {/* Background Gradient Blob */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="z-10 text-center max-w-3xl"
-        >
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4">
-          Sergey Kudelin
-        </h1>
-        <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-4 sm:mb-6 tracking-wide">
-          AI Automation Engineer
-        </p>
-        <p className="text-amber-500/80 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 font-medium max-w-xl mx-auto leading-relaxed">
-          I build autonomous systems for high pressure environments.
-        </p>
+        <div className="w-full h-full flex items-center justify-center px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="z-10 text-center max-w-3xl"
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4">
+              Sergey Kudelin
+            </h1>
+            <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-4 sm:mb-6 tracking-wide">
+              AI Automation Engineer
+            </p>
+            <p className="text-amber-500/80 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 font-medium max-w-xl mx-auto leading-relaxed">
+              I build autonomous systems for high pressure environments.
+            </p>
 
-        {/* Bio Section */}
-        <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
-          <p>
-            I'm a builder. I spent years growing a{' '}
-            <a
-              href="https://www.youtube.com/@SergeRoblox"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-400/90 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all"
-            >
-              YouTube channel to 200,000+ subscribers
-            </a>
-            , where I learned a simple truth: if you don't design for real human behavior, you lose.
-          </p>
-          <p>
-            I bring that same focus to engineering. Right now, I work night operations at a major residential complex,
-            but I treat it as a live testing ground. I build and stress-test autonomous agents against constant
-            real-world data and messy human problems.
-          </p>
-          <p className="text-amber-400/90 font-medium">
-            I build automation for operational bottlenecks. My software takes over the repetitive logic in high-volume
-            environments so humans can focus on decisions that actually need judgment.
-          </p>
+            {/* Bio Section */}
+            <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
+              <p>
+                I'm a builder. I spent years growing a{' '}
+                <a
+                  href="https://www.youtube.com/@SergeRoblox"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400/90 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all"
+                >
+                  YouTube channel to 200,000+ subscribers
+                </a>
+                , where I learned a simple truth: if you don't design for real human behavior, you lose.
+              </p>
+              <p>
+                I bring that same focus to engineering. Right now, I work night operations at a major residential complex,
+                but I treat it as a live testing ground. I build and stress-test autonomous agents against constant
+                real-world data and messy human problems.
+              </p>
+              <p className="text-amber-400/90 font-medium">
+                I build automation for operational bottlenecks. My software takes over the repetitive logic in high-volume
+                environments so humans can focus on decisions that actually need judgment.
+              </p>
+            </div>
+          </motion.div>
         </div>
-        </motion.div>
-      </div>
       </section>
 
-      {/* Featured Projects Section */}
-      <section id="projects" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
-        <div className="w-full max-w-5xl z-10">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
-            Featured Projects
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Lux Card */}
-            <motion.div
-              whileHover={{ y: -8 }}
-              className="group relative cursor-pointer"
-              onClick={() => setActiveModal('lux')}
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-purple-500/10 p-3 rounded-lg">
-                    <Play className="w-6 h-6 text-purple-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white">Lux Agentic AI</h3>
-                    <p className="text-xs text-purple-400 uppercase tracking-wider">Autonomous Coding Assistant</p>
-                  </div>
+      {/* Lux Project Section */}
+      <section id="lux" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl z-10"
+        >
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
+                  <Zap className="w-4 h-4" />
+                  Flagship Project
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
-                  Self-healing coding framework for Roblox with 1,500+ downloads, tested via 200K+ subscriber YouTube channel.
+                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                  Lux (Luxembourg)
+                </h2>
+                <p className="text-xl text-slate-400 leading-relaxed">
+                  Agentic AI system for natural language game development.
+                  Solving bidirectional communication over one-way protocols.
                 </p>
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  whileHover={{ opacity: 1, height: 'auto' }}
-                  className="overflow-hidden mb-4"
-                >
-                  <div className="pt-4 border-t border-purple-500/20">
-                    <p className="text-xs text-purple-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">Python</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">FastAPI</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">LangGraph</span>
-                      <span className="text-xs bg-purple-500/10 text-purple-300 px-2 py-1 rounded">GPT-4o</span>
-                    </div>
-                  </div>
-                </motion.div>
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-purple-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                  <div className="text-2xl font-bold text-amber-400">1,500+</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                  <div className="text-2xl font-bold text-emerald-400">90%</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Cost Reduction</div>
                 </div>
               </div>
-            </motion.div>
 
-            {/* LogiScan Card */}
-            <motion.div
-              whileHover={{ y: -8 }}
-              className="group relative cursor-pointer"
-              onClick={() => setActiveModal('logiscan')}
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-emerald-500/10 p-3 rounded-lg">
-                    <FileText className="w-6 h-6 text-emerald-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white">LogiScan AI</h3>
-                    <p className="text-xs text-emerald-400 uppercase tracking-wider">Computer Vision Inventory</p>
-                  </div>
-                </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
-                  Vision-based mobile tool that replaced a two-hour manual inventory audit with automated extraction.
-                </p>
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  whileHover={{ opacity: 1, height: 'auto' }}
-                  className="overflow-hidden mb-4"
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => setActiveOverlay('lux-description')}
+                  className="flex-1 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all flex items-center justify-center gap-2 group"
                 >
-                  <div className="pt-4 border-t border-emerald-500/20">
-                    <p className="text-xs text-emerald-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">Next.js 15</span>
-                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">PWA</span>
-                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">GPT-4o Vision</span>
-                      <span className="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">PostgreSQL</span>
-                    </div>
+                  Read More
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
+                  onClick={() => setActiveOverlay('lux-demo')}
+                  className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                >
+                  Interactive Demo
+                  <Play className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="relative group cursor-pointer" onClick={() => setActiveOverlay('lux-demo')}>
+              <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+              <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 group-hover:scale-105 transition-transform duration-700" />
+                <div className="z-10 flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 shadow-2xl shadow-amber-500/50 group-hover:scale-110 transition-transform">
+                    <Play className="w-8 h-8 fill-current" />
                   </div>
-                </motion.div>
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-emerald-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                  <span className="text-sm font-bold text-white uppercase tracking-widest">Watch Simulation</span>
                 </div>
               </div>
-            </motion.div>
-
-            {/* Tides Virtual Concierge Card */}
-            <motion.div
-              whileHover={{ y: -8 }}
-              className="group relative cursor-pointer"
-              onClick={() => setActiveModal('concierge')}
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-              <div className="relative h-full bg-slate-900 rounded-xl border border-slate-800 p-6 hover:bg-slate-800/80 transition-all duration-300 flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-amber-500/10 p-3 rounded-lg">
-                    <Sparkles className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white">Virtual Concierge</h3>
-                    <p className="text-xs text-amber-400 uppercase tracking-wider">Multimodal AI Assistant</p>
-                  </div>
-                </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow">
-                  Bilingual, voice-first AI assistant managing residential inquiries with sub-200ms latency.
-                </p>
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  whileHover={{ opacity: 1, height: 'auto' }}
-                  className="overflow-hidden mb-4"
-                >
-                  <div className="pt-4 border-t border-amber-500/20">
-                    <p className="text-xs text-amber-300 font-semibold mb-2 uppercase tracking-wider">Tech Stack</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Next.js 16</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Edge Runtime</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Whisper/TTS</span>
-                      <span className="text-xs bg-amber-500/10 text-amber-300 px-2 py-1 rounded">Supabase</span>
-                    </div>
-                  </div>
-                </motion.div>
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-amber-500/70 text-xs font-medium uppercase tracking-wider">View Project</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
-                </div>
-              </div>
-            </motion.div>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* The Approach Section */}
@@ -809,6 +592,23 @@ export default function Home() {
       </section>
 
       {/* Footer */}
+      {/* Overlays */}
+      <Overlay
+        isOpen={activeOverlay === 'lux-description'}
+        onClose={() => setActiveOverlay(null)}
+        title="Lux: Technical Deep Dive"
+      >
+        <LuxDescription />
+      </Overlay>
+
+      <Overlay
+        isOpen={activeOverlay === 'lux-demo'}
+        onClose={() => setActiveOverlay(null)}
+        title="Interactive Polling Bridge Demo"
+      >
+        <LuxDemo />
+      </Overlay>
+
       <footer className="snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -817,165 +617,32 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-5xl border-t border-slate-800 pt-8"
         >
-        <div className="text-center">
-          <h3 className="text-xs sm:text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-3 sm:mb-4">Built With</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Frontend</p>
-              <p className="text-sm text-slate-200 font-medium">React 19, Next.js 15</p>
+          <div className="text-center">
+            <h3 className="text-xs sm:text-sm font-semibold text-amber-500/80 uppercase tracking-wider mb-3 sm:mb-4">Built With</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Frontend</p>
+                <p className="text-sm text-slate-200 font-medium">React 19, Next.js 15</p>
+              </div>
+              <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Styling</p>
+                <p className="text-sm text-slate-200 font-medium">Tailwind CSS</p>
+              </div>
+              <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Animation</p>
+                <p className="text-sm text-slate-200 font-medium">Framer Motion</p>
+              </div>
+              <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Icons</p>
+                <p className="text-sm text-slate-200 font-medium">Lucide React</p>
+              </div>
             </div>
-            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Styling</p>
-              <p className="text-sm text-slate-200 font-medium">Tailwind CSS</p>
-            </div>
-            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Animation</p>
-              <p className="text-sm text-slate-200 font-medium">Framer Motion</p>
-            </div>
-            <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:bg-slate-900/60 transition-colors">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Icons</p>
-              <p className="text-sm text-slate-200 font-medium">Lucide React</p>
-            </div>
+            <p className="text-xs text-slate-500">
+              Designed for performance. Built with modern web technologies. Deployed on Vercel.
+            </p>
           </div>
-          <p className="text-xs text-slate-500">
-            Designed for performance. Built with modern web technologies. Deployed on Vercel.
-          </p>
-        </div>
         </motion.div>
       </footer>
-
-      {/* Modal System */}
-      <AnimatePresence>
-        {activeModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
-            onClick={() => {
-              setActiveModal(null);
-              setActiveProof(null);
-              setProofContent('');
-            }}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl max-h-[95vh] my-auto overflow-y-auto bg-slate-900 rounded-xl sm:rounded-2xl border border-slate-800 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={handleCloseModal}
-                className="sticky top-3 sm:top-4 right-3 sm:right-4 float-right z-10 p-2 bg-slate-800/80 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors"
-              >
-                <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
-              </button>
-
-              {/* Proof View */}
-              <AnimatePresence mode="wait">
-                {activeProof && proofContent && (
-                  <motion.div
-                    key="proof-view"
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.3 }}
-                    className="p-5 sm:p-8 clear-both"
-                  >
-                    {/* Back Button */}
-                    <button
-                      onClick={handleBackFromProof}
-                      className="flex items-center gap-2 mb-6 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-slate-800/50 rounded-lg transition-all duration-300 border border-slate-700 hover:border-amber-500/50"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      Back to Case Study
-                    </button>
-
-                    <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                      <MarkdownRenderer 
-                        content={proofContent} 
-                        onLinkClick={handleProofClick}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Lux Modal */}
-              {activeModal === 'lux' && !activeProof && (
-                <div className="p-5 sm:p-8 clear-both">
-                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                    <div className="bg-purple-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
-                      <Play className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Lux Agentic AI</h2>
-                      <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-wider">Agentic AI for Game Development</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    <MarkdownRenderer
-                      content={luxDescription}
-                      onLinkClick={handleProofClick}
-                      theme="purple"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* LogiScan Modal */}
-              {activeModal === 'logiscan' && !activeProof && (
-                <div className="p-5 sm:p-8 clear-both">
-                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                    <div className="bg-emerald-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
-                      <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white">LogiScan AI</h2>
-                      <p className="text-emerald-400 text-xs sm:text-sm uppercase tracking-wider">Computer Vision Logistics Intelligence</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    <MarkdownRenderer
-                      content={logiscanDescription}
-                      onLinkClick={handleProofClick}
-                      theme="emerald"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Concierge Modal */}
-              {activeModal === 'concierge' && !activeProof && (
-                <div className="p-5 sm:p-8 clear-both">
-                  <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                    <div className="bg-amber-500/10 p-2.5 sm:p-4 rounded-lg sm:rounded-xl">
-                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white">Virtual Concierge</h2>
-                      <p className="text-amber-400 text-xs sm:text-sm uppercase tracking-wider">Multimodal AI Assistant</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-5 sm:space-y-6 text-slate-300 text-sm sm:text-base">
-                    <MarkdownRenderer
-                      content={conciergeDescription}
-                      onLinkClick={handleProofClick}
-                      theme="amber"
-                    />
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
