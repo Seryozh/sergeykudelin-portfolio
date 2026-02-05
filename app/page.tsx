@@ -325,7 +325,7 @@ export default function Home() {
             <div className="relative group cursor-pointer" onClick={() => openModal('lux-demo')}>
               <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
-                <div className="absolute inset-0 bg-[url('/lux-preview.png')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-[url('https://i.imgur.com/6lxa15d.png')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
                 <div className="z-10 flex flex-col items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 shadow-2xl shadow-amber-500/50 group-hover:scale-110 transition-transform">
                     <Play className="w-8 h-8 fill-current" />
