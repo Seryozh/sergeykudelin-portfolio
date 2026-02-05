@@ -365,7 +365,10 @@ end`}</code>
           I've built an interactive simulation that visualizes the real-time communication between the game engine and the AI agent.
         </p>
         <button 
-          onClick={() => onOpenDemo?.()}
+          onClick={() => {
+            console.log('Opening demo from description...');
+            onOpenDemo?.();
+          }}
           className="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all group"
         >
           Launch Interactive Demo

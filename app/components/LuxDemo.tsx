@@ -123,7 +123,10 @@ export default function LuxDemo() {
   const [speed, setSpeed] = useState(0.5);
   const [showTechnical, setShowTechnical] = useState(false);
   const [scale, setScale] = useState(1);
+  const [slideProgress, setSlideProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const STEP_DURATION = 4000 / speed;
 
   // Auto-scaling logic to fit screen
   useEffect(() => {
@@ -131,13 +134,12 @@ export default function LuxDemo() {
       if (containerRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const windowHeight = window.innerHeight;
-        const targetWidth = 1200; // Base design width
-        const targetHeight = 850; // Base design height (increased for safety)
+        const targetWidth = 1200; 
+        const targetHeight = 850; 
         
         const widthScale = containerWidth / targetWidth;
-        const heightScale = (windowHeight * 0.75) / targetHeight; // More conservative height scale
+        const heightScale = (windowHeight * 0.75) / targetHeight; 
         
-        // Cap the scale to prevent over-zooming on large windows
         setScale(Math.min(widthScale, heightScale, 0.9)); 
       }
     };
@@ -147,10 +149,28 @@ export default function LuxDemo() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Slide progress timer
+  useEffect(() => {
+    if (!isPlaying) {
+      setSlideProgress(0);
+      return;
+    }
+
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min((elapsed / STEP_DURATION) * 100, 100);
+      setSlideProgress(progress);
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, currentStep, speed]);
+
+  // Step transition logic
   useEffect(() => {
     if (!isPlaying) return;
 
-    const interval = setInterval(() => {
+    const timeout = setTimeout(() => {
       setCurrentStep((prev) => {
         if (prev >= STEPS.length - 1) {
           setIsPlaying(false);
@@ -158,16 +178,17 @@ export default function LuxDemo() {
         }
         return prev + 1;
       });
-    }, 4000 / speed);
+    }, STEP_DURATION);
 
-    return () => clearInterval(interval);
-  }, [isPlaying, speed]);
+    return () => clearTimeout(timeout);
+  }, [isPlaying, currentStep, speed]);
 
   const step = STEPS[currentStep];
 
   const handleRestart = () => {
     setCurrentStep(0);
     setIsPlaying(false);
+    setSlideProgress(0);
   };
 
   return (
@@ -182,13 +203,22 @@ export default function LuxDemo() {
         className="space-y-8 py-4"
       >
         {/* Progress Bar */}
-        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-amber-500"
-            initial={{ width: 0 }}
-            animate={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
-            transition={{ duration: 0.5, ease: "circOut" }}
-          />
+        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden flex flex-col">
+          <div className="flex-1 flex">
+            <motion.div 
+              className="h-full bg-amber-500/30"
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+              transition={{ duration: 0.5, ease: "circOut" }}
+            />
+          </div>
+          {/* Per-slide loading bar */}
+          <div className="h-1 w-full bg-slate-900">
+            <motion.div 
+              className="h-full bg-amber-500"
+              style={{ width: `${slideProgress}%` }}
+            />
+          </div>
         </div>
 
         {/* Visualization Area */}
@@ -266,19 +296,19 @@ export default function LuxDemo() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute left-[28%] flex flex-col items-center gap-3"
+                    className="absolute left-[22%] right-[55%] flex flex-col items-center justify-center gap-3"
                   >
-                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
+                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md z-20">
                       {step.label}
                     </div>
-                    <div className="relative flex items-center justify-center">
+                    <div className="relative w-full flex items-center justify-center">
                       <motion.div 
-                        initial={{ x: [5, 9].includes(currentStep) ? 40 : -40 }}
-                        animate={{ x: [5, 9].includes(currentStep) ? -40 : 40 }}
+                        initial={{ x: [5, 9].includes(currentStep) ? 60 : -60 }}
+                        animate={{ x: [5, 9].includes(currentStep) ? -60 : 60 }}
                         transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="absolute w-3 h-3 bg-amber-400 rounded-full blur-[2px] shadow-[0_0_10px_#fbbf24]"
+                        className="absolute w-3 h-3 bg-amber-400 rounded-full blur-[2px] shadow-[0_0_10px_#fbbf24] z-10"
                       />
-                      <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+                      <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
                       <ArrowRight className={`absolute w-6 h-6 text-amber-400/50 ${[5, 9].includes(currentStep) ? 'rotate-180' : ''}`} />
                     </div>
                   </motion.div>
@@ -291,19 +321,19 @@ export default function LuxDemo() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute right-[28%] flex flex-col items-center gap-3"
+                    className="absolute left-[55%] right-[22%] flex flex-col items-center justify-center gap-3"
                   >
-                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
+                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md z-20">
                       {step.label}
                     </div>
-                    <div className="relative flex items-center justify-center">
+                    <div className="relative w-full flex items-center justify-center">
                       <motion.div 
-                        initial={{ x: -40 }}
-                        animate={{ x: 40 }}
+                        initial={{ x: -60 }}
+                        animate={{ x: 60 }}
                         transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="absolute w-3 h-3 bg-emerald-400 rounded-full blur-[2px] shadow-[0_0_10px_#10b981]"
+                        className="absolute w-3 h-3 bg-emerald-400 rounded-full blur-[2px] shadow-[0_0_10px_#10b981] z-10"
                       />
-                      <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+                      <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
                       <ArrowRight className="absolute w-6 h-6 text-emerald-400/50" />
                     </div>
                   </motion.div>
@@ -360,7 +390,7 @@ export default function LuxDemo() {
             <div className="flex items-center gap-8 pt-4">
               <div className="flex items-center gap-4">
                 <button
-                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                  onClick={() => { setCurrentStep(Math.max(0, currentStep - 1)); setSlideProgress(0); }}
                   disabled={currentStep === 0}
                   className="p-4 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
                 >
@@ -374,7 +404,7 @@ export default function LuxDemo() {
                   {isPlaying ? 'PAUSE' : 'PLAY'}
                 </button>
                 <button
-                  onClick={() => setCurrentStep(Math.min(STEPS.length - 1, currentStep + 1))}
+                  onClick={() => { setCurrentStep(Math.min(STEPS.length - 1, currentStep + 1)); setSlideProgress(0); }}
                   disabled={currentStep === STEPS.length - 1}
                   className="p-4 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
                 >
@@ -394,7 +424,7 @@ export default function LuxDemo() {
                   {[0.5, 1, 2].map((s) => (
                     <button
                       key={s}
-                      onClick={() => setSpeed(s)}
+                      onClick={() => { setSpeed(s); setSlideProgress(0); }}
                       className={`px-6 py-2.5 rounded-xl text-[11px] font-black transition-all ${speed === s ? 'bg-slate-800 text-white shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
                     >
                       {s}X
