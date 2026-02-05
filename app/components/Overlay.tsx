@@ -56,7 +56,7 @@ export default function Overlay({ isOpen, onClose, title, children }: OverlayPro
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-hidden p-2 md:p-4">
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
               {children}
             </div>
           </motion.div>
