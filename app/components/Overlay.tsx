@@ -42,7 +42,7 @@ export default function Overlay({ isOpen, onClose, title, children }: OverlayPro
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-4 md:inset-10 lg:inset-20 bg-slate-900 border border-slate-800 rounded-2xl z-[101] overflow-hidden flex flex-col shadow-2xl shadow-amber-500/5"
+            className="fixed inset-4 md:inset-6 lg:inset-10 xl:inset-12 bg-slate-900 border border-slate-800 rounded-2xl z-[101] overflow-hidden flex flex-col shadow-2xl shadow-amber-500/5"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 md:p-6 border-b border-slate-800 bg-slate-900/50">
