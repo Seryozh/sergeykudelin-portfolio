@@ -285,7 +285,7 @@ export default function Home() {
                   Flagship Project
                 </div>
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                  Lux (Luxembourg)
+                  Lux
                 </h2>
                 <p className="text-xl text-slate-400 leading-relaxed">
                   Agentic AI system for natural language game development.
@@ -299,8 +299,8 @@ export default function Home() {
                   <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-emerald-400">22k → 2.2k</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Lines of Code</div>
+                  <div className="text-2xl font-bold text-emerald-400">v2.0</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Latest Release</div>
                 </div>
               </div>
 
@@ -322,10 +322,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative group cursor-pointer" onClick={() => setActiveOverlay('lux-demo')}>
+            <div className="relative group cursor-pointer" onClick={() => openModal('lux-demo')}>
               <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-[url('/lux-preview.png')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
                 <div className="z-10 flex flex-col items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 shadow-2xl shadow-amber-500/50 group-hover:scale-110 transition-transform">
                     <Play className="w-8 h-8 fill-current" />

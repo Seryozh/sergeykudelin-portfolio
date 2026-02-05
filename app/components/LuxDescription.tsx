@@ -2,9 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2, Layers, X as XIcon } from 'lucide-react';
+import { CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2, Layers, X as XIcon, Play } from 'lucide-react';
 
-export default function LuxDescription() {
+interface LuxDescriptionProps {
+  onOpenDemo?: () => void;
+}
+
+export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
   const toggleExpanded = (id: string) => {
@@ -27,7 +31,6 @@ export default function LuxDescription() {
         const el = document.getElementById(id);
         if (!el) return false;
         const rect = el.getBoundingClientRect();
-        // Check if section is in the upper half of the viewport
         return rect.top >= 0 && rect.top <= window.innerHeight / 2;
       });
       if (visibleSection && window.location.hash !== `#${visibleSection}`) {
@@ -51,13 +54,19 @@ export default function LuxDescription() {
           1,500+ Active Installations
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-          Lux (Luxembourg)
+          Lux
         </h1>
-        <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          A production AI system that lets developers build games in plain English. 
-          Describe what you want, and an autonomous agent analyzes your project, 
-          generates code, and executes changes—all in real-time.
-        </p>
+        <div className="max-w-3xl mx-auto space-y-4">
+          <p className="text-xl text-slate-300 leading-relaxed">
+            Lux is a production-grade AI agent designed to bridge the gap between natural language and complex game engine APIs. 
+            It allows developers to build, modify, and debug games in plain English by autonomously analyzing project structures and executing precise modifications.
+          </p>
+          <p className="text-slate-400 leading-relaxed">
+            Originally built as a monolithic assistant, Lux v2.0 represents a complete architectural overhaul. 
+            It solves the critical challenge of bidirectional communication on platforms with strict one-way HTTP constraints, 
+            enabling a seamless "human-in-the-loop" experience where the AI can ask questions and request data mid-execution.
+          </p>
+        </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-8">
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
@@ -65,8 +74,8 @@ export default function LuxDescription() {
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-emerald-400">22k → 2.2k</div>
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Lines of Code</div>
+            <div className="text-2xl font-bold text-emerald-400">v2.0</div>
+            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Latest Release</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700 col-span-2 md:col-span-1">
             <div className="text-2xl font-bold text-blue-400">100-300ms</div>
@@ -387,10 +396,26 @@ end`}</code>
         </div>
       </section>
 
+      {/* Try it out section */}
+      <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
+        <h3 className="text-2xl font-bold text-white">See the Architecture in Action</h3>
+        <p className="text-slate-400 max-w-xl mx-auto">
+          The best way to understand the Polling Bridge pattern is to watch it work. 
+          I've built an interactive simulation that visualizes the real-time communication between the game engine and the AI agent.
+        </p>
+        <button 
+          onClick={onOpenDemo}
+          className="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all group"
+        >
+          Launch Interactive Demo
+          <Play className="w-5 h-5 fill-current group-hover:scale-110 transition-transform" />
+        </button>
+      </section>
+
       {/* CTA */}
       <section className="pt-12 border-t border-slate-800 flex flex-col md:flex-row gap-4 justify-center">
         <a 
-          href="https://github.com/Seryozh" 
+          href="https://github.com/Seryozh/lux-agentic-ai" 
           target="_blank" 
           className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-colors"
         >
