@@ -26,7 +26,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
   // Handle scroll to update URL hash
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['lux-polling-bridge', 'lux-refactor', 'lux-hash-verification', 'lux-metrics'];
+      const sections = ['lux-polling-bridge', 'lux-refactor', 'lux-hash-verification'];
       const visibleSection = sections.find(id => {
         const el = document.getElementById(id);
         if (!el) return false;
@@ -357,45 +357,6 @@ end`}</code>
         </div>
       </section>
 
-      {/* Metrics Dashboard */}
-      <section id="lux-metrics" className="space-y-8 scroll-mt-24">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-slate-500/10">
-            <BarChart3 className="w-6 h-6 text-slate-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">Verified Metrics</h2>
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-slate-800">
-                <th className="py-4 px-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Metric</th>
-                <th className="py-4 px-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Value</th>
-                <th className="py-4 px-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Source / Proof</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {[
-                { m: 'Active Installations', v: '1,500+', p: 'Roblox Creator Store Stats' },
-                { m: 'Code Reduction', v: '90%', p: '22,000 → 2,237 lines' },
-                { m: 'Polling Interval', v: '100ms', p: 'Main.server.lua:390' },
-                { m: 'Tool Timeout', v: '30s', p: 'config.py:9' },
-                { m: 'Session TTL', v: '1 hour', p: 'config.py:10' },
-                { m: 'Backend LOC', v: '813 lines', p: 'Python / FastAPI' },
-                { m: 'Plugin LOC', v: '1,424 lines', p: 'Lua / Roblox' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-slate-800/50 hover:bg-slate-800/20 transition-colors">
-                  <td className="py-4 px-4 text-white font-medium">{row.m}</td>
-                  <td className="py-4 px-4 text-amber-400 font-bold">{row.v}</td>
-                  <td className="py-4 px-4 text-slate-400 italic">{row.p}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
       {/* Try it out section */}
       <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
         <h3 className="text-2xl font-bold text-white">See the Architecture in Action</h3>
@@ -404,7 +365,7 @@ end`}</code>
           I've built an interactive simulation that visualizes the real-time communication between the game engine and the AI agent.
         </p>
         <button 
-          onClick={onOpenDemo}
+          onClick={() => onOpenDemo?.()}
           className="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all group"
         >
           Launch Interactive Demo

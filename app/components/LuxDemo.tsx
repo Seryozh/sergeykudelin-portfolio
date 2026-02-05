@@ -132,12 +132,13 @@ export default function LuxDemo() {
         const containerWidth = containerRef.current.offsetWidth;
         const windowHeight = window.innerHeight;
         const targetWidth = 1200; // Base design width
-        const targetHeight = 800; // Base design height
+        const targetHeight = 850; // Base design height (increased for safety)
         
         const widthScale = containerWidth / targetWidth;
-        const heightScale = (windowHeight * 0.8) / targetHeight;
+        const heightScale = (windowHeight * 0.75) / targetHeight; // More conservative height scale
         
-        setScale(Math.min(widthScale, heightScale, 1));
+        // Cap the scale to prevent over-zooming on large windows
+        setScale(Math.min(widthScale, heightScale, 0.9)); 
       }
     };
 
@@ -170,7 +171,7 @@ export default function LuxDemo() {
   };
 
   return (
-    <div ref={containerRef} className="w-full flex flex-col items-center justify-center overflow-hidden">
+    <div ref={containerRef} className="w-full flex flex-col items-center justify-start overflow-hidden min-h-[600px]">
       <div 
         style={{ 
           transform: `scale(${scale})`, 
@@ -178,7 +179,7 @@ export default function LuxDemo() {
           width: '1200px',
           transition: 'transform 0.3s ease-out'
         }}
-        className="space-y-8 py-8"
+        className="space-y-8 py-4"
       >
         {/* Progress Bar */}
         <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -255,22 +256,31 @@ export default function LuxDemo() {
               <span className="text-[11px] font-black text-slate-500 uppercase tracking-[0.3em]">AI Agent</span>
             </div>
 
-            {/* Simplified Centered Arrows */}
+            {/* Redesigned Centered Arrows */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               <AnimatePresence mode="wait">
                 {/* Left Arrow (Plugin <-> Backend) */}
                 {[1, 4, 5, 6, 9].includes(currentStep) && (
                   <motion.div 
                     key={`arrow-left-${currentStep}`}
-                    initial={{ opacity: 0, x: [1, 6].includes(currentStep) ? -50 : 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: [1, 6].includes(currentStep) ? 50 : -50 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                     className="absolute left-[28%] flex flex-col items-center gap-3"
                   >
-                    <div className="px-4 py-1.5 bg-slate-900/80 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-xl backdrop-blur-sm">
+                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
                       {step.label}
                     </div>
-                    <ArrowRight className={`w-10 h-10 text-amber-400 ${[5, 9].includes(currentStep) ? 'rotate-180' : ''}`} />
+                    <div className="relative flex items-center justify-center">
+                      <motion.div 
+                        initial={{ x: [5, 9].includes(currentStep) ? 40 : -40 }}
+                        animate={{ x: [5, 9].includes(currentStep) ? -40 : 40 }}
+                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                        className="absolute w-3 h-3 bg-amber-400 rounded-full blur-[2px] shadow-[0_0_10px_#fbbf24]"
+                      />
+                      <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+                      <ArrowRight className={`absolute w-6 h-6 text-amber-400/50 ${[5, 9].includes(currentStep) ? 'rotate-180' : ''}`} />
+                    </div>
                   </motion.div>
                 )}
 
@@ -278,15 +288,24 @@ export default function LuxDemo() {
                 {[2, 7].includes(currentStep) && (
                   <motion.div 
                     key={`arrow-right-${currentStep}`}
-                    initial={{ opacity: 0, x: currentStep === 2 ? -50 : 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: currentStep === 2 ? 50 : -50 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                     className="absolute right-[28%] flex flex-col items-center gap-3"
                   >
-                    <div className="px-4 py-1.5 bg-slate-900/80 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-xl backdrop-blur-sm">
+                    <div className="px-4 py-1.5 bg-slate-900/90 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
                       {step.label}
                     </div>
-                    <ArrowRight className="w-10 h-10 text-emerald-400" />
+                    <div className="relative flex items-center justify-center">
+                      <motion.div 
+                        initial={{ x: -40 }}
+                        animate={{ x: 40 }}
+                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                        className="absolute w-3 h-3 bg-emerald-400 rounded-full blur-[2px] shadow-[0_0_10px_#10b981]"
+                      />
+                      <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+                      <ArrowRight className="absolute w-6 h-6 text-emerald-400/50" />
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
