@@ -128,24 +128,25 @@ export default function LuxDemo() {
 
   const STEP_DURATION = 4000 / speed;
 
-  // Auto-scaling logic to fit screen
+  // Overhauled scaling logic: Fit-to-Screen
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
         
-        // Base design dimensions
+        // Base design dimensions (the "logical" size of our demo)
         const baseWidth = 1200;
-        const baseHeight = 900; 
+        const baseHeight = 850; 
         
-        // Calculate scale to fit both width and height with padding
-        const widthScale = (windowWidth * 0.9) / baseWidth;
-        const heightScale = (windowHeight * 0.7) / baseHeight;
+        // Calculate scale to fit both width and height with strict padding
+        // We use 0.9 for width and 0.7 for height to account for modal headers/footers
+        const widthScale = (windowWidth * 0.85) / baseWidth;
+        const heightScale = (windowHeight * 0.65) / baseHeight;
         
-        // Cap scale between 0.4 and 0.85 to ensure it fits and isn't too big
-        const newScale = Math.min(widthScale, heightScale, 0.85);
-        setScale(Math.max(newScale, 0.4));
+        // Cap scale to ensure it never over-zooms or overflows
+        const newScale = Math.min(widthScale, heightScale, 0.8);
+        setScale(Math.max(newScale, 0.35));
       }
     };
 
@@ -197,18 +198,18 @@ export default function LuxDemo() {
   };
 
   return (
-    <div ref={containerRef} className="w-full flex flex-col items-center justify-start overflow-hidden min-h-[500px]">
+    <div ref={containerRef} className="w-full h-full flex flex-col items-center justify-start overflow-hidden">
       <div 
         style={{ 
           transform: `scale(${scale})`, 
           transformOrigin: 'top center',
           width: '1200px',
-          transition: 'transform 0.3s ease-out'
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
-        className="space-y-8 py-4"
+        className="space-y-6 py-2"
       >
         {/* Progress Bar */}
-        <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex flex-col">
+        <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex flex-col shadow-inner">
           <div className="flex-1 flex">
             <motion.div 
               className="h-full bg-amber-500/30"
@@ -217,24 +218,23 @@ export default function LuxDemo() {
               transition={{ duration: 0.5, ease: "circOut" }}
             />
           </div>
-          {/* Per-slide loading bar */}
           <div className="h-1.5 w-full bg-slate-900">
             <motion.div 
-              className="h-full bg-amber-500"
+              className="h-full bg-amber-500 shadow-[0_0_10px_#fbbf24]"
               style={{ width: `${slideProgress}%` }}
             />
           </div>
         </div>
 
-        {/* Visualization Area */}
-        <div className="bg-slate-950 rounded-[3rem] p-20 border border-slate-800 relative overflow-hidden min-h-[450px] flex flex-col justify-center shadow-2xl">
+        {/* Visualization Area with SVG Overlay for Guaranteed Centering */}
+        <div className="bg-slate-950 rounded-[3rem] p-16 border border-slate-800 relative overflow-hidden min-h-[400px] flex flex-col justify-center shadow-2xl">
           {/* Background Grid */}
           <div className="absolute inset-0 opacity-10 pointer-events-none" 
                style={{ backgroundImage: 'radial-gradient(#444 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
           <div className="relative flex justify-between items-center max-w-5xl mx-auto w-full px-16">
-            {/* Plugin */}
-            <div className="flex flex-col items-center gap-6 z-10 w-40">
+            {/* Plugin Node */}
+            <div id="node-plugin" className="flex flex-col items-center gap-6 z-10 w-40">
               <motion.div 
                 animate={{ 
                   borderColor: [1, 4, 5, 6, 10].includes(currentStep) ? '#fbbf24' : '#1e293b',
@@ -248,8 +248,8 @@ export default function LuxDemo() {
               <span className="text-[12px] font-black text-slate-500 uppercase tracking-[0.4em]">Plugin (Lua)</span>
             </div>
 
-            {/* Backend */}
-            <div className="flex flex-col items-center gap-6 z-10 w-40">
+            {/* Backend Node */}
+            <div id="node-backend" className="flex flex-col items-center gap-6 z-10 w-40">
               <motion.div 
                 animate={{ 
                   borderColor: [1, 2, 5, 7, 9].includes(currentStep) ? '#10b981' : '#1e293b',
@@ -263,8 +263,8 @@ export default function LuxDemo() {
               <span className="text-[12px] font-black text-slate-500 uppercase tracking-[0.4em]">Backend (API)</span>
             </div>
 
-            {/* Agent */}
-            <div className="flex flex-col items-center gap-6 z-10 w-40">
+            {/* Agent Node */}
+            <div id="node-agent" className="flex flex-col items-center gap-6 z-10 w-40">
               <motion.div 
                 animate={{ 
                   borderColor: [2, 3, 7, 8, 9].includes(currentStep) ? '#8b5cf6' : '#1e293b',
@@ -291,86 +291,117 @@ export default function LuxDemo() {
               <span className="text-[12px] font-black text-slate-500 uppercase tracking-[0.4em]">AI Agent</span>
             </div>
 
-            {/* Perfectly Centered Arrows */}
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                {/* Left Arrow (Plugin <-> Backend) */}
-                {[1, 4, 5, 6, 9].includes(currentStep) && (
-                  <motion.div 
-                    key={`arrow-left-${currentStep}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="absolute left-[20%] right-[53%] flex flex-col items-center justify-center gap-4"
-                  >
-                    <div className="px-5 py-2 bg-slate-900/95 border border-slate-700 rounded-xl text-[12px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md z-20">
-                      {step.label}
-                    </div>
-                    <div className="relative w-full flex items-center justify-center">
-                      <motion.div 
-                        initial={{ x: [5, 9].includes(currentStep) ? 80 : -80 }}
-                        animate={{ x: [5, 9].includes(currentStep) ? -80 : 80 }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="absolute w-4 h-4 bg-amber-400 rounded-full blur-[2px] shadow-[0_0_15px_#fbbf24] z-10"
-                      />
-                      <div className="w-full h-1 bg-gradient-to-r from-transparent via-slate-800 to-transparent rounded-full" />
-                      <ArrowRight className={`absolute w-8 h-8 text-amber-400/40 ${[5, 9].includes(currentStep) ? 'rotate-180' : ''}`} />
-                    </div>
-                  </motion.div>
-                )}
+            {/* SVG Overlay for Guaranteed Centering */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 5 }}>
+              <defs>
+                <linearGradient id="grad-left" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="transparent" />
+                  <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="transparent" />
+                </linearGradient>
+                <linearGradient id="grad-right" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="transparent" />
+                  <stop offset="50%" stopColor="#10b981" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="transparent" />
+                </linearGradient>
+              </defs>
 
-                {/* Right Arrow (Backend <-> Agent) */}
-                {[2, 7].includes(currentStep) && (
-                  <motion.div 
-                    key={`arrow-right-${currentStep}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="absolute left-[53%] right-[20%] flex flex-col items-center justify-center gap-4"
+              {/* Left Path (Plugin <-> Backend) */}
+              <AnimatePresence>
+                {[1, 4, 5, 6, 9].includes(currentStep) && (
+                  <motion.g
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                   >
-                    <div className="px-5 py-2 bg-slate-900/95 border border-slate-700 rounded-xl text-[12px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md z-20">
-                      {step.label}
-                    </div>
-                    <div className="relative w-full flex items-center justify-center">
-                      <motion.div 
-                        initial={{ x: -80 }}
-                        animate={{ x: 80 }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="absolute w-4 h-4 bg-emerald-400 rounded-full blur-[2px] shadow-[0_0_15px_#10b981] z-10"
-                      />
-                      <div className="w-full h-1 bg-gradient-to-r from-transparent via-slate-800 to-transparent rounded-full" />
-                      <ArrowRight className="absolute w-8 h-8 text-emerald-400/40" />
-                    </div>
-                  </motion.div>
+                    {/* Static Path Line */}
+                    <line x1="25%" y1="45%" x2="45%" y2="45%" stroke="rgba(251, 191, 36, 0.1)" strokeWidth="2" strokeDasharray="4 4" />
+                    
+                    {/* Moving Packet */}
+                    <motion.circle
+                      r="6"
+                      fill="#fbbf24"
+                      filter="blur(2px)"
+                      initial={{ cx: [5, 9].includes(currentStep) ? "45%" : "25%" }}
+                      animate={{ cx: [5, 9].includes(currentStep) ? "25%" : "45%" }}
+                      transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                      cy="45%"
+                      className="shadow-[0_0_15px_#fbbf24]"
+                    />
+
+                    {/* Label Container */}
+                    <foreignObject x="28%" y="30%" width="12%" height="40">
+                      <div className="flex items-center justify-center h-full">
+                        <div className="px-4 py-1.5 bg-slate-900/95 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
+                          {step.label}
+                        </div>
+                      </div>
+                    </foreignObject>
+                  </motion.g>
                 )}
               </AnimatePresence>
-            </div>
+
+              {/* Right Path (Backend <-> Agent) */}
+              <AnimatePresence>
+                {[2, 7].includes(currentStep) && (
+                  <motion.g
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    {/* Static Path Line */}
+                    <line x1="55%" y1="45%" x2="75%" y2="45%" stroke="rgba(16, 185, 129, 0.1)" strokeWidth="2" strokeDasharray="4 4" />
+                    
+                    {/* Moving Packet */}
+                    <motion.circle
+                      r="6"
+                      fill="#10b981"
+                      filter="blur(2px)"
+                      initial={{ cx: "55%" }}
+                      animate={{ cx: "75%" }}
+                      transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                      cy="45%"
+                      className="shadow-[0_0_15px_#10b981]"
+                    />
+
+                    {/* Label Container */}
+                    <foreignObject x="58%" y="30%" width="12%" height="40">
+                      <div className="flex items-center justify-center h-full">
+                        <div className="px-4 py-1.5 bg-slate-900/95 border border-slate-700 rounded-lg text-[11px] font-bold text-white whitespace-nowrap shadow-2xl backdrop-blur-md">
+                          {step.label}
+                        </div>
+                      </div>
+                    </foreignObject>
+                  </motion.g>
+                )}
+              </AnimatePresence>
+            </svg>
           </div>
         </div>
 
         {/* Info & Code Area */}
         <div className="grid grid-cols-2 gap-12">
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <span className="px-4 py-1.5 rounded-full bg-slate-800 text-slate-400 text-[12px] font-black uppercase tracking-widest">Step {currentStep + 1} / {STEPS.length}</span>
+                <span className="px-4 py-1.5 rounded-full bg-slate-800 text-slate-400 text-[11px] font-black uppercase tracking-widest">Step {currentStep + 1} / {STEPS.length}</span>
                 <h3 className="text-3xl font-bold text-white tracking-tight">{step.title}</h3>
               </div>
               <button 
                 onClick={() => setShowTechnical(!showTechnical)}
-                className="flex items-center gap-2 text-[12px] font-black text-slate-500 hover:text-amber-400 transition-colors uppercase tracking-widest"
+                className="flex items-center gap-2 text-[11px] font-black text-slate-500 hover:text-amber-400 transition-colors uppercase tracking-widest"
               >
                 <Info className="w-4 h-4" />
                 {showTechnical ? 'Hide' : 'Show'} Technical Details
               </button>
             </div>
             
-            <div className="space-y-6">
+            <div className="space-y-4">
               <p className="text-slate-300 text-xl font-medium leading-relaxed">
                 {step.desc}
               </p>
               
-              <div className="p-8 bg-slate-900/50 rounded-[2rem] border border-slate-800/50 shadow-inner">
+              <div className="p-6 bg-slate-900/50 rounded-[2rem] border border-slate-800/50 shadow-inner">
                 <p className="text-slate-400 text-lg italic leading-relaxed">
                   "{step.narration}"
                 </p>
@@ -392,18 +423,18 @@ export default function LuxDemo() {
             </div>
             
             {/* Controls */}
-            <div className="flex items-center gap-8 pt-4">
+            <div className="flex items-center gap-8 pt-2">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => { setCurrentStep(Math.max(0, currentStep - 1)); setSlideProgress(0); }}
                   disabled={currentStep === 0}
-                  className="p-5 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
+                  className="p-4 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
                 >
                   <ArrowRight className="w-8 h-8 rotate-180" />
                 </button>
                 <button 
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-14 py-5 rounded-2xl bg-amber-500 text-slate-950 font-black hover:bg-amber-400 transition-all active:scale-95 flex items-center gap-4 shadow-2xl shadow-amber-500/30"
+                  className="px-12 py-4 rounded-2xl bg-amber-500 text-slate-950 font-black hover:bg-amber-400 transition-all active:scale-95 flex items-center gap-4 shadow-2xl shadow-amber-500/30"
                 >
                   {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current" />}
                   {isPlaying ? 'PAUSE' : 'PLAY'}
@@ -411,7 +442,7 @@ export default function LuxDemo() {
                 <button
                   onClick={() => { setCurrentStep(Math.min(STEPS.length - 1, currentStep + 1)); setSlideProgress(0); }}
                   disabled={currentStep === STEPS.length - 1}
-                  className="p-5 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
+                  className="p-4 bg-slate-800 text-white rounded-2xl disabled:opacity-20 disabled:cursor-not-allowed hover:bg-slate-700 transition-all active:scale-90"
                 >
                   <ArrowRight className="w-8 h-8" />
                 </button>
@@ -420,7 +451,7 @@ export default function LuxDemo() {
               <div className="flex items-center gap-8">
                 <button 
                   onClick={handleRestart}
-                  className="p-5 rounded-2xl bg-slate-800 text-slate-400 hover:text-white transition-all active:scale-90"
+                  className="p-4 rounded-2xl bg-slate-800 text-slate-400 hover:text-white transition-all active:scale-90"
                   title="Restart"
                 >
                   <RotateCcw className="w-8 h-8" />
