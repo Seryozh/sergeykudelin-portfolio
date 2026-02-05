@@ -607,15 +607,18 @@ export default function Home() {
       {/* Overlays */}
       <Overlay
         isOpen={activeOverlay === 'lux-description'}
-        onClose={() => setActiveOverlay(null)}
+        onClose={closeModal}
         title="Lux: Technical Deep Dive"
       >
-        <LuxDescription />
+        <LuxDescription onOpenDemo={() => {
+          closeModal();
+          setTimeout(() => openModal('lux-demo'), 100);
+        }} />
       </Overlay>
 
       <Overlay
         isOpen={activeOverlay === 'lux-demo'}
-        onClose={() => setActiveOverlay(null)}
+        onClose={closeModal}
         title="Interactive Polling Bridge Demo"
       >
         <LuxDemo />
