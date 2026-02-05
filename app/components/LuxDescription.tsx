@@ -1,11 +1,49 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2, Layers, X as XIcon } from 'lucide-react';
 
 export default function LuxDescription() {
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (id: string) => {
+    setExpandedSections(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  // Handle scroll to update URL hash
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['lux-polling-bridge', 'lux-refactor', 'lux-hash-verification', 'lux-metrics'];
+      const visibleSection = sections.find(id => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        const rect = el.getBoundingClientRect();
+        // Check if section is in the upper half of the viewport
+        return rect.top >= 0 && rect.top <= window.innerHeight / 2;
+      });
+      if (visibleSection && window.location.hash !== `#${visibleSection}`) {
+        window.history.replaceState(null, '', `#${visibleSection}`);
+      }
+    };
+
+    const container = document.querySelector('.custom-scrollbar');
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <div className="space-y-12 pb-12">
+    <div className="space-y-16 pb-12">
       {/* Hero Section */}
       <section className="text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
@@ -27,8 +65,8 @@ export default function LuxDescription() {
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-emerald-400">90%</div>
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Cost Reduction</div>
+            <div className="text-2xl font-bold text-emerald-400">22k → 2.2k</div>
+            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Lines of Code</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700 col-span-2 md:col-span-1">
             <div className="text-2xl font-bold text-blue-400">100-300ms</div>
@@ -37,7 +75,114 @@ export default function LuxDescription() {
         </div>
       </section>
 
-      {/* The Innovation */}
+      {/* The Architectural Refactor */}
+      <section id="lux-refactor" className="space-y-8 scroll-mt-24">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-emerald-500/10">
+            <Layers className="w-6 h-6 text-emerald-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white">The Architectural Transformation</h2>
+        </div>
+
+        <div className="prose prose-invert max-w-none">
+          <p className="text-slate-300 text-lg leading-relaxed">
+            The first version of Lux was a 22,000-line monolithic Lua plugin. Everything lived
+            in one file: AI logic, project scanning, action execution, even API calls. It worked,
+            but it was fragile, hard to debug, and exposed API keys in client code.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-6 my-8">
+            {/* Before */}
+            <div className="p-6 rounded-xl bg-red-500/5 border border-red-500/20">
+              <h3 className="text-lg font-bold text-red-400 mb-4 flex items-center gap-2">
+                <XIcon className="w-5 h-5" />
+                Version 1: Monolith
+              </h3>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li>• 22,000 lines of Lua (one file)</li>
+                <li>• API keys exposed in client</li>
+                <li>• No session management</li>
+                <li>• Fragile error handling</li>
+                <li>• Hard to test/debug</li>
+              </ul>
+            </div>
+
+            {/* After */}
+            <div className="p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+              <h3 className="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                Version 2: Clean Architecture
+              </h3>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li>• 2,237 lines total (3 layers)</li>
+                <li>• Lua: UI & execution (1,424 LOC)</li>
+                <li>• FastAPI: Orchestration (813 LOC)</li>
+                <li>• LangGraph: AI agent logic</li>
+                <li>• Secure, testable, maintainable</li>
+              </ul>
+            </div>
+          </div>
+
+          <p className="text-slate-300 text-lg leading-relaxed">
+            The refactor took the system from "it works on my machine" to production-ready. 
+            By separating concerns, I achieved a{' '}
+            <span className="text-emerald-400 font-bold">90% reduction in code complexity</span>.
+            API keys stay server-side, sessions are managed with TTL-based cleanup, and
+            the polling bridge pattern enables real-time communication.
+            {' '}
+            <button
+              onClick={() => toggleExpanded('refactor-comparison')}
+              className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+            >
+              [{expandedSections.has('refactor-comparison') ? 'Hide' : 'Show'} Comparison →]
+            </button>
+          </p>
+
+          <AnimatePresence>
+            {expandedSections.has('refactor-comparison') && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="mt-4 p-4 bg-slate-800/50 rounded-lg overflow-hidden"
+              >
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <div className="text-[10px] font-black text-slate-500 uppercase mb-2">V1: Monolithic API Call</div>
+                    <pre className="text-xs text-slate-400 font-mono bg-slate-950 p-3 rounded border border-slate-800">
+                      <code>{`-- Lua (Client)
+local response = HttpService:PostAsync(
+    "https://api.openai.com/v1/chat/completions",
+    HttpService:JSONEncode({
+        model = "gpt-4",
+        messages = { ... },
+        -- API KEY EXPOSED HERE
+    }),
+    Enum.HttpContentType.ApplicationJson,
+    false,
+    { ["Authorization"] = "Bearer " .. API_KEY }
+)`}</code>
+                    </pre>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-black text-emerald-500 uppercase mb-2">V2: Secure Orchestration</div>
+                    <pre className="text-xs text-emerald-400/80 font-mono bg-slate-950 p-3 rounded border border-emerald-500/20">
+                      <code>{`# Python (Backend)
+@router.post("/chat")
+async def chat(request: ChatRequest):
+    # API Key is secure in env vars
+    agent = create_lux_agent(settings.OPENROUTER_KEY)
+    return await agent.ainvoke(request.message)`}</code>
+                    </pre>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* The Polling Bridge */}
       <section id="lux-polling-bridge" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10">
@@ -52,14 +197,51 @@ export default function LuxDescription() {
               Roblox plugins face a strict platform constraint: they can only make <strong>outbound</strong> HTTP requests. They cannot receive incoming connections or use WebSockets.
             </p>
             <p>
-              This breaks traditional AI agent patterns where the backend needs to request data from the client mid-execution.
+              I engineered a{' '}
+              <a
+                href="#lux-polling-bridge"
+                className="text-amber-400 underline hover:text-amber-300"
+              >
+                polling bridge pattern
+              </a>
+              {' '}that enables bidirectional communication over this one-way constraint.{' '}
+              <button
+                onClick={() => toggleExpanded('polling-code')}
+                className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+              >
+                [{expandedSections.has('polling-code') ? 'Hide' : 'Show'} Code →]
+              </button>
             </p>
-            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
-              <h4 className="text-amber-400 font-bold mb-2">The Solution</h4>
-              <p className="text-sm">
-                I engineered a novel polling bridge using <code>asyncio.Event()</code> synchronization. The agent blocks execution and waits for the plugin to poll and provide the required data.
-              </p>
-            </div>
+
+            <AnimatePresence>
+              {expandedSections.has('polling-code') && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="mt-4 p-4 bg-slate-800/50 rounded-lg overflow-hidden"
+                >
+                  <pre className="text-sm text-slate-300 font-mono overflow-x-auto">
+                    <code>{`# Python backend
+event = asyncio.Event()
+session.fulfilled_responses[rid] = event
+
+# Agent blocks until plugin responds
+await asyncio.wait_for(event.wait(), timeout=30)
+
+# When plugin responds via /respond:
+event.set()  # WAKES THE AGENT`}</code>
+                  </pre>
+                  <a
+                    href="https://github.com/Seryozh/lux-agentic-ai/blob/main/backend/session.py"
+                    target="_blank"
+                    className="text-xs text-blue-400 hover:underline mt-2 inline-block"
+                  >
+                    View full implementation on GitHub →
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           
           <div className="bg-slate-950 rounded-xl p-6 border border-slate-800 font-mono text-sm">
@@ -77,35 +259,6 @@ export default function LuxDescription() {
         </div>
       </section>
 
-      {/* Cost Optimization */}
-      <section id="lux-cost-optimization" className="space-y-8 scroll-mt-24">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-emerald-500/10">
-            <BarChart3 className="w-6 h-6 text-emerald-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">90% Cost Reduction</h2>
-        </div>
-        
-        <div className="bg-slate-800/30 border border-slate-700 rounded-2xl p-8">
-          <div className="flex flex-col md:flex-row items-center justify-around gap-8">
-            <div className="text-center space-y-2">
-              <div className="text-slate-500 text-sm font-bold uppercase tracking-widest">Naive Approach</div>
-              <div className="text-3xl font-bold text-slate-400 line-through">65,000 tokens</div>
-              <div className="text-xs text-slate-500">Full codebase per request</div>
-            </div>
-            <div className="text-4xl text-slate-700 hidden md:block">→</div>
-            <div className="text-center space-y-2">
-              <div className="text-emerald-400 text-sm font-bold uppercase tracking-widest">Lux (Lazy Loading)</div>
-              <div className="text-4xl font-black text-white">5,500 tokens</div>
-              <div className="text-xs text-emerald-500/80 font-medium">90% reduction in API costs</div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-slate-700 text-slate-400 text-sm leading-relaxed">
-            I implemented a <strong>progressive disclosure architecture</strong>. Instead of sending the entire codebase, Lux sends a top-level project map. The agent then uses specialized tools to explore only the scripts it needs, loading data on-demand.
-          </div>
-        </div>
-      </section>
-
       {/* Hash Verification */}
       <section id="lux-hash-verification" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
@@ -118,8 +271,44 @@ export default function LuxDescription() {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              To prevent concurrent edit conflicts in a production environment, I architected a hash-verification system using MD5 content hashing.
+              To prevent concurrent edit conflicts, I architected a hash-verification system using MD5 content hashing.
+              {' '}
+              <button
+                onClick={() => toggleExpanded('hash-code')}
+                className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+              >
+                [{expandedSections.has('hash-code') ? 'Hide' : 'Show'} Code →]
+              </button>
             </p>
+
+            <AnimatePresence>
+              {expandedSections.has('hash-code') && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="mt-4 p-4 bg-slate-800/50 rounded-lg overflow-hidden"
+                >
+                  <pre className="text-sm text-slate-300 font-mono overflow-x-auto">
+                    <code>{`# Python (Action Generation)
+action = ModifyScriptAction(
+    path=script_path,
+    new_source=new_code,
+    original_hash=current_hash  # Captured before editing
+)`}</code>
+                  </pre>
+                  <pre className="text-sm text-emerald-400/80 font-mono overflow-x-auto mt-2">
+                    <code>{`-- Lua (Execution)
+if computeHash(script.Source) == action.original_hash then
+    script.Source = action.new_source
+else
+    warn("Concurrent edit detected!")
+end`}</code>
+                  </pre>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <ul className="space-y-3">
               {[
                 'Agent reads script source and hash',
@@ -180,10 +369,10 @@ export default function LuxDescription() {
             <tbody className="text-sm">
               {[
                 { m: 'Active Installations', v: '1,500+', p: 'Roblox Creator Store Stats' },
+                { m: 'Code Reduction', v: '90%', p: '22,000 → 2,237 lines' },
                 { m: 'Polling Interval', v: '100ms', p: 'Main.server.lua:390' },
                 { m: 'Tool Timeout', v: '30s', p: 'config.py:9' },
                 { m: 'Session TTL', v: '1 hour', p: 'config.py:10' },
-                { m: 'Token Reduction', v: '~90%', p: '65k → 5.5k tokens' },
                 { m: 'Backend LOC', v: '813 lines', p: 'Python / FastAPI' },
                 { m: 'Plugin LOC', v: '1,424 lines', p: 'Lua / Roblox' },
               ].map((row, i) => (

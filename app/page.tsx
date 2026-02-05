@@ -15,6 +15,18 @@ export default function Home() {
 
   const sections = ['hero', 'lux', 'approach', 'expertise', 'articles', 'contact'];
 
+  // When opening modal
+  const openModal = (type: 'lux-description' | 'lux-demo') => {
+    setActiveOverlay(type);
+    window.history.pushState(null, '', `#${type}`);
+  };
+
+  // When closing modal
+  const closeModal = () => {
+    setActiveOverlay(null);
+    window.history.pushState(null, '', '#lux');
+  };
+
   // Handle URL hash for deep linking
   useEffect(() => {
     const handleHash = () => {
@@ -287,21 +299,21 @@ export default function Home() {
                   <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-emerald-400">90%</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Cost Reduction</div>
+                  <div className="text-2xl font-bold text-emerald-400">22k → 2.2k</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Lines of Code</div>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={() => setActiveOverlay('lux-description')}
+                  onClick={() => openModal('lux-description')}
                   className="flex-1 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all flex items-center justify-center gap-2 group"
                 >
                   Read More
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
-                  onClick={() => setActiveOverlay('lux-demo')}
+                  onClick={() => openModal('lux-demo')}
                   className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
                 >
                   Interactive Demo
