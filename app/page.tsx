@@ -250,27 +250,25 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4">
               Sergey Kudelin
             </h1>
-            <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-4 sm:mb-6 tracking-wide">
-              AI Automation Engineer
-            </p>
-            <p className="text-amber-500/80 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 font-medium max-w-xl mx-auto leading-relaxed">
-              I build autonomous systems for high pressure environments.
+            <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-8 sm:mb-12 tracking-wide">
+              22 &bull; Miami &bull; Self-taught
             </p>
 
             {/* Bio Section */}
             <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
               <p>
-                Most engineers build software for imaginary users. I find real bottlenecks
-                in real operations and eliminate them. When I see a process that wastes
-                human attention on something a machine should handle, I build the machine.
+                I work the night shift at a residential building. The job is quiet, but the
+                problems aren't - packages that take an hour to verify by hand, workflows that
+                waste human attention on stuff a script could do in seconds. So instead of just
+                clocking in, I started building.
               </p>
               <p>
-                I'm 22, self-taught, and obsessively focused on one thing: making AI systems
-                that actually work in production. Not in a sandbox. Not in a notebook. In the field,
-                under pressure, against messy data and unpredictable conditions. That's where I test everything I build.
+                Dropped out of CS halfway through. Taught myself the rest by shipping real things.
+                I don't have a degree or three years of experience. What I have is two production
+                systems that people actually use, and the obsession to keep building more.
               </p>
               <p className="text-amber-400/90 font-medium">
-                Scroll down to see what that looks like.
+                Both projects are below. Take a look.
               </p>
             </div>
           </motion.div>
