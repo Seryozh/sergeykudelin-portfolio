@@ -2,21 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Mail, Linkedin, Youtube, Github, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, Zap, ExternalLink, Play } from 'lucide-react';
+import { ArrowRight, Mail, Linkedin, Youtube, Github, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, Zap, ExternalLink, Play, Scan, Camera } from 'lucide-react';
 import Overlay from './components/Overlay';
 import LuxDescription from './components/LuxDescription';
 import LuxDemo from './components/LuxDemo';
+import LogiScanDescription from './components/LogiScanDescription';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
-  const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | null>(null);
+  const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | 'logiscan-description' | null>(null);
 
-  const sections = ['hero', 'lux', 'approach', 'expertise', 'articles', 'contact'];
+  const sections = ['hero', 'lux', 'logiscan', 'approach', 'expertise', 'articles', 'contact'];
 
   // When opening modal
-  const openModal = (type: 'lux-description' | 'lux-demo') => {
+  const openModal = (type: 'lux-description' | 'lux-demo' | 'logiscan-description') => {
     setActiveOverlay(type);
     window.history.pushState(null, '', `#${type}`);
   };
@@ -24,7 +25,13 @@ export default function Home() {
   // When closing modal
   const closeModal = () => {
     setActiveOverlay(null);
-    window.history.pushState(null, '', '#lux');
+    // Navigate back to the appropriate section
+    const current = window.location.hash;
+    if (current.startsWith('#logiscan')) {
+      window.history.pushState(null, '', '#logiscan');
+    } else {
+      window.history.pushState(null, '', '#lux');
+    }
   };
 
   // Handle URL hash for deep linking
@@ -33,6 +40,12 @@ export default function Home() {
       const hash = window.location.hash;
       if (hash === '#lux-demo') {
         setActiveOverlay('lux-demo');
+      } else if (hash === '#logiscan-description' || hash.startsWith('#logiscan-')) {
+        setActiveOverlay('logiscan-description');
+        setTimeout(() => {
+          const element = document.getElementById(hash.substring(1));
+          if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       } else if (hash.startsWith('#lux-')) {
         setActiveOverlay('lux-description');
         // Small delay to allow modal to open before scrolling
@@ -84,6 +97,7 @@ export default function Home() {
 
   const navItems = [
     { label: 'Lux', id: 'lux' },
+    { label: 'LogiScan', id: 'logiscan' },
     { label: 'Approach', id: 'approach' },
     { label: 'Expertise', id: 'expertise' },
     { label: 'Articles', id: 'articles' },
@@ -331,6 +345,130 @@ export default function Home() {
                     <Play className="w-8 h-8 fill-current" />
                   </div>
                   <span className="text-sm font-bold text-white uppercase tracking-widest">Watch Simulation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* LogiScan Project Section */}
+      <section id="logiscan" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl z-10"
+        >
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
+                  <Scan className="w-4 h-4" />
+                  Live at logiscan.me
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                  LogiScan
+                </h2>
+                <p className="text-xl text-slate-400 leading-relaxed">
+                  AI vision system for automated package reconciliation.
+                  Agentic AI reads stickers and matches them against your manifest in seconds.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                  <div className="text-2xl font-bold text-emerald-400">~$0.002</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Per Scan</div>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                  <div className="text-2xl font-bold text-amber-400">5</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Detection States</div>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                  <div className="text-2xl font-bold text-purple-400">0</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Backend Servers</div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => openModal('logiscan-description')}
+                  className="flex-1 px-8 py-4 bg-emerald-500 text-slate-950 rounded-xl font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group"
+                >
+                  Read More
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <a
+                  href="https://logiscan.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                >
+                  Try Live
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Visual: Bounding box preview card */}
+            <div className="relative group cursor-pointer" onClick={() => openModal('logiscan-description')}>
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-emerald-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+              <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video">
+                {/* Mock scanning visualization */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+                  <div className="relative w-full h-full p-6">
+                    {/* Simulated bounding boxes */}
+                    <motion.div
+                      className="absolute rounded border-2"
+                      style={{ top: '15%', left: '8%', width: '35%', height: '35%', borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <div className="absolute -top-5 left-0 text-[9px] font-bold text-white bg-emerald-500 px-1.5 py-0.5 rounded">C08Q - 9679</div>
+                    </motion.div>
+                    <motion.div
+                      className="absolute rounded border-2"
+                      style={{ top: '12%', left: '52%', width: '40%', height: '30%', borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      <div className="absolute -top-5 left-0 text-[9px] font-bold text-white bg-emerald-500 px-1.5 py-0.5 rounded">C14K - 3728</div>
+                    </motion.div>
+                    <motion.div
+                      className="absolute rounded border-2"
+                      style={{ top: '55%', left: '15%', width: '32%', height: '32%', borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 0.7 }}
+                    >
+                      <div className="absolute -top-5 left-0 text-[9px] font-bold text-white bg-orange-500 px-1.5 py-0.5 rounded">C22B - 5501</div>
+                    </motion.div>
+                    <motion.div
+                      className="absolute rounded border-2"
+                      style={{ top: '58%', left: '58%', width: '30%', height: '28%', borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 0.9 }}
+                    >
+                      <div className="absolute -top-5 left-0 text-[9px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded">??? - ????</div>
+                      <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center text-white text-[7px] font-black">!</div>
+                    </motion.div>
+
+                    {/* Center icon */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <motion.div
+                        className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Camera className="w-6 h-6 text-emerald-400" />
+                      </motion.div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -622,6 +760,14 @@ export default function Home() {
         title="Interactive Polling Bridge Demo"
       >
         <LuxDemo />
+      </Overlay>
+
+      <Overlay
+        isOpen={activeOverlay === 'logiscan-description'}
+        onClose={closeModal}
+        title="LogiScan: Technical Deep Dive"
+      >
+        <LogiScanDescription />
       </Overlay>
 
       <footer className="snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-8 sm:py-12">
