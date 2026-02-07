@@ -125,11 +125,11 @@ export default function LogiScanDescription() {
           <div className="space-y-4 text-slate-300">
             <p>
               Traditional OCR reads text but doesn&apos;t <em>understand</em> it. A sticker might say
-              &quot;C08Q 9679 01/30/2026 MJ&quot; — which part is the apartment? The tracking number?
+              &quot;C08Q 9679 01/30/2026 MJ&quot; -which part is the apartment? The tracking number?
               The date? Standard OCR can&apos;t tell.
             </p>
             <p>
-              LogiScan uses Gemini 3 Flash&apos;s <span className="text-purple-400 font-bold">Agentic Vision</span> — the
+              LogiScan uses Gemini 3 Flash&apos;s <span className="text-purple-400 font-bold">Agentic Vision</span> -the
               AI doesn&apos;t just read, it <em>reasons</em>. It runs a multi-step Think-Act-Observe-Validate loop,
               writes Python code to parse sticker data, and self-validates to prevent common errors like
               extracting years as tracking numbers.{' '}
@@ -166,7 +166,7 @@ const config = {
 // THINK: "I see 4 stickers on packages"
 // ACT:   Execute Python to extract text per sticker
 // OBSERVE: "Sticker 1: C08Q, tracking ...9679"
-// VALIDATE: "9679 is tracking, not a year — confirmed"`}</code>
+// VALIDATE: "9679 is tracking, not a year -confirmed"`}</code>
                   </pre>
                   <a
                     href="https://github.com/Seryozh/logiscan"
@@ -187,7 +187,7 @@ const config = {
                 { step: 'THINK', text: '"I see 4 stickers on packages in this image"', color: 'text-blue-400' },
                 { step: 'ACT', text: 'Execute Python to parse text per sticker region', color: 'text-amber-400' },
                 { step: 'OBSERVE', text: '"Sticker 1 = C08Q, tracking ...9679, Jan 30"', color: 'text-emerald-400' },
-                { step: 'VALIDATE', text: '"9679 is tracking, not a year — confirmed"', color: 'text-purple-400' },
+                { step: 'VALIDATE', text: '"9679 is tracking, not a year -confirmed"', color: 'text-purple-400' },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 bg-slate-900 rounded-lg border border-slate-800">
                   <span className={`text-xs font-black ${item.color} min-w-[70px]`}>{item.step}</span>
@@ -197,7 +197,7 @@ const config = {
             </div>
             <div className="mt-4 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20 flex items-center gap-3">
               <span className="text-xs font-bold text-emerald-400">COST</span>
-              <span className="text-xs text-emerald-400/80">~$0.002 per image — cheaper than traditional OCR APIs</span>
+              <span className="text-xs text-emerald-400/80">~$0.002 per image -cheaper than traditional OCR APIs</span>
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@ const config = {
           <div className="space-y-4 text-slate-300">
             <p>
               Every AI detection is classified into one of <span className="text-amber-400 font-bold">5 states</span>.
-              This isn&apos;t binary &quot;found or not found&quot; — the algorithm handles duplicates across
+              This isn&apos;t binary &quot;found or not found&quot; -the algorithm handles duplicates across
               multiple photos, ambiguous matches, and unreadable stickers. Each state drives a different
               UI color and user action.{' '}
               <button
@@ -553,7 +553,7 @@ const x = (box.x / 100) * canvasWidth * scaleX;`}</code>
                   className="mt-4 p-4 bg-slate-800/50 rounded-lg overflow-hidden"
                 >
                   <pre className="text-sm text-slate-300 font-mono overflow-x-auto">
-                    <code>{`// sessionStore.tsx — State Management
+                    <code>{`// sessionStore.tsx -State Management
 // React Context + useReducer (Redux-style)
 // localStorage persistence with 300ms debounce
 
@@ -574,7 +574,7 @@ useEffect(() => {
 
             <ul className="space-y-3">
               {[
-                'No server, no database — $0 infrastructure',
+                'No server, no database -$0 infrastructure',
                 'Session persists in localStorage (300ms debounced)',
                 'Images compressed client-side (1920px, 0.85 JPEG)',
                 'Clear session = everything gone. Zero retention.',

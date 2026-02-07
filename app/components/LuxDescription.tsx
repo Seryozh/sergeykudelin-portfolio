@@ -47,7 +47,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
           <p className="text-slate-400 leading-relaxed">
             The core engineering challenge: Roblox plugins can only make <em>outbound</em> HTTP requests.
             No WebSockets. No incoming connections. I engineered a polling bridge pattern that enables
-            full bidirectional communication over this one-way constraint &mdash; the AI can ask questions
+            full bidirectional communication over this one-way constraint  - the AI can ask questions
             and request data mid-execution, creating a seamless human-in-the-loop experience.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
           <div className="space-y-4 text-slate-300">
             <p>
               This is the core architectural innovation. The AI agent can <em>pause mid-execution</em>,
-              request data from the game engine, and <em>resume</em> once the plugin responds &mdash;
+              request data from the game engine, and <em>resume</em> once the plugin responds  -
               all over a one-way HTTP constraint. The plugin polls every 100ms; the backend uses{' '}
               <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">asyncio.Event()</code>{' '}
               to block until data arrives.{' '}
@@ -160,7 +160,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
                 >
                   <div className="text-[10px] font-black text-emerald-500 uppercase mb-2">Python Backend</div>
                   <pre className="text-sm text-emerald-400/80 font-mono overflow-x-auto">
-                    <code>{`# Agent needs data — creates event and BLOCKS
+                    <code>{`# Agent needs data -creates event and BLOCKS
 event = asyncio.Event()
 session.fulfilled_responses[rid] = event
 await asyncio.wait_for(event.wait(), timeout=30)
@@ -290,7 +290,7 @@ end`}</code>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              A naive approach would dump the entire project into context on every request &mdash;
+              A naive approach would dump the entire project into context on every request  -
               that&apos;s <span className="text-red-400 font-bold">~65,000 tokens per request</span>.
               Instead, I designed a 3-level progressive exploration system where the agent starts cheap
               and only goes deeper when needed.{' '}
@@ -455,8 +455,8 @@ llm_with_tools = llm.bind_tools([
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Every game modification &mdash; from adding a health bar to restructuring an entire
-              codebase &mdash; composes from 8 atomic operations. The AI generates a sequence of these
+              Every game modification  - from adding a health bar to restructuring an entire
+              codebase  - composes from 8 atomic operations. The AI generates a sequence of these
               actions; the user reviews them, then applies with one click.{' '}
               <button
                 onClick={() => toggleExpanded('action-code')}
@@ -701,7 +701,7 @@ async def chat(req):
               When the AI modifies a script, it must prove the file hasn&apos;t changed since it was read.
               An MD5 content hash is captured at read time and verified before writing.
               If a human edited the file while the AI was processing, the modification is{' '}
-              <span className="text-red-400 font-bold">rejected</span> &mdash; preventing data loss.{' '}
+              <span className="text-red-400 font-bold">rejected</span>  - preventing data loss.{' '}
               <button
                 onClick={() => toggleExpanded('hash-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"

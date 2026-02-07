@@ -14,7 +14,7 @@ export default function Home() {
   const [currentSection, setCurrentSection] = useState(0);
   const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | 'logiscan-description' | null>(null);
 
-  const sections = ['hero', 'lux', 'logiscan', 'approach', 'expertise', 'articles', 'contact'];
+  const sections = ['hero', 'articles', 'lux', 'logiscan', 'approach', 'expertise', 'contact'];
 
   // When opening modal
   const openModal = (type: 'lux-description' | 'lux-demo' | 'logiscan-description') => {
@@ -96,11 +96,11 @@ export default function Home() {
   };
 
   const navItems = [
+    { label: 'Articles', id: 'articles' },
     { label: 'Lux', id: 'lux' },
     { label: 'LogiScan', id: 'logiscan' },
     { label: 'Approach', id: 'approach' },
     { label: 'Expertise', id: 'expertise' },
-    { label: 'Articles', id: 'articles' },
     { label: 'Contact', id: 'contact' },
   ];
 
@@ -257,29 +257,77 @@ export default function Home() {
             {/* Bio Section */}
             <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
               <p>
-                I'm a builder. I spent years growing a{' '}
-                <a
-                  href="https://www.youtube.com/@SergeRoblox"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-amber-400/90 hover:text-amber-300 underline decoration-amber-500/30 hover:decoration-amber-400/60 transition-all"
-                >
-                  YouTube channel to 200,000+ subscribers
-                </a>
-                , where I learned a simple truth: if you don't design for real human behavior, you lose.
+                I work overnight operations at a major residential complex. Most people would clock in and wait.
+                I saw a testing ground. Every shift gives me real operational data, real user friction, and real
+                infrastructure constraints to build against.
               </p>
               <p>
-                I bring that same focus to engineering. Right now, I work night operations at a major residential complex,
-                but I treat it as a live testing ground. I build and stress-test autonomous agents against constant
-                real-world data and messy human problems.
+                My projects are not hypothetical. Lux ships to 1,500+ game developers. LogiScan runs against
+                real package shelves at a 300-unit building. Every system I build gets stress-tested against
+                the chaos of live operations before I call it done.
               </p>
               <p className="text-amber-400/90 font-medium">
-                I build automation for operational bottlenecks. My software takes over the repetitive logic in high-volume
-                environments so humans can focus on decisions that actually need judgment.
+                I build AI systems that replace manual processes in high-volume environments.
+                Not demos. Not prototypes. Production tools that work under pressure.
               </p>
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Articles Section */}
+      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl z-10"
+        >
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
+            Engineering Deep-Dives
+          </h2>
+
+          <motion.a
+            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -8 }}
+            className="group block w-full"
+          >
+            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
+              <div className="relative">
+                <div className="flex items-start justify-between mb-4 gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
+                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                        The Therac-25 Lesson
+                      </h3>
+                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                </div>
+
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
+                  Why AI Agents Need a &ldquo;Circuit Breaker&rdquo; Architecture. Moving beyond &ldquo;Prompt Engineering&rdquo; to &ldquo;Systems Engineering&rdquo; in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
+                </p>
+
+                <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <span>4 min read</span>
+                  <span>•</span>
+                  <span>Jan 15, 2026</span>
+                  <span>•</span>
+                  <span className="text-amber-400 font-medium">Medium</span>
+                </div>
+              </div>
+            </div>
+          </motion.a>
+        </motion.div>
       </section>
 
       {/* Lux Project Section */}
@@ -401,12 +449,12 @@ export default function Home() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <a
-                  href="https://logiscan.me"
+                  href="https://github.com/Seryozh/logiscan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
                 >
-                  Try Live
+                  View Source
                   <ExternalLink className="w-5 h-5" />
                 </a>
               </div>
@@ -416,8 +464,10 @@ export default function Home() {
             <div className="relative group cursor-pointer" onClick={() => openModal('logiscan-description')}>
               <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-emerald-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video">
-                {/* Mock scanning visualization */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+                {/* Real scanning visualization with background photo */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[url('https://i.imgur.com/rtXV6df.png')] bg-cover bg-center" />
+                  <div className="absolute inset-0 bg-slate-900/30" />
                   <div className="relative w-full h-full p-6">
                     {/* Simulated bounding boxes */}
                     <motion.div
@@ -488,10 +538,36 @@ export default function Home() {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
             The Approach
           </h2>
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl sm:rounded-2xl p-5 sm:p-8 md:p-10">
-            <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
-              <span className="text-amber-400 font-semibold">Deterministic systems for a chaotic reality.</span> I build for the edge cases, focusing on the friction point where clean code meets messy, real-world data. My systems are designed to survive the unpredictability of field operations because <span className="text-amber-400/90 font-medium">software that is not tested against reality is just a prototype.</span>
-            </p>
+          <p className="text-slate-400 text-sm sm:text-base text-center mb-8 max-w-2xl mx-auto">
+            Every system I build follows three principles. These are non-negotiable.
+          </p>
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
+              <div className="text-2xl mb-3">01</div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Test Against Reality</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Software that only works in development is a prototype. LogiScan runs against real package shelves.
+                Lux ships to 1,500+ real users. If it breaks under live conditions, it ships broken. So it does not break.
+              </p>
+            </div>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
+              <div className="text-2xl mb-3">02</div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Engineer the Edge Cases</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                The happy path is easy. Real complexity lives in the 20% of cases everyone ignores:
+                orphaned packages, concurrent edits, one-way HTTP constraints. My systems are designed for the chaos,
+                not the demo.
+              </p>
+            </div>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
+              <div className="text-2xl mb-3">03</div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Eliminate, Don't Assist</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                A tool that &ldquo;helps&rdquo; a human do repetitive work is still a manual process.
+                My systems fully replace the repetitive logic so humans focus exclusively on decisions
+                that need judgment. Assistance is a half-measure.
+              </p>
+            </div>
           </div>
         </motion.div>
       </section>
@@ -606,61 +682,6 @@ export default function Home() {
               </ul>
             </div>
           </div>
-        </motion.div>
-      </section>
-
-      {/* Articles Section */}
-      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl z-10"
-        >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
-            Engineering Deep-Dives
-          </h2>
-
-          <motion.a
-            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -8 }}
-            className="group block w-full"
-          >
-            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
-              <div className="relative">
-                <div className="flex items-start justify-between mb-4 gap-3">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
-                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
-                        The Therac-25 Lesson
-                      </h3>
-                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
-                </div>
-
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
-                  Why AI Agents Need a "Circuit Breaker" Architecture. Moving beyond "Prompt Engineering" to "Systems Engineering" in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
-                </p>
-
-                <div className="flex items-center gap-4 text-sm text-slate-400">
-                  <span>4 min read</span>
-                  <span>•</span>
-                  <span>Jan 15, 2026</span>
-                  <span>•</span>
-                  <span className="text-amber-400 font-medium">Medium</span>
-                </div>
-              </div>
-            </div>
-          </motion.a>
         </motion.div>
       </section>
 
