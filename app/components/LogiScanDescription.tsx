@@ -424,6 +424,98 @@ const x = (box.x / 100) * canvasWidth * scaleX;`}</code>
         </div>
       </section>
 
+      {/* Real-World Results */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-emerald-500/10">
+            <Camera className="w-6 h-6 text-emerald-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white">Real-World Results</h2>
+        </div>
+
+        <p className="text-slate-300 text-lg leading-relaxed">
+          These are actual screenshots from LogiScan running against real packages at a residential building.
+          Each demonstrates a different detection state in production.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* Matched */}
+          <motion.div
+            className="rounded-xl border border-emerald-500/20 overflow-hidden bg-slate-950"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="p-3 bg-emerald-500/10 border-b border-emerald-500/20 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-emerald-500" />
+              <span className="text-sm font-bold text-emerald-400">Matched (Happy Path)</span>
+            </div>
+            <div className="relative">
+              <img
+                src="https://i.imgur.com/O9k22vW.png"
+                alt="LogiScan matched detection - green bounding boxes on successfully identified packages"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-3 space-y-1">
+              <div className="text-xs text-emerald-400 font-bold">6 packages matched</div>
+              <div className="text-[11px] text-slate-400">Green bounding boxes on identified labels. 98% confidence. Apartment codes and tracking numbers extracted.</div>
+            </div>
+          </motion.div>
+
+          {/* Orphan */}
+          <motion.div
+            className="rounded-xl border border-orange-500/20 overflow-hidden bg-slate-950"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="p-3 bg-orange-500/10 border-b border-orange-500/20 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-orange-500" />
+              <span className="text-sm font-bold text-orange-400">Orphan (Error Handling)</span>
+            </div>
+            <div className="relative">
+              <img
+                src="https://i.imgur.com/ZX0NVJc.png"
+                alt="LogiScan orphan detection - orange box on package not in manifest"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-3 space-y-1">
+              <div className="text-xs text-orange-400 font-bold">Sticker found but not in list</div>
+              <div className="text-[11px] text-slate-400">75% confidence. Notes: &ldquo;Tracking number and initials partially obscured by white paper.&rdquo;</div>
+            </div>
+          </motion.div>
+
+          {/* Duplicate */}
+          <motion.div
+            className="rounded-xl border border-yellow-500/20 overflow-hidden bg-slate-950"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="p-3 bg-yellow-500/10 border-b border-yellow-500/20 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <span className="text-sm font-bold text-yellow-400">Duplicate (Prevention)</span>
+            </div>
+            <div className="relative">
+              <img
+                src="https://i.imgur.com/PFSa1ME.png"
+                alt="LogiScan duplicate detection - yellow box on already-counted package"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-3 space-y-1">
+              <div className="text-xs text-yellow-400 font-bold">Already detected in previous photo</div>
+              <div className="text-[11px] text-slate-400">Prevents double-counting during multi-photo scans. Notes location: &ldquo;Top right shelf, oriented vertically.&rdquo;</div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Zero-Backend Architecture */}
       <section id="logiscan-architecture" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
