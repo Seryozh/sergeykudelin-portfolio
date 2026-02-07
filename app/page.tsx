@@ -2,22 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Mail, Linkedin, Youtube, Github, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, Zap, ExternalLink, Play, Scan, Camera } from 'lucide-react';
+import { ArrowRight, Mail, Linkedin, Youtube, Github, Code2, Layers, Database, Cpu, Menu, X as XIcon, BookOpen, Zap, Play, Scan, Camera } from 'lucide-react';
 import Overlay from './components/Overlay';
 import LuxDescription from './components/LuxDescription';
 import LuxDemo from './components/LuxDemo';
 import LogiScanDescription from './components/LogiScanDescription';
+import LogiScanDemo from './components/LogiScanDemo';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
-  const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | 'logiscan-description' | null>(null);
+  const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | 'logiscan-description' | 'logiscan-demo' | null>(null);
 
-  const sections = ['hero', 'articles', 'lux', 'logiscan', 'approach', 'expertise', 'contact'];
+  const sections = ['hero', 'lux', 'logiscan', 'articles', 'approach', 'expertise', 'contact'];
 
   // When opening modal
-  const openModal = (type: 'lux-description' | 'lux-demo' | 'logiscan-description') => {
+  const openModal = (type: 'lux-description' | 'lux-demo' | 'logiscan-description' | 'logiscan-demo') => {
     setActiveOverlay(type);
     window.history.pushState(null, '', `#${type}`);
   };
@@ -40,6 +41,8 @@ export default function Home() {
       const hash = window.location.hash;
       if (hash === '#lux-demo') {
         setActiveOverlay('lux-demo');
+      } else if (hash === '#logiscan-demo') {
+        setActiveOverlay('logiscan-demo');
       } else if (hash === '#logiscan-description' || hash.startsWith('#logiscan-')) {
         setActiveOverlay('logiscan-description');
         setTimeout(() => {
@@ -96,9 +99,9 @@ export default function Home() {
   };
 
   const navItems = [
-    { label: 'Articles', id: 'articles' },
     { label: 'Lux', id: 'lux' },
     { label: 'LogiScan', id: 'logiscan' },
+    { label: 'Articles', id: 'articles' },
     { label: 'Approach', id: 'approach' },
     { label: 'Expertise', id: 'expertise' },
     { label: 'Contact', id: 'contact' },
@@ -257,77 +260,21 @@ export default function Home() {
             {/* Bio Section */}
             <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
               <p>
-                I work overnight operations at a major residential complex. Most people would clock in and wait.
-                I saw a testing ground. Every shift gives me real operational data, real user friction, and real
-                infrastructure constraints to build against.
+                Most engineers build software for imaginary users. I find real bottlenecks
+                in real operations and eliminate them. When I see a process that wastes
+                human attention on something a machine should handle, I build the machine.
               </p>
               <p>
-                My projects are not hypothetical. Lux ships to 1,500+ game developers. LogiScan runs against
-                real package shelves at a 300-unit building. Every system I build gets stress-tested against
-                the chaos of live operations before I call it done.
+                I'm 22, self-taught, and obsessively focused on one thing: making AI systems
+                that actually work in production. Not in a sandbox. Not in a notebook. In the field,
+                under pressure, against messy data and unpredictable conditions. That's where I test everything I build.
               </p>
               <p className="text-amber-400/90 font-medium">
-                I build AI systems that replace manual processes in high-volume environments.
-                Not demos. Not prototypes. Production tools that work under pressure.
+                Scroll down to see what that looks like.
               </p>
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Articles Section */}
-      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl z-10"
-        >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
-            Engineering Deep-Dives
-          </h2>
-
-          <motion.a
-            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -8 }}
-            className="group block w-full"
-          >
-            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
-              <div className="relative">
-                <div className="flex items-start justify-between mb-4 gap-3">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
-                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
-                        The Therac-25 Lesson
-                      </h3>
-                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
-                </div>
-
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
-                  Why AI Agents Need a &ldquo;Circuit Breaker&rdquo; Architecture. Moving beyond &ldquo;Prompt Engineering&rdquo; to &ldquo;Systems Engineering&rdquo; in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
-                </p>
-
-                <div className="flex items-center gap-4 text-sm text-slate-400">
-                  <span>4 min read</span>
-                  <span>•</span>
-                  <span>Jan 15, 2026</span>
-                  <span>•</span>
-                  <span className="text-amber-400 font-medium">Medium</span>
-                </div>
-              </div>
-            </div>
-          </motion.a>
-        </motion.div>
       </section>
 
       {/* Lux Project Section */}
@@ -448,15 +395,13 @@ export default function Home() {
                   Read More
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <a
-                  href="https://github.com/Seryozh/logiscan"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => openModal('logiscan-demo')}
                   className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
                 >
-                  View Source
-                  <ExternalLink className="w-5 h-5" />
-                </a>
+                  Interactive Demo
+                  <Play className="w-5 h-5" />
+                </button>
               </div>
             </div>
 
@@ -523,6 +468,61 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </motion.div>
+      </section>
+
+      {/* Articles Section */}
+      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-5xl z-10"
+        >
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
+            Engineering Deep-Dives
+          </h2>
+
+          <motion.a
+            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -8 }}
+            className="group block w-full"
+          >
+            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
+              <div className="relative">
+                <div className="flex items-start justify-between mb-4 gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
+                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                        The Therac-25 Lesson
+                      </h3>
+                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                </div>
+
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
+                  Why AI Agents Need a &ldquo;Circuit Breaker&rdquo; Architecture. Moving beyond &ldquo;Prompt Engineering&rdquo; to &ldquo;Systems Engineering&rdquo; in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
+                </p>
+
+                <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <span>4 min read</span>
+                  <span>•</span>
+                  <span>Jan 15, 2026</span>
+                  <span>•</span>
+                  <span className="text-amber-400 font-medium">Medium</span>
+                </div>
+              </div>
+            </div>
+          </motion.a>
         </motion.div>
       </section>
 
@@ -789,6 +789,14 @@ export default function Home() {
         title="LogiScan: Technical Deep Dive"
       >
         <LogiScanDescription />
+      </Overlay>
+
+      <Overlay
+        isOpen={activeOverlay === 'logiscan-demo'}
+        onClose={closeModal}
+        title="LogiScan: Scanning Simulation"
+      >
+        <LogiScanDemo />
       </Overlay>
 
       <footer className="snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-8 sm:py-12">
