@@ -8,6 +8,7 @@ import LuxDescription from './components/LuxDescription';
 import LuxDemo from './components/LuxDemo';
 import LogiScanDescription from './components/LogiScanDescription';
 import LogiScanDemo from './components/LogiScanDemo';
+import TerminalIntro from './components/TerminalIntro';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -251,26 +252,11 @@ export default function Home() {
               Sergey Kudelin
             </h1>
             <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-8 sm:mb-12 tracking-wide">
-              22 &bull; Miami &bull; Self-taught
+              Full-Stack Engineer &bull; Miami
             </p>
 
-            {/* Bio Section */}
-            <div className="mb-8 sm:mb-12 text-left max-w-2xl mx-auto space-y-3 sm:space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
-              <p>
-                I work the night shift at a residential building. The job is quiet, but the
-                problems aren't - packages that take an hour to verify by hand, workflows that
-                waste human attention on stuff a script could do in seconds. So instead of just
-                clocking in, I started building.
-              </p>
-              <p>
-                Dropped out of CS halfway through. Taught myself the rest by shipping real things.
-                I don't have a degree or three years of experience. What I have is two production
-                systems that people actually use, and the obsession to keep building more.
-              </p>
-              <p className="text-amber-400/90 font-medium">
-                Both projects are below. Take a look.
-              </p>
-            </div>
+            {/* Terminal Intro */}
+            <TerminalIntro />
           </motion.div>
         </div>
       </section>
@@ -536,34 +522,29 @@ export default function Home() {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
             The Approach
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base text-center mb-8 max-w-2xl mx-auto">
-            Every system I build follows three principles. These are non-negotiable.
-          </p>
           <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
               <div className="text-2xl mb-3">01</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Test Against Reality</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Production Over Prototypes</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Software that only works in development is a prototype. LogiScan runs against real package shelves.
-                Lux ships to 1,500+ real users. If it breaks under live conditions, it ships broken. So it does not break.
+                I build things that get deployed and used. A project isn&apos;t finished when the code works
+                locally &mdash; it&apos;s finished when it&apos;s running in production and holding up under real conditions.
               </p>
             </div>
             <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
               <div className="text-2xl mb-3">02</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Engineer the Edge Cases</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Failure-First Design</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                The happy path is easy. Real complexity lives in the 20% of cases everyone ignores:
-                orphaned packages, concurrent edits, one-way HTTP constraints. My systems are designed for the chaos,
-                not the demo.
+                I think about what breaks before I think about what works. Edge cases, race conditions,
+                unexpected input &mdash; I&apos;d rather catch it in the design phase than debug it in production.
               </p>
             </div>
             <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
               <div className="text-2xl mb-3">03</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Eliminate, Don't Assist</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">End-to-End Ownership</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                A tool that &ldquo;helps&rdquo; a human do repetitive work is still a manual process.
-                My systems fully replace the repetitive logic so humans focus exclusively on decisions
-                that need judgment. Assistance is a half-measure.
+                I handle the full loop &mdash; finding the problem, understanding the constraints, building
+                the solution, deploying it, and maintaining it after.
               </p>
             </div>
           </div>
