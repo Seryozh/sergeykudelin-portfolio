@@ -67,6 +67,13 @@ export default function TerminalIntro() {
                       pushing that forward and building things that matter.
                     </p>
                   </div>
+
+                  <div>
+                    <div className="text-amber-400 font-bold mb-1.5">## Availability</div>
+                    <p>
+                      Currently open to full-time roles and high-impact contract work.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             )}

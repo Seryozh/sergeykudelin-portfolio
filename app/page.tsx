@@ -9,6 +9,7 @@ import LuxDemo from './components/LuxDemo';
 import LogiScanDescription from './components/LogiScanDescription';
 import LogiScanDemo from './components/LogiScanDemo';
 import TerminalIntro from './components/TerminalIntro';
+import LuxLaptopAnimation from './components/LuxLaptopAnimation';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Home() {
   const [currentSection, setCurrentSection] = useState(0);
   const [activeOverlay, setActiveOverlay] = useState<'lux-description' | 'lux-demo' | 'logiscan-description' | 'logiscan-demo' | null>(null);
 
-  const sections = ['hero', 'lux', 'logiscan', 'articles', 'approach', 'expertise', 'contact'];
+  const sections = ['hero', 'lux', 'logiscan', 'expertise', 'contact'];
 
   // When opening modal
   const openModal = (type: 'lux-description' | 'lux-demo' | 'logiscan-description' | 'logiscan-demo') => {
@@ -102,8 +103,7 @@ export default function Home() {
   const navItems = [
     { label: 'Lux', id: 'lux' },
     { label: 'LogiScan', id: 'logiscan' },
-    { label: 'Articles', id: 'articles' },
-    { label: 'Approach', id: 'approach' },
+    { label: 'Writing', id: 'writing', external: true },
     { label: 'Expertise', id: 'expertise' },
     { label: 'Contact', id: 'contact' },
   ];
@@ -128,7 +128,13 @@ export default function Home() {
             {navItems.map((item) => (
               <motion.button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => {
+                  if ('external' in item && item.external) {
+                    window.open('https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a', '_blank');
+                  } else {
+                    scrollToSection(item.id);
+                  }
+                }}
                 className="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-amber-300 transition-all duration-300 relative group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -168,7 +174,14 @@ export default function Home() {
                 {navItems.map((item) => (
                   <motion.button
                     key={item.id}
-                    onClick={() => scrollToSection(item.id)}
+                    onClick={() => {
+                      if ('external' in item && item.external) {
+                        window.open('https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a', '_blank');
+                        setMobileMenuOpen(false);
+                      } else {
+                        scrollToSection(item.id);
+                      }
+                    }}
                     className="px-4 py-3 text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-amber-500/5 rounded-lg transition-all duration-300 text-left border border-transparent hover:border-amber-500/20"
                     whileHover={{ x: 6 }}
                   >
@@ -270,31 +283,18 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-5xl z-10"
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-[2fr_3fr] gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
-                  <Zap className="w-4 h-4" />
-                  Flagship Project
-                </div>
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
                   Lux
                 </h2>
                 <p className="text-xl text-slate-400 leading-relaxed">
-                  Agentic AI system for natural language game development.
-                  Solving bidirectional communication over one-way protocols.
+                  Agentic AI system for natural language game development. Built a bidirectional protocol layer that enables LLMs to read and modify game state in real-time, handling async communication over one-way message channels.
                 </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-amber-400">1,500+</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-emerald-400">v2.0</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Latest Release</div>
-                </div>
+                <p className="text-xl text-slate-400 leading-relaxed">
+                  Deployed in production environments with 1,500+ active installations processing player interactions.
+                </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -315,17 +315,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative group cursor-pointer" onClick={() => openModal('lux-demo')}>
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-              <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
-                <div className="absolute inset-0 bg-[url('https://i.imgur.com/6lxa15d.png')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
-                <div className="z-10 flex flex-col items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 shadow-2xl shadow-amber-500/50 group-hover:scale-110 transition-transform">
-                    <Play className="w-8 h-8 fill-current" />
-                  </div>
-                  <span className="text-sm font-bold text-white uppercase tracking-widest">Watch Simulation</span>
-                </div>
-              </div>
+            <div>
+              <LuxLaptopAnimation />
             </div>
           </div>
         </motion.div>
@@ -340,65 +331,15 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-5xl z-10"
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-                  <Scan className="w-4 h-4" />
-                  Live at logiscan.me
-                </div>
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                  LogiScan
-                </h2>
-                <p className="text-xl text-slate-400 leading-relaxed">
-                  AI vision system for automated package reconciliation.
-                  Agentic AI reads stickers and matches them against your manifest in seconds.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-emerald-400">~$0.002</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Per Scan</div>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-amber-400">5</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Detection States</div>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                  <div className="text-2xl font-bold text-purple-400">0</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Backend Servers</div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => openModal('logiscan-description')}
-                  className="flex-1 px-8 py-4 bg-emerald-500 text-slate-950 rounded-xl font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group"
-                >
-                  Read More
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button
-                  onClick={() => openModal('logiscan-demo')}
-                  className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
-                >
-                  Interactive Demo
-                  <Play className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Visual: Bounding box preview card */}
+          <div className="grid md:grid-cols-[3fr_2fr] gap-12 items-center">
+            {/* Visual: Bounding box preview card — LEFT */}
             <div className="relative group cursor-pointer" onClick={() => openModal('logiscan-description')}>
               <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-emerald-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video">
-                {/* Real scanning visualization with background photo */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="absolute inset-0 bg-[url('https://i.imgur.com/rtXV6df.png')] bg-cover bg-center" />
                   <div className="absolute inset-0 bg-slate-900/30" />
                   <div className="relative w-full h-full p-6">
-                    {/* Simulated bounding boxes */}
                     <motion.div
                       className="absolute rounded border-2"
                       style={{ top: '15%', left: '8%', width: '35%', height: '35%', borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)' }}
@@ -437,7 +378,6 @@ export default function Home() {
                       <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full flex items-center justify-center text-white text-[7px] font-black">!</div>
                     </motion.div>
 
-                    {/* Center icon */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <motion.div
                         className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center"
@@ -451,101 +391,37 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
-      </section>
 
-      {/* Articles Section */}
-      <section id="articles" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl z-10"
-        >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 sm:mb-12 text-amber-500/90">
-            Engineering Deep-Dives
-          </h2>
-
-          <motion.a
-            href="https://medium.com/@kudelin.dev/the-therac-25-lesson-why-ai-agents-need-a-circuit-breaker-architecture-789fca88272a"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -8 }}
-            className="group block w-full"
-          >
-            <div className="relative h-full bg-gradient-to-br from-amber-500/5 to-slate-900/40 border border-amber-500/20 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-amber-400/50 transition-all duration-300">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl blur opacity-0 group-hover:opacity-15 transition duration-500" />
-              <div className="relative">
-                <div className="flex items-start justify-between mb-4 gap-3">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="bg-amber-500/10 p-2 sm:p-3 rounded-lg">
-                      <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
-                        The Therac-25 Lesson
-                      </h3>
-                      <p className="text-xs sm:text-sm text-amber-400 uppercase tracking-wider">Systems Engineering</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
-                </div>
-
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
-                  Why AI Agents Need a &ldquo;Circuit Breaker&rdquo; Architecture. Moving beyond &ldquo;Prompt Engineering&rdquo; to &ldquo;Systems Engineering&rdquo; in autonomous coding agents. Learn how I built Lux with safety interlocks using principles from the Therac-25 disaster.
+            {/* Text content — RIGHT */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                  LogiScan
+                </h2>
+                <p className="text-xl text-slate-400 leading-relaxed">
+                  AI vision system for automated package reconciliation. Computer vision + agentic AI reads shipping labels and matches them against manifests in seconds.
                 </p>
-
-                <div className="flex items-center gap-4 text-sm text-slate-400">
-                  <span>4 min read</span>
-                  <span>•</span>
-                  <span>Jan 15, 2026</span>
-                  <span>•</span>
-                  <span className="text-amber-400 font-medium">Medium</span>
-                </div>
+                <p className="text-xl text-slate-400 leading-relaxed">
+                  Reduces manual sorting from ~60 minutes to under 15 minutes per batch. Built on edge inference at ~$0.002 per scan.
+                </p>
               </div>
-            </div>
-          </motion.a>
-        </motion.div>
-      </section>
 
-      {/* The Approach Section */}
-      <section id="approach" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20 sm:py-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-5xl z-10"
-        >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 text-amber-500/90">
-            The Approach
-          </h2>
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
-              <div className="text-2xl mb-3">01</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Production Over Prototypes</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                I build things that get deployed and used. A project isn&apos;t finished when the code works
-                locally &mdash; it&apos;s finished when it&apos;s running in production and holding up under real conditions.
-              </p>
-            </div>
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
-              <div className="text-2xl mb-3">02</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">Failure-First Design</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                I think about what breaks before I think about what works. Edge cases, race conditions,
-                unexpected input &mdash; I&apos;d rather catch it in the design phase than debug it in production.
-              </p>
-            </div>
-            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 sm:p-6 hover:border-amber-500/20 transition-all duration-300">
-              <div className="text-2xl mb-3">03</div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-2">End-to-End Ownership</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                I handle the full loop &mdash; finding the problem, understanding the constraints, building
-                the solution, deploying it, and maintaining it after.
-              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => openModal('logiscan-description')}
+                  className="flex-1 px-8 py-4 bg-emerald-500 text-slate-950 rounded-xl font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group"
+                >
+                  Read More
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
+                  onClick={() => openModal('logiscan-demo')}
+                  className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                >
+                  Interactive Demo
+                  <Play className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -573,20 +449,9 @@ export default function Home() {
                 </div>
                 <h3 className="text-base font-bold text-white">Programming Languages</h3>
               </div>
-              <ul className="space-y-2 text-sm text-slate-300">
-                <li>
-                  <span className="text-blue-400 font-semibold">TypeScript / JavaScript:</span> Advanced proficiency in ES6+, asynchronous patterns, and type-safe application architecture.
-                </li>
-                <li>
-                  <span className="text-blue-400 font-semibold">Python:</span> Automation scripts, data processing pipelines, and AI integrations using FastAPI and Flask.
-                </li>
-                <li>
-                  <span className="text-blue-400 font-semibold">SQL:</span> Expert management of PostgreSQL, including complex joins, indexing strategies, and atomic transactions.
-                </li>
-                <li>
-                  <span className="text-blue-400 font-semibold">Lua:</span> Specialized development for the Roblox engine, focusing on high-performance game logic and system automation.
-                </li>
-              </ul>
+              <p className="text-sm text-slate-300">
+                TypeScript/JavaScript, Python, SQL, Lua
+              </p>
             </div>
 
             {/* AI & Agentic Engineering */}
@@ -597,20 +462,9 @@ export default function Home() {
                 </div>
                 <h3 className="text-base font-bold text-white">AI & Agentic Engineering</h3>
               </div>
-              <ul className="space-y-2 text-sm text-slate-300">
-                <li>
-                  <span className="text-purple-400 font-semibold">Agentic Frameworks:</span> Designing closed-loop systems with recursive planning, tool-use, and self-correction logic.
-                </li>
-                <li>
-                  <span className="text-purple-400 font-semibold">LLM Integration:</span> Extensive experience with OpenAI (GPT-4o/Vision), Anthropic, and OpenRouter APIs.
-                </li>
-                <li>
-                  <span className="text-purple-400 font-semibold">RAG & Vector Data:</span> Implementing Retrieval-Augmented Generation using Supabase pgvector and semantic search.
-                </li>
-                <li>
-                  <span className="text-purple-400 font-semibold">Prompt Engineering:</span> Crafting high-precision system prompts with strict schema adherence to ensure deterministic outputs.
-                </li>
-              </ul>
+              <p className="text-sm text-slate-300">
+                LLM integration (OpenAI, Anthropic), RAG & vector databases, agentic frameworks, prompt engineering
+              </p>
             </div>
 
             {/* Full-Stack & Systems Architecture */}
@@ -621,20 +475,9 @@ export default function Home() {
                 </div>
                 <h3 className="text-base font-bold text-white">Full-Stack & Systems Architecture</h3>
               </div>
-              <ul className="space-y-2 text-sm text-slate-300">
-                <li>
-                  <span className="text-emerald-400 font-semibold">Frontend:</span> Next.js 15 (App Router), React, Tailwind CSS, Framer Motion, and mobile-first PWA architecture.
-                </li>
-                <li>
-                  <span className="text-emerald-400 font-semibold">Backend:</span> Node.js, serverless functions, and RESTful API design.
-                </li>
-                <li>
-                  <span className="text-emerald-400 font-semibold">Database & Auth:</span> Full-scale Supabase implementation, including Realtime, Row Level Security (RLS), and complex Auth flows.
-                </li>
-                <li>
-                  <span className="text-emerald-400 font-semibold">State Management:</span> Managing complex application states using React Context, Zustand, and persistent storage.
-                </li>
-              </ul>
+              <p className="text-sm text-slate-300">
+                Next.js, React, Node.js, serverless functions, RESTful APIs, PostgreSQL, Supabase, state management (React Context, Zustand)
+              </p>
             </div>
 
             {/* Infrastructure & Professional Tools */}
@@ -645,20 +488,9 @@ export default function Home() {
                 </div>
                 <h3 className="text-base font-bold text-white">Infrastructure & Professional Tools</h3>
               </div>
-              <ul className="space-y-2 text-sm text-slate-300">
-                <li>
-                  <span className="text-amber-400 font-semibold">DevOps:</span> CI/CD via GitHub Actions, Vercel deployments, and environment configuration.
-                </li>
-                <li>
-                  <span className="text-amber-400 font-semibold">Containers & Cloud:</span> Fundamental knowledge of Docker and managing serverless infrastructure.
-                </li>
-                <li>
-                  <span className="text-amber-400 font-semibold">Workflow Automation:</span> Building enterprise-grade automations using n8n, Zapier, and custom webhooks.
-                </li>
-                <li>
-                  <span className="text-amber-400 font-semibold">Engineering Tools:</span> Git, Postman, Cursor, and Figma for design-to-code workflows.
-                </li>
-              </ul>
+              <p className="text-sm text-slate-300">
+                Docker, CI/CD (GitHub Actions, Vercel), workflow automation (n8n, Zapier), Git, Postman, Figma
+              </p>
             </div>
           </div>
         </motion.div>
@@ -677,24 +509,24 @@ export default function Home() {
             Let's Build Something
           </h2>
           <p className="text-slate-300 text-sm sm:text-base text-center mb-6 sm:mb-8 max-w-2xl mx-auto">
-            I am currently located in the Miami area and available for challenging full-time roles or high-impact freelance projects.
+            I&apos;m currently available for full-time roles and high-impact contract projects.
           </p>
 
-          {/* Focus Areas */}
+          {/* What I'm looking for */}
           <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
-            <h3 className="text-lg font-semibold text-white mb-4">Focus Areas</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">What I&apos;m looking for:</h3>
             <ul className="space-y-2 text-sm text-slate-300">
               <li className="flex gap-2">
                 <span className="text-amber-400">•</span>
-                <span>Operational automation for high-volume environments.</span>
+                <span>Production AI systems with real user impact</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-amber-400">•</span>
-                <span>Teams building AI agents for real-world deployment.</span>
+                <span>Teams shipping agentic tools or automation infrastructure</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-amber-400">•</span>
-                <span>Projects where the interaction between AI and human judgment is critical.</span>
+                <span>Projects where system design and failure modes matter</span>
               </li>
             </ul>
           </div>
