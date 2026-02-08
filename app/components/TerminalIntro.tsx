@@ -76,8 +76,8 @@ export default function TerminalIntro() {
           <div className="mt-4 text-emerald-400 flex items-center">
             $&nbsp;
             <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'steps(2)' }}
+              animate={{ opacity: [1, 1, 0, 0] }}
+              transition={{ duration: 1, repeat: Infinity, times: [0, 0.49, 0.5, 1] }}
               className="inline-block w-2 h-4 bg-emerald-400"
             />
           </div>
