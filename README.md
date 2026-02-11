@@ -1,57 +1,90 @@
-# TidesOS NightOps Agent
-**Voice-First Concierge for Residential Operations**
+# Sergey Kudelin Portfolio
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20TidesOS-amber?style=for-the-badge)](https://sergeykudelin.com/tidesos)
+A modern, responsive portfolio website showcasing full-stack engineering projects with a focus on AI systems and production-grade applications.
+
+**Live Site:** [sergeykudelin.com](https://sergeykudelin.com)
 
 ---
 
-## The Problem
+## Overview
 
-Overnight operations at large residential complexes are defined by volume and repetition. Security teams get overwhelmed by hundreds of identical queries about keys, towels, and access codes. This buries actual security incidents under noise.
+This portfolio is built with Next.js 16, TypeScript, and Tailwind CSS. It features:
 
-## The Solution
+- **Immersive full-page scrolling** with snap points for each section
+- **Interactive project showcases** with detailed descriptions and live demos
+- **Animated terminal introduction** that expands on load
+- **Project detail overlays** for deep-dives into Lux and LogiScan
+- **Responsive design** optimized for all screen sizes
+- **Smooth animations** powered by Framer Motion
 
-**TidesOS** is an autonomous voice firewall deployed at Tides Residential. It handles the initial operational traffic from 10 PM to 6 AM. This allows human security teams to focus on high-priority physical threats.
+## Featured Projects
 
-It enforces strict property protocols by distinguishing between operational tasks (Security) and hospitality requests (Caretaker) in real-time.
+### Lux
+Agentic AI system for natural language game development. Built a bidirectional protocol layer that enables LLMs to read and modify game state in real-time. Deployed in production with 1,500+ active installations.
 
-## Capabilities
-
-**Fast Voice Interface:** Built for speed. Users speak naturally and the agent responds instantly in English or Rioplatense Spanish (mirroring the user's dialect).
-
-**Contextual Memory:** Maintains state across long conversations. It remembers apartment numbers, names, and intent.
-
-**Operational Firewall:** Automatically filters requests. It grants building access when appropriate but strictly denies unit access. It redirects guests to the correct third-party workflows for private issues.
-
-**Production Ready:** Deployed in a live, high-traffic environment handling real-world acoustic conditions and ambiguous user intents.
+### LogiScan
+AI vision system for automated package reconciliation. Computer vision + agentic AI reads shipping labels and matches them against manifests in seconds, reducing manual sorting from ~60 minutes to under 15 minutes per batch.
 
 ## Tech Stack
 
-**Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS
+- **Framework:** [Next.js](https://nextjs.org/) 16 (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Analytics:** [Vercel Analytics](https://vercel.com/analytics) & [Speed Insights](https://vercel.com/speed-insights)
 
-**Orchestration:** n8n (Self-Hosted Workflow Engine)
+## Project Structure
 
-**Intelligence:** OpenAI GPT-4o (Reasoning) + Whisper (STT) + HD TTS
+```
+app/
+├── sections/              # Page sections
+│   ├── Hero.tsx           # Hero/intro with terminal
+│   ├── LuxProject.tsx     # Lux project showcase
+│   ├── LogiScanProject.tsx # LogiScan project showcase
+│   ├── Expertise.tsx      # Skills & expertise
+│   └── Contact.tsx        # Contact section
+├── components/
+│   ├── ui/                # Reusable UI components
+│   │   ├── Overlay.tsx    # Modal overlay component
+│   │   └── TerminalIntro.tsx # Animated terminal
+│   └── projects/          # Project-specific components
+│       ├── LuxDescription.tsx
+│       ├── LuxDemo.tsx
+│       ├── LuxLaptopAnimation.tsx
+│       ├── LogiScanDescription.tsx
+│       └── LogiScanDemo.tsx
+├── globals.css
+├── layout.tsx
+└── page.tsx               # Main entry point
+```
 
-**Infrastructure:** Supabase, Vercel
-
-## Setup
+## Getting Started
 
 ```bash
 # Clone the repository
-git clone https://github.com/Seryozh/tides-concierge.git
+git clone https://github.com/Seryozh/sergeykudelin-portfolio.git
 
 # Install dependencies
 npm install
 
-# Run the agent locally
+# Run the development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-## About
+## Deployment
 
-Built by [Sergey Kudelin](https://github.com/Seryozh). I build autonomous systems for high-pressure environments.
+The site is configured for deployment on Vercel with optimized build settings and security headers.
+
+## Contact
+
+- **Email:** sergey@sergeykudelin.com
+- **LinkedIn:** [linkedin.com/in/sergeykudelin](https://linkedin.com/in/sergeykudelin)
+- **GitHub:** [github.com/Seryozh](https://github.com/Seryozh)
 
 ---
 
-**Note:** This is a production system deployed in a live operational environment.
+Built with passion in Miami 🌴
