@@ -50,9 +50,36 @@ export default function Home() {
     }
   };
 
-  // Handle URL hash for deep linking to overlays
+  // Handle URL hash AND query params for deep linking to overlays
   useEffect(() => {
-    const handleHash = () => {
+    const handleDeepLink = () => {
+      // Check query params first (from resume links: ?project=lux&section=lux-polling-bridge)
+      const params = new URLSearchParams(window.location.search);
+      const project = params.get('project');
+      const section = params.get('section');
+
+      if (project || section) {
+        if (project === 'lux' || section?.startsWith('lux-')) {
+          setActiveOverlay('lux-description');
+          if (section) {
+            setTimeout(() => {
+              const el = document.getElementById(section);
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+          }
+        } else if (project === 'logiscan' || section?.startsWith('logiscan-')) {
+          setActiveOverlay('logiscan-description');
+          if (section) {
+            setTimeout(() => {
+              const el = document.getElementById(section);
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+          }
+        }
+        return;
+      }
+
+      // Fallback: hash-based deep linking
       const hash = window.location.hash;
       if (hash === '#lux-demo') {
         setActiveOverlay('lux-demo');
@@ -73,9 +100,9 @@ export default function Home() {
       }
     };
 
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    handleDeepLink();
+    window.addEventListener('hashchange', handleDeepLink);
+    return () => window.removeEventListener('hashchange', handleDeepLink);
   }, []);
 
   // Track scroll position for section indicator

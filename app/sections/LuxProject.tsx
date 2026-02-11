@@ -30,10 +30,10 @@ export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) 
                 Lux
               </h2>
               <p className="text-xl text-slate-400 leading-relaxed">
-                Agentic AI system for natural language game development. Built a bidirectional protocol layer that enables LLMs to read and modify game state in real-time, handling async communication over one-way message channels.
+                Production agentic AI system that lets game developers build entirely in plain English. Engineered real-time SSE streaming, a validation pipeline, and an async tool bridge to give an LLM full read/write access to a live game engine.
               </p>
               <p className="text-xl text-slate-400 leading-relaxed">
-                Deployed in production environments with 1,500+ active installations processing player interactions.
+                1,500+ active installations. Three major architecture iterations. Deployed on Railway with Redis-backed sessions, JWT auth, and encrypted API keys.
               </p>
             </div>
 

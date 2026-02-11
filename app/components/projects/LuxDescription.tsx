@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2,
   Layers, X as XIcon, Play, Brain, Cpu, Globe, Terminal,
-  ArrowRight, Package, Lock, Gauge
+  ArrowRight, Package, Lock, Gauge, Radio, Shield, GitBranch
 } from 'lucide-react';
 
 interface LuxDescriptionProps {
@@ -40,15 +40,15 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
         </h1>
         <div className="max-w-3xl mx-auto space-y-4">
           <p className="text-xl text-slate-300 leading-relaxed">
-            A production AI agent that lets game developers build, modify, and debug
-            games in plain English. Lux autonomously analyzes project structures, writes code,
-            and executes precise modifications inside Roblox Studio.
+            A production agentic AI system that lets game developers build, modify, and debug
+            games entirely in plain English. Lux autonomously explores project structures, reads and writes code,
+            and executes precise modifications inside Roblox Studio — all through a real-time SSE streaming connection.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            The core engineering challenge: Roblox plugins can only make <em>outbound</em> HTTP requests.
-            No WebSockets. No incoming connections. I engineered a polling bridge pattern that enables
-            full bidirectional communication over this one-way constraint  - the AI can ask questions
-            and request data mid-execution, creating a seamless human-in-the-loop experience.
+            Three major architecture iterations. Started as a 22,000-line Lua monolith, evolved into a 3-layer system
+            with a FastAPI backend and LangGraph agent, then rebuilt again with SSE streaming, Redis sessions, JWT
+            authentication, encrypted API keys, a 3-stage validation pipeline, and diff-based script editing.
+            Every version solved real engineering problems I hit at scale.
           </p>
         </div>
 
@@ -58,16 +58,16 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-emerald-400">v2.0</div>
+            <div className="text-2xl font-bold text-emerald-400">v3.0</div>
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Latest Release</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-blue-400">2,237</div>
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Lines of Code</div>
+            <div className="text-2xl font-bold text-blue-400">3</div>
+            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Arch Iterations</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-purple-400">100ms</div>
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Poll Latency</div>
+            <div className="text-2xl font-bold text-purple-400">SSE</div>
+            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Real-time Stream</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700 col-span-2 md:col-span-1">
             <div className="text-2xl font-bold text-red-400">90%</div>
@@ -556,7 +556,7 @@ llm_with_tools = llm.bind_tools([
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <BarChart3 className="w-6 h-6 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">The v1 &rarr; v2 Transformation</h2>
+          <h2 className="text-2xl font-bold text-white">v1 &rarr; v2 &rarr; v3 Evolution</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -675,13 +675,40 @@ async def chat(req):
                   <span className="text-[10px] text-emerald-400 font-bold whitespace-nowrap">Python: 813 LOC</span>
                 </div>
               </div>
-              <div className="text-[10px] text-slate-500 mt-2">3 layers &bull; BYOK model &bull; Session management &bull; Testable</div>
+              <div className="text-[10px] text-slate-500 mt-2">3 layers &bull; BYOK model &bull; Polling bridge &bull; Testable</div>
             </motion.div>
 
-            <div className="text-center mt-2">
-              <span className="text-lg font-black text-emerald-400">90% complexity reduction</span>
-              <span className="text-xs text-slate-500 block">22,000 &rarr; 2,237 lines</span>
+            <div className="flex justify-center">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <ArrowRight className="w-5 h-5 text-slate-600 rotate-90" />
+              </motion.div>
             </div>
+
+            <motion.div
+              className="p-5 rounded-xl bg-blue-500/5 border border-blue-500/20"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-bold text-blue-400 flex items-center gap-2">
+                  <Radio className="w-4 h-4" />
+                  Version 3
+                </h3>
+                <span className="text-xs text-blue-400/60">Production-Grade</span>
+              </div>
+              <div className="space-y-1 text-[10px] text-slate-400">
+                <div>&#8226; SSE streaming (replaces polling for server→plugin)</div>
+                <div>&#8226; Redis-backed sessions &bull; JWT auth &bull; Fernet-encrypted API keys</div>
+                <div>&#8226; 3-stage validation: Schema → Lua syntax → Hash injection</div>
+                <div>&#8226; Diff-based editing (search/replace, not full overwrite)</div>
+                <div>&#8226; Rollback support &bull; Modular UI components &bull; Debug tooling</div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -812,22 +839,25 @@ end`}</code>
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <Lock className="w-6 h-6 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">BYOK Security Model</h2>
+          <h2 className="text-2xl font-bold text-white">Security & Session Architecture</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              Users bring their own OpenRouter API key. Keys are held in session memory only,
-              never logged, never persisted. Sessions expire after 1 hour of inactivity with
-              TTL-based automatic cleanup.
+              Users bring their own API key (BYOK). In v3, keys are encrypted at rest using{' '}
+              <span className="text-emerald-400 font-bold">Fernet symmetric encryption</span>,
+              sessions are stored in <span className="text-blue-400 font-bold">Redis</span> with
+              TTL-based expiry, and all endpoints are protected by{' '}
+              <span className="text-purple-400 font-bold">JWT authentication</span>.
             </p>
             <ul className="space-y-3">
               {[
-                'API keys stay server-side (BYOK model)',
-                'Zero data retention after session expires',
+                'Fernet-encrypted API keys at rest (not plaintext)',
+                'Redis-backed sessions with automatic TTL cleanup',
+                'JWT auth on all API endpoints',
+                '3-stage validation: Schema → Lua syntax → Hash injection',
                 'All modifications require explicit user approval',
-                'Pydantic validation on every request/response',
               ].map((step, i) => (
                 <li key={i} className="flex gap-3 items-start text-sm">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
@@ -882,15 +912,15 @@ end`}</code>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { value: '1,500+', label: 'Active Installs', color: 'text-amber-400' },
-            { value: '2,237', label: 'Lines of Code', color: 'text-white' },
+            { value: 'v3', label: 'Architecture Gen', color: 'text-white' },
             { value: '8', label: 'Action Primitives', color: 'text-blue-400' },
-            { value: '4', label: 'Agent Tools', color: 'text-purple-400' },
-            { value: '1,424', label: 'Lua (Plugin)', color: 'text-amber-400' },
-            { value: '813', label: 'Python (Backend)', color: 'text-emerald-400' },
-            { value: '100ms', label: 'Poll Interval', color: 'text-blue-400' },
+            { value: '5', label: 'Agent Tools', color: 'text-purple-400' },
+            { value: 'SSE', label: 'Streaming Layer', color: 'text-amber-400' },
+            { value: 'Redis', label: 'Session Store', color: 'text-emerald-400' },
+            { value: 'JWT', label: 'Auth System', color: 'text-blue-400' },
             { value: '30s', label: 'Tool Timeout', color: 'text-red-400' },
-            { value: '3', label: 'LLM Providers', color: 'text-purple-400' },
-            { value: '20', label: 'Message History', color: 'text-slate-300' },
+            { value: 'Fernet', label: 'Key Encryption', color: 'text-purple-400' },
+            { value: '1M', label: 'Context Window', color: 'text-slate-300' },
             { value: '0', label: 'Data Retained', color: 'text-emerald-400' },
             { value: '90%', label: 'Token Savings', color: 'text-amber-400' },
           ].map((metric) => (
@@ -924,7 +954,7 @@ end`}</code>
       {/* CTA */}
       <section className="pt-12 border-t border-slate-800 flex flex-col md:flex-row gap-4 justify-center">
         <a
-          href="https://github.com/Seryozh/lux-agentic-ai"
+          href="https://github.com/Seryozh/RobloxAgenticAI"
           target="_blank"
           className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-colors"
         >

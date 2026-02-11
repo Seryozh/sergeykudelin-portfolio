@@ -37,9 +37,10 @@ export default function LogiScanDescription() {
             your manifest, and shows color-coded results in real-time.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            Built to solve a real problem I witness every night at work: concierge staff spending
-            30-60 minutes manually cross-referencing physical packages against digital records.
-            LogiScan reduces that to under 5 minutes with near-zero error rate.
+            Built to solve a real operational bottleneck I deal with every shift at work.
+            Staff spend up to 90 minutes manually reading stickers and cross-referencing packages
+            against a paper log — pen and clipboard, one by one. I built LogiScan to cut that
+            down to under 10 minutes.
           </p>
         </div>
 

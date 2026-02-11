@@ -90,10 +90,10 @@ export default function LogiScanProject({ onReadMore, onOpenDemo }: LogiScanProj
                 LogiScan
               </h2>
               <p className="text-xl text-slate-400 leading-relaxed">
-                AI vision system for automated package reconciliation. Computer vision + agentic AI reads shipping labels and matches them against manifests in seconds.
+                AI vision tool I built to automate a real operational bottleneck at my workplace. Point a phone camera at a shelf of packages — agentic AI reads every label and cross-references them against a manifest in seconds.
               </p>
               <p className="text-xl text-slate-400 leading-relaxed">
-                Reduces manual sorting from ~60 minutes to under 15 minutes per batch. Built on edge inference at ~$0.002 per scan.
+                Reduced nightly package verification from ~90 minutes to ~10 minutes. Zero-backend architecture — runs entirely in the browser at ~$0.002 per scan.
               </p>
             </div>
 
