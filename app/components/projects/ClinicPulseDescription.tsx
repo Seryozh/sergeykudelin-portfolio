@@ -29,15 +29,15 @@ export default function ClinicPulseDescription({ onOpenDemo }: ClinicPulseDescri
       <section className="text-center space-y-6 scroll-mt-24">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm font-medium">
           <Zap className="w-4 h-4" />
-          Built in 2 nights for FutureClinic
+          5-Phase AI Pipeline
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">Clinic Pulse</h1>
         <div className="max-w-3xl mx-auto space-y-4">
           <p className="text-xl text-slate-300 leading-relaxed">
-            Multi-phase AI pipeline that turns YouTube search results into verified physician leads with ready-to-send personalized outreach — all for a few cents per doctor. Built in Next.js + TypeScript to prove a concept for FutureClinic: that finding high-influence medical creators doesn&apos;t require a lead-gen agency.
+            Multi-phase AI pipeline that turns YouTube search results into verified physician leads with ready-to-send personalized outreach, all for a few cents per doctor. Built to prove that finding high-influence medical creators doesn&apos;t require a lead-gen agency.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            Influencer doctors bring their entire patient audiences with them. A dermatologist with 2 million YouTube subscribers isn&apos;t just a content creator — they&apos;re a distribution channel. Finding them manually means hours on YouTube, cross-referencing LinkedIn, googling NPI numbers. This pipeline does it in minutes, end to end.
+            Influencer doctors bring their entire patient audiences with them. A dermatologist with 2 million YouTube subscribers isn&apos;t just a content creator, they&apos;re a distribution channel. Finding them manually means hours on YouTube, cross-referencing LinkedIn, googling NPI numbers. This pipeline does it in minutes, end to end.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function ClinicPulseDescription({ onOpenDemo }: ClinicPulseDescri
           <div className="p-2 rounded-lg bg-blue-500/10">
             <Search className="w-6 h-6 text-blue-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Phase 1 — YouTube Discovery</h2>
+          <h2 className="text-2xl font-bold text-white">Phase 1: YouTube Discovery</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -131,7 +131,7 @@ const recentVideos = await getRecentVideos(channelId, 5)
           <div className="p-2 rounded-lg bg-violet-500/10">
             <Brain className="w-6 h-6 text-violet-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Phase 2 — Identity Extraction</h2>
+          <h2 className="text-2xl font-bold text-white">Phase 2: Identity Extraction</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -212,7 +212,7 @@ interface ExtractedIdentity {
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <ShieldCheck className="w-6 h-6 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Phase 3 — NPI License Verification</h2>
+          <h2 className="text-2xl font-bold text-white">Phase 3: NPI License Verification</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -278,7 +278,7 @@ interface ExtractedIdentity {
           <div className="p-2 rounded-lg bg-amber-500/10">
             <Mail className="w-6 h-6 text-amber-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Phase 4 — Contact Enrichment</h2>
+          <h2 className="text-2xl font-bold text-white">Phase 4: Contact Enrichment</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -339,7 +339,7 @@ interface ExtractedIdentity {
           <div className="p-2 rounded-lg bg-rose-500/10">
             <FileText className="w-6 h-6 text-rose-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Phase 5 — Personalized Outreach</h2>
+          <h2 className="text-2xl font-bold text-white">Phase 5: Personalized Outreach</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -348,7 +348,7 @@ interface ExtractedIdentity {
               <span className="text-rose-400 font-bold">Claude Sonnet</span> generates outreach conditioned on what contact channels actually exist for each doctor. If there&apos;s a Doximity profile, it writes a peer-to-peer physician message. If there&apos;s an email, it generates 3 variants with different angles: monetization, peer credibility, patient demand. Plus a follow-up.
             </p>
             <p className="text-sm text-slate-400">
-              The system prompt frames Claude as writing for &quot;Future Clinic&quot; — a telehealth platform trying to onboard physician creators. The pitch angle: their existing YouTube audience already trusts their clinical judgment; Future Clinic gives those patients a way to book with them.
+              The system prompt frames Claude as writing for a telehealth platform trying to onboard physician creators. The pitch angle: their existing YouTube audience already trusts their clinical judgment, and the platform gives those patients a way to book with them directly.
             </p>
           </div>
 
@@ -360,7 +360,7 @@ interface ExtractedIdentity {
                 <br />
                 Dr. Lee,<br />
                 <br />
-                <span className="text-slate-400">Your dermatology audience isn&apos;t just an audience — they&apos;re patients looking for a physician they already trust. Future Clinic lets you turn that trust into bookings, on your schedule...</span>
+                <span className="text-slate-400">Your dermatology audience isn&apos;t just an audience. They&apos;re patients looking for a physician they already trust, and the platform gives them a way to book with you directly, on your schedule...</span>
               </div>
             </div>
             <div className="mt-2 flex gap-2">
@@ -392,14 +392,6 @@ interface ExtractedIdentity {
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-950 rounded-xl font-bold hover:bg-violet-100 transition-colors"
           >
             View on GitHub
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href="https://futureclinic-growth.vercel.app"
-            target="_blank"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-colors"
-          >
-            Live Demo
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>

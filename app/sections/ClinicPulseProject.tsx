@@ -18,8 +18,37 @@ export default function ClinicPulseProject({ onReadMore, onOpenDemo }: ClinicPul
         transition={{ duration: 0.6 }}
         className="w-full max-w-5xl z-10"
       >
-        <div className="grid md:grid-cols-[3fr_2fr] gap-12 items-center">
-          {/* Pipeline visualization — LEFT */}
+        <div className="grid md:grid-cols-[2fr_3fr] gap-12 items-center">
+          {/* Text content — LEFT */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                Clinic Pulse
+              </h2>
+              <p className="text-xl text-slate-400 leading-relaxed">
+                Influencer doctors bring their entire patient audience to any platform they recommend, but finding them manually is painful. Clinic Pulse runs a 5-phase AI pipeline: discover YouTube physicians, extract their real identity via LLM, verify their US medical license against the NPI Registry, enrich contact profiles from multiple sources, and generate personalized outreach. Dozens of leads in minutes. For cents.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={onReadMore}
+                className="flex-1 px-8 py-4 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-500 transition-all flex items-center justify-center gap-2 group"
+              >
+                Read More
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={onOpenDemo}
+                className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+              >
+                Watch It Run
+                <Play className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Pipeline visualization — RIGHT */}
           <div className="relative group cursor-pointer" onClick={onReadMore}>
             <div className="absolute -inset-1 bg-gradient-to-r from-violet-500 to-fuchsia-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
             <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden p-6">
@@ -28,7 +57,7 @@ export default function ClinicPulseProject({ onReadMore, onOpenDemo }: ClinicPul
                 {[
                   { icon: '🔍', label: 'Discovery', detail: '@DrSandraLee · @DermDoctor · @BoardCertDerm', color: 'text-blue-400', delay: 0.1 },
                   { icon: '🧠', label: 'Intelligence', detail: '"Dr. Pimple Popper" → Sandra Lee, MD', color: 'text-violet-400', delay: 0.2 },
-                  { icon: '✅', label: 'Verification', detail: 'NPI #1932748501 — ACTIVE · Dermatology', color: 'text-emerald-400', delay: 0.3 },
+                  { icon: '✅', label: 'Verification', detail: 'NPI #1932748501 ACTIVE · Dermatology', color: 'text-emerald-400', delay: 0.3 },
                   { icon: '📬', label: 'Enrichment', detail: 'LinkedIn ✓  Doximity ✓  Email ✓', color: 'text-amber-400', delay: 0.4 },
                   { icon: '📝', label: 'Outreach', detail: '"Dr. Lee, your 2.1M subscribers trust..."', color: 'text-rose-400', delay: 0.5 },
                 ].map((phase, i) => (
@@ -78,38 +107,6 @@ export default function ClinicPulseProject({ onReadMore, onOpenDemo }: ClinicPul
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          {/* Text content — RIGHT */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold">
-                Built in 2 nights for FutureClinic
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                Clinic Pulse
-              </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                Influencer doctors bring their entire patient audience to any platform they recommend — but finding them manually is painful. Clinic Pulse runs a 5-phase AI pipeline: discover YouTube physicians, extract their real identity via LLM, verify their US medical license against the NPI Registry, enrich contact profiles from multiple sources, and generate personalized outreach. Dozens of leads in minutes. For cents.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={onReadMore}
-                className="flex-1 px-8 py-4 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-500 transition-all flex items-center justify-center gap-2 group"
-              >
-                Read More
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={onOpenDemo}
-                className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
-              >
-                Watch It Run
-                <Play className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>

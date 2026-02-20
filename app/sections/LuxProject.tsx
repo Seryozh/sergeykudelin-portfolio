@@ -30,7 +30,7 @@ export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) 
                 Lux
               </h2>
               <p className="text-xl text-slate-400 leading-relaxed">
-                You type &ldquo;add a health bar that drains when the player takes damage&rdquo; into a Roblox Studio widget. Lux reads your live game hierarchy, reasons through which scripts to modify, and streams back structured changes for you to review and apply — token by token, in real time. The engineering challenge: Roblox plugins can&apos;t receive incoming connections, so the agent suspends mid-thought via an async tool bridge until the plugin checks in. 1,500+ active installations on Roblox Creator Store.
+                You type &ldquo;add a health bar that drains when the player takes damage&rdquo; into a Studio plugin. Lux reads your live game hierarchy, reasons through which scripts to modify, and streams back structured changes for you to review and apply, token by token, in real time. The core challenge: plugins can&apos;t receive incoming connections, so the agent suspends mid-thought via an async tool bridge until the plugin polls for results. Over 1,500 active installations.
               </p>
             </div>
 
@@ -52,8 +52,11 @@ export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) 
             </div>
           </div>
 
-          <div>
-            <LuxLaptopAnimation />
+          <div className="relative group cursor-pointer" onClick={onReadMore}>
+            <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+            <div className="relative">
+              <LuxLaptopAnimation />
+            </div>
           </div>
         </div>
       </motion.div>

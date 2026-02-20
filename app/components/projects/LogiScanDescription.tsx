@@ -359,10 +359,48 @@ const x = (box.x / 100) * canvasWidth * scaleX;`}</code>
 
           {/* Visual: Mock bounding box preview */}
           <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
-            <div className="relative aspect-video bg-gradient-to-br from-slate-900 to-slate-800 p-4">
-              {/* Mock package photo area */}
-              <div className="absolute inset-4 flex items-center justify-center">
-                <div className="text-[10px] font-black text-slate-700 uppercase tracking-widest">Package Photo Area</div>
+            <div className="relative aspect-video">
+              {/* SVG shelf background */}
+              <div className="absolute inset-0">
+                <svg viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                  <rect width="400" height="225" fill="#0f172a"/>
+                  <rect x="0" y="115" width="400" height="7" fill="#1e293b"/>
+                  <rect x="0" y="209" width="400" height="16" fill="#0a0f18"/>
+                  {/* Package 1: top-left */}
+                  <rect x="38" y="32" width="122" height="79" fill="#3d2b1f" rx="2"/>
+                  <rect x="39" y="33" width="120" height="77" fill="#4a3420" rx="2"/>
+                  <rect x="49" y="46" width="80" height="36" fill="#f8fafc" rx="2"/>
+                  <rect x="54" y="51" width="2" height="16" fill="#334155"/><rect x="58" y="51" width="1" height="16" fill="#334155"/>
+                  <rect x="61" y="51" width="3" height="16" fill="#334155"/><rect x="66" y="51" width="1" height="16" fill="#334155"/>
+                  <rect x="69" y="51" width="2" height="16" fill="#334155"/><rect x="73" y="51" width="3" height="16" fill="#334155"/>
+                  <rect x="54" y="71" width="65" height="5" fill="#cbd5e1" rx="1"/>
+                  {/* Package 2: top-right */}
+                  <rect x="218" y="25" width="144" height="70" fill="#2d2219" rx="2"/>
+                  <rect x="219" y="26" width="142" height="68" fill="#382a1f" rx="2"/>
+                  <rect x="229" y="37" width="92" height="38" fill="#f8fafc" rx="2"/>
+                  <rect x="234" y="42" width="2" height="18" fill="#334155"/><rect x="238" y="42" width="1" height="18" fill="#334155"/>
+                  <rect x="241" y="42" width="3" height="18" fill="#334155"/><rect x="246" y="42" width="2" height="18" fill="#334155"/>
+                  <rect x="250" y="42" width="1" height="18" fill="#334155"/><rect x="253" y="42" width="3" height="18" fill="#334155"/>
+                  <rect x="258" y="42" width="2" height="18" fill="#334155"/>
+                  <rect x="234" y="63" width="75" height="5" fill="#cbd5e1" rx="1"/>
+                  {/* Package 3: bottom-left */}
+                  <rect x="78" y="122" width="114" height="68" fill="#3d2b1f" rx="2"/>
+                  <rect x="79" y="123" width="112" height="66" fill="#4a3420" rx="2"/>
+                  <rect x="88" y="134" width="80" height="36" fill="#f8fafc" rx="2"/>
+                  <rect x="93" y="139" width="2" height="16" fill="#334155"/><rect x="97" y="139" width="1" height="16" fill="#334155"/>
+                  <rect x="100" y="139" width="3" height="16" fill="#334155"/><rect x="105" y="139" width="2" height="16" fill="#334155"/>
+                  <rect x="109" y="139" width="1" height="16" fill="#334155"/>
+                  <rect x="93" y="158" width="65" height="5" fill="#cbd5e1" rx="1"/>
+                  {/* Package 4: bottom-right, damaged sticker */}
+                  <rect x="238" y="129" width="102" height="63" fill="#1e1810" rx="2"/>
+                  <rect x="239" y="130" width="100" height="61" fill="#252014" rx="2"/>
+                  <rect x="247" y="140" width="70" height="34" fill="#fef2f2" rx="2"/>
+                  <rect x="252" y="145" width="2" height="14" fill="#94a3b8"/><rect x="256" y="145" width="1" height="14" fill="#94a3b8"/>
+                  <rect x="259" y="145" width="3" height="14" fill="#cbd5e1"/>
+                  <line x1="272" y1="146" x2="295" y2="158" stroke="#ef4444" strokeWidth="2"/>
+                  <line x1="295" y1="146" x2="272" y2="158" stroke="#ef4444" strokeWidth="2"/>
+                  <rect x="252" y="162" width="56" height="5" fill="#fca5a5" rx="1"/>
+                </svg>
               </div>
 
               {/* Mock bounding boxes */}
@@ -612,34 +650,6 @@ useEffect(() => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Tech Stack & Metrics */}
-      <section className="space-y-8">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-slate-500/10">
-            <Layers className="w-6 h-6 text-slate-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">By the Numbers</h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { value: '~4,300', label: 'Lines of TypeScript', color: 'text-white' },
-            { value: '29/29', label: 'Tests Passing', color: 'text-emerald-400' },
-            { value: '3', label: 'AI Providers', color: 'text-purple-400' },
-            { value: '3', label: 'Export Formats', color: 'text-blue-400' },
-            { value: '1920px', label: 'Max Image Width', color: 'text-amber-400' },
-            { value: '0.85', label: 'JPEG Quality', color: 'text-slate-300' },
-            { value: '0.9', label: 'Confidence Threshold', color: 'text-red-400' },
-            { value: '300ms', label: 'Save Debounce', color: 'text-emerald-400' },
-          ].map((metric) => (
-            <div key={metric.label} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700">
-              <div className={`text-lg font-bold ${metric.color}`}>{metric.value}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{metric.label}</div>
-            </div>
-          ))}
         </div>
       </section>
 

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2, ExternalLink, Zap, ShieldCheck, BarChart3, Code2,
   Layers, X as XIcon, Play, Brain, Cpu, Globe, Terminal,
-  ArrowRight, Package, Lock, Gauge, Radio, Shield, GitBranch
+  ArrowRight, Package, Lock, Radio, Shield, GitBranch
 } from 'lucide-react';
 
 interface LuxDescriptionProps {
@@ -47,7 +47,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-8">
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
             <div className="text-2xl font-bold text-amber-400">1,500+</div>
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
@@ -63,10 +63,6 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
             <div className="text-2xl font-bold text-purple-400">SSE</div>
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Real-time Stream</div>
-          </div>
-          <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700 col-span-2 md:col-span-1">
-            <div className="text-2xl font-bold text-red-400">90%</div>
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Token Reduction</div>
           </div>
         </div>
       </section>
@@ -278,7 +274,7 @@ end`}</code>
           <div className="p-2 rounded-lg bg-purple-500/10">
             <Cpu className="w-6 h-6 text-purple-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">90% Token Reduction via Progressive Tools</h2>
+          <h2 className="text-2xl font-bold text-white">Progressive Token Efficiency via Tool Hierarchy</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -287,7 +283,7 @@ end`}</code>
               Naive approach: dump entire project into context on every request = <span className="text-red-400 font-bold">~65,000 tokens/request</span>.
               Engineered solution: 3-level progressive tool hierarchy bound to LangGraph ReAct agent via LangChain.
               Agent starts with cheap discovery tools (~100-200 tokens) and only fetches full scripts (~1,000 tokens) when needed.
-              Result: <span className="text-emerald-400 font-bold">5,500 base tokens/request (90% reduction)</span>.{' '}
+              Result: <span className="text-emerald-400 font-bold">5,500 base tokens/request</span> (vs ~65,000 for naive full-context approach).{' '}
               <button
                 onClick={() => toggleExpanded('tool-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -429,8 +425,8 @@ llm_with_tools = llm.bind_tools([
                 </div>
               </div>
               <div className="mt-3 text-center">
-                <span className="text-lg font-black text-emerald-400">90% reduction</span>
-                <span className="text-xs text-slate-500 block">in per-request token usage</span>
+                <span className="text-lg font-black text-emerald-400">5,500 vs 65,000</span>
+                <span className="text-xs text-slate-500 block">tokens per request</span>
               </div>
             </div>
           </div>
@@ -892,38 +888,6 @@ end`}</code>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* By the Numbers */}
-      <section className="space-y-8">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-slate-500/10">
-            <Gauge className="w-6 h-6 text-slate-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">By the Numbers</h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { value: '1,500+', label: 'Active Installs', color: 'text-amber-400' },
-            { value: 'v3', label: 'Architecture Gen', color: 'text-white' },
-            { value: '8', label: 'Action Primitives', color: 'text-blue-400' },
-            { value: '5', label: 'Agent Tools', color: 'text-purple-400' },
-            { value: 'SSE', label: 'Streaming Layer', color: 'text-amber-400' },
-            { value: 'Redis', label: 'Session Store', color: 'text-emerald-400' },
-            { value: 'JWT', label: 'Auth System', color: 'text-blue-400' },
-            { value: '30s', label: 'Tool Timeout', color: 'text-red-400' },
-            { value: 'Fernet', label: 'Key Encryption', color: 'text-purple-400' },
-            { value: '1M', label: 'Context Window', color: 'text-slate-300' },
-            { value: '0', label: 'Data Retained', color: 'text-emerald-400' },
-            { value: '90%', label: 'Token Savings', color: 'text-amber-400' },
-          ].map((metric) => (
-            <div key={metric.label} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700">
-              <div className={`text-lg font-bold ${metric.color}`}>{metric.value}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{metric.label}</div>
-            </div>
-          ))}
         </div>
       </section>
 
