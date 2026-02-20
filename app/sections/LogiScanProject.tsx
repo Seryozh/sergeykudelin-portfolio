@@ -8,10 +8,6 @@ interface LogiScanProjectProps {
   onOpenDemo: () => void;
 }
 
-/**
- * LogiScan Project Section - Showcases the AI vision package scanning system
- * Features an interactive bounding box visualization and project description
- */
 export default function LogiScanProject({ onReadMore, onOpenDemo }: LogiScanProjectProps) {
   return (
     <section id="logiscan" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20">
@@ -22,38 +18,43 @@ export default function LogiScanProject({ onReadMore, onOpenDemo }: LogiScanProj
         transition={{ duration: 0.6 }}
         className="w-full max-w-5xl z-10"
       >
-        <div className="grid md:grid-cols-[2fr_3fr] gap-12 items-center">
-          {/* Text content — LEFT */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+        {/* Mobile-only title */}
+        <h2 className="md:hidden text-4xl font-black text-white tracking-tight mb-5">
+          LogiScan
+        </h2>
+
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[2fr_3fr] md:gap-12 md:items-center">
+          {/* Text column — order 2 on mobile, left on desktop */}
+          <div className="order-2 md:order-1 space-y-6">
+            <div className="space-y-3">
+              <h2 className="hidden md:block text-5xl font-black text-white tracking-tight">
                 LogiScan
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                Built to solve a real nightly headache at Tides Condo: 90 minutes hand-matching package stickers to a spreadsheet, 15-20% miss rate. Point the phone at the shelf, tap scan. Gemini&apos;s agentic vision reads every sticker in the photo, writes validation code mid-inference, and cross-references the manifest instantly. Everything runs in the browser at $0.002 per scan, zero backend, zero data retention. 90 minutes down to 10.
+              <p className="text-lg text-slate-400 leading-relaxed">
+                90 minutes of nightly package audits down to 10. Point the phone at the shelf and tap scan: Gemini reads every sticker, cross-references the manifest mid-inference, and flags discrepancies instantly. $0.002 per scan, zero backend, zero data retention.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex gap-3">
               <button
                 onClick={onReadMore}
-                className="flex-1 px-8 py-4 bg-emerald-500 text-slate-950 rounded-xl font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group"
+                className="flex-1 px-5 py-3 bg-emerald-500 text-slate-950 rounded-xl font-bold hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group whitespace-nowrap"
               >
                 Read More
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={onOpenDemo}
-                className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 px-5 py-3 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
               >
-                Interactive Demo
-                <Play className="w-5 h-5" />
+                Demo
+                <Play className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Visual: Bounding box preview card — RIGHT */}
-          <div className="relative group cursor-pointer" onClick={onReadMore}>
+          {/* Visual — order 1 on mobile, right on desktop */}
+          <div className="order-1 md:order-2 relative group cursor-pointer" onClick={onReadMore}>
             <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-emerald-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
             <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden aspect-video">
               <div className="absolute inset-0 flex items-center justify-center">

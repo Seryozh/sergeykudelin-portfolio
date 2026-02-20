@@ -9,10 +9,6 @@ interface LuxProjectProps {
   onOpenDemo: () => void;
 }
 
-/**
- * Lux Project Section - Showcases the Lux AI game development system
- * Features project description, stats, and interactive demo buttons
- */
 export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) {
   return (
     <section id="lux" className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6 py-20">
@@ -23,38 +19,45 @@ export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) 
         transition={{ duration: 0.6 }}
         className="w-full max-w-5xl z-10"
       >
-        <div className="grid md:grid-cols-[2fr_3fr] gap-12 items-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+        {/* Mobile-only title */}
+        <h2 className="md:hidden text-4xl font-black text-white tracking-tight mb-5">
+          Lux
+        </h2>
+
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[2fr_3fr] md:gap-12 md:items-center">
+          {/* Text column — order 2 on mobile, left on desktop */}
+          <div className="order-2 md:order-1 space-y-6">
+            <div className="space-y-3">
+              <h2 className="hidden md:block text-5xl font-black text-white tracking-tight">
                 Lux
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                You type &ldquo;add a health bar that drains when the player takes damage&rdquo; into a Studio plugin. Lux reads your live game hierarchy, reasons through which scripts to modify, and streams back structured changes for you to review and apply, token by token, in real time. The core challenge: plugins can&apos;t receive incoming connections, so the agent suspends mid-thought via an async tool bridge until the plugin polls for results. Over 1,500 active installations.
+              <p className="text-lg text-slate-400 leading-relaxed">
+                You describe a change in plain English. Lux reads your live game hierarchy, reasons through the relevant scripts, and streams back structured edits token by token, ready to apply with one click. Over 1,500 active installations.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex gap-3">
               <button
                 onClick={onReadMore}
-                className="flex-1 px-8 py-4 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all flex items-center justify-center gap-2 group"
+                className="flex-1 px-5 py-3 bg-amber-500 text-slate-950 rounded-xl font-bold hover:bg-amber-400 transition-all flex items-center justify-center gap-2 group whitespace-nowrap"
               >
                 Read More
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={onOpenDemo}
-                className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 px-5 py-3 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
               >
-                Interactive Demo
-                <Play className="w-5 h-5" />
+                Demo
+                <Play className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="relative group cursor-pointer" onClick={onReadMore}>
+          {/* Visual — order 1 on mobile (appears after mobile title), right on desktop */}
+          <div className="order-1 md:order-2 relative group cursor-pointer" onClick={onReadMore}>
             <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-            <div className="relative">
+            <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
               <LuxLaptopAnimation />
             </div>
           </div>

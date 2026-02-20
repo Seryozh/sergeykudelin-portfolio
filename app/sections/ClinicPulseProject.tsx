@@ -18,48 +18,53 @@ export default function ClinicPulseProject({ onReadMore, onOpenDemo }: ClinicPul
         transition={{ duration: 0.6 }}
         className="w-full max-w-5xl z-10"
       >
-        <div className="grid md:grid-cols-[2fr_3fr] gap-12 items-center">
-          {/* Text content — LEFT */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+        {/* Mobile-only title */}
+        <h2 className="md:hidden text-4xl font-black text-white tracking-tight mb-5">
+          Clinic Pulse
+        </h2>
+
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[2fr_3fr] md:gap-12 md:items-center">
+          {/* Text column — order 2 on mobile, left on desktop */}
+          <div className="order-2 md:order-1 space-y-6">
+            <div className="space-y-3">
+              <h2 className="hidden md:block text-5xl font-black text-white tracking-tight">
                 Clinic Pulse
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                Influencer doctors bring their entire patient audience to any platform they recommend, but finding them manually is painful. Clinic Pulse runs a 5-phase AI pipeline: discover YouTube physicians, extract their real identity via LLM, verify their US medical license against the NPI Registry, enrich contact profiles from multiple sources, and generate personalized outreach. Dozens of leads in minutes. For cents.
+              <p className="text-lg text-slate-400 leading-relaxed">
+                Influencer doctors bring their entire patient base to any platform they recommend, but finding the right ones takes hours of manual search. Clinic Pulse automates the hunt: discover YouTube physicians, verify their license, enrich contacts, generate personalized outreach. Dozens of qualified leads, for cents.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex gap-3">
               <button
                 onClick={onReadMore}
-                className="flex-1 px-8 py-4 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-500 transition-all flex items-center justify-center gap-2 group"
+                className="flex-1 px-5 py-3 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-500 transition-all flex items-center justify-center gap-2 group whitespace-nowrap"
               >
                 Read More
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={onOpenDemo}
-                className="flex-1 px-8 py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                className="flex-1 px-5 py-3 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
               >
-                Watch It Run
-                <Play className="w-5 h-5" />
+                Demo
+                <Play className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Pipeline visualization — RIGHT */}
-          <div className="relative group cursor-pointer" onClick={onReadMore}>
+          {/* Visual — order 1 on mobile, right on desktop */}
+          <div className="order-1 md:order-2 relative group cursor-pointer" onClick={onReadMore}>
             <div className="absolute -inset-1 bg-gradient-to-r from-violet-500 to-fuchsia-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
             <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden p-6">
               <div className="text-[9px] font-black text-slate-600 uppercase tracking-[0.2em] mb-5">Pipeline Run</div>
               <div className="space-y-3">
                 {[
-                  { icon: '🔍', label: 'Discovery', detail: '@DrSandraLee · @DermDoctor · @BoardCertDerm', color: 'text-blue-400', delay: 0.1 },
-                  { icon: '🧠', label: 'Intelligence', detail: '"Dr. Pimple Popper" → Sandra Lee, MD', color: 'text-violet-400', delay: 0.2 },
-                  { icon: '✅', label: 'Verification', detail: 'NPI #1932748501 ACTIVE · Dermatology', color: 'text-emerald-400', delay: 0.3 },
-                  { icon: '📬', label: 'Enrichment', detail: 'LinkedIn ✓  Doximity ✓  Email ✓', color: 'text-amber-400', delay: 0.4 },
-                  { icon: '📝', label: 'Outreach', detail: '"Dr. Lee, your 2.1M subscribers trust..."', color: 'text-rose-400', delay: 0.5 },
+                  { icon: '🔍', label: 'Discovery',    detail: '@DrSandraLee · @DermDoctor · @BoardCertDerm', color: 'text-blue-400',    delay: 0.1 },
+                  { icon: '🧠', label: 'Intelligence', detail: '"Dr. Pimple Popper" → Sandra Lee, MD',          color: 'text-violet-400', delay: 0.2 },
+                  { icon: '✅', label: 'Verification', detail: 'NPI #1932748501 ACTIVE · Dermatology',           color: 'text-emerald-400', delay: 0.3 },
+                  { icon: '📬', label: 'Enrichment',   detail: 'LinkedIn ✓  Doximity ✓  Email ✓',               color: 'text-amber-400',  delay: 0.4 },
+                  { icon: '📝', label: 'Outreach',     detail: '"Dr. Lee, your 2.1M subscribers trust..."',     color: 'text-rose-400',   delay: 0.5 },
                 ].map((phase, i) => (
                   <motion.div
                     key={i}
@@ -96,8 +101,8 @@ export default function ClinicPulseProject({ onReadMore, onOpenDemo }: ClinicPul
               </div>
               <div className="mt-5 pt-4 border-t border-slate-800 grid grid-cols-4 gap-2">
                 {[
-                  { val: '5', label: 'phases' },
-                  { val: '3', label: 'doctors' },
+                  { val: '5',     label: 'phases' },
+                  { val: '3',     label: 'doctors' },
                   { val: '$0.04', label: 'total' },
                   { val: '~2min', label: 'runtime' },
                 ].map((stat, i) => (
