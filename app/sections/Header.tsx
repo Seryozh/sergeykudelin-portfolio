@@ -44,7 +44,7 @@ export default function Header({ currentSection, onNavigate }: HeaderProps) {
           SK
         </motion.button>
         <span className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           Available
         </span>
 
