@@ -35,7 +35,7 @@ export default function ResumePage() {
           .projects-grid {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
-            gap: 0 1.5rem !important;
+            gap: 0.35rem 2.2rem !important;
           }
           .project-entry { break-inside: avoid; margin-bottom: 0.5rem; }
         }
@@ -87,7 +87,7 @@ export default function ResumePage() {
             Grew a YouTube channel to 200K subscribers by obsessively testing what makes people watch and come back.
             Lux (2,000+ installs) was built for a developer community I was already inside; LogiScan came from seeing
             a 90-minute nightly audit that a camera and an API could do in 10. I specialize in reliable production AI
-            systems — agentic pipelines, vision inference, real-time streaming — and I understand why products spread.
+            systems (agentic pipelines, vision inference, real-time streaming) and I understand why products spread.
           </p>
         </section>
 
@@ -98,7 +98,7 @@ export default function ResumePage() {
             <div><span className="font-semibold text-slate-900">Languages:</span>&nbsp; Python, TypeScript, Lua/Luau, JavaScript, SQL</div>
             <div><span className="font-semibold text-slate-900">AI &amp; LLM:</span>&nbsp; LangGraph, LangChain, Gemini 3 Flash, Claude, RAG</div>
             <div><span className="font-semibold text-slate-900">Backend:</span>&nbsp; FastAPI, Redis, SSE Streaming, JWT, Node.js, Railway</div>
-            <div><span className="font-semibold text-slate-900">Frontend:</span>&nbsp; React 19, Next.js, Tailwind CSS 4, Framer Motion, Canvas API</div>
+            <div><span className="font-semibold text-slate-900">Frontend:</span>&nbsp; React 19, Next.js, Tailwind CSS 4, Framer Motion, Canvas</div>
             <div><span className="font-semibold text-slate-900">Growth:</span>&nbsp; Content Strategy, A/B Testing, Retention Optimization</div>
             <div><span className="font-semibold text-slate-900">Growth Tools:</span>&nbsp; Exa AI, PostHog, Apollo.io, Figma, HeyGen</div>
           </div>
@@ -117,7 +117,7 @@ export default function ResumePage() {
               </div>
               <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Python · FastAPI · LangGraph · Gemini 3 Flash · Redis · SSE · JWT &nbsp;
-                <a href={`${BASE}/#lux`} className="text-blue-500 hover:underline">Portfolio</a>{' · '}
+                <a href={`${BASE}/#lux`} className="text-blue-500 hover:underline">Demo</a>{' · '}
                 <a href="https://github.com/Seryozh/RobloxAgenticAI" className="text-blue-500 hover:underline">GitHub</a>
               </p>
               <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
@@ -135,7 +135,7 @@ export default function ResumePage() {
               </div>
               <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Next.js · TypeScript · Claude · Exa AI · NPI Registry · Hunter.io &nbsp;
-                <a href={`${BASE}/#clinicpulse`} className="text-blue-500 hover:underline">Portfolio</a>
+                <a href={`${BASE}/#clinicpulse`} className="text-blue-500 hover:underline">Demo</a>
               </p>
               <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
                 <li>
@@ -153,7 +153,7 @@ export default function ResumePage() {
               </div>
               <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 TypeScript · React 19 · Vite · Gemini 3 Flash · Agentic Vision · Canvas API &nbsp;
-                <a href="https://logiscan.me" className="text-blue-500 hover:underline">logiscan.me</a>{' · '}
+                <a href={`${BASE}/#logiscan`} className="text-blue-500 hover:underline">Demo</a>{' · '}
                 <a href="https://github.com/Seryozh/logiscan" className="text-blue-500 hover:underline">GitHub</a>
               </p>
               <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
@@ -171,7 +171,7 @@ export default function ResumePage() {
               </div>
               <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Next.js · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion &nbsp;
-                <a href={BASE} className="text-blue-500 hover:underline">sergeykudelin.com</a>
+                <a href={BASE} className="text-blue-500 hover:underline">Live</a>
               </p>
               <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
                 <li>Interactive architecture demos simulate each project's core systems in real-time: game explorer tree, shelf scan with bounding boxes, AI pipeline with live cost counter</li>
@@ -194,7 +194,7 @@ export default function ResumePage() {
             <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5 mt-0.5">
               <li>Grew channel from 0 to 200,000 subscribers organically; top video reached 5.3M views</li>
               <li>Developed distribution intuition through years of A/B testing thumbnails, titles, and retention hooks; applied the same frameworks to product launches</li>
-              <li>Evaluated brand sponsorship pitches firsthand; identified tool gaps in the developer community and built Lux to fill them — 2,000+ installs</li>
+              <li>Evaluated brand sponsorship pitches firsthand; identified tool gaps in the developer community and built <a href={`${BASE}/?project=lux`} className="text-blue-600 hover:underline">Lux</a> to fill them, reaching 2,000+ installs</li>
             </ul>
           </div>
 
