@@ -37,7 +37,7 @@ export default function ResumePage() {
             grid-template-columns: 1fr 1fr !important;
             gap: 0 1.5rem !important;
           }
-          .project-entry { break-inside: avoid; margin-bottom: 0.45rem; }
+          .project-entry { break-inside: avoid; margin-bottom: 0.5rem; }
         }
       `}</style>
 
@@ -67,15 +67,15 @@ export default function ResumePage() {
             AI-Native Engineer &nbsp;·&nbsp; Agent Systems &nbsp;·&nbsp; Full-Stack &nbsp;·&nbsp; Growth
           </p>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1.5 text-[10.5px] text-slate-500">
-            <span>Hollywood, FL</span>
+            <span>Miami - Fort Lauderdale Area</span>
             <span className="text-slate-300">|</span>
             <a href="mailto:sergey@sergeykudelin.com" className="text-blue-600 hover:underline">sergey@sergeykudelin.com</a>
             <span className="text-slate-300">|</span>
             <a href={BASE} className="text-blue-600 hover:underline">sergeykudelin.com</a>
             <span className="text-slate-300">|</span>
-            <a href="https://github.com/Seryozh" className="text-blue-600 hover:underline">github.com/Seryozh</a>
+            <a href="https://github.com/Seryozh" className="text-blue-600 hover:underline">GitHub</a>
             <span className="text-slate-300">|</span>
-            <a href="https://linkedin.com/in/sergey-kudelin" className="text-blue-600 hover:underline">linkedin.com/in/sergey-kudelin</a>
+            <a href="https://www.linkedin.com/in/sergey-kudelin-4854143b2" className="text-blue-600 hover:underline">LinkedIn</a>
           </div>
           <div className="mt-2.5 h-[2px] bg-slate-900" />
         </header>
@@ -85,21 +85,21 @@ export default function ResumePage() {
           <SectionLabel>Summary</SectionLabel>
           <p className="text-[11px] text-slate-700">
             Grew a YouTube channel to 200K subscribers by obsessively testing what makes people watch and come back.
-            Lux (2,000+ installs) was built for a developer community I was already inside; LogiScan was built because
-            I watched coworkers spend 90 minutes on something a camera and an API could do in 10.
-            I build full-stack AI systems and I understand why products spread.
+            Lux (2,000+ installs) was built for a developer community I was already inside; LogiScan came from seeing
+            a 90-minute nightly audit that a camera and an API could do in 10. I specialize in reliable production AI
+            systems — agentic pipelines, vision inference, real-time streaming — and I understand why products spread.
           </p>
         </section>
 
         {/* ── Skills ── */}
         <section className="mb-4">
           <SectionLabel>Skills</SectionLabel>
-          <div className="grid grid-cols-2 gap-x-10 gap-y-0.5 text-[11px] text-slate-700">
+          <div className="grid grid-cols-2 gap-x-10 gap-y-0.5 text-[10.5px] text-slate-700">
             <div><span className="font-semibold text-slate-900">Languages:</span>&nbsp; Python, TypeScript, Lua/Luau, JavaScript, SQL</div>
-            <div><span className="font-semibold text-slate-900">AI &amp; LLM:</span>&nbsp; LangGraph, LangChain, Gemini 3 Flash, Claude, OpenRouter, RAG</div>
+            <div><span className="font-semibold text-slate-900">AI &amp; LLM:</span>&nbsp; LangGraph, LangChain, Gemini 3 Flash, Claude, RAG</div>
             <div><span className="font-semibold text-slate-900">Backend:</span>&nbsp; FastAPI, Redis, SSE Streaming, JWT, Node.js, Railway</div>
             <div><span className="font-semibold text-slate-900">Frontend:</span>&nbsp; React 19, Next.js, Tailwind CSS 4, Framer Motion, Canvas API</div>
-            <div><span className="font-semibold text-slate-900">Growth:</span>&nbsp; Content Strategy, A/B Testing, Retention Optimization, Algorithmic Distribution</div>
+            <div><span className="font-semibold text-slate-900">Growth:</span>&nbsp; Content Strategy, A/B Testing, Retention Optimization</div>
             <div><span className="font-semibold text-slate-900">Growth Tools:</span>&nbsp; Exa AI, PostHog, Apollo.io, Figma, HeyGen</div>
           </div>
         </section>
@@ -107,7 +107,7 @@ export default function ResumePage() {
         {/* ── Projects ── */}
         <section className="mb-4">
           <SectionLabel>Projects</SectionLabel>
-          <div className="projects-grid space-y-3 print:space-y-0">
+          <div className="projects-grid space-y-3.5 print:space-y-0">
 
             {/* Lux */}
             <div className="project-entry pl-3 border-l-[3px] border-amber-400">
@@ -115,36 +115,31 @@ export default function ResumePage() {
                 <h3 className="text-[12px] font-bold text-slate-900">Lux: Agentic AI Coding Assistant</h3>
                 <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">2025 – Present</span>
               </div>
-              <p className="text-[9.5px] text-slate-400 mt-0.5 mb-1">
+              <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Python · FastAPI · LangGraph · Gemini 3 Flash · Redis · SSE · JWT &nbsp;
                 <a href={`${BASE}/#lux`} className="text-blue-500 hover:underline">Portfolio</a>{' · '}
                 <a href="https://github.com/Seryozh/RobloxAgenticAI" className="text-blue-500 hover:underline">GitHub</a>
               </p>
-              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5">
+              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
                 <li>Production agentic AI system with 2,000+ installs; gives LLMs full read/write access to a live game engine via natural language</li>
                 <li><a href={`${BASE}/?project=lux&section=lux-token-optimization`} className="text-blue-600 hover:underline">Progressive tool architecture</a> cut per-request token usage from ~65,000 to ~5,500 through 3-level lazy exploration</li>
                 <li>Evolved through <a href={`${BASE}/?project=lux&section=lux-production`} className="text-blue-600 hover:underline">3 architecture versions</a>: Lua monolith to SSE streaming with Redis, JWT, Fernet-encrypted keys, and 3-stage validation</li>
               </ul>
             </div>
 
-            {/* Derm Hunter */}
+            {/* DermHunter */}
             <div className="project-entry pl-3 border-l-[3px] border-violet-500">
               <div className="flex items-baseline justify-between gap-2">
-                <h3 className="text-[12px] font-bold text-slate-900">Derm Hunter (Clinic Pulse): AI Outreach Pipeline</h3>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">2025 – Present</span>
+                <h3 className="text-[12px] font-bold text-slate-900">DermHunter (ClinicPulse): AI Outreach Pipeline</h3>
+                <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">2026 – Present</span>
               </div>
-              <p className="text-[9.5px] text-slate-400 mt-0.5 mb-1">
+              <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Next.js · TypeScript · Claude · Exa AI · NPI Registry · Hunter.io &nbsp;
                 <a href={`${BASE}/#clinicpulse`} className="text-blue-500 hover:underline">Portfolio</a>
               </p>
-              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5">
+              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
                 <li>
-                  6-API pipeline:{' '}
-                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-discovery`} className="text-blue-600 hover:underline">YouTube discovery</a>,{' '}
-                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-intelligence`} className="text-blue-600 hover:underline">Claude identity extraction</a>,{' '}
-                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-verification`} className="text-blue-600 hover:underline">NPI verification</a>,{' '}
-                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-enrichment`} className="text-blue-600 hover:underline">contact enrichment</a>,{' '}
-                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-outreach`} className="text-blue-600 hover:underline">outreach generation</a>
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-overview`} className="text-blue-600 hover:underline">6-stage pipeline</a>: YouTube discovery → Claude identity extraction → NPI verification → contact enrichment → outreach generation
                 </li>
                 <li>Real-time dashboard with per-doctor source attribution, cost tracking, and conversion projections; adapts to any specialty or platform by swapping one config</li>
               </ul>
@@ -154,15 +149,15 @@ export default function ResumePage() {
             <div className="project-entry pl-3 border-l-[3px] border-emerald-500">
               <div className="flex items-baseline justify-between gap-2">
                 <h3 className="text-[12px] font-bold text-slate-900">LogiScan: AI Vision Package Verification</h3>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">Jan 2026 – Present</span>
+                <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">2026 – Present</span>
               </div>
-              <p className="text-[9.5px] text-slate-400 mt-0.5 mb-1">
+              <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 TypeScript · React 19 · Vite · Gemini 3 Flash · Agentic Vision · Canvas API &nbsp;
                 <a href="https://logiscan.me" className="text-blue-500 hover:underline">logiscan.me</a>{' · '}
                 <a href="https://github.com/Seryozh/logiscan" className="text-blue-500 hover:underline">GitHub</a>
               </p>
-              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5">
-                <li>Deployed at my workplace; reduced nightly package audits from ~90 min to ~10 min — an ~85% reduction on a task done every shift</li>
+              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
+                <li>Built for personal use at work; eliminated a ~90-min nightly package audit — down to ~10 min, every shift (~85% reduction)</li>
                 <li><a href={`${BASE}/?project=logiscan&section=logiscan-agentic-vision`} className="text-blue-600 hover:underline">Agentic Vision</a>: AI writes and executes Python mid-inference to extract codes and self-validate, eliminating misread errors</li>
                 <li><a href={`${BASE}/?project=logiscan&section=logiscan-matching`} className="text-blue-600 hover:underline">5-state matching algorithm</a> (matched, duplicate, orphan, unreadable, ambiguous); zero-backend, 100% client-side at ~$0.002/scan</li>
               </ul>
@@ -174,11 +169,11 @@ export default function ResumePage() {
                 <h3 className="text-[12px] font-bold text-slate-900">Portfolio Website: sergeykudelin.com</h3>
                 <span className="text-[10px] text-slate-400 whitespace-nowrap font-medium">2025</span>
               </div>
-              <p className="text-[9.5px] text-slate-400 mt-0.5 mb-1">
+              <p className="text-[9.5px] text-slate-400 mt-1 mb-1.5">
                 Next.js · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion &nbsp;
                 <a href={BASE} className="text-blue-500 hover:underline">sergeykudelin.com</a>
               </p>
-              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5">
+              <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-1">
                 <li>Interactive architecture demos simulate each project's core systems in real-time: game explorer tree, shelf scan with bounding boxes, AI pipeline with live cost counter</li>
                 <li>Deep-linkable sections allow this resume to hyperlink directly to specific technical write-ups for hiring managers</li>
               </ul>
@@ -210,7 +205,7 @@ export default function ResumePage() {
             </div>
             <ul className="list-disc list-outside ml-4 text-[10.5px] text-slate-600 space-y-0.5 mt-0.5">
               <li>Identified operational bottleneck: nightly package audits taking up to 90 minutes per shift using pen-and-paper</li>
-              <li>Designed and deployed <a href={`${BASE}/?project=logiscan`} className="text-blue-600 hover:underline">LogiScan</a>, reducing the process to ~10 minutes — an ~85% time reduction, now used every shift</li>
+              <li>Designed and deployed <a href={`${BASE}/?project=logiscan`} className="text-blue-600 hover:underline">LogiScan</a> to solve it personally; cut the audit from ~90 min to ~10 min per shift</li>
             </ul>
           </div>
         </section>
