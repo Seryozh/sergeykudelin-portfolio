@@ -26,7 +26,7 @@ export default function ClinicPulseDescription({ onOpenDemo }: ClinicPulseDescri
   return (
     <div className="space-y-16 pb-12">
       {/* Hero */}
-      <section className="text-center space-y-6 scroll-mt-24">
+      <section id="clinicpulse-overview" className="text-center space-y-6 scroll-mt-24">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm font-medium">
           <Zap className="w-4 h-4" />
           5-Phase AI Pipeline
@@ -58,7 +58,7 @@ export default function ClinicPulseDescription({ onOpenDemo }: ClinicPulseDescri
       </section>
 
       {/* Phase 1: Discovery */}
-      <section className="space-y-8 scroll-mt-24">
+      <section id="clinicpulse-discovery" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-blue-500/10">
             <Search className="w-6 h-6 text-blue-400" />
@@ -126,7 +126,7 @@ const recentVideos = await getRecentVideos(channelId, 5)
       </section>
 
       {/* Phase 2: Intelligence */}
-      <section className="space-y-8 scroll-mt-24">
+      <section id="clinicpulse-intelligence" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-violet-500/10">
             <Brain className="w-6 h-6 text-violet-400" />
@@ -207,7 +207,7 @@ interface ExtractedIdentity {
       </section>
 
       {/* Phase 3: NPI Verification */}
-      <section className="space-y-8 scroll-mt-24">
+      <section id="clinicpulse-verification" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <ShieldCheck className="w-6 h-6 text-emerald-400" />
@@ -273,7 +273,7 @@ interface ExtractedIdentity {
       </section>
 
       {/* Phase 4: Contact Enrichment */}
-      <section className="space-y-8 scroll-mt-24">
+      <section id="clinicpulse-enrichment" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10">
             <Mail className="w-6 h-6 text-amber-400" />
@@ -334,7 +334,7 @@ interface ExtractedIdentity {
       </section>
 
       {/* Phase 5: Outreach */}
-      <section className="space-y-8 scroll-mt-24">
+      <section id="clinicpulse-outreach" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-rose-500/10">
             <FileText className="w-6 h-6 text-rose-400" />

@@ -638,8 +638,8 @@ useEffect(() => {
                 <div className="w-0.5 h-6 bg-slate-800" />
               </div>
               <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-                <div className="text-xs font-bold text-purple-400 mb-1">AI Vision APIs</div>
-                <div className="text-[11px] text-slate-400">Gemini 3 Flash | Google Vision | OpenRouter</div>
+                <div className="text-xs font-bold text-purple-400 mb-1">AI Vision API</div>
+                <div className="text-[11px] text-slate-400">Gemini 3 Flash — Agentic Vision with code execution</div>
               </div>
               <div className="flex justify-center">
                 <div className="w-0.5 h-6 bg-slate-800" />
@@ -658,7 +658,7 @@ useEffect(() => {
         <h3 className="text-2xl font-bold text-white">Live Production Deployment</h3>
         <p className="text-slate-400 max-w-xl mx-auto">
           Self-initiated workplace automation project deployed at logiscan.me. Used daily at Tides Condo to verify 50-200+ packages in ~10 minutes (previously 90 minutes).
-          BYOK model (Gemini/Vision/OpenRouter). Zero backend, $0/month hosting, privacy by architecture.
+          Powered by Gemini 3 Flash Agentic Vision. Zero backend, $0/month hosting, privacy by architecture.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a

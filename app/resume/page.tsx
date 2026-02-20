@@ -139,8 +139,12 @@ export default function ResumePage() {
               </p>
               <ul className="list-disc list-outside ml-4 text-[11px] text-slate-700 space-y-0.5">
                 <li>
-                  <a href={`${BASE}/?project=clinicpulse`} className="text-blue-600 hover:underline">6-API automated pipeline</a>:{' '}
-                  YouTube discovery, Claude identity extraction, NPI license verification, contact enrichment, personalized outreach generation
+                  6-API automated pipeline:{' '}
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-discovery`} className="text-blue-600 hover:underline">YouTube discovery</a>,{' '}
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-intelligence`} className="text-blue-600 hover:underline">Claude identity extraction</a>,{' '}
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-verification`} className="text-blue-600 hover:underline">NPI verification</a>,{' '}
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-enrichment`} className="text-blue-600 hover:underline">contact enrichment</a>,{' '}
+                  <a href={`${BASE}/?project=clinicpulse&section=clinicpulse-outreach`} className="text-blue-600 hover:underline">outreach generation</a>
                 </li>
                 <li>
                   Real-time dashboard with per-doctor source attribution, cost tracking, and conversion projections; configurable for any specialty or platform

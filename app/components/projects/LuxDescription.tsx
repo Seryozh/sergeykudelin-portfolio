@@ -33,23 +33,23 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
       <section id="lux-overview" className="text-center space-y-6 scroll-mt-24">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
           <Zap className="w-4 h-4" />
-          1,500+ Active Installations
+          2,000+ Active Installations
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
           Lux
         </h1>
         <div className="max-w-3xl mx-auto space-y-4">
           <p className="text-xl text-slate-300 leading-relaxed">
-            Production agentic AI system for Roblox Studio that enables natural language game development through an engineered async tool bridge architecture. Overcomes Roblox's no-incoming-connections platform constraint (no WebSockets, no SSE from server) using polling-based bidirectional communication with asyncio event signaling.
+            Production agentic AI system that enables natural language game development through a bidirectional SSE architecture. The backend streams token output and tool requests to the plugin in real-time; the plugin executes them in the live game engine and responds via HTTP — true bidirectional communication with asyncio event-based suspension between steps.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            Deployed on Railway with 1,500+ active installations. Evolved through three major architecture iterations: 22,000-line Lua monolith → 3-layer FastAPI/LangGraph system → production-grade deployment with SSE streaming (server→plugin), Redis sessions, JWT auth, Fernet-encrypted API keys, 3-stage validation pipeline, and hash-verified script modifications. Each iteration solved real scaling and security challenges.
+            Deployed on Railway with 2,000+ active installations. Evolved through three major architecture iterations: 22,000-line Lua monolith → 3-layer FastAPI/LangGraph system → production-grade deployment with SSE streaming (server→plugin), Redis sessions, JWT auth, Fernet-encrypted API keys, 3-stage validation pipeline, and hash-verified script modifications. Each iteration solved real scaling and security challenges.
           </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-8">
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-            <div className="text-2xl font-bold text-amber-400">1,500+</div>
+            <div className="text-2xl font-bold text-amber-400">2,000+</div>
             <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Downloads</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
@@ -115,23 +115,25 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
         </div>
       </section>
 
-      {/* The Async Tool Bridge */}
+      {/* SSE Tool Bridge */}
       <section id="lux-async-bridge" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10">
             <Code2 className="w-6 h-6 text-amber-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Async Tool Bridge Architecture</h2>
+          <h2 className="text-2xl font-bold text-white">SSE Tool Bridge Architecture</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Core architectural innovation: enables agentic AI to <em>pause mid-execution</em>,
-              request data from the game engine, and <em>resume asynchronously</em> when data arrives—all over a unidirectional HTTP constraint.
-              Plugin polls every 100ms (client→server). Backend uses{' '}
+              The agent communicates with the live game engine through a bidirectional SSE bridge.
+              The backend streams token output and tool requests to the plugin via a persistent SSE connection.
+              The plugin receives each <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">ToolRequest</code> event,
+              executes it in the game engine (read scripts, list children, search hierarchy), then POSTs the result back.
+              The backend uses{' '}
               <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">asyncio.Event()</code>{' '}
-              primitives to block LangGraph agent execution until plugin responds, achieving 100-300ms round-trip latency despite the polling architecture.{' '}
+              to suspend the agent coroutine until the plugin responds — zero polling, event-driven suspension.{' '}
               <button
                 onClick={() => toggleExpanded('polling-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -148,31 +150,40 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
                   exit={{ height: 0, opacity: 0 }}
                   className="mt-4 p-4 bg-slate-800/50 rounded-lg overflow-hidden"
                 >
-                  <div className="text-[10px] font-black text-emerald-500 uppercase mb-2">Python Backend</div>
+                  <div className="text-[10px] font-black text-emerald-500 uppercase mb-2">Python Backend (tool_bridge.py)</div>
                   <pre className="text-sm text-emerald-400/80 font-mono overflow-x-auto">
-                    <code>{`# Agent needs data -creates event and BLOCKS
-event = asyncio.Event()
-session.fulfilled_responses[rid] = event
-await asyncio.wait_for(event.wait(), timeout=30)
+                    <code>{`# Agent needs data - suspends on asyncio.Event
+pending = PendingRequest(event=asyncio.Event())
+session.pending[request_id] = pending
 
-# When plugin responds via POST /respond:
-event.set()  # WAKES THE AGENT
-data = session.fulfilled_data.pop(rid)`}</code>
+# Stream ToolRequest event to plugin via SSE
+await sse_publish(session_id, {
+    "type": "ToolRequest",
+    "data": { "id": request_id, "tool": tool_name }
+})
+
+# Block until plugin responds (30s timeout)
+await asyncio.wait_for(pending.event.wait(), 30)
+result = session.fulfilled_data.pop(request_id)`}</code>
                   </pre>
-                  <div className="mt-3 text-[10px] font-black text-amber-500 uppercase mb-2">Lua Plugin</div>
+                  <div className="mt-3 text-[10px] font-black text-amber-500 uppercase mb-2">Lua Plugin (SSEClient.lua)</div>
                   <pre className="text-sm text-amber-400/80 font-mono overflow-x-auto">
-                    <code>{`-- Plugin polls every 100ms
-while isProcessing do
-    local pending = Backend.poll(sessionId)
-    for _, req in ipairs(pending.requests) do
-        local data = ScriptReader.handle(req)
-        Backend.respond(sessionId, req.id, data)
+                    <code>{`-- Persistent SSE connection via Roblox native API
+local client = HttpService:CreateWebStreamClient(
+    serverUrl .. "/stream/" .. sessionId,
+    Enum.WebStreamClientType.SSE,
+    { Authorization = "Bearer " .. token }
+)
+client.MessageReceived:Connect(function(data)
+    local event = JSONDecode(data)
+    if event.type == "ToolRequest" then
+        local result = ToolBridge.dispatch(event.data)
+        HttpClient.post("/tool-response/" .. sessionId, result)
     end
-    task.wait(0.1)
-end`}</code>
+end)`}</code>
                   </pre>
                   <a
-                    href="https://github.com/Seryozh/lux-agentic-ai/blob/main/backend/session.py"
+                    href="https://github.com/Seryozh/RobloxAgenticAI"
                     target="_blank"
                     className="text-xs text-blue-400 hover:underline mt-2 inline-block"
                   >
@@ -183,7 +194,7 @@ end`}</code>
             </AnimatePresence>
           </div>
 
-          {/* Animated Polling Bridge Visualization */}
+          {/* SSE Architecture Visualization */}
           <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
             <div className="relative p-6" style={{ minHeight: '280px' }}>
               <div className="text-[10px] font-black text-amber-400 uppercase tracking-wider mb-6">Live Architecture</div>
@@ -200,7 +211,7 @@ end`}</code>
                     <Terminal className="w-7 h-7 text-amber-400" />
                   </motion.div>
                   <span className="text-[9px] font-black text-slate-500 uppercase tracking-wider">Plugin</span>
-                  <span className="text-[8px] text-slate-600">Lua / Roblox</span>
+                  <span className="text-[8px] text-slate-600">Lua / Studio</span>
                 </div>
 
                 {/* Backend Node */}
@@ -233,11 +244,11 @@ end`}</code>
               {/* Flow steps */}
               <div className="mt-6 space-y-2">
                 {[
-                  { step: '1', text: 'User sends prompt via plugin', color: 'amber' },
-                  { step: '2', text: 'Agent starts, needs project data', color: 'purple' },
-                  { step: '3', text: 'Agent BLOCKS on asyncio.Event()', color: 'red' },
-                  { step: '4', text: 'Plugin polls, gets request, reads game', color: 'amber' },
-                  { step: '5', text: 'event.set() wakes agent, resumes', color: 'emerald' },
+                  { step: '1', text: 'User sends prompt; agent starts LangGraph loop', color: 'amber' },
+                  { step: '2', text: 'Agent needs game data; emits ToolRequest via SSE', color: 'purple' },
+                  { step: '3', text: 'Agent suspends on asyncio.Event() — zero polling', color: 'red' },
+                  { step: '4', text: 'Plugin receives SSE event, reads game engine', color: 'amber' },
+                  { step: '5', text: 'Plugin POSTs result; event.set() wakes agent', color: 'emerald' },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
@@ -260,8 +271,8 @@ end`}</code>
               </div>
 
               <div className="mt-4 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20 flex items-center gap-3">
-                <span className="text-xs font-bold text-amber-400">LATENCY</span>
-                <span className="text-xs text-amber-400/80">100-300ms round-trip despite one-way constraint</span>
+                <span className="text-xs font-bold text-amber-400">TRANSPORT</span>
+                <span className="text-xs text-amber-400/80">SSE push (backend→plugin) + HTTP POST (plugin→backend)</span>
               </div>
             </div>
           </div>
@@ -695,7 +706,7 @@ async def chat(req):
                 <div>&#8226; <span className="text-emerald-400 font-bold">Redis sessions</span> + JWT auth + Fernet-encrypted API keys</div>
                 <div>&#8226; <span className="text-purple-400 font-bold">3-stage validation</span>: JSON schema → Lua syntax → Hash-based injection prevention</div>
                 <div>&#8226; <span className="text-amber-400 font-bold">Diff-based editing</span>: search/replace, not full overwrites (preserves formatting)</div>
-                <div>&#8226; Deployed on <span className="text-white font-bold">Railway</span> &bull; 1,500+ installations &bull; Roblox Creator Store</div>
+                <div>&#8226; Deployed on <span className="text-white font-bold">Railway</span> &bull; 2,000+ installations &bull; Roblox Creator Store</div>
               </div>
             </motion.div>
           </div>
@@ -834,7 +845,7 @@ end`}</code>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              BYOK (Bring Your Own Key) model—users provide OpenRouter API keys.
+              BYOK (Bring Your Own Key) model—users provide their own API keys.
               v3 security architecture: keys encrypted at rest with{' '}
               <span className="text-emerald-400 font-bold">Fernet</span> (symmetric cryptography),
               sessions stored in <span className="text-blue-400 font-bold">Redis</span> with TTL-based auto-expiry,
@@ -876,8 +887,8 @@ end`}</code>
                 <div className="w-0.5 h-6 bg-slate-800" />
               </div>
               <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-                <div className="text-xs font-bold text-purple-400 mb-1">OpenRouter (LLM Gateway)</div>
-                <div className="text-[11px] text-slate-400">Gemini Flash &bull; Claude &bull; GPT-4 &bull; User-selectable</div>
+                <div className="text-xs font-bold text-purple-400 mb-1">AI Model</div>
+                <div className="text-[11px] text-slate-400">Gemini 3 Flash &bull; LangGraph ReAct agent loop</div>
               </div>
               <div className="flex justify-center">
                 <div className="w-0.5 h-6 bg-slate-800" />
