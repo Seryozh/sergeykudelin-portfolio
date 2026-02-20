@@ -30,7 +30,7 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
   return (
     <div className="space-y-16 pb-12">
       {/* Hero Section */}
-      <section className="text-center space-y-6">
+      <section id="lux-overview" className="text-center space-y-6 scroll-mt-24">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
           <Zap className="w-4 h-4" />
           1,500+ Active Installations
@@ -40,15 +40,10 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
         </h1>
         <div className="max-w-3xl mx-auto space-y-4">
           <p className="text-xl text-slate-300 leading-relaxed">
-            A production agentic AI system that lets game developers build, modify, and debug
-            games entirely in plain English. Lux autonomously explores project structures, reads and writes code,
-            and executes precise modifications inside Roblox Studio — all through a real-time SSE streaming connection.
+            Production agentic AI system for Roblox Studio that enables natural language game development through an engineered async tool bridge architecture. Overcomes Roblox's no-incoming-connections platform constraint (no WebSockets, no SSE from server) using polling-based bidirectional communication with asyncio event signaling.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            Three major architecture iterations. Started as a 22,000-line Lua monolith, evolved into a 3-layer system
-            with a FastAPI backend and LangGraph agent, then rebuilt again with SSE streaming, Redis sessions, JWT
-            authentication, encrypted API keys, a 3-stage validation pipeline, and diff-based script editing.
-            Every version solved real engineering problems I hit at scale.
+            Deployed on Railway with 1,500+ active installations. Evolved through three major architecture iterations: 22,000-line Lua monolith → 3-layer FastAPI/LangGraph system → production-grade deployment with SSE streaming (server→plugin), Redis sessions, JWT auth, Fernet-encrypted API keys, 3-stage validation pipeline, and hash-verified script modifications. Each iteration solved real scaling and security challenges.
           </p>
         </div>
 
@@ -77,20 +72,19 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
       </section>
 
       {/* The Problem */}
-      <section className="space-y-8">
+      <section id="lux-challenge" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-red-500/10">
             <Package className="w-6 h-6 text-red-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">The Problem</h2>
+          <h2 className="text-2xl font-bold text-white">The Engineering Challenge</h2>
         </div>
 
         <div className="prose prose-invert max-w-none">
           <p className="text-slate-300 text-lg leading-relaxed">
-            Roblox Studio has <span className="text-amber-400 font-bold">no native AI integration</span> and
-            enforces a strict platform constraint: plugins can only make outbound HTTP requests.
-            No WebSockets. No Server-Sent Events. No incoming connections of any kind.
-            Traditional AI coding assistants (Copilot, Cursor) simply cannot work here.
+            Roblox Studio enforces a strict platform constraint: <span className="text-amber-400 font-bold">plugins can only make outbound HTTP requests</span>.
+            No WebSockets. No bidirectional communication. No incoming connections of any kind.
+            This makes traditional AI coding assistants (Copilot, Cursor) architecturally impossible to integrate—they require persistent connections and server push capabilities.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -125,23 +119,23 @@ export default function LuxDescription({ onOpenDemo }: LuxDescriptionProps) {
         </div>
       </section>
 
-      {/* The Polling Bridge Pattern */}
-      <section id="lux-polling-bridge" className="space-y-8 scroll-mt-24">
+      {/* The Async Tool Bridge */}
+      <section id="lux-async-bridge" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10">
             <Code2 className="w-6 h-6 text-amber-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">The Polling Bridge Pattern</h2>
+          <h2 className="text-2xl font-bold text-white">Async Tool Bridge Architecture</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              This is the core architectural innovation. The AI agent can <em>pause mid-execution</em>,
-              request data from the game engine, and <em>resume</em> once the plugin responds  -
-              all over a one-way HTTP constraint. The plugin polls every 100ms; the backend uses{' '}
+              Core architectural innovation: enables agentic AI to <em>pause mid-execution</em>,
+              request data from the game engine, and <em>resume asynchronously</em> when data arrives—all over a unidirectional HTTP constraint.
+              Plugin polls every 100ms (client→server). Backend uses{' '}
               <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">asyncio.Event()</code>{' '}
-              to block until data arrives.{' '}
+              primitives to block LangGraph agent execution until plugin responds, achieving 100-300ms round-trip latency despite the polling architecture.{' '}
               <button
                 onClick={() => toggleExpanded('polling-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -278,22 +272,22 @@ end`}</code>
         </div>
       </section>
 
-      {/* Agentic Tool System */}
-      <section id="lux-tool-system" className="space-y-8 scroll-mt-24">
+      {/* Token Optimization */}
+      <section id="lux-token-optimization" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-purple-500/10">
             <Cpu className="w-6 h-6 text-purple-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Progressive Tool Architecture</h2>
+          <h2 className="text-2xl font-bold text-white">90% Token Reduction via Progressive Tools</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              A naive approach would dump the entire project into context on every request  -
-              that&apos;s <span className="text-red-400 font-bold">~65,000 tokens per request</span>.
-              Instead, I designed a 3-level progressive exploration system where the agent starts cheap
-              and only goes deeper when needed.{' '}
+              Naive approach: dump entire project into context on every request = <span className="text-red-400 font-bold">~65,000 tokens/request</span>.
+              Engineered solution: 3-level progressive tool hierarchy bound to LangGraph ReAct agent via LangChain.
+              Agent starts with cheap discovery tools (~100-200 tokens) and only fetches full scripts (~1,000 tokens) when needed.
+              Result: <span className="text-emerald-400 font-bold">5,500 base tokens/request (90% reduction)</span>.{' '}
               <button
                 onClick={() => toggleExpanded('tool-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -330,10 +324,10 @@ llm_with_tools = llm.bind_tools([
             </AnimatePresence>
 
             <p className="text-sm text-slate-400">
-              The base cost is <span className="text-emerald-400 font-bold">~5,500 tokens/request</span> (project
-              structure + conversation history). Tools execute in parallel via{' '}
+              Base cost: <span className="text-emerald-400 font-bold">~5,500 tokens/request</span> (project
+              structure + conversation history). Tools execute in <span className="text-purple-400 font-bold">parallel</span> via{' '}
               <code className="text-purple-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">asyncio.gather()</code>{' '}
-              when the agent requests multiple at once.
+              when agent requests multiple simultaneously, reducing total latency.
             </p>
           </div>
 
@@ -455,9 +449,9 @@ llm_with_tools = llm.bind_tools([
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Every game modification  - from adding a health bar to restructuring an entire
-              codebase  - composes from 8 atomic operations. The AI generates a sequence of these
-              actions; the user reviews them, then applies with one click.{' '}
+              Every game modification—from adding a health bar to restructuring an entire codebase—decomposes into 8 atomic operations.
+              LangGraph agent generates action sequences as JSON. User reviews (showing diffs for script modifications), then applies atomically with one click.
+              Includes automatic type conversion: JSON arrays → Roblox datatypes (Color3, UDim2, etc.).{' '}
               <button
                 onClick={() => toggleExpanded('action-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -550,27 +544,26 @@ llm_with_tools = llm.bind_tools([
         </div>
       </section>
 
-      {/* Architectural Transformation */}
-      <section id="lux-refactor" className="space-y-8 scroll-mt-24">
+      {/* Production Deployment */}
+      <section id="lux-production" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <BarChart3 className="w-6 h-6 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">v1 &rarr; v2 &rarr; v3 Evolution</h2>
+          <h2 className="text-2xl font-bold text-white">Three Architecture Iterations</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Version 1 was a <span className="text-red-400 font-bold">22,000-line monolithic Lua file</span>.
-              Everything lived together: AI logic, API calls, project scanning, action execution.
-              API keys were exposed in client code. It worked, but it was fragile, untestable, and insecure.
+              <span className="text-red-400 font-bold">v1: 22,000-line Lua monolith</span>.
+              Proof of concept. AI logic, API calls, project scanning, action execution—all in one file.
+              API keys exposed in client code. Worked for early adopters but unscalable and insecure.
             </p>
             <p>
-              Version 2 is a clean 3-layer architecture:{' '}
-              <span className="text-amber-400 font-bold">Lua plugin</span> (UI + execution),{' '}
-              <span className="text-emerald-400 font-bold">FastAPI backend</span> (orchestration + security),{' '}
-              <span className="text-purple-400 font-bold">LangGraph agent</span> (AI reasoning).{' '}
+              <span className="text-emerald-400 font-bold">v2: 3-layer separation of concerns</span>.{' '}
+              Lua plugin (UI + execution), FastAPI backend (orchestration + security), LangGraph agent (AI reasoning).
+              Introduced async tool bridge, BYOK model, hash verification.{' '}
               <button
                 onClick={() => toggleExpanded('refactor-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -675,7 +668,7 @@ async def chat(req):
                   <span className="text-[10px] text-emerald-400 font-bold whitespace-nowrap">Python: 813 LOC</span>
                 </div>
               </div>
-              <div className="text-[10px] text-slate-500 mt-2">3 layers &bull; BYOK model &bull; Polling bridge &bull; Testable</div>
+              <div className="text-[10px] text-slate-500 mt-2">3 layers &bull; BYOK model &bull; Async tool bridge &bull; Hash verification</div>
             </motion.div>
 
             <div className="flex justify-center">
@@ -702,11 +695,11 @@ async def chat(req):
                 <span className="text-xs text-blue-400/60">Production-Grade</span>
               </div>
               <div className="space-y-1 text-[10px] text-slate-400">
-                <div>&#8226; SSE streaming (replaces polling for server→plugin)</div>
-                <div>&#8226; Redis-backed sessions &bull; JWT auth &bull; Fernet-encrypted API keys</div>
-                <div>&#8226; 3-stage validation: Schema → Lua syntax → Hash injection</div>
-                <div>&#8226; Diff-based editing (search/replace, not full overwrite)</div>
-                <div>&#8226; Rollback support &bull; Modular UI components &bull; Debug tooling</div>
+                <div>&#8226; <span className="text-blue-400 font-bold">SSE streaming</span> (server→plugin, replaces polling for responses)</div>
+                <div>&#8226; <span className="text-emerald-400 font-bold">Redis sessions</span> + JWT auth + Fernet-encrypted API keys</div>
+                <div>&#8226; <span className="text-purple-400 font-bold">3-stage validation</span>: JSON schema → Lua syntax → Hash-based injection prevention</div>
+                <div>&#8226; <span className="text-amber-400 font-bold">Diff-based editing</span>: search/replace, not full overwrites (preserves formatting)</div>
+                <div>&#8226; Deployed on <span className="text-white font-bold">Railway</span> &bull; 1,500+ installations &bull; Roblox Creator Store</div>
               </div>
             </motion.div>
           </div>
@@ -725,10 +718,10 @@ async def chat(req):
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              When the AI modifies a script, it must prove the file hasn&apos;t changed since it was read.
-              An MD5 content hash is captured at read time and verified before writing.
-              If a human edited the file while the AI was processing, the modification is{' '}
-              <span className="text-red-400 font-bold">rejected</span>  - preventing data loss.{' '}
+              Prevents concurrent edit conflicts via content-based verification.
+              When agent reads a script via <code className="text-purple-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">get_full_script</code> tool,
+              MD5 hash is captured. Before applying modifications, executor verifies current hash matches original.
+              Mismatch = <span className="text-red-400 font-bold">modification rejected</span>, preventing silent data loss from race conditions.{' '}
               <button
                 onClick={() => toggleExpanded('hash-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -845,11 +838,13 @@ end`}</code>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              Users bring their own API key (BYOK). In v3, keys are encrypted at rest using{' '}
-              <span className="text-emerald-400 font-bold">Fernet symmetric encryption</span>,
-              sessions are stored in <span className="text-blue-400 font-bold">Redis</span> with
-              TTL-based expiry, and all endpoints are protected by{' '}
+              BYOK (Bring Your Own Key) model—users provide OpenRouter API keys.
+              v3 security architecture: keys encrypted at rest with{' '}
+              <span className="text-emerald-400 font-bold">Fernet</span> (symmetric cryptography),
+              sessions stored in <span className="text-blue-400 font-bold">Redis</span> with TTL-based auto-expiry,
+              all endpoints protected by{' '}
               <span className="text-purple-400 font-bold">JWT authentication</span>.
+              Zero data retention—API keys never written to disk.
             </p>
             <ul className="space-y-3">
               {[
@@ -934,11 +929,10 @@ end`}</code>
 
       {/* See it in action */}
       <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
-        <h3 className="text-2xl font-bold text-white">See the Architecture in Action</h3>
+        <h3 className="text-2xl font-bold text-white">Interactive Architecture Demo</h3>
         <p className="text-slate-400 max-w-xl mx-auto">
-          Watch the polling bridge pattern work in real-time. The interactive simulation
-          visualizes every step: user prompt, agent reasoning, data requests, event
-          signaling, and final action generation.
+          Visualizes the async tool bridge in real-time: user prompt → agent reasoning → tool execution → asyncio event signaling → action generation.
+          Shows how LangGraph ReAct agent pauses mid-execution and resumes asynchronously when data arrives from the game engine.
         </p>
         <button
           onClick={() => {

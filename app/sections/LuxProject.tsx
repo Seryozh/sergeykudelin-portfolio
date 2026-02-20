@@ -30,10 +30,7 @@ export default function LuxProject({ onReadMore, onOpenDemo }: LuxProjectProps) 
                 Lux
               </h2>
               <p className="text-xl text-slate-400 leading-relaxed">
-                Production agentic AI system that lets game developers build entirely in plain English. Engineered real-time SSE streaming, a validation pipeline, and an async tool bridge to give an LLM full read/write access to a live game engine.
-              </p>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                1,500+ active installations. Three major architecture iterations. Deployed on Railway with Redis-backed sessions, JWT auth, and encrypted API keys.
+                You type &ldquo;add a health bar that drains when the player takes damage&rdquo; into a Roblox Studio widget. Lux reads your live game hierarchy, reasons through which scripts to modify, and streams back structured changes for you to review and apply — token by token, in real time. The engineering challenge: Roblox plugins can&apos;t receive incoming connections, so the agent suspends mid-thought via an async tool bridge until the plugin checks in. 1,500+ active installations on Roblox Creator Store.
               </p>
             </div>
 

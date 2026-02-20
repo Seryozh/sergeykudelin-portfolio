@@ -5,6 +5,7 @@ import Header from './sections/Header';
 import Hero from './sections/Hero';
 import LuxProject from './sections/LuxProject';
 import LogiScanProject from './sections/LogiScanProject';
+import ClinicPulseProject from './sections/ClinicPulseProject';
 import Expertise from './sections/Expertise';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
@@ -13,16 +14,26 @@ import LuxDescription from './components/projects/LuxDescription';
 import LuxDemo from './components/projects/LuxDemo';
 import LogiScanDescription from './components/projects/LogiScanDescription';
 import LogiScanDemo from './components/projects/LogiScanDemo';
+import ClinicPulseDescription from './components/projects/ClinicPulseDescription';
+import ClinicPulseDemo from './components/projects/ClinicPulseDemo';
 
-type OverlayType = 'lux-description' | 'lux-demo' | 'logiscan-description' | 'logiscan-demo' | null;
+type OverlayType =
+  | 'lux-description'
+  | 'lux-demo'
+  | 'logiscan-description'
+  | 'logiscan-demo'
+  | 'clinicpulse-description'
+  | 'clinicpulse-demo'
+  | null;
 
 /**
  * Main Portfolio Page
- * 
+ *
  * Features:
  * - Full-page scroll snap sections
  * - Section progress indicator
  * - Project detail overlays with deep linking via URL hash
+ * - Auto-play demos when accessed via hash (#lux-demo, #logiscan-demo, #clinicpulse-demo)
  * - Mobile-responsive navigation
  */
 export default function Home() {
@@ -30,8 +41,9 @@ export default function Home() {
   const [emailCopied, setEmailCopied] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const [activeOverlay, setActiveOverlay] = useState<OverlayType>(null);
+  const [shouldAutoPlay, setShouldAutoPlay] = useState(false);
 
-  const sections = ['hero', 'lux', 'logiscan', 'expertise', 'contact'];
+  const sections = ['hero', 'lux', 'logiscan', 'clinicpulse', 'expertise', 'contact'];
 
   // Open overlay modal and update URL hash for deep linking
   const openModal = (type: NonNullable<OverlayType>) => {
@@ -45,20 +57,22 @@ export default function Home() {
     const current = window.location.hash;
     if (current.startsWith('#logiscan')) {
       window.history.pushState(null, '', '#logiscan');
+    } else if (current.startsWith('#clinicpulse')) {
+      window.history.pushState(null, '', '#clinicpulse');
     } else {
       window.history.pushState(null, '', '#lux');
     }
   };
 
-  // Handle URL hash AND query params for deep linking to overlays
+  // Handle URL hash AND query params for deep linking to overlays with auto-play support
   useEffect(() => {
     const handleDeepLink = () => {
-      // Check query params first (from resume links: ?project=lux&section=lux-polling-bridge)
       const params = new URLSearchParams(window.location.search);
       const project = params.get('project');
       const section = params.get('section');
 
       if (project || section) {
+        setShouldAutoPlay(false);
         if (project === 'lux' || section?.startsWith('lux-')) {
           setActiveOverlay('lux-description');
           if (section) {
@@ -75,28 +89,53 @@ export default function Home() {
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }, 300);
           }
+        } else if (project === 'clinicpulse' || section?.startsWith('clinicpulse-')) {
+          setActiveOverlay('clinicpulse-description');
+          if (section) {
+            setTimeout(() => {
+              const el = document.getElementById(section);
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+          }
         }
         return;
       }
 
-      // Fallback: hash-based deep linking
       const hash = window.location.hash;
       if (hash === '#lux-demo') {
+        setShouldAutoPlay(true);
         setActiveOverlay('lux-demo');
       } else if (hash === '#logiscan-demo') {
+        setShouldAutoPlay(true);
         setActiveOverlay('logiscan-demo');
+      } else if (hash === '#clinicpulse-demo') {
+        setShouldAutoPlay(true);
+        setActiveOverlay('clinicpulse-demo');
       } else if (hash === '#logiscan-description' || hash.startsWith('#logiscan-')) {
+        setShouldAutoPlay(false);
         setActiveOverlay('logiscan-description');
         setTimeout(() => {
           const element = document.getElementById(hash.substring(1));
           if (element) element.scrollIntoView({ behavior: 'smooth' });
         }, 100);
+      } else if (hash === '#clinicpulse-description' || hash.startsWith('#clinicpulse-')) {
+        setShouldAutoPlay(false);
+        setActiveOverlay('clinicpulse-description');
+        setTimeout(() => {
+          const element = document.getElementById(hash.substring(1));
+          if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       } else if (hash.startsWith('#lux-')) {
+        setShouldAutoPlay(false);
         setActiveOverlay('lux-description');
         setTimeout(() => {
           const element = document.getElementById(hash.substring(1));
           if (element) element.scrollIntoView({ behavior: 'smooth' });
         }, 100);
+      } else if (hash) {
+        setShouldAutoPlay(false);
+        const element = document.getElementById(hash.substring(1));
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
       }
     };
 
@@ -139,9 +178,7 @@ export default function Home() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
     }
     setMobileMenuOpen(false);
   };
@@ -167,7 +204,9 @@ export default function Home() {
               }`}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-              {section === 'hero' ? 'Home' : section.charAt(0).toUpperCase() + section.slice(1)}
+              {section === 'hero' ? 'Home' :
+               section === 'clinicpulse' ? 'Clinic Pulse' :
+               section.charAt(0).toUpperCase() + section.slice(1)}
             </span>
           </button>
         ))}
@@ -175,24 +214,29 @@ export default function Home() {
 
       {/* Page Sections */}
       <Hero />
-      
-      <LuxProject 
+
+      <LuxProject
         onReadMore={() => openModal('lux-description')}
         onOpenDemo={() => openModal('lux-demo')}
       />
-      
-      <LogiScanProject 
+
+      <LogiScanProject
         onReadMore={() => openModal('logiscan-description')}
         onOpenDemo={() => openModal('logiscan-demo')}
       />
-      
+
+      <ClinicPulseProject
+        onReadMore={() => openModal('clinicpulse-description')}
+        onOpenDemo={() => openModal('clinicpulse-demo')}
+      />
+
       <Expertise />
-      
-      <Contact 
+
+      <Contact
         emailCopied={emailCopied}
         onCopyEmail={copyEmailToClipboard}
       />
-      
+
       <Footer />
 
       {/* Project Detail Overlays */}
@@ -210,9 +254,9 @@ export default function Home() {
       <Overlay
         isOpen={activeOverlay === 'lux-demo'}
         onClose={closeModal}
-        title="Interactive Polling Bridge Demo"
+        title="Lux — Roblox AI Agent Demo"
       >
-        <LuxDemo />
+        <LuxDemo autoPlay={shouldAutoPlay} />
       </Overlay>
 
       <Overlay
@@ -226,9 +270,28 @@ export default function Home() {
       <Overlay
         isOpen={activeOverlay === 'logiscan-demo'}
         onClose={closeModal}
-        title="LogiScan: Scanning Simulation"
+        title="LogiScan: AI Package Verification"
       >
-        <LogiScanDemo />
+        <LogiScanDemo autoPlay={shouldAutoPlay} />
+      </Overlay>
+
+      <Overlay
+        isOpen={activeOverlay === 'clinicpulse-description'}
+        onClose={closeModal}
+        title="Clinic Pulse: Technical Deep Dive"
+      >
+        <ClinicPulseDescription onOpenDemo={() => {
+          closeModal();
+          setTimeout(() => openModal('clinicpulse-demo'), 100);
+        }} />
+      </Overlay>
+
+      <Overlay
+        isOpen={activeOverlay === 'clinicpulse-demo'}
+        onClose={closeModal}
+        title="Clinic Pulse: Pipeline Demo"
+      >
+        <ClinicPulseDemo autoPlay={shouldAutoPlay} />
       </Overlay>
     </main>
   );

@@ -22,7 +22,7 @@ export default function LogiScanDescription() {
   return (
     <div className="space-y-16 pb-12">
       {/* Hero Section */}
-      <section className="text-center space-y-6">
+      <section id="logiscan-overview" className="text-center space-y-6 scroll-mt-24">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
           <Zap className="w-4 h-4" />
           Live at logiscan.me
@@ -32,15 +32,12 @@ export default function LogiScanDescription() {
         </h1>
         <div className="max-w-3xl mx-auto space-y-4">
           <p className="text-xl text-slate-300 leading-relaxed">
-            A production AI vision system that automates package verification in multi-unit buildings.
-            Point your camera at packages and agentic AI reads every sticker, matches them against
-            your manifest, and shows color-coded results in real-time.
+            Self-initiated workplace automation project deployed at Tides Condo. Zero-backend AI vision system using Gemini Agentic Vision with code execution to automate package verification. Implements 5-state matching algorithm, canvas-based bounding boxes, duplicate detection across multi-photo scans, and real-time confidence scoring.
           </p>
           <p className="text-slate-400 leading-relaxed">
-            Built to solve a real operational bottleneck I deal with every shift at work.
-            Staff spend up to 90 minutes manually reading stickers and cross-referencing packages
-            against a paper log — pen and clipboard, one by one. I built LogiScan to cut that
-            down to under 10 minutes.
+            Identified operational bottleneck: 90 minutes/night spent manually reading package stickers and cross-referencing against digital manifest.
+            Designed and deployed production solution reducing verification time by ~85% (90 min → 10 min) at $0.002/scan—10x cheaper than traditional OCR APIs.
+            Built with React 19, TypeScript, Tailwind v4. Deployed on Vercel.
           </p>
         </div>
 
@@ -65,20 +62,20 @@ export default function LogiScanDescription() {
       </section>
 
       {/* The Problem */}
-      <section className="space-y-8">
+      <section id="logiscan-problem" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-red-500/10">
             <Package className="w-6 h-6 text-red-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">The Problem</h2>
+          <h2 className="text-2xl font-bold text-white">The Workplace Problem</h2>
         </div>
 
         <div className="prose prose-invert max-w-none">
           <p className="text-slate-300 text-lg leading-relaxed">
-            Multi-unit buildings receive <span className="text-amber-400 font-bold">50-200+ packages daily</span>.
-            Staff manually read each physical sticker and cross-reference it against a digital log.
-            It takes 30-60 minutes. Every day. With a 15-20% error rate because humans misread
-            apartment codes and transpose tracking digits.
+            Residential buildings receive <span className="text-amber-400 font-bold">50-200+ packages daily</span>.
+            Manual verification process: staff read each physical sticker (apartment code + tracking number), search digital manifest, mark as received.
+            Process takes <span className="text-red-400 font-bold">30-90 minutes nightly</span> with 15-20% error rate from misread codes and transposed digits.
+            Repetitive, error-prone, opportunity for automation.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -125,15 +122,13 @@ export default function LogiScanDescription() {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Traditional OCR reads text but doesn&apos;t <em>understand</em> it. A sticker might say
-              &quot;C08Q 9679 01/30/2026 MJ&quot; -which part is the apartment? The tracking number?
-              The date? Standard OCR can&apos;t tell.
+              Traditional OCR extracts text but lacks semantic understanding. Sticker: "C08Q 9679 01/30/2026 MJ"—which is apartment code? Tracking number? Date? Standard OCR APIs return raw strings without context.
             </p>
             <p>
-              LogiScan uses Gemini 3 Flash&apos;s <span className="text-purple-400 font-bold">Agentic Vision</span> -the
-              AI doesn&apos;t just read, it <em>reasons</em>. It runs a multi-step Think-Act-Observe-Validate loop,
-              writes Python code to parse sticker data, and self-validates to prevent common errors like
-              extracting years as tracking numbers.{' '}
+              Solution: <span className="text-purple-400 font-bold">Gemini 3 Flash Agentic Vision with code execution</span>.
+              AI doesn't just read—it <em>reasons</em> via multi-step Think→Act→Observe→Validate loop.
+              Writes and executes Python code to parse structured data from each sticker, self-validates output to prevent errors (e.g., extracting years as tracking #s).
+              Temperature 1.0, top-K 40 for creative problem-solving on varied label formats.{' '}
               <button
                 onClick={() => toggleExpanded('agentic-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -216,10 +211,9 @@ const config = {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4 text-slate-300">
             <p>
-              Every AI detection is classified into one of <span className="text-amber-400 font-bold">5 states</span>.
-              This isn&apos;t binary &quot;found or not found&quot; -the algorithm handles duplicates across
-              multiple photos, ambiguous matches, and unreadable stickers. Each state drives a different
-              UI color and user action.{' '}
+              Designed <span className="text-amber-400 font-bold">5-state classification algorithm</span> beyond simple binary matching.
+              Handles edge cases: duplicates across multi-photo scans (same package detected twice), ambiguous matches (multiple packages with same apartment+tracking combo),
+              orphan packages (readable but not in manifest), and unreadable labels. Each state → unique UI color + user action workflow.{' '}
               <button
                 onClick={() => toggleExpanded('matching-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -260,10 +254,9 @@ for (const detection of detections) {
             </AnimatePresence>
 
             <p className="text-sm text-slate-400">
-              Combo tracking via <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">apartment:last4</code> keys
-              prevents the same sticker from being counted twice across multiple photos.
-              Validated with <span className="text-white font-semibold">17 test cases</span> covering
-              edge cases and re-matching scenarios.
+              Duplicate detection via <code className="text-amber-400 bg-slate-800/50 px-1.5 py-0.5 rounded text-xs">apartment:last4</code> composite keys
+              prevents double-counting across multi-photo scans. State transitions validated with{' '}
+              <span className="text-white font-semibold">17 test cases</span> covering edge cases, re-matching scenarios, and concurrent modifications.
             </p>
           </div>
 
@@ -311,9 +304,10 @@ for (const detection of detections) {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              Real-time canvas-rendered bounding boxes with per-status color coding.
-              The AI returns normalized coordinates (0-1), which get converted to pixel-accurate
-              canvas positions with responsive scaling across all screen sizes.{' '}
+              Implemented real-time canvas-based bounding box overlay with per-state color coding.
+              AI returns normalized coordinates (0-1 range) → converted to pixel-accurate canvas positions with responsive scaling.
+              Handles viewport size changes, high-DPI displays, and touch interactions.
+              Click any box → modal with parsed details (apartment, tracking, confidence, AI notes).{' '}
               <button
                 onClick={() => toggleExpanded('overlay-code')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -425,18 +419,18 @@ const x = (box.x / 100) * canvasWidth * scaleX;`}</code>
         </div>
       </section>
 
-      {/* Real-World Results */}
-      <section className="space-y-8">
+      {/* Production Results */}
+      <section id="logiscan-impact" className="space-y-8 scroll-mt-24">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-emerald-500/10">
             <Camera className="w-6 h-6 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Real-World Results</h2>
+          <h2 className="text-2xl font-bold text-white">Production Deployment & Impact</h2>
         </div>
 
         <p className="text-slate-300 text-lg leading-relaxed">
-          These are actual screenshots from LogiScan running against real packages at a residential building.
-          Each demonstrates a different detection state in production.
+          Live production screenshots from LogiScan deployed at Tides Condo.
+          Demonstrates different detection states handling real-world edge cases: matched packages, orphan detection (readable but not in manifest), duplicate prevention across multi-photo scans.
         </p>
 
         <div className="grid md:grid-cols-3 gap-4">
@@ -529,14 +523,14 @@ const x = (box.x / 100) * canvasWidth * scaleX;`}</code>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 text-slate-300">
             <p>
-              The entire application runs <span className="text-blue-400 font-bold">100% client-side</span>.
-              No server, no database, no backend infrastructure.
-              Photos and package data never leave the device (except AI API calls).
+              Architectural decision: <span className="text-blue-400 font-bold">100% client-side execution</span>.
+              Zero backend servers. Zero database. Photos and package data (containing PII: names, addresses, tracking #s) never transmitted except to AI API.
+              Deployed as static site on Vercel—$0/month infrastructure cost.
             </p>
             <p>
-              This was a deliberate architectural choice: package data contains
-              names, addresses, and tracking numbers. By running entirely in the browser,
-              privacy is guaranteed by architecture, not just policy.{' '}
+              State management: React Context + useReducer (Redux pattern) with localStorage persistence and 300ms debounced writes.
+              Image compression client-side (max 1920px width, 0.85 JPEG quality) before AI processing.
+              Privacy by architecture, not policy.{' '}
               <button
                 onClick={() => toggleExpanded('arch-details')}
                 className="text-blue-400 hover:text-blue-300 text-sm font-medium"
@@ -651,10 +645,10 @@ useEffect(() => {
 
       {/* CTA */}
       <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
-        <h3 className="text-2xl font-bold text-white">Try It Live</h3>
+        <h3 className="text-2xl font-bold text-white">Live Production Deployment</h3>
         <p className="text-slate-400 max-w-xl mx-auto">
-          LogiScan is deployed and running at logiscan.me. Bring your own API key
-          and scan real packages. Zero backend, zero cost, full privacy.
+          Self-initiated workplace automation project deployed at logiscan.me. Used daily at Tides Condo to verify 50-200+ packages in ~10 minutes (previously 90 minutes).
+          BYOK model (Gemini/Vision/OpenRouter). Zero backend, $0/month hosting, privacy by architecture.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a

@@ -16,11 +16,12 @@ interface HeaderProps {
 export default function Header({ currentSection, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const sections = ['hero', 'lux', 'logiscan', 'expertise', 'contact'];
+  const sections = ['hero', 'lux', 'logiscan', 'clinicpulse', 'expertise', 'contact'];
 
   const navItems = [
     { label: 'Lux', id: 'lux' },
     { label: 'LogiScan', id: 'logiscan' },
+    { label: 'Clinic Pulse', id: 'clinicpulse' },
     { label: 'Expertise', id: 'expertise' },
     { label: 'Contact', id: 'contact' },
   ];

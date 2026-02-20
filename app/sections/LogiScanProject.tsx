@@ -90,10 +90,7 @@ export default function LogiScanProject({ onReadMore, onOpenDemo }: LogiScanProj
                 LogiScan
               </h2>
               <p className="text-xl text-slate-400 leading-relaxed">
-                AI vision tool I built to automate a real operational bottleneck at my workplace. Point a phone camera at a shelf of packages — agentic AI reads every label and cross-references them against a manifest in seconds.
-              </p>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                Reduced nightly package verification from ~90 minutes to ~10 minutes. Zero-backend architecture — runs entirely in the browser at ~$0.002 per scan.
+                Built to solve a real nightly headache at Tides Condo: 90 minutes hand-matching package stickers to a spreadsheet, 15-20% miss rate. Point the phone at the shelf, tap scan — Gemini&apos;s agentic vision reads every sticker in the photo, writes validation code mid-inference, and cross-references the manifest instantly. Everything runs in the browser at $0.002 per scan, zero backend, zero data retention. 90 minutes down to 10.
               </p>
             </div>
 
