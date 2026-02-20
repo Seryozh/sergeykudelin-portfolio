@@ -50,7 +50,7 @@ export default function Hero() {
             Sergey Kudelin
           </h1>
           <p className="text-slate-400 text-base sm:text-lg md:text-xl mb-8 sm:mb-12 tracking-wide">
-            Full-Stack Engineer &bull; Miami
+            AI-Native Engineer &bull; Miami
           </p>
 
           {/* Terminal Intro */}

@@ -43,6 +43,10 @@ export default function Header({ currentSection, onNavigate }: HeaderProps) {
         >
           SK
         </motion.button>
+        <span className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Available
+        </span>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
@@ -58,6 +62,14 @@ export default function Header({ currentSection, onNavigate }: HeaderProps) {
               <span className="absolute bottom-1 left-0 w-0 h-1 bg-gradient-to-r from-amber-400 to-amber-300 group-hover:w-full transition-all duration-300 rounded-full" />
             </motion.button>
           ))}
+          <a
+            href="/resume"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 text-sm font-semibold text-slate-400 hover:text-amber-300 transition-all duration-300 border border-slate-700/60 hover:border-amber-500/40 rounded-lg ml-2"
+          >
+            Resume ↗
+          </a>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -96,6 +108,14 @@ export default function Header({ currentSection, onNavigate }: HeaderProps) {
                   {item.label}
                 </motion.button>
               ))}
+              <a
+                href="/resume"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-3 text-sm font-semibold text-slate-400 hover:text-amber-300 hover:bg-amber-500/5 rounded-lg transition-all duration-300 text-left border border-transparent hover:border-amber-500/20"
+              >
+                Resume ↗
+              </a>
             </nav>
           </motion.div>
         )}

@@ -78,13 +78,13 @@ export default function Contact({ emailCopied, onCopyEmail }: ContactProps) {
             <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">LinkedIn</span>
           </a>
           <a
-            href="https://www.youtube.com/@SergeRoblox"
+            href="https://www.youtube.com/@SergeCode"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-300 group"
           >
             <Youtube className="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" />
-            <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">YouTube</span>
+            <span className="text-slate-300 group-hover:text-white text-sm font-medium transition-colors">@SergeCode</span>
           </a>
         </div>
       </motion.div>
