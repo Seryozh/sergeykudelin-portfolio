@@ -75,7 +75,7 @@ export default function ResumePage() {
             <span className="text-slate-300">|</span>
             <a href="https://github.com/Seryozh" className="text-blue-600 hover:underline">GitHub</a>
             <span className="text-slate-300">|</span>
-            <a href="https://www.linkedin.com/in/sergey-kudelin-4854143b2" className="text-blue-600 hover:underline">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/sergey-kudelin" className="text-blue-600 hover:underline">LinkedIn</a>
           </div>
           <div className="mt-2.5 h-[2px] bg-slate-900" />
         </header>
