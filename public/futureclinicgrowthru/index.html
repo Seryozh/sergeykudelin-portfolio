@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контентный мост - Фреймворк роста FutureClinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  #root { min-height: 100vh; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+const BRAND = {
+  green: "#354231",
+  greenLight: "#4A5D45",
+  greenMuted: "#6B7D66",
+  cream: "#FAF8F5",
+  white: "#FFFFFF",
+  text: "#1A1A1A",
+  textMuted: "#6B6B6B",
+  accent: "#C96159",
+};
+
+const slides = [
+  {
+    type: "cover",
+    title: "Контентный мост (Для Яси ❤️)",
+    subtitle: "Как комментарии на YouTube становятся растущим двигателем привлечения пациентов",
+    footnote: "Фреймворк роста FutureClinic — Сергей Куделин",
+  },
+  {
+    type: "landscape",
+    label: "ЛАНДШАФТ",
+    title: "У каждой очевидной стратегии есть фатальный недостаток",
+    intro: "Прежде чем что-то строить, я проанализировал каждый путь роста, доступный телемедицинской платформе. И каждый из них ломается по-своему.",
+    strategies: [
+      {
+        name: "Платная реклама для каждого врача",
+        desc: "$600-1,500 в месяц на врача. Запускать отдельные кампании для каждой клиники? Кто платит — платформа или врач? И как только вы перестаете платить, рост останавливается. Это не накапливается. Это ничего не строит.",
+        verdict: "Сжигает деньги, не дает долгосрочного результата",
+        icon: "\u{1F4B8}",
+      },
+      {
+        name: "Ставка на врачей-блогеров (единорогов)",
+        desc: "Врач с 200К+ подписчиков на YouTube И лицензией в нескольких штатах — это редкость. Даже если вы найдете такого, заставить его следовать вашей стратегии роста, когда у него уже есть своя аудитория, свой бренд и своя монетизация, требует огромных усилий по согласованию. Эти врачи создали свою аудиторию сами. Убедить их пропускать эту ценность через посредника — тяжелые переговоры с низкими шансами на успех.",
+        verdict: "Сложно найти, еще сложнее договориться",
+        icon: "\u{1F984}",
+      },
+      {
+        name: "Нанимать блогеров и зависеть от их контента",
+        desc: "Это требует постоянной координации: согласовывать с врачами контент-стратегию, управлять их графиком публикаций, поддерживать их мотивацию создавать контент неделю за неделей. Когда врач уходит в отпуск или выгорает, этот канал роста умирает. Рост платформы превращается в проблему проектного менеджмента, а проектный менеджмент не масштабируется.",
+        verdict: "Операционный кошмар, который не масштабируется",
+        icon: "\u{1F3AC}",
+      },
+      {
+        name: "Традиционное медицинское SEO",
+        desc: "\"Писать статьи о болезнях\". Вы конкурируете напрямую с WebMD, Mayo Clinic, Healthline и Cleveland Clinic. Сайты с 20+ годами авторитета домена, тысячами обратных ссылок и огромными командами контент-мейкеров. Стартап, публикующий шаблонные статьи \"Что такое акне?\", никогда не попадет в топ.",
+        verdict: "Невозможно обойти лидеров рынка в лоб",
+        icon: "\u{1F4DD}",
+      },
+      {
+        name: "Реклама в Meta / Instagram",
+        desc: "С января 2025 года Meta относит телемедицину к категории ограничений \"здоровье и благополучие\". Никакой оптимизации под конверсии, ограниченный сбор аудиторий, лимитированный ретаргетинг. Рекламодатели в сфере медицины сообщают о падении эффективности на 30-40%.",
+        verdict: "Категория с ограничениями и падающей доходностью",
+        icon: "\u{1F6AB}",
+      },
+      {
+        name: "Холодный старт маркетплейса",
+        desc: "Привлечь врачей, создать профили, запуститься. Врачи приходят, настраивают профиль, ничего не слышат месяц и уходят. Вы не можете привлечь пациентов без врачей в их штате. Вы не можете удержать врачей без пациентов.",
+        verdict: "Проблема курицы и яйца без движущей силы",
+        icon: "\u{1F95A}",
+      },
+      {
+        name: "Реферальные программы для пациентов",
+        desc: "\"Дай другу скидку 20%\". Мощно работает на масштабе, бесполезно на старте. Вам нужны сотни довольных, лояльных подписчиков, прежде чем сарафанное радио даст значимый объем. Это мультипликатор, а не двигатель.",
+        verdict: "Требует масштаба, который вы только пытаетесь построить",
+        icon: "\u{1F504}",
+      },
+      {
+        name: "ASO (оптимизация в App Store)",
+        desc: "Оптимизация по ключевому слову \"онлайн дерматолог\" в App Store. Бесплатно, просто, это нужно делать. Но это лишь улучшение видимости, а не стратегия роста.",
+        verdict: "Дает прирост, но не является двигателем",
+        icon: "\u{1F4F1}",
+      },
+    ],
+    closer: "Любая стратегия либо сжигает деньги, либо зависит от единорогов, либо не имеет накопительного эффекта, либо требует масштаба, который вы только пытаетесь создать. Есть ли путь, который создает активы, накапливает эффект со временем и объединяет интересы всех сторон, не требуя при этом врачей-единорогов?",
+  },
+  {
+    type: "problem",
+    label: "ПЕРВАЯ МЫСЛЬ",
+    title: "Первая мысль — ошибочная",
+    blocks: [
+      {
+        icon: "\u{1F4AC}",
+        text: "16-летний подросток с болезненным кистозным акне находит видео доктора Сайеда о побочных эффектах аккутана. После месяцев неудачного лечения и растущей неуверенности в себе он оставляет комментарий: «Я пью аккутан уже 3 месяца, и моя кожа становится только хуже. Лицо болит каждый день. Я не знаю, нормально ли это, или мне стоит прекратить. Мне страшно».",
+        mood: "neutral",
+      },
+      {
+        icon: "\u{1F4B0}",
+        text: "Доктор Сайед отвечает: «С радостью помогу! Подпишись на мой профиль FutureClinic за $30/мес, и мы обсудим твой случай. Ссылка в описании».",
+        mood: "bad",
+      },
+      {
+        icon: "\u{1F494}",
+        text: "Напуганный подросток просит о помощи. А авторитетный врач превращает этот момент в коммерческое предложение. Это выглядит бездушно, потому что так оно и есть.",
+        mood: "bad",
+      },
+    ],
+    insight: "Единственное реальное отличие FutureClinic от HIMS, Ro и любой другой телемедицинской платформы: её врачи не анонимны. Пациенты видят, кто их лечит. Они доверяют им благодаря их контенту. Они подписываются на конкретного человека, а не на безликий сервис. Перехват комментариев ссылкой на платный доступ уничтожает именно это преимущество. Доверие — это и есть продукт. Неправильная монетизация лишит вас единственного, что делает вас уникальными.",
+    bridge: "Лиды реальны. Механика неверна. Что если мы изменим то, куда ведет ссылка?",
+  },
+  {
+    type: "reveal",
+    label: "ИНСАЙТ",
+    title: "Контентный мост",
+    steps: [
+      { before: "Кто-то спрашивает о шелушении от третиноина на YouTube", arrow: true },
+      { before: "Врач отвечает ссылкой на статью, которую он написал на FutureClinic", arrow: true },
+      { before: "Пользователь кликает, потому что это бесплатно, полезно и от врача, которому он доверяет", arrow: true },
+      { before: "Читая статью на FutureClinic, он видит мягкий призыв (CTA) подписаться на персональное лечение", arrow: false },
+    ],
+    comparison: [
+      { label: "До", path: "Комментарий \u2192 Платный доступ ($30)", feel: "Как продажа", color: BRAND.accent },
+      { label: "После", path: "Комментарий \u2192 Бесплатная статья \u2192 Мягкий CTA \u2192 Подписка", feel: "Как помощь", color: BRAND.greenLight },
+    ],
+    deeper: "Это не просто тактика для YouTube. Это устойчивая медицинская практика, которую врач может внедрить в свою работу. Писать статьи с ответами на вопросы пациентов — это просто значит быть хорошим врачом в интернете. Роль FutureClinic — сделать этот процесс легким: находить вопросы, которые реально задают пациенты, писать черновики статей, заниматься SEO. Врачу остается только проверить и одобрить. Десять минут на статью.",
+  },
+  {
+    type: "universal",
+    label: "УНИВЕРСАЛЬНАЯ ССЫЛКА",
+    title: "Статья работает везде, не только на YouTube",
+    intro: "Ссылка на платный доступ уместна только в одном контексте: прямая продажа. Бесплатной образовательной статьей можно делиться где угодно, и это не будет выглядеть как реклама.",
+    channels: [
+      { platform: "Комментарии YouTube", use: "Ответ на вопросы пациентов соответствующей статьей", icon: "\u{1F4FA}" },
+      { platform: "Instagram Stories / био", use: "«Я написал об этом» со ссылкой-свайпом", icon: "\u{1F4F8}" },
+      { platform: "Био в TikTok", use: "Link tree с библиотекой статей, разбитых по заболеваниям", icon: "\u{1F3B5}" },
+      { platform: "X / Twitter", use: "Тред о заболевании, в последнем твите ссылка на полную статью", icon: "\u{1F426}" },
+      { platform: "LinkedIn", use: "Профессиональные медицинские инсайты со ссылкой на подробный разбор", icon: "\u{1F4BC}" },
+      { platform: "Reddit AMA", use: "«Вообще-то я писал об этом подробно» в соответствующих тредах", icon: "\u{1F4E2}" },
+      { platform: "Email-рассылки", use: "Еженедельная подборка новых статей для текущих подписчиков", icon: "\u{1F4E7}" },
+      { platform: "Описание подкастов", use: "«Полная статья на эту тему» по ссылке в описании", icon: "\u{1F3A7}" },
+    ],
+    kicker: "Каждая ссылка с любой платформы ведет обратно на FutureClinic. Каждый клик повышает авторитет домена. Врач делится образовательным контентом. Платформа собирает трафик. Одна статья, бесконечное множество каналов распространения.",
+  },
+  {
+    type: "mechanic",
+    label: "МЕХАНИКА",
+    title: "Как это работает",
+    steps: [
+      {
+        num: "1",
+        title: "Сигнал спроса",
+        desc: "ИИ-классификатор сканирует комментарии на YouTube. Отмечает людей с высокой заинтересованностью для ответа. Собирает самые частые вопросы со всего канала.",
+        detail: '"247 человек спросили про грибковое акне vs закрытые комедоны под 8 видео"',
+      },
+      {
+        num: "2",
+        title: "Создание актива",
+        desc: "Врач публикует SEO-оптимизированную статью, отвечающую ровно на этот вопрос. Черновик пишет ИИ, врач проверяет и одобряет медицинскую точность.",
+        detail: "futureclinic.com/learn/dr-syed/fungal-acne-vs-closed-comedones",
+      },
+      {
+        num: "3",
+        title: "Мягкий перехват",
+        desc: "ИИ готовит ответ со ссылкой на статью. Врач нажимает «Одобрить». Ответ публикуется от его имени. Пользователь кликает, потому что это бесплатно, познавательно и лично для него.",
+        detail: '"Я написал подробный разбор об этом здесь"',
+      },
+      {
+        num: "4",
+        title: "Конверсия",
+        desc: "Статья находится на FutureClinic. Мягкие CTA в естественных местах текста ведут на страницу подписки на врача. Читатель становится пациентом за $30/мес.",
+        detail: "Бесплатная статья \u2192 Страница подписки \u2192 Пациент",
+      },
+    ],
+  },
+  {
+    type: "flywheel",
+    label: "МАХОВИК",
+    title: "Один комментарий, три результата",
+    outputs: [
+      {
+        icon: "\u{1F3AF}",
+        label: "Теплый лид",
+        desc: "Это самый теплый лид во всем медицинском маркетинге. Человек уже доверяет врачу, так как смотрит его видео. Он уже описал свою проблему собственными словами. Он активно ищет помощи прямо сейчас. Ни одна платная реклама, ни один холодный обзвон или анонимная заявка на сайте не сравнятся с таким уровнем намерения и доверия.",
+      },
+      {
+        icon: "\u{1F50D}",
+        label: "Исследование ключевых слов",
+        desc: "Ни один SEO-инструмент не даст вам этого. Ни Ahrefs, ни SEMrush, ни планировщик Google. Это реальные люди, использующие реальный язык для описания реальных симптомов, которые они испытывают прямо сейчас. Это сигнал спроса, о котором мечтает каждый контент-маркетолог. И он обновляется каждый день с новыми комментариями.",
+      },
+      {
+        icon: "\u{1F4C8}",
+        label: "SEO-дистрибуция",
+        desc: "Каждая новая статья сталкивается с проблемой холодного старта: ноль читателей, ноль сигналов, ноль причин для Google её ранжировать. Начальный трафик с YouTube решает это. Вы не публикуете в пустоту. Вы публикуете со встроенной аудиторией первого дня, которая кликает, читает и вовлекается. Этот ранний трафик — искра, которая нужна Google.",
+      },
+    ],
+    loop: "Комментарии YouTube \u2192 Статьи \u2192 Google ранжирует их \u2192 Органические пациенты, которые никогда не видели видео \u2192 Больше данных \u2192 Лучшие статьи \u2192 Выше рейтинги",
+  },
+  {
+    type: "longtail",
+    label: "НЕСПРАВЕДЛИВОЕ ПРЕИМУЩЕСТВО",
+    title: "Вы пишете о том, что реально говорят пациенты",
+    comparisons: [
+      {
+        who: "WebMD",
+        writes: "Что такое акне?",
+        icon: "\u{1F3E2}",
+        note: "Одна шаблонная статья. Написана контент-командой. Нацелена на высокочастотный запрос с миллиардами страниц конкурентов. За спиной 20 лет авторитета домена.",
+      },
+      {
+        who: "FutureClinic",
+        writes: "Почему моя кожа шелушится после отмены CeraVe SA cleanser?",
+        icon: "\u{1FA7A}",
+        note: "Именно этот вопрос вчера задал реальный пациент. Нулевая конкуренция по этому запросу. Написано сертифицированным врачом, который это лечит.",
+      },
+    ],
+    kicker: "Вы не обойдете WebMD по запросу «акне». Вы обойдете всех по 300 специфическим вопросам, на которые WebMD никогда не удосужится ответить, потому что ваш контент генерируется из реального спроса пациентов в реальном времени.",
+  },
+  {
+    type: "seo",
+    label: "РОВ (ЗАЩИТА)",
+    title: "Почему Google поощряет это",
+    pillars: [
+      { letter: "E", word: "Опыт", desc: "Врач ежедневно лечит это заболевание" },
+      { letter: "E", word: "Экспертность", desc: "Сертифицированный специалист, подтвержденная квалификация" },
+      { letter: "A", word: "Авторитетность", desc: "Множество врачей на одном домене = сигнал сильной организации" },
+      { letter: "T", word: "Достоверность", desc: "Реальные профили врачей, реальная практика, реальные пациенты" },
+    ],
+    kicker: "Каждый новый врач, публикующий статьи, усиливает рейтинги всех остальных врачей. Это сетевой эффект в SEO. Крайне редкий и очень сложный для копирования.",
+  },
+  {
+    type: "pillar",
+    label: "АРХИТЕКТУРА КОНТЕНТА",
+    title: "Модель «Столб и Спицы»",
+    pillarPage: {
+      url: "futureclinic.com/conditions/acne",
+      label: "Главная страница (Столб): ранжируется по широким запросам",
+    },
+    spokes: [
+      { doctor: "Dr. Syed", topic: "accutane-back-pain" },
+      { doctor: "Dr. Chen", topic: "tretinoin-purging" },
+      { doctor: "Dr. Syed", topic: "fungal-acne-vs-comedones" },
+      { doctor: "Dr. Patel", topic: "cerave-sa-peeling" },
+    ],
+    insight: "Каждая «спица» ссылается на «столб». Google ранжирует столб по широким запросам, а спицы — по узким. Столб становится сильнее с каждой добавленной спицей.",
+  },
+  {
+    type: "tiers",
+    label: "ПРОРЫВ",
+    title: "Не каждому врачу нужно быть блогером",
+    intro: "Первоначальный план требовал врачей-китов: с лицензиями во многих штатах И активных создателей контента. Это единороги. Контентный мост разбивает это требование пополам.",
+    tierData: [
+      {
+        tier: "Уровень 1",
+        name: "Генераторы сигналов",
+        count: "3-5 на специальность",
+        traits: [
+          "Активная аудитория на YouTube",
+          "Их комментарии питают контентный двигатель",
+          "Редкие, стоят затрат на поиск",
+          "Доктор Сайед — Генератор сигналов №1",
+        ],
+      },
+      {
+        tier: "Уровень 2",
+        name: "Врачи покрытия",
+        count: "Неограниченный масштаб",
+        traits: [
+          "Широкое лицензирование, реальная квалификация, аудитория не нужна",
+          "Проверка статей от ИИ на точность (10 мин на статью)",
+          "Закрывают географические дыры, принимают пациентов из SEO-трафика",
+          "Платформа полностью берет на себя дистрибуцию",
+          "Гораздо проще нанимать",
+        ],
+      },
+    ],
+    oldPitch: '"Приведите свою аудиторию на нашу платформу"',
+    newPitch: '"Мы построим ваше присутствие в сети и приведем вам пациентов"',
+    closer: "Тысячи сертифицированных специалистов хотели бы пассивно получать пациентов, но совершенно не заинтересованы в создании видео на YouTube. Это устраняет главный барьер в поиске врачей.",
+  },
+  {
+    type: "stress",
+    label: "СТРЕСС-ТЕСТ",
+    title: "Что может пойти не так?",
+    intro: "У каждой стратегии есть слабые места. Вот очевидные возражения и объяснение, почему они не ломают модель.",
+    tests: [
+      {
+        q: "Что если генератор сигналов покинет платформу?",
+        a: "Его статьи останутся на FutureClinic, продолжат ранжироваться и конвертировать. State Gate (система перенаправления по штатам) направит этих пациентов к врачам покрытия. Вы теряете сбор будущих комментариев с этого канала, но не существующую базу активов. Статьи принадлежат платформе, а не врачу.",
+      },
+      {
+        q: "Что если генераторы сигналов перестанут постить, или вы соберете все частые вопросы?",
+        a: "Система перерастает зависимость от YouTube. Во-первых, существующие видео генерируют комментарии бесконечно. Видео, опубликованное два года назад, до сих пор собирает вопросы. Во-вторых, как только статьи выйдут в топ Google, новым сигналом спроса станет Search Console, показывая, что именно ищут пациенты. В-третьих (и это самое мощное), стратегия развивается еще дальше. Собранные вопросы пациентов превращаются в данные о медицинских трендах. Анализ паттернов выявляет новые заболевания. Платформа начинает понимать, что нужно пациентам, еще до того, как это заметят конкуренты.",
+      },
+      {
+        q: "Почему именно YouTube в качестве стартового канала?",
+        a: "YouTube — это личное. Это видео, формат с самым высоким уровнем доверия в медицине. Пациенты видят лицо настоящего врача, слышат его голос, смотрят, как он объясняет. И самое главное, это позволяет нам создать реальный кейс вокруг доктора Сайеда с измеримыми цифрами: обработанные комментарии, опубликованные статьи, конвертированные пациенты, сгенерированная выручка. Эти цифры станут питчем для каждого следующего врача, которого мы будем нанимать.",
+      },
+      {
+        q: "Будут ли врачи покрытия реально проверять статьи?",
+        a: "Мы просим их «проверить готовую статью за 10 минут», а не «стать создателем контента». И стимул здесь — пациенты, приходящие с нулевыми маркетинговыми усилиями с их стороны. Сравните это с их альтернативой: создавать YouTube-канал с нуля или бесконечно платить за рекламу.",
+      },
+      {
+        q: "Что если статьи не будут высоко ранжироваться?",
+        a: "Они и не будут ранжироваться все до единой. Но контент создается на основе реального языка пациентов и нацелен на гиперспецифичные низкочастотные запросы с почти нулевой конкуренцией. Даже 30% успеха на 300 статьях — это 90 страниц, привлекающих органический трафик. И каждая статья, которая выходит в топ, делает домен сильнее для всех остальных статей.",
+      },
+      {
+        q: "Может ли конкурент скопировать это?",
+        a: "Им понадобятся продукт, врачи, аудитория на YouTube, инструменты ИИ, библиотека статей и система перенаправления по штатам (State Gate) — и всё это должно работать вместе, в то время как у вас уже есть фора. Каждый элемент можно создать отдельно. Но все шесть вместе — это ров, который невозможно перепрыгнуть.",
+      },
+    ],
+  },
+  {
+    type: "stateGate",
+    label: "СИСТЕМА ПОДСТРАХОВКИ",
+    title: "State Gate перехватывает каждого пациента",
+    scenario: [
+      { step: "Пациент в Техасе гуглит проблему с кожей", icon: "\u{1F50D}" },
+      { step: "Попадает на статью доктора Сайеда (в топе по его запросу)", icon: "\u{1F4C4}" },
+      { step: "Читает, доверяет, кликает «подписаться»", icon: "\u2705" },
+      { step: "Но у доктора Сайеда нет лицензии в Техасе", icon: "\u26A0\uFE0F", bad: true },
+      { step: "State Gate: «Для этой проблемы в Техасе доступен доктор Чен»", icon: "\u2192", good: true },
+    ],
+    kicker: "SEO-трафик принадлежит платформе, а не отдельному врачу. Статьи — это сети. State Gate гарантирует, что каждый улов найдет свой дом. Больше врачей = больше статей = больше трафика = больше перенаправлений = больше пользы для каждого врача.",
+  },
+  {
+    type: "winwin",
+    label: "СОГЛАСОВАННОСТЬ",
+    title: "В выигрыше все",
+    parties: [
+      {
+        who: "Врач",
+        emoji: "\u{1FA7A}",
+        wins: [
+          "Ответы повышают доверие к ним, а не снижают",
+          "Библиотека статей создает их публичный авторитет",
+          "Пассивно генерирует пациентов, когда статьи выходят в топ",
+          "Они обучают, а не продают",
+        ],
+      },
+      {
+        who: "FutureClinic",
+        emoji: "\u{1F3E5}",
+        wins: [
+          "SEO-ров строится бесплатно за счет активности врачей",
+          "Каждый врач усиливает рейтинги всех остальных врачей",
+          "Два канала привлечения: YouTube + органика Google",
+          "Контент масштабируется автоматически по мере роста числа врачей",
+        ],
+      },
+      {
+        who: "Пациент",
+        emoji: "\u{1F9D1}",
+        wins: [
+          "Бесплатное экспертное медицинское просвещение от реального врача",
+          "Гладкий путь к лечению, когда они будут готовы",
+          "State Gate перехватывает их, никаких тупиков",
+          "Никогда не чувствует, что ему что-то навязывают",
+        ],
+      },
+    ],
+  },
+  {
+    type: "defense",
+    label: "ЗАЩИТА",
+    title: "Почему это сложно скопировать",
+    pieces: [
+      { label: "Продукт", desc: "Платформа, соединяющая пациентов с конкретными врачами по подписке" },
+      { label: "Предложение", desc: "Врачи-генераторы сигналов с активной аудиторией на YouTube" },
+      { label: "Инструмент", desc: "ИИ классифицирует намерения и агрегирует реальные вопросы пациентов" },
+      { label: "Защитный ров", desc: "Статьи от реальных врачей на одном домене (E-E-A-T)" },
+      { label: "Сеть", desc: "Маршрутизация State Gate, исправляющая географические несовпадения" },
+      { label: "Сетевой эффект", desc: "Авторитет домена растет с каждым публикующимся врачом" },
+    ],
+    kicker: "Каждую деталь можно создать. Все шесть вместе, усиливающиеся со временем, да еще и с форой — вот это и есть защитный ров.",
+  },
+  {
+    type: "close",
+    title: "Эффект сложного процента",
+    lines: [
+      "Больше врачей \u2192 больше статей \u2192 сильнее авторитет домена",
+      "Сильнее авторитет \u2192 выше рейтинги \u2192 больше пациентов из органики",
+      "Больше пациентов \u2192 лучше покрытие State Gate \u2192 меньше тупиков",
+      "Меньше тупиков \u2192 лучше удержание врачей \u2192 больше врачей",
+    ],
+    final: "Каждый элемент делает все остальные более ценными.\nМаховик — это и есть защитный ров.",
+  },
+  {
+    type: "author",
+    name: "Сергей Куделин",
+    email: "sergey@sergeykudelin.com",
+    site: "sergeykudelin.com",
+    note: "Спроектировал этот фреймворк и инструменты, стоящие за ним.",
+  },
+];
+
+function SlideIndicator({ current, total, onNav }) {
+  return (
+    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+      {Array.from({ length: total }, (_, i) => (
+        <button key={i} onClick={() => onNav(i)} style={{
+          width: i === current ? 22 : 6, height: 6, borderRadius: 3,
+          border: "none", background: i === current ? BRAND.green : "#D8D8D8",
+          cursor: "pointer", transition: "all 0.3s ease", padding: 0,
+        }} />
+      ))}
+    </div>
+  );
+}
+
+function FadeIn({ children, delay = 0, style = {} }) {
+  const [v, setV] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setV(true), delay); return () => clearTimeout(t); }, [delay]);
+  return (
+    <div style={{ opacity: v ? 1 : 0, transform: v ? "translateY(0)" : "translateY(14px)", transition: "all 0.45s cubic-bezier(0.25,0.46,0.45,0.94)", ...style }}>
+      {children}
+    </div>
+  );
+}
+
+function Label({ children, color }) {
+  return <div style={{ fontSize: 10, letterSpacing: 3, color: color || BRAND.greenMuted, fontFamily: "'DM Mono', monospace", marginBottom: 8, textTransform: "uppercase" }}>{children}</div>;
+}
+
+function Title({ children, size }) {
+  return <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: size || 30, color: BRAND.green, margin: "0 0 24px", lineHeight: 1.15 }}>{children}</h2>;
+}
+
+function GreenBox({ children, style: s = {} }) {
+  return <div style={{ padding: "16px 20px", background: BRAND.green, borderRadius: 12, fontSize: 14, color: BRAND.cream, lineHeight: 1.65, ...s }}>{children}</div>;
+}
+
+function CoverSlide({ slide }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 480, textAlign: "center", padding: "40px 20px" }}>
+      <FadeIn><div style={{ fontSize: 11, letterSpacing: 4, textTransform: "uppercase", color: BRAND.greenMuted, marginBottom: 32, fontFamily: "'DM Mono', monospace" }}>FutureClinic</div></FadeIn>
+      <FadeIn delay={200}><h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(36px, 6vw, 52px)", fontWeight: 700, color: BRAND.green, lineHeight: 1.1, margin: "0 0 16px" }}>{slide.title}</h1></FadeIn>
+      <FadeIn delay={400}><p style={{ fontSize: 17, color: BRAND.textMuted, maxWidth: 460, lineHeight: 1.5, margin: "0 0 48px" }}>{slide.subtitle}</p></FadeIn>
+      <FadeIn delay={600}><div style={{ fontSize: 12, color: "#AAA", fontFamily: "'DM Mono', monospace" }}>{slide.footnote}</div></FadeIn>
+    </div>
+  );
+}
+
+function LandscapeSlide({ slide }) {
+  const [exp, setExp] = useState(null);
+  return (
+    <div style={{ padding: "16px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title size={28}>{slide.title}</Title>
+        <p style={{ fontSize: 14, color: BRAND.textMuted, lineHeight: 1.6, margin: "0 0 18px" }}>{slide.intro}</p>
+      </FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {slide.strategies.map((s, i) => (
+          <FadeIn key={i} delay={80 + i * 40}>
+            <div onClick={() => setExp(exp === i ? null : i)} style={{
+              padding: exp === i ? "14px 16px" : "11px 16px", background: exp === i ? BRAND.cream : BRAND.white,
+              borderRadius: 10, border: "1px solid #EAEAEA", cursor: "pointer", transition: "all 0.2s ease",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 16 }}>{s.icon}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.text, flex: 1 }}>{s.name}</span>
+                <span style={{ fontSize: 14, color: "#CCC", transform: exp === i ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s" }}>{"\u25BE"}</span>
+              </div>
+              {exp === i && (
+                <div style={{ marginTop: 10 }}>
+                  <p style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.55, margin: "0 0 8px" }}>{s.desc}</p>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: BRAND.accent }}>{"\u2717"} {s.verdict}</div>
+                </div>
+              )}
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={500}><GreenBox style={{ marginTop: 16, fontStyle: "italic" }}>{slide.closer}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function ProblemSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+        {slide.blocks.map((b, i) => (
+          <FadeIn key={i} delay={200 + i * 150}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: 14, padding: "14px 18px",
+              background: b.mood === "bad" ? "#FDF2F1" : BRAND.cream, borderRadius: 10,
+              borderLeft: b.mood === "bad" ? "3px solid " + BRAND.accent : "3px solid transparent",
+            }}>
+              <span style={{ fontSize: 22 }}>{b.icon}</span>
+              <span style={{ fontSize: 14, color: b.mood === "bad" ? BRAND.accent : BRAND.text, lineHeight: 1.5, fontWeight: b.mood === "bad" ? 600 : 400 }}>{b.text}</span>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={650}><div style={{ padding: "16px 20px", background: BRAND.cream, borderRadius: 10, borderLeft: "3px solid " + BRAND.green, fontSize: 14, color: BRAND.text, lineHeight: 1.6, marginBottom: 16 }}>{slide.insight}</div></FadeIn>
+      <FadeIn delay={800}><GreenBox style={{ fontWeight: 600, textAlign: "center" }}>{slide.bridge}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function RevealSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 28 }}>
+        {slide.steps.map((s, i) => (
+          <FadeIn key={i} delay={200 + i * 180}>
+            <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 20 }}>
+                <div style={{ width: 20, height: 20, borderRadius: "50%", background: BRAND.green, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff", fontWeight: 700 }}>{i + 1}</div>
+                {s.arrow && <div style={{ width: 2, height: 24, background: "#E0E0E0" }} />}
+              </div>
+              <div style={{ fontSize: 14, color: BRAND.text, lineHeight: 1.5, paddingBottom: s.arrow ? 12 : 0, paddingTop: 1 }}>{s.before}</div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={950}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {slide.comparison.map((c, i) => (
+            <div key={i} style={{
+              padding: "14px 18px", borderRadius: 10,
+              background: i === 0 ? "#FDF2F1" : "#F0F7EF",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+            }}>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: c.color, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>{c.label}</div>
+                <div style={{ fontSize: 13, color: BRAND.text }}>{c.path}</div>
+              </div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: c.color, background: i === 0 ? "rgba(201,97,89,0.1)" : "rgba(74,93,69,0.1)", padding: "4px 10px", borderRadius: 99 }}>{c.feel}</div>
+            </div>
+          ))}
+        </div>
+      </FadeIn>
+      {slide.deeper && <FadeIn delay={1150}><div style={{ padding: "16px 20px", background: BRAND.cream, borderRadius: 10, borderLeft: "3px solid " + BRAND.green, fontSize: 14, color: BRAND.text, lineHeight: 1.6, marginTop: 16 }}>{slide.deeper}</div></FadeIn>}
+    </div>
+  );
+}
+
+function UniversalSlide({ slide }) {
+  return (
+    <div style={{ padding: "16px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title size={28}>{slide.title}</Title>
+        <p style={{ fontSize: 14, color: BRAND.textMuted, lineHeight: 1.6, margin: "0 0 18px" }}>{slide.intro}</p>
+      </FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 20 }}>
+        {slide.channels.map((c, i) => (
+          <FadeIn key={i} delay={100 + i * 60}>
+            <div style={{
+              display: "flex", gap: 12, padding: "12px 16px", background: BRAND.cream, borderRadius: 10, alignItems: "flex-start",
+            }}>
+              <span style={{ fontSize: 18, minWidth: 24, textAlign: "center" }}>{c.icon}</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: BRAND.green }}>{c.platform}</div>
+                <div style={{ fontSize: 12, color: BRAND.textMuted, lineHeight: 1.4, marginTop: 2 }}>{c.use}</div>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={600}><GreenBox style={{ fontStyle: "italic" }}>{slide.kicker}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function MechanicSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ position: "relative", paddingLeft: 38 }}>
+        {/* Vertical pipeline line */}
+        <div style={{ position: "absolute", left: 15, top: 8, bottom: 8, width: 2, background: "linear-gradient(to bottom, " + BRAND.green + ", " + BRAND.greenLight + ", " + BRAND.greenMuted + ")", borderRadius: 1 }} />
+        {slide.steps.map((s, i) => (
+          <FadeIn key={i} delay={150 + i * 160}>
+            <div style={{ position: "relative", marginBottom: i < slide.steps.length - 1 ? 6 : 0, paddingBottom: i < slide.steps.length - 1 ? 6 : 0 }}>
+              {/* Pipeline dot */}
+              <div style={{ position: "absolute", left: -38 + 8, top: 16, width: 16, height: 16, borderRadius: "50%", background: BRAND.green, border: "3px solid " + BRAND.greenLight, boxShadow: "0 0 10px rgba(74,93,69,0.3)", zIndex: 2 }} />
+              {/* Arrow between steps */}
+              {i < slide.steps.length - 1 && <div style={{ position: "absolute", left: -38 + 12, bottom: -2, fontSize: 10, color: BRAND.greenLight, zIndex: 2 }}>{"\u25BC"}</div>}
+              {/* Card */}
+              <div style={{ padding: "14px 18px", background: BRAND.cream, borderRadius: 12, borderLeft: "3px solid " + BRAND.greenLight }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: 1, color: BRAND.greenMuted, textTransform: "uppercase" }}>Шаг {s.num}</span>
+                  <span style={{ fontWeight: 700, fontSize: 15, color: BRAND.green }}>{s.title}</span>
+                </div>
+                <div style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.55, marginBottom: 8 }}>{s.desc}</div>
+                <div style={{ fontSize: 11, fontFamily: "'DM Mono', monospace", color: BRAND.greenLight, background: "rgba(53,66,49,0.08)", padding: "5px 10px", borderRadius: 6, display: "inline-block" }}>{s.detail}</div>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={850}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 16, padding: "10px 16px", background: BRAND.green, borderRadius: 8 }}>
+          {["Комментарий", "Статья", "Ответ", "Пациент"].map((step, i) => (
+            <React.Fragment key={i}>
+              <span style={{ fontSize: 11, fontFamily: "'DM Mono', monospace", color: BRAND.cream }}>{step}</span>
+              {i < 3 && <span style={{ color: "#A8D4A0", fontSize: 12 }}>{"\u2192"}</span>}
+            </React.Fragment>
+          ))}
+        </div>
+      </FadeIn>
+    </div>
+  );
+}
+
+function FlywheelSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+        {slide.outputs.map((o, i) => (
+          <FadeIn key={i} delay={200 + i * 150}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 18px", background: BRAND.cream, borderRadius: 10, borderLeft: "3px solid " + BRAND.green }}>
+              <span style={{ fontSize: 26 }}>{o.icon}</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14, color: BRAND.green }}>{o.label}</div>
+                <div style={{ fontSize: 13, color: BRAND.textMuted, marginTop: 2, lineHeight: 1.4 }}>{o.desc}</div>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={700}><GreenBox><div style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, opacity: 0.5 }}>ЦИКЛ</div>{slide.loop}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function LongTailSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
+        {slide.comparisons.map((c, i) => (
+          <FadeIn key={i} delay={200 + i * 200}>
+            <div style={{ padding: "20px", borderRadius: 12, background: i === 0 ? "#F8F4F0" : BRAND.cream, border: i === 0 ? "1px solid #E8E0D8" : "2px solid " + BRAND.green }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <span style={{ fontSize: 22 }}>{c.icon}</span>
+                <span style={{ fontWeight: 700, fontSize: 15, color: i === 0 ? BRAND.textMuted : BRAND.green }}>{c.who}</span>
+              </div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: i === 0 ? BRAND.textMuted : BRAND.text, padding: "10px 14px", background: i === 0 ? "rgba(0,0,0,0.03)" : "rgba(53,66,49,0.06)", borderRadius: 8, marginBottom: 10 }}>"{c.writes}"</div>
+              <div style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.5 }}>{c.note}</div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={650}><GreenBox style={{ fontStyle: "italic" }}>{slide.kicker}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function SEOSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 }}>
+        {slide.pillars.map((p, i) => (
+          <FadeIn key={i} delay={200 + i * 120}>
+            <div style={{ padding: "18px", background: BRAND.cream, borderRadius: 12, textAlign: "center" }}>
+              <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 30, fontWeight: 700, color: BRAND.green, marginBottom: 4 }}>{p.letter}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: BRAND.text, marginBottom: 4 }}>{p.word}</div>
+              <div style={{ fontSize: 12, color: BRAND.textMuted, lineHeight: 1.4 }}>{p.desc}</div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={700}><GreenBox style={{ textAlign: "center", fontWeight: 600 }}>{slide.kicker}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function PillarSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <FadeIn delay={200}>
+        <div style={{ padding: "18px", background: BRAND.green, borderRadius: 12, marginBottom: 10, textAlign: "center" }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#A8D4A0", marginBottom: 4 }}>{slide.pillarPage.url}</div>
+          <div style={{ fontSize: 12, color: BRAND.cream }}>{slide.pillarPage.label}</div>
+        </div>
+      </FadeIn>
+      <div style={{ display: "flex", justifyContent: "center", margin: "2px 0" }}><div style={{ width: 2, height: 16, background: "#D8D8D8" }} /></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 20 }}>
+        {slide.spokes.map((s, i) => (
+          <FadeIn key={i} delay={350 + i * 80}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: BRAND.cream, borderRadius: 8, borderLeft: "3px solid " + BRAND.greenLight }}>
+              <span style={{ fontSize: 12, color: BRAND.greenMuted, fontWeight: 600, minWidth: 56 }}>{s.doctor}</span>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: BRAND.textMuted }}>/{s.topic}</span>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={700}><div style={{ padding: "16px 20px", borderRadius: 12, border: "2px solid " + BRAND.green, fontSize: 14, color: BRAND.text, lineHeight: 1.6, textAlign: "center", fontStyle: "italic" }}>{slide.insight}</div></FadeIn>
+    </div>
+  );
+}
+
+function TiersSlide({ slide }) {
+  return (
+    <div style={{ padding: "16px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title size={28}>{slide.title}</Title>
+        <p style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.55, margin: "0 0 18px" }}>{slide.intro}</p>
+      </FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 18 }}>
+        {slide.tierData.map((t, i) => (
+          <FadeIn key={i} delay={200 + i * 200}>
+            <div style={{ padding: "18px 20px", borderRadius: 12, background: i === 0 ? BRAND.green : BRAND.cream, border: i === 1 ? "1px solid #E0E0E0" : "none" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: 2, color: i === 0 ? "rgba(255,255,255,0.45)" : BRAND.greenMuted }}>{t.tier}</span>
+                <span style={{ fontSize: 11, color: i === 0 ? "rgba(255,255,255,0.45)" : BRAND.textMuted }}>{t.count}</span>
+              </div>
+              <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 19, fontWeight: 600, color: i === 0 ? "#fff" : BRAND.text, marginBottom: 10 }}>{t.name}</div>
+              {t.traits.map((tr, j) => (
+                <div key={j} style={{ fontSize: 13, color: i === 0 ? "rgba(255,255,255,0.8)" : BRAND.textMuted, lineHeight: 1.5, paddingLeft: 14, position: "relative", marginBottom: 3 }}>
+                  <span style={{ position: "absolute", left: 0 }}>{"\u2192"}</span> {tr}
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={650}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, textAlign: "center", marginBottom: 12 }}>
+          <div style={{ fontSize: 13, color: BRAND.accent, textDecoration: "line-through" }}>{slide.oldPitch}</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: BRAND.green }}>{slide.newPitch}</div>
+        </div>
+      </FadeIn>
+      <FadeIn delay={800}><div style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.55, textAlign: "center", fontStyle: "italic" }}>{slide.closer}</div></FadeIn>
+    </div>
+  );
+}
+
+function StressSlide({ slide }) {
+  const [exp, setExp] = useState(null);
+  return (
+    <div style={{ padding: "16px 0" }}>
+      <FadeIn><Label color={BRAND.accent}>{slide.label}</Label><Title size={28}>{slide.title}</Title>
+        <p style={{ fontSize: 14, color: BRAND.textMuted, lineHeight: 1.6, margin: "0 0 18px" }}>{slide.intro}</p>
+      </FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {slide.tests.map((t, i) => (
+          <FadeIn key={i} delay={100 + i * 60}>
+            <div onClick={() => setExp(exp === i ? null : i)} style={{
+              padding: "14px 16px", background: exp === i ? BRAND.cream : BRAND.white,
+              borderRadius: 10, border: "1px solid #EAEAEA", cursor: "pointer", transition: "all 0.2s ease",
+            }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                <span style={{ color: BRAND.accent, fontWeight: 700, fontSize: 14, marginTop: 1 }}>?</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.text, flex: 1, lineHeight: 1.4 }}>{t.q}</span>
+                <span style={{ fontSize: 14, color: "#CCC", transform: exp === i ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s", minWidth: 16, textAlign: "center" }}>{"\u25BE"}</span>
+              </div>
+              {exp === i && (
+                <div style={{ marginTop: 10, paddingLeft: 24 }}>
+                  <p style={{ fontSize: 13, color: BRAND.greenLight, lineHeight: 1.6, margin: 0, fontWeight: 500 }}>{t.a}</p>
+                </div>
+              )}
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StateGateSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 24 }}>
+        {slide.scenario.map((s, i) => (
+          <FadeIn key={i} delay={200 + i * 150}>
+            <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 28 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: "50%",
+                  background: s.good ? BRAND.green : s.bad ? BRAND.accent : BRAND.cream,
+                  border: !s.good && !s.bad ? "2px solid " + BRAND.greenLight : "none",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14,
+                }}>{s.icon}</div>
+                {i < slide.scenario.length - 1 && <div style={{ width: 2, height: 16, background: "#E0E0E0" }} />}
+              </div>
+              <div style={{ fontSize: 14, color: s.bad ? BRAND.accent : s.good ? BRAND.green : BRAND.text, fontWeight: s.bad || s.good ? 600 : 400, lineHeight: 1.5, paddingBottom: 8, paddingTop: 4 }}>{s.step}</div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={900}><GreenBox style={{ fontStyle: "italic" }}>{slide.kicker}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function WinWinSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {slide.parties.map((p, i) => (
+          <FadeIn key={i} delay={200 + i * 150}>
+            <div style={{ padding: "16px 18px", background: BRAND.cream, borderRadius: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 20 }}>{p.emoji}</span>
+                <span style={{ fontWeight: 700, fontSize: 15, color: BRAND.green }}>{p.who}</span>
+              </div>
+              {p.wins.map((w, j) => (
+                <div key={j} style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.5, paddingLeft: 14, position: "relative", marginBottom: 3 }}>
+                  <span style={{ position: "absolute", left: 0, color: BRAND.greenLight }}>+</span> {w}
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DefenseSlide({ slide }) {
+  return (
+    <div style={{ padding: "20px 0" }}>
+      <FadeIn><Label>{slide.label}</Label><Title>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+        {slide.pieces.map((p, i) => (
+          <FadeIn key={i} delay={150 + i * 100}>
+            <div style={{ display: "flex", gap: 14, padding: "14px 16px", background: BRAND.cream, borderRadius: 10, borderLeft: "3px solid " + BRAND.green }}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: BRAND.greenMuted, minWidth: 20, textAlign: "center", paddingTop: 2 }}>{i + 1}</div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14, color: BRAND.green, marginBottom: 2 }}>{p.label}</div>
+                <div style={{ fontSize: 13, color: BRAND.textMuted, lineHeight: 1.45 }}>{p.desc}</div>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={750}><GreenBox style={{ textAlign: "center", fontWeight: 600 }}>{slide.kicker}</GreenBox></FadeIn>
+    </div>
+  );
+}
+
+function CloseSlide({ slide }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 480, textAlign: "center", padding: "40px 20px" }}>
+      <FadeIn><Title size={34}>{slide.title}</Title></FadeIn>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 36, maxWidth: 480, width: "100%" }}>
+        {slide.lines.map((l, i) => (
+          <FadeIn key={i} delay={300 + i * 200}>
+            <div style={{ fontSize: 14, color: BRAND.text, lineHeight: 1.5, padding: "12px 18px", background: BRAND.cream, borderRadius: 10, borderLeft: "3px solid " + BRAND.green, textAlign: "left" }}>{l}</div>
+          </FadeIn>
+        ))}
+      </div>
+      <FadeIn delay={1200}>
+        <div style={{ fontSize: 17, fontWeight: 700, color: BRAND.green, fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic", lineHeight: 1.5, whiteSpace: "pre-line" }}>{slide.final}</div>
+      </FadeIn>
+    </div>
+  );
+}
+
+function AuthorSlide({ slide }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 480, textAlign: "center", padding: "40px 20px" }}>
+      <FadeIn>
+        <div style={{ padding: "32px 28px", background: BRAND.cream, borderRadius: 16, maxWidth: 400, width: "100%" }}>
+          <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 24, fontWeight: 700, color: BRAND.green, marginBottom: 6 }}>{slide.name}</div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: BRAND.greenLight, marginBottom: 4 }}>{slide.email}</div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: BRAND.greenMuted, marginBottom: 20 }}>{slide.site}</div>
+          <div style={{ borderTop: "1px solid #E8E4E0", paddingTop: 16, fontSize: 14, color: BRAND.text, fontStyle: "italic", lineHeight: 1.5 }}>"{slide.note}"</div>
+        </div>
+      </FadeIn>
+    </div>
+  );
+}
+
+const R = { cover: CoverSlide, landscape: LandscapeSlide, problem: ProblemSlide, reveal: RevealSlide, universal: UniversalSlide, mechanic: MechanicSlide, flywheel: FlywheelSlide, longtail: LongTailSlide, seo: SEOSlide, pillar: PillarSlide, tiers: TiersSlide, stress: StressSlide, stateGate: StateGateSlide, winwin: WinWinSlide, defense: DefenseSlide, close: CloseSlide, author: AuthorSlide };
+
+function App() {
+  const [cur, setCur] = useState(0);
+  const [sk, setSk] = useState(0);
+  const go = useCallback((i) => { if (i >= 0 && i < slides.length) { setCur(i); setSk(k => k + 1); } }, []);
+  useEffect(() => {
+    const h = (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(cur + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(cur - 1); }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [cur, go]);
+  const s = slides[cur]; const C = R[s.type];
+  return (
+    <div style={{ minHeight: "100vh", background: BRAND.white, fontFamily: "'DM Sans', -apple-system, sans-serif", color: BRAND.text, display: "flex", flexDirection: "column" }}>
+      <div style={{ flex: 1, maxWidth: 560, width: "100%", margin: "0 auto", padding: "20px 24px 100px", overflowY: "auto" }}>
+        <div key={sk}><C slide={s} /></div>
+      </div>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(8px)", borderTop: "1px solid #F0F0F0", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button onClick={() => go(cur - 1)} disabled={cur === 0} style={{ padding: "7px 18px", borderRadius: 99, border: "1px solid " + (cur === 0 ? "#E0E0E0" : BRAND.green), background: "transparent", color: cur === 0 ? "#CCC" : BRAND.green, fontSize: 13, fontWeight: 600, cursor: cur === 0 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>{"\u2190"} Назад</button>
+        <SlideIndicator current={cur} total={slides.length} onNav={go} />
+        <button onClick={() => go(cur + 1)} disabled={cur === slides.length - 1} style={{ padding: "7px 18px", borderRadius: 99, border: "none", background: cur === slides.length - 1 ? "#E0E0E0" : BRAND.green, color: "#fff", fontSize: 13, fontWeight: 600, cursor: cur === slides.length - 1 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>Далее {"\u2192"}</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
