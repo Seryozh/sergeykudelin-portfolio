@@ -73,16 +73,27 @@
 
         <ul>
           <li>
-            <strong>FutureClinic Outreach.</strong> AI-automated discovery,
-            license verification, and per-doctor personalized videos rendered
-            from a single founder monologue. Whisper word-alignment, Playwright
-            page tours, ffmpeg chroma-key composite.
+            <strong>FutureClinic Outreach.</strong> Cold-outreach engine for
+            doctor-creators on YouTube. Pipeline: channel discovery via
+            ScrapeCreators, state-license verification through custom ScrapFly
+            browser tooling (400&times; cheaper than the commercial API), Gemini
+            Flash for patient-intent classification of comment threads, Opus for
+            personalized 5-email sequences in the founder&rsquo;s voice, and a
+            Slack-gated human approval step before send. Layered Nikola on top:
+            a Modal-hosted Claude Agent SDK agent with a persistent filesystem
+            brain that reconciles Gmail against the prospect list and runs the
+            daily batch autonomously.
           </li>
           <li>
-            <strong>FutureClinic Creators.</strong> Content engine that turns an
-            onboarded creator-doctor&rsquo;s channel into a ready-to-record
-            script. Multi-stage parallel pipeline across Claude Opus + Sonnet,
-            FAL, Supadata, Apify. Next.js, Supabase, Docker worker pool.
+            <strong>FutureClinic Creators.</strong> AI content engine that turns
+            a doctor&rsquo;s YouTube channel into ready-to-record scripts,
+            titles, and thumbnails in their voice. Pipeline: Opus generates a
+            voice profile from transcripts, a weekly SERP cron mines topics
+            scored for patient acquisition (not viral reach), FAL composites
+            thumbnails, and an agentic Opus loop writes scripts with self-review
+            passes for voice match, hook strength, and CTA placement. Next.js +
+            Supabase, 28-endpoint REST API frozen as a contract for the
+            companion mobile app.
           </li>
           <li>
             <strong
