@@ -79,21 +79,24 @@
             browser tooling (400&times; cheaper than the commercial API), Gemini
             Flash for patient-intent classification of comment threads, Opus for
             personalized 5-email sequences in the founder&rsquo;s voice, and a
-            Slack-gated human approval step before send. Layered Nikola on top:
-            a Modal-hosted Claude Agent SDK agent with a persistent filesystem
-            brain that reconciles Gmail against the prospect list and runs the
-            daily batch autonomously.
+            Slack-gated human approval step before send. Reply rates landed near
+            10%, roughly 5&times; the typical cold-email baseline. Layered
+            Nikola on top: a Modal-hosted Claude Agent SDK agent with a
+            persistent filesystem brain that reconciles Gmail against the
+            prospect list and runs the daily batch autonomously.
           </li>
           <li>
             <strong>FutureClinic Creators.</strong> AI content engine that turns
             a doctor&rsquo;s YouTube channel into ready-to-record scripts,
             titles, and thumbnails in their voice. Pipeline: Opus generates a
             voice profile from transcripts, a weekly SERP cron mines topics
-            scored for patient acquisition (not viral reach), FAL composites
+            scored for patient acquisition rather than viral reach (condition
+            queries weighted 2.0&times;, wellness 0.3&times;), FAL composites
             thumbnails, and an agentic Opus loop writes scripts with self-review
-            passes for voice match, hook strength, and CTA placement. Next.js +
-            Supabase, 28-endpoint REST API frozen as a contract for the
-            companion mobile app.
+            passes for voice match, hook strength, and CTA placement, plus a
+            banned-phrase linter on the output. Next.js + Supabase, 28-endpoint
+            REST API frozen as a contract for the companion mobile app, 54 tests
+            plus Playwright E2E.
           </li>
           <li>
             <strong
