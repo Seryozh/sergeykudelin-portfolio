@@ -412,8 +412,14 @@
     var cx=lerp(fcx, pt.x, bl), cy=lerp(fcy, pt.y, bl);
     var Tx=0.5*innerWidth - cx*s, Ty=0.5*innerHeight - cy*s;
     world.style.transform='translate('+Tx+'px,'+Ty+'px) scale('+s+')';
-    explorer.style.left=(pt.x*s+Tx)+'px'; explorer.style.top=(pt.y*s+Ty)+'px';
-    explorer.style.opacity=(hold && EMBED[(u<0.5)?i0:i1])?0:1;   // step aside while an exhibit is on screen
+    var _set=(u<0.5)?i0:i1;
+    if(hold && EMBED[_set]){
+      // park the explorer up in the header band, visible but clear of the embedded tool
+      var _f=frames[_set], _px=_f.x+(FW-128), _py=_f.y+138;
+      explorer.style.left=(_px*s+Tx)+'px'; explorer.style.top=(_py*s+Ty)+'px'; explorer.style.opacity=1;
+    } else {
+      explorer.style.left=(pt.x*s+Tx)+'px'; explorer.style.top=(pt.y*s+Ty)+'px'; explorer.style.opacity=1;
+    }
 
     var e=0.0016, pA=maskPath.getPointAtLength(L*clamp(camT-e,0,1)), pB=maskPath.getPointAtLength(L*clamp(camT+e,0,1));
     var dx=pB.x-pA.x; if(dx<-1.2) faceDir=-1; else if(dx>1.2) faceDir=1;

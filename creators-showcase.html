@@ -909,7 +909,9 @@
         if(!/[?&]embed/.test(location.search)) return;
         var idle=0, lastSig='';
         function sig(){ var b=document.getElementById('primaryBtn'); return (b?b.textContent:'')+'|'+document.querySelectorAll('#stageBody *').length; }
-        var timer=setInterval(function(){
+        var paused=false;
+        setInterval(function(){
+          if(paused) return;
           try{
             var b=document.getElementById('primaryBtn');
             if(b && b.disabled){
@@ -922,8 +924,10 @@
             }
             if(b){ b.click(); idle=0; lastSig=sig(); }
           }catch(e){}
-        }, 1900);
-        ['pointerdown','keydown','wheel'].forEach(function(ev){ document.addEventListener(ev, function(){ clearInterval(timer); }, {once:true, passive:true}); });
+        }, 1700);
+        // plays on its own; pauses only while the visitor hovers to take control, resumes when they leave
+        window.addEventListener('mouseenter', function(){ paused=true; });
+        window.addEventListener('mouseleave', function(){ paused=false; });
       })();
     </script>
   </body>
