@@ -1197,27 +1197,51 @@
       // Auto-play when embedded in the journey (no clicking needed). Pauses if the visitor takes control.
       (function(){
         if(!/[?&]embed/.test(location.search)) return;
-        var idle=0, lastSig='';
+        var RESTART=function(){ (window.enterDiscover||function(){})(); };
+        var st=document.createElement('style');
+        st.textContent='.fakecur{position:fixed;left:0;top:0;z-index:80;pointer-events:none;transition:transform .58s cubic-bezier(.45,.05,.2,1);will-change:transform;}'
+          +'.fakecur svg{display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.4));}'
+          +'.fakecur .ring{position:absolute;left:-4px;top:-4px;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--fc-primary);opacity:0;}'
+          +'.fakecur.press .ring{animation:curpress .5s ease-out;}'
+          +'@keyframes curpress{0%{opacity:.75;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}';
+        document.head.appendChild(st);
+        var cur=document.createElement('div'); cur.className='fakecur';
+        cur.innerHTML='<span class="ring"></span><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 2.5l15 7.4-6.4 1.6L10 19z" fill="#161513" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+        document.body.appendChild(cur);
+        function place(x,y){ cur.style.transform='translate('+x+'px,'+y+'px)'; }
+        place(window.innerWidth*0.5, window.innerHeight*0.6);
+        var paused=false, busy=false, idle=0, lastSig='';
         function sig(){ var b=document.getElementById('primaryBtn'); return (b?b.textContent:'')+'|'+document.querySelectorAll('#stageBody *').length; }
-        var paused=false;
+        function moveClick(el){
+          busy=true;
+          var r=el.getBoundingClientRect();
+          place(r.left+r.width*0.5, r.top+r.height*0.5);
+          setTimeout(function(){ cur.classList.add('press');
+            setTimeout(function(){ cur.classList.remove('press'); try{el.click();}catch(e){} busy=false; }, 210);
+          }, 600);
+        }
+        function nextTarget(){
+          var b=document.getElementById('primaryBtn');
+          if(b && b.disabled){
+            if(document.querySelectorAll('#stageBody .pcard').length && !document.querySelector('#stageBody .pcard.sel'))
+              return document.querySelector('#stageBody .pcard');
+            var grps=document.querySelectorAll('#stageBody .qopts');
+            for(var i=0;i<grps.length;i++){ if(!grps[i].querySelector('.qopt.sel')) return grps[i].querySelector('.qopt'); }
+            return null;
+          }
+          return b||null;
+        }
         setInterval(function(){
-          if(paused) return;
+          if(paused||busy) return;
           try{
-            var b=document.getElementById('primaryBtn');
-            if(b && b.disabled){
-              var cards=document.querySelectorAll('#stageBody .pcard');
-              if(cards.length && !document.querySelector('#stageBody .pcard.sel')){ cards[0].click(); return; }
-              var grps=document.querySelectorAll('#stageBody .qopts');
-              for(var i=0;i<grps.length;i++){ if(!grps[i].querySelector('.qopt.sel')){ grps[i].querySelector('.qopt').click(); return; } }
-              var s=sig(); if(s===lastSig){ if(++idle>6){ idle=0; (window.enterDiscover||function(){})(); } } else { idle=0; lastSig=s; }
-              return;
-            }
-            if(b){ b.click(); idle=0; lastSig=sig(); }
+            var t=nextTarget();
+            if(t){ idle=0; lastSig=sig(); moveClick(t); return; }
+            var s=sig(); if(s===lastSig){ if(++idle>8){ idle=0; RESTART(); } } else { idle=0; lastSig=s; }
           }catch(e){}
-        }, 1700);
-        // plays on its own; pauses only while the visitor hovers to take control, resumes when they leave
-        window.addEventListener('mouseenter', function(){ paused=true; });
-        window.addEventListener('mouseleave', function(){ paused=false; });
+        }, 780);
+        // plays on its own; pauses while the visitor hovers to take control
+        window.addEventListener('mouseenter', function(){ paused=true; cur.style.opacity='0'; });
+        window.addEventListener('mouseleave', function(){ paused=false; cur.style.opacity='1'; });
       })();
     </script>
   </body>
