@@ -22,12 +22,614 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* ─────────────────────────────────────────────
+         sergeykudelin.com — editorial-minimal, evolved
+         ───────────────────────────────────────────── */
+
+      :root {
+        --bg: #f6f3eb;
+        --bg-tint: #efe9dc;
+        --ink: #1b1a18;
+        --muted: #7a7670;
+        --rule: #d9d3c6;
+        --accent: #b5421e;
+
+        --serif: "Fraunces", "Iowan Old Style", "Georgia", serif;
+        --sans: "Satoshi", "Inter", system-ui, -apple-system, sans-serif;
+        --mono: "Fragment Mono", "JetBrains Mono", ui-monospace, monospace;
+
+        --reveal-y: 16px;
+        --reveal-dur: 0.7s;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 17px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: "ss01", "ss02";
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      /* ─── top nav ─────────────────────────────── */
+
+      .topnav {
+        position: fixed;
+        top: 28px;
+        right: 32px;
+        display: flex;
+        gap: 22px;
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        z-index: 10;
+      }
+
+      .topnav a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+
+      .topnav a:hover {
+        color: var(--accent);
+      }
+
+      /* ─── main column ─────────────────────────── */
+
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 116px 32px 132px;
+      }
+
+      /* ─── hero ────────────────────────────────── */
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.03em;
+        color: var(--muted);
+        border: 1px solid var(--rule);
+        border-radius: 999px;
+        padding: 6px 13px 6px 11px;
+        margin-bottom: 40px;
+      }
+
+      .status .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #2f7d4f;
+        box-shadow: 0 0 0 0 rgba(47, 125, 79, 0.5);
+        animation: pulse 2.4s ease-out infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(47, 125, 79, 0.5);
+        }
+        70% {
+          box-shadow: 0 0 0 7px rgba(47, 125, 79, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(47, 125, 79, 0);
+        }
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-bottom: 30px;
+      }
+
+      .me {
+        display: block;
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        object-fit: cover;
+        filter: saturate(0.95);
+        flex: none;
+        box-shadow: 0 0 0 1px var(--rule), 0 0 0 6px var(--bg),
+          0 0 0 7px var(--rule);
+      }
+
+      .hero-text h1 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 46px;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px;
+        font-variation-settings: "opsz" 96;
+      }
+
+      .role {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        color: var(--muted);
+      }
+
+      .bio {
+        margin: 0 0 22px;
+        font-size: 17px;
+        line-height: 1.62;
+        color: var(--ink);
+        text-wrap: pretty;
+      }
+
+      .bio:first-of-type {
+        margin-top: 4px;
+      }
+
+      .bio a {
+        color: var(--ink);
+        text-decoration: underline;
+        text-decoration-color: var(--rule);
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 4px;
+        transition: text-decoration-color 0.15s ease, color 0.15s ease;
+      }
+
+      .bio a:hover {
+        color: var(--accent);
+        text-decoration-color: var(--accent);
+      }
+
+      /* ─── featured journey link ───────────────── */
+
+      .featured {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        margin: 34px 0 0;
+        padding: 20px 22px;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--bg-tint);
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+      .featured:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+      .featured .fx-eyebrow {
+        font-family: var(--mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 9px;
+      }
+      .featured .fx-title {
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .featured .fx-desc {
+        font-size: 15px;
+        line-height: 1.55;
+        color: #383530;
+        display: block;
+        margin-bottom: 13px;
+        text-wrap: pretty;
+      }
+      .featured .fx-go {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--accent);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: gap 0.2s ease;
+      }
+      .featured:hover .fx-go {
+        gap: 10px;
+      }
+
+      /* ─── section headers ─────────────────────── */
+
+      section {
+        margin-top: 60px;
+      }
+
+      .section-head {
+        font-family: var(--mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        font-weight: 400;
+        margin: 0 0 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--rule);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .section-head .count {
+        color: var(--rule);
+      }
+
+      /* ─── work entries ────────────────────────── */
+
+      .entries {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .entry {
+        position: relative;
+        padding: 22px 20px 24px;
+        margin: 0 -20px;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+      }
+
+      .entry::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 22px;
+        bottom: 24px;
+        width: 2px;
+        background: var(--accent);
+        border-radius: 2px;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.3, 1);
+      }
+
+      .entry:hover {
+        background: var(--bg-tint);
+      }
+
+      .entry:hover::before {
+        transform: scaleY(1);
+      }
+
+      .entry + .entry {
+        margin-top: 10px;
+      }
+
+      .entry-head {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: baseline;
+        gap: 14px;
+        margin-bottom: 12px;
+      }
+
+      .entry-num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        transition: color 0.2s ease;
+      }
+
+      .entry:hover .entry-num {
+        color: var(--accent);
+      }
+
+      .entry-title {
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: 21px;
+        letter-spacing: -0.01em;
+        margin: 0;
+        line-height: 1.1;
+      }
+
+      .entry-title a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1.5px solid var(--rule);
+        transition: border-color 0.15s ease, color 0.15s ease;
+      }
+
+      .entry-title a:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .entry-title .ext {
+        font-family: var(--mono);
+        font-size: 13px;
+        border: none;
+        color: var(--muted);
+        margin-left: 2px;
+        vertical-align: 1px;
+      }
+
+      .entry-tag {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.02em;
+        color: var(--muted);
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .entry-body {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #383530;
+        text-wrap: pretty;
+      }
+
+      .entry-body a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--rule);
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 3px;
+        transition: color 0.15s ease;
+      }
+
+      .entry-body a:hover {
+        color: var(--accent);
+      }
+
+      /* metric rail */
+      .metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        margin: 18px 0 0;
+        border-top: 1px solid var(--rule);
+        padding-top: 16px;
+      }
+
+      .metrics .metric {
+        padding-right: 26px;
+        margin-right: 26px;
+        border-right: 1px solid var(--rule);
+      }
+
+      .metrics .metric:last-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+
+      .metric dt {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 25px;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--accent);
+        font-variation-settings: "opsz" 60;
+      }
+
+      .metric dd {
+        margin: 6px 0 0;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        line-height: 1.3;
+      }
+
+      /* ─── currently ───────────────────────────── */
+
+      .currently p {
+        margin: 0 0 16px;
+        font-size: 16.5px;
+        line-height: 1.62;
+        text-wrap: pretty;
+      }
+
+      .contact {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 14px;
+        align-items: center;
+      }
+
+      .contact a.primary {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--bg);
+        background: var(--accent);
+        text-decoration: none;
+        padding: 11px 18px;
+        border-radius: 7px;
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+
+      .contact a.primary:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.06);
+      }
+
+      .contact .sep {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .contact a.ghost {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 2px;
+        transition: color 0.15s ease, border-color 0.15s ease;
+      }
+
+      .contact a.ghost:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .foot {
+        margin-top: 64px;
+        padding-top: 18px;
+        border-top: 1px solid var(--rule);
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.03em;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      /* ─── reveal motion ───────────────────────── */
+
+      .reveal {
+        transition: opacity var(--reveal-dur) ease,
+          transform var(--reveal-dur) cubic-bezier(0.2, 0.7, 0.3, 1);
+      }
+
+      /* Hidden state is gated on .js so a no-JS load is always visible. */
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(var(--reveal-y));
+      }
+
+      .js .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .no-motion .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .no-motion .status .dot {
+        animation: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .js .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .status .dot {
+          animation: none;
+        }
+      }
+
+      /* ─── density ─────────────────────────────── */
+
+      .density-compact main {
+        padding-top: 96px;
+        padding-bottom: 100px;
+      }
+      .density-compact section {
+        margin-top: 44px;
+      }
+      .density-compact .entry {
+        padding-top: 16px;
+        padding-bottom: 18px;
+      }
+      .density-compact .bio {
+        margin-bottom: 16px;
+      }
+
+      /* ─── mobile ──────────────────────────────── */
+
+      @media (max-width: 640px) {
+        main {
+          padding: 92px 22px 88px;
+        }
+
+        .topnav {
+          top: 18px;
+          right: 20px;
+          gap: 16px;
+          font-size: 12px;
+        }
+
+        .hero {
+          gap: 18px;
+          margin-bottom: 26px;
+        }
+
+        .me {
+          width: 72px;
+          height: 72px;
+        }
+
+        .hero-text h1 {
+          font-size: 34px;
+        }
+
+        .bio,
+        .currently p {
+          font-size: 16px;
+        }
+
+        .entry {
+          margin: 0 -14px;
+          padding: 18px 14px 20px;
+        }
+
+        .entry-head {
+          grid-template-columns: auto 1fr;
+        }
+
+        .entry-tag {
+          grid-column: 1 / -1;
+          text-align: left;
+          margin-top: -6px;
+        }
+
+        .metrics .metric {
+          padding-right: 18px;
+          margin-right: 18px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <script>
+      // Enable the hidden→reveal behavior only when JS runs; without this
+      // class every .reveal stays visible (graceful no-JS fallback).
+      document.documentElement.classList.add("js");
+    </script>
     <nav class="topnav">
       <a
-        href="https://www.linkedin.com/in/sergey-kudelin-739815411/"
+        href="https://linkedin.com/in/sergeykudelin"
         target="_blank"
         rel="noopener"
         >linkedin</a
@@ -35,92 +637,262 @@
       <a href="https://github.com/Seryozh" target="_blank" rel="noopener"
         >github</a
       >
+      <a href="./recommendation.pdf" target="_blank" rel="noopener"
+        >letter</a
+      >
       <a href="mailto:sergey@sergeykudelin.com">email</a>
     </nav>
 
-    <main>
-      <img
-        src="./me.jpg"
-        alt="Sergey Kudelin"
-        class="me"
-        width="120"
-        height="120"
-      />
+    <main data-screen-label="Portfolio">
+      <div class="hero reveal">
+        <img
+          src="./me.jpg"
+          alt="Sergey Kudelin"
+          class="me"
+          width="92"
+          height="92"
+        />
+        <div class="hero-text">
+          <h1>Sergey Kudelin</h1>
+          <p class="role">Engineer · AI products, end-to-end</p>
+        </div>
+      </div>
 
-      <h1>Sergey Kudelin</h1>
-      <p class="role">Engineer · AI products, end-to-end</p>
-
-      <p class="bio">
+      <p class="bio reveal">
         I take real business problems, wire them through the right combination
         of LLMs, vision, or audio, and ship the result to production. Most
         recently at
-        <a href="https://futureclinic.md" target="_blank" rel="noopener"
+        <a href="https://futureclinic.app" target="_blank" rel="noopener"
           >FutureClinic</a
         >
         (YC F24), where I shipped two AI systems in three months as their GTM
         engineer.
       </p>
 
-      <p class="bio">
+      <p class="bio reveal">
         I work across the stack (frontend, backend, infrastructure, prompts,
         integrations) and own one product end-to-end rather than one layer
         across many. I&rsquo;m fast: the first working version usually exists
         before the team has finished scoping it.
       </p>
 
-      <section class="work">
-        <h2>Recent work</h2>
+      <a class="featured reveal" href="journey.html">
+        <span class="fx-eyebrow">Featured &middot; interactive walkthrough</span>
+        <span class="fx-title">The FutureClinic story</span>
+        <span class="fx-desc">An interactive walk through the growth problem I worked on at FutureClinic &mdash; and the two engines I built to solve it.</span>
+        <span class="fx-go">Walk the journey &rarr;</span>
+      </a>
 
-        <ul>
-          <li>
-            <strong>FutureClinic Outreach.</strong> Cold-outreach engine for
-            doctor-creators on YouTube. Pipeline: channel discovery via
-            ScrapeCreators, state-license verification through custom ScrapFly
-            browser tooling (400&times; cheaper than the commercial API), Gemini
-            Flash for patient-intent classification of comment threads, Opus for
-            personalized 5-email sequences in the founder&rsquo;s voice, and a
-            Slack-gated human approval step before send. Reply rates landed near
-            10%, roughly 5&times; the typical cold-email baseline. Layered
-            Nikola on top: a Modal-hosted Claude Agent SDK agent with a
-            persistent filesystem brain that reconciles Gmail against the
-            prospect list and runs the daily batch autonomously.
+      <section class="work">
+        <h2 class="section-head reveal">
+          <span>Recent work</span>
+          <span class="count">03</span>
+        </h2>
+
+        <ul class="entries">
+          <li class="entry reveal">
+            <div class="entry-head">
+              <span class="entry-num">01</span>
+              <h3 class="entry-title">FutureClinic Outreach</h3>
+              <span class="entry-tag">GTM Engineer · YC F24</span>
+            </div>
+            <p class="entry-body">
+              Cold-outreach engine for doctor-creators on YouTube. Pipeline:
+              channel discovery via ScrapeCreators, state-license verification
+              through custom ScrapFly browser tooling, Gemini Flash for
+              patient-intent classification of comment threads, Opus for
+              personalized 5-email sequences in the founder&rsquo;s voice, and a
+              Slack-gated human approval step before send. Layered Nikola on
+              top: a Modal-hosted Claude Agent SDK agent with a persistent
+              filesystem brain that reconciles Gmail against the prospect list
+              and runs the daily batch autonomously.
+            </p>
+            <dl class="metrics">
+              <div class="metric">
+                <dt>~15%</dt>
+                <dd>reply rate</dd>
+              </div>
+              <div class="metric">
+                <dt>5&times;</dt>
+                <dd>cold-email baseline</dd>
+              </div>
+              <div class="metric">
+                <dt>400&times;</dt>
+                <dd>cheaper license checks</dd>
+              </div>
+            </dl>
           </li>
-          <li>
-            <strong>FutureClinic Creators.</strong> AI content engine that turns
-            a doctor&rsquo;s YouTube channel into ready-to-record scripts,
-            titles, and thumbnails in their voice. Pipeline: Opus generates a
-            voice profile from transcripts, a weekly SERP cron mines topics
-            scored for patient acquisition rather than viral reach, FAL
-            composites thumbnails, and an agentic Opus loop writes scripts with
-            self-review passes for voice match, hook strength, and CTA
-            placement, plus a banned-phrase linter on the output. Next.js +
-            Supabase, 28-endpoint REST API frozen as a contract for the
-            companion mobile app, 54 tests plus Playwright E2E.
+
+          <li class="entry reveal">
+            <div class="entry-head">
+              <span class="entry-num">02</span>
+              <h3 class="entry-title">
+                <a href="creators-showcase.html">FutureClinic Creators</a
+                ><span class="ext">&rarr;</span>
+              </h3>
+              <span class="entry-tag">Next.js · Supabase</span>
+            </div>
+            <p class="entry-body">
+              AI content engine that turns a doctor&rsquo;s YouTube channel into
+              ready-to-record scripts, titles, and thumbnails in their voice.
+              Pipeline: Opus generates a voice profile from transcripts, a
+              weekly SERP cron mines topics scored for patient acquisition
+              rather than viral reach, FAL composites thumbnails, and an agentic
+              Opus loop writes scripts with self-review passes for voice match,
+              hook strength, and CTA placement, plus a banned-phrase linter on
+              the output.
+            </p>
+            <dl class="metrics">
+              <div class="metric">
+                <dt>28</dt>
+                <dd>endpoints frozen as contract</dd>
+              </div>
+              <div class="metric">
+                <dt>54</dt>
+                <dd>tests + Playwright E2E</dd>
+              </div>
+              <div class="metric">
+                <dt>1</dt>
+                <dd>voice, matched per script</dd>
+              </div>
+            </dl>
           </li>
-          <li>
-            <strong
-              ><a href="https://logiscan.me" target="_blank" rel="noopener"
-                >LogiScan</a
-              >.</strong
-            >
-            Phone camera + Gemini that reads every sticker on a pallet,
-            cross-references the manifest mid-inference, and flags discrepancies
-            in real time. Cut nightly audits from 90 minutes to 10 at ~$0.002
-            per scan, with no backend and no data retention.
+
+          <li class="entry reveal">
+            <div class="entry-head">
+              <span class="entry-num">03</span>
+              <h3 class="entry-title">
+                <a href="https://logiscan.me" target="_blank" rel="noopener"
+                  >LogiScan</a
+                ><span class="ext">&#8599;</span>
+              </h3>
+              <span class="entry-tag">Solo · Vision</span>
+            </div>
+            <p class="entry-body">
+              Phone camera + Gemini that reads every sticker on a pallet,
+              cross-references the manifest mid-inference, and flags
+              discrepancies in real time. No backend, no data retention.
+            </p>
+            <dl class="metrics">
+              <div class="metric">
+                <dt>90&rarr;10</dt>
+                <dd>min nightly audits</dd>
+              </div>
+              <div class="metric">
+                <dt>$0.002</dt>
+                <dd>per scan</dd>
+              </div>
+              <div class="metric">
+                <dt>0</dt>
+                <dd>backend &amp; retention</dd>
+              </div>
+            </dl>
           </li>
         </ul>
       </section>
 
       <section class="currently">
-        <h2>Currently</h2>
-        <p>
-          Looking for founding-engineer, AI-engineer, and forward-deployed roles
-          at early-stage AI-native teams. Based in Miami, remote-flexible.
+        <h2 class="section-head reveal">
+          <span>Currently</span>
+        </h2>
+        <p class="reveal">
+          Looking for founding-engineer, AI-engineer, and forward-deployed
+          roles at early-stage AI-native teams. Based in Miami, remote-flexible.
         </p>
-        <p class="contact">
-          <a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a>
-        </p>
+        <div class="contact reveal">
+          <a class="primary" href="mailto:sergey@sergeykudelin.com"
+            >sergey@sergeykudelin.com</a
+          >
+          <span class="sep">/</span>
+          <a
+            class="ghost"
+            href="https://linkedin.com/in/sergeykudelin"
+            target="_blank"
+            rel="noopener"
+            >linkedin</a
+          >
+          <a
+            class="ghost"
+            href="https://github.com/Seryozh"
+            target="_blank"
+            rel="noopener"
+            >github</a
+          >
+          <a
+            class="ghost"
+            href="./recommendation.pdf"
+            target="_blank"
+            rel="noopener"
+            >recommendation letter</a
+          >
+        </div>
       </section>
+
+      <div class="foot reveal">
+        <span>Miami, FL</span>
+        <span>sergeykudelin.com</span>
+      </div>
     </main>
+
+    <!-- ─── reveal motion ─────────────────────── -->
+    <script>
+      (function () {
+        var els = [].slice.call(document.querySelectorAll(".reveal"));
+        els.forEach(function (el, i) {
+          el.style.transitionDelay = Math.min(i, 6) * 45 + "ms";
+        });
+
+        function show(el) {
+          el.classList.add("in");
+        }
+        function inView(el) {
+          var r = el.getBoundingClientRect();
+          var h = window.innerHeight || document.documentElement.clientHeight;
+          return r.top < h * 0.92 && r.bottom > 0;
+        }
+
+        var io = null;
+        if (typeof IntersectionObserver === "function") {
+          io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  show(e.target);
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+          );
+          els.forEach(function (el) {
+            io.observe(el);
+          });
+        }
+
+        // Immediate pass: reveal anything already on screen (IO's first
+        // batch is unreliable inside sandboxed iframes).
+        function sweep() {
+          els.forEach(function (el) {
+            if (!el.classList.contains("in") && inView(el)) {
+              show(el);
+              if (io) io.unobserve(el);
+            }
+          });
+        }
+        requestAnimationFrame(sweep);
+        // Synchronous first pass too — rAF is throttled while the frame is
+        // backgrounded, which would leave above-the-fold content hidden.
+        sweep();
+        setTimeout(sweep, 60);
+        window.addEventListener("scroll", sweep, { passive: true });
+        window.addEventListener("resize", sweep);
+
+        // Last-resort safety net so content can never stay hidden.
+        setTimeout(function () {
+          els.forEach(show);
+        }, 1200);
+      })();
+    </script>
+
   </body>
 </html>

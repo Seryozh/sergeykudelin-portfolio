@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>FutureClinic Creators — Sergey Kudelin</title>
+
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* portfolio dark world */
+        --void: #0c0b09;
+        --panel: #141210;
+        --cream: #f1ede3;
+        --muted: #8a8175;
+        --hair: rgba(241, 237, 227, 0.12);
+        --accent: #c9633b;
+
+        /* authentic FutureClinic product palette */
+        --fc-primary: #2d5a3a;
+        --fc-primary-hover: #234a2e;
+        --fc-green-light: #f0f7f1;
+        --fc-green-border: #d4e8d8;
+        --fc-bg: #faf9f6;
+        --fc-border: #e8e5df;
+        --fc-muted: #a1a19d;
+        --fc-text: #1c1c1a;
+        --fc-text-2: #3a3a38;
+        --fc-text-3: #78786e;
+        --fc-amber: #d97706;
+        --fc-red: #b91c1c;
+
+        --zodiak: "Zodiak", Georgia, serif;
+        --sans: "General Sans", system-ui, sans-serif;
+        --pserif: "Source Serif 4", Georgia, serif;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body {
+        background: var(--void);
+        color: var(--cream);
+        font-family: var(--sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      ::selection { background: var(--accent); color: var(--void); }
+
+      .section {
+        position: relative;
+        min-height: 100vh;
+        padding: clamp(56px, 9vh, 110px) 6vw clamp(70px, 11vh, 130px);
+        overflow: hidden;
+      }
+      /* faint ambient bloom behind the window */
+      .section::before {
+        content: "";
+        position: absolute;
+        left: 50%; top: 46%;
+        width: 90vw; max-width: 1200px; aspect-ratio: 16 / 10;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(
+          ellipse at center,
+          rgba(201, 99, 59, 0.10),
+          rgba(45, 90, 58, 0.06) 45%,
+          transparent 70%
+        );
+        filter: blur(10px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      /* ── editorial header ─────────────────────── */
+      .head { max-width: 880px; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 11px;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--accent); margin: 0 0 22px;
+      }
+      .kicker .seed {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7);
+      }
+      .head h1 {
+        font-family: var(--zodiak); font-weight: 600;
+        font-size: clamp(30px, 5.2vw, 60px); line-height: 1.04;
+        letter-spacing: -0.025em; margin: 0; text-wrap: balance;
+      }
+      .head h1 .dim { color: #6b6457; }
+      .head .lede {
+        font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.58;
+        color: #b8b1a4; max-width: 60ch; margin: 22px 0 0; text-wrap: pretty;
+      }
+      .head .lede b { color: var(--cream); font-weight: 500; }
+
+      /* ── pipeline rail ────────────────────────── */
+      .rail {
+        display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+        margin: 38px 0 30px;
+      }
+      .rstep {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 500; color: #7c7468;
+        padding: 6px 13px; border-radius: 999px; white-space: nowrap;
+        border: 1px solid transparent; transition: all 0.3s ease;
+      }
+      .rstep .b {
+        width: 18px; height: 18px; border-radius: 50%;
+        display: grid; place-items: center; font-size: 10px; font-weight: 700;
+        background: rgba(241, 237, 227, 0.08); color: #7c7468;
+      }
+      .rstep.done { color: #b8b1a4; }
+      .rstep.done .b { background: rgba(45, 90, 58, 0.4); color: #9ec7a6; }
+      .rstep.active {
+        color: var(--cream); border-color: var(--accent);
+        background: rgba(201, 99, 59, 0.12);
+      }
+      .rstep.active .b { background: var(--accent); color: #fff; }
+      .rconn { width: 18px; height: 1px; background: var(--hair); }
+      .rconn.on { background: rgba(158, 199, 166, 0.35); }
+
+      /* ── the product window (cinematic) ───────── */
+      .window {
+        background: var(--fc-bg);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow:
+          0 2px 0 0 rgba(255, 255, 255, 0.04),
+          0 50px 90px -30px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transform: translateY(40px) scale(0.985);
+      }
+      .window.in {
+        animation: winIn 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+      }
+      @keyframes winIn {
+        to { opacity: 1; transform: none; }
+      }
+
+      .chrome {
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 16px;
+        background: #efece6;
+        border-bottom: 1px solid var(--fc-border);
+      }
+      .lights { display: flex; gap: 7px; }
+      .lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+      .lights .r { background: #ec6a5e; }
+      .lights .y { background: #f4bf4f; }
+      .lights .g { background: #61c554; }
+      .addr {
+        flex: 1; display: flex; align-items: center; gap: 8px;
+        background: #fff; border: 1px solid var(--fc-border);
+        border-radius: 7px; padding: 6px 12px;
+        font-size: 12.5px; color: var(--fc-text-3);
+        max-width: 360px; margin: 0 auto;
+      }
+      .addr .lock { color: var(--fc-primary); font-size: 11px; }
+      .chrome .brand {
+        display: flex; align-items: center; gap: 8px;
+      }
+      .chrome .brand img { height: 17px; width: auto; display: block; }
+
+      /* product body */
+      .pbody { padding: 24px 26px 26px; color: var(--fc-text); }
+      .peyebrow {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+        color: var(--fc-muted); font-weight: 500;
+      }
+      .ptitle {
+        font-family: var(--pserif); font-weight: 600;
+        font-size: clamp(20px, 2.4vw, 27px); letter-spacing: -0.01em;
+        margin: 5px 0 0; color: var(--fc-text);
+      }
+      .psub { color: var(--fc-text-3); font-size: 14px; margin: 8px 0 0; }
+      .psub b { color: var(--fc-text-2); font-weight: 600; }
+
+      .tb { display: flex; gap: 22px; margin-top: 20px; align-items: stretch; }
+      .tb-left { flex: 1 1 58%; min-width: 0; }
+      .tb-right { flex: 1 1 42%; max-width: 380px; display: flex; flex-direction: column; }
+
+      .workspace {
+        background: #fff; border: 1px solid var(--fc-border);
+        border-radius: 13px; padding: 16px; height: 430px;
+        display: flex; flex-direction: column;
+      }
+      .ws-scroll {
+        flex: 1; overflow-y: auto; scroll-behavior: smooth;
+        display: flex; flex-direction: column; gap: 11px; padding-right: 6px;
+      }
+      .ws-scroll::-webkit-scrollbar { width: 5px; }
+      .ws-scroll::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: 3px; }
+      .ws-empty { margin: auto; text-align: center; color: var(--fc-text-3); padding: 20px; }
+      .ws-empty h3 {
+        font-family: var(--pserif); font-size: 17px; color: var(--fc-text);
+        margin: 0 0 6px;
+      }
+      .ws-empty p { font-size: 13px; margin: 0; line-height: 1.5; }
+
+      .msg { font-size: 13.5px; animation: pop 0.4s ease-out both; line-height: 1.5; }
+      @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      .msg.concept {
+        background: var(--fc-green-light); border: 1px solid rgba(212, 232, 216, 0.6);
+        border-radius: 11px; padding: 11px 13px; color: var(--fc-text-2);
+      }
+      .msg.concept .lab {
+        font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--fc-primary); font-weight: 600; margin-bottom: 4px;
+      }
+      .msg.gen, .msg.inspect {
+        color: var(--fc-text-3); display: flex; align-items: center; gap: 9px;
+      }
+      .msg.pass { color: var(--fc-primary); display: flex; gap: 7px; align-items: center; font-weight: 500; }
+      .msg.warn { color: var(--fc-amber); display: flex; gap: 7px; align-items: center; font-weight: 500; }
+      .msg.adjust { color: var(--fc-text-3); font-style: italic; }
+      .msg.done {
+        background: var(--fc-green-light); border: 1px solid var(--fc-green-border);
+        border-radius: 11px; padding: 11px 13px; color: var(--fc-primary); font-weight: 600;
+      }
+      /* consolidated inspection report card */
+      .report {
+        border: 1px solid var(--fc-border); border-radius: 11px; overflow: hidden;
+        animation: pop 0.4s ease-out both;
+      }
+      .report .rhead {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 9px 12px; font-size: 12px; font-weight: 600;
+        background: #fbfaf7; border-bottom: 1px solid var(--fc-border);
+      }
+      .report .rhead .who { display: flex; align-items: center; gap: 7px; color: var(--fc-text-2); }
+      .report .rhead .who i {
+        width: 16px; height: 16px; border-radius: 5px; background: var(--fc-primary);
+        color: #fff; font-style: normal; font-size: 9px; display: grid; place-items: center;
+      }
+      .report .score { font-size: 12px; padding: 2px 9px; border-radius: 999px; font-weight: 700; }
+      .report .score.lo { background: #fef3e2; color: var(--fc-amber); }
+      .report .score.hi { background: var(--fc-green-light); color: var(--fc-primary); }
+      .report ul { list-style: none; margin: 0; padding: 8px 12px 10px; display: flex; flex-direction: column; gap: 6px; }
+      .report li { font-size: 13px; display: flex; gap: 8px; align-items: flex-start; color: var(--fc-text-2); }
+      .report li .ic { flex: none; font-weight: 700; }
+      .report li.ok .ic { color: var(--fc-primary); }
+      .report li.no .ic { color: var(--fc-amber); }
+      .report .verdict {
+        padding: 9px 12px; font-size: 12.5px; border-top: 1px solid var(--fc-border);
+        color: var(--fc-text-3); background: #fbfaf7;
+      }
+      .report .verdict b { color: var(--fc-text-2); }
+      .spin {
+        width: 15px; height: 15px; border: 2px solid var(--fc-green-border);
+        border-top-color: var(--fc-primary); border-radius: 50%;
+        animation: spin 0.7s linear infinite; flex: none;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .ytwrap {
+        position: relative; width: 100%; aspect-ratio: 16 / 9;
+        border-radius: 9px; overflow: hidden; background: #0c1726;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+      }
+      .ytwrap img {
+        width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+        display: block; transition: filter 0.9s ease, transform 0.9s ease;
+      }
+      .ytwrap img.draft { filter: blur(9px) saturate(0.5) brightness(0.72); transform: scale(1.04); }
+      .ytwrap .scan {
+        position: absolute; inset: 0; pointer-events: none;
+        background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, 0.3) 50%, transparent 65%);
+        background-size: 220% 100%; animation: shimmer 1.15s linear infinite;
+      }
+      @keyframes shimmer { to { background-position: -200% 0; } }
+
+      .label-sm {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--fc-muted); margin-bottom: 8px; font-weight: 500;
+      }
+      .cutouts { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 18px; }
+      .cut {
+        width: 64px; height: 78px; border-radius: 11px; border: 2px solid var(--fc-primary);
+        position: relative; overflow: hidden; box-shadow: 0 0 0 2px rgba(45, 90, 58, 0.12);
+      }
+      .cut .chk {
+        position: absolute; top: 4px; right: 4px; width: 14px; height: 14px;
+        border-radius: 50%; background: var(--fc-primary); color: #fff;
+        font-size: 9px; display: grid; place-items: center; z-index: 2;
+      }
+      .cut.up {
+        border: 2px dashed var(--fc-border); display: grid; place-items: center;
+        color: var(--fc-muted); font-size: 10px; box-shadow: none; text-align: center;
+      }
+      .cut.up span { font-size: 17px; display: block; line-height: 1; }
+
+      .tb-result {
+        margin-top: auto;
+        flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+      }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+        font-family: var(--sans); font-weight: 500; font-size: 14px; cursor: pointer;
+        border-radius: 999px; padding: 11px 22px; border: 1px solid var(--fc-border);
+        background: #fff; color: var(--fc-text-2); transition: all 0.15s;
+      }
+      .btn:hover { border-color: var(--fc-primary); color: var(--fc-primary); }
+      .btn.pri { background: var(--fc-primary); color: #fff; border-color: var(--fc-primary); }
+      .btn.pri:hover { background: var(--fc-primary-hover); }
+      .btn.sm { padding: 8px 15px; font-size: 12.5px; }
+      .btn.ghost { border-color: transparent; color: var(--fc-text-3); }
+      .btn.ghost:hover { color: var(--fc-text); background: var(--fc-green-light); }
+      .btn.block { width: 100%; }
+      .approved {
+        background: var(--fc-green-light); border: 1px solid var(--fc-green-border);
+        color: var(--fc-primary); font-weight: 600; border-radius: 11px;
+        padding: 10px 13px; font-size: 13.5px; margin-top: 11px;
+        display: flex; gap: 8px; align-items: center; animation: pop 0.45s ease-out both;
+      }
+      .score-badge {
+        position: absolute; bottom: 9px; right: 9px; z-index: 3;
+        background: rgba(12, 23, 38, 0.82); backdrop-filter: blur(4px);
+        color: #fff; font-size: 11px; font-weight: 600; padding: 4px 9px;
+        border-radius: 7px; display: flex; align-items: center; gap: 6px;
+        animation: pop 0.4s ease-out both;
+      }
+      .score-badge .v { color: #6ee7a8; }
+
+      /* ── action bar: always shows what to press next ── */
+      .actionbar {
+        margin-top: 14px; padding-top: 14px;
+        border-top: 1px solid var(--fc-border);
+      }
+      .step-meta {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 9px;
+      }
+      .stepcount {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--fc-primary);
+      }
+      .stepdots { display: flex; gap: 5px; }
+      .stepdots i {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--fc-border); display: block; transition: background 0.3s;
+      }
+      .stepdots i.on { background: var(--fc-primary); }
+      .next-hint {
+        font-size: 13px; line-height: 1.45; color: var(--fc-text-3);
+        margin-bottom: 12px; min-height: 19px;
+      }
+      .next-hint b { color: var(--fc-text-2); font-weight: 600; }
+      /* the pulsing "press me" ring on the primary next button */
+      .btn.pulse { position: relative; }
+      .btn.pulse::after {
+        content: ""; position: absolute; inset: -3px; border-radius: 999px;
+        border: 2px solid var(--fc-primary); opacity: 0;
+        animation: ring 2s ease-out infinite; pointer-events: none;
+      }
+      @keyframes ring {
+        0% { opacity: 0.55; transform: scale(1); }
+        70% { opacity: 0; transform: scale(1.13); }
+        100% { opacity: 0; transform: scale(1.13); }
+      }
+      .btn.working { pointer-events: none; opacity: 0.8; }
+
+      .preview-slot {
+        position: relative; width: 100%; aspect-ratio: 16 / 9;
+        border-radius: 9px; overflow: hidden;
+        background: repeating-linear-gradient(45deg, #f3f1ec, #f3f1ec 10px, #efece6 10px, #efece6 20px);
+        border: 1px dashed var(--fc-border);
+        display: grid; place-items: center; text-align: center;
+      }
+      .preview-slot .ph {
+        color: var(--fc-muted); font-size: 12.5px; padding: 14px; line-height: 1.5;
+      }
+      .preview-slot .ph span { display: block; font-size: 22px; margin-bottom: 6px; opacity: 0.6; }
+      .preview-slot.filled { background: none; border: none; display: block; }
+
+      /* ── stage cards: topics / titles ─────────── */
+      .stagebody { margin-top: 18px; animation: stageIn 0.45s ease-out both; }
+      @keyframes stageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+      .stack { display: flex; flex-direction: column; gap: 11px; }
+      .pcard {
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 12px;
+        padding: 14px 16px; cursor: pointer;
+        transition: border-color 0.15s, box-shadow 0.15s; animation: pop 0.4s ease-out both;
+      }
+      .pcard:hover { border-color: var(--fc-primary); }
+      .pcard.sel { border-color: var(--fc-primary); box-shadow: 0 0 0 2px rgba(45, 90, 58, 0.16); }
+      .pcard .crow { display: flex; align-items: center; gap: 12px; }
+      .t-rank { font-size: 12px; font-weight: 700; color: var(--fc-muted); width: 16px; flex: none; }
+      .t-name { font-family: var(--pserif); font-weight: 600; font-size: 15px; color: var(--fc-text); }
+      .t-desc { font-size: 12.5px; color: var(--fc-text-3); margin-top: 3px; line-height: 1.45; }
+      .t-best { font-size: 12px; color: var(--fc-text-3); white-space: nowrap; }
+      .tag { font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+      .tag.amber { background: #fef3e2; color: var(--fc-amber); }
+      .tag.green { background: var(--fc-green-light); color: var(--fc-primary); }
+      .tag.purple { background: #f5f0fb; color: #7c5cbf; }
+      .tag.red { background: #fdeceb; color: var(--fc-red); }
+      .score { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 8px; }
+      .score.hi { background: var(--fc-green-light); color: var(--fc-primary); }
+      .score.mid { background: #fef3e2; color: var(--fc-amber); }
+      .score.lo { background: #f0efe9; color: var(--fc-text-3); }
+      .editable {
+        font-family: var(--pserif); font-weight: 600; font-size: 15.5px; color: var(--fc-text);
+        margin-top: 10px; outline: none; border-radius: 6px; padding: 3px 5px; line-height: 1.3;
+      }
+      .editable:focus { background: var(--fc-green-light); box-shadow: 0 0 0 2px rgba(45, 90, 58, 0.2); }
+      .thumbtext { font-size: 11px; color: var(--fc-muted); margin-top: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+      /* ── question stage ───────────────────────── */
+      .qcard { background: #fff; border: 1px solid var(--fc-border); border-radius: 12px; padding: 18px; }
+      .qcard + .qcard { margin-top: 12px; }
+      .qcard h4 { font-family: var(--pserif); font-size: 15.5px; margin: 0 0 13px; color: var(--fc-text); }
+      .qopts { display: flex; flex-direction: column; gap: 9px; }
+      .qopt {
+        display: flex; align-items: center; gap: 11px; padding: 11px 14px;
+        border: 1px solid var(--fc-border); border-radius: 10px; cursor: pointer;
+        font-size: 13.5px; color: var(--fc-text-2); transition: all 0.15s;
+      }
+      .qopt:hover { border-color: var(--fc-primary); }
+      .qopt.sel { border-color: var(--fc-primary); background: var(--fc-green-light); color: var(--fc-primary); font-weight: 600; }
+      .qopt .rd { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--fc-border); flex: none; }
+      .qopt.sel .rd { border-color: var(--fc-primary); background: radial-gradient(circle, var(--fc-primary) 42%, transparent 46%); }
+
+      /* ── script sections ──────────────────────── */
+      .sec-card { background: #fff; border: 1px solid var(--fc-border); border-radius: 12px; padding: 14px 16px; animation: pop 0.4s ease-out both; }
+      .sec-card + .sec-card { margin-top: 10px; }
+      .sec-card.hot { border-color: rgba(45, 90, 58, 0.5); box-shadow: 0 0 0 2px rgba(45, 90, 58, 0.12); }
+      .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+      .sec-num { width: 20px; height: 20px; border-radius: 6px; background: var(--fc-primary); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; flex: none; }
+      .sec-title { font-family: var(--pserif); font-weight: 600; font-size: 14px; flex: 1; color: var(--fc-text); }
+      .sec-meta { font-size: 11px; color: var(--fc-muted); white-space: nowrap; }
+      .sec-body { font-size: 13px; line-height: 1.6; color: var(--fc-text-2); }
+      .pers { font-size: 9.5px; color: #db2777; background: #fdf2f8; padding: 2px 7px; border-radius: 999px; font-weight: 600; }
+      .pill-bar { font-size: 11px; color: var(--fc-muted); background: #f0efe9; padding: 1px 6px; border-radius: 5px; }
+
+      /* ── export deliverables ──────────────────── */
+      .export-done {
+        text-align: center; padding: 6px 0 18px;
+      }
+      .export-done .seal {
+        width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 12px;
+        background: var(--fc-primary); color: #fff; display: grid; place-items: center; font-size: 22px;
+        box-shadow: 0 8px 20px -6px rgba(45, 90, 58, 0.6);
+      }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+      .exp { background: #fff; border: 1px solid var(--fc-border); border-radius: 12px; padding: 15px 14px; text-align: center; }
+      .exp .emo { font-size: 24px; }
+      .exp h3 { font-family: var(--pserif); font-size: 14.5px; margin: 7px 0 5px; color: var(--fc-text); }
+      .exp p { font-size: 11.5px; color: var(--fc-text-3); margin: 0 0 12px; line-height: 1.45; min-height: 32px; }
+
+      /* generate flourish */
+      .gen-line { display: flex; align-items: center; gap: 11px; font-size: 14px; color: var(--fc-text-3); padding: 20px 4px; }
+      .action-row { display: flex; gap: 9px; }
+      .action-row .btn:not(.pri) { flex: none; }
+      .action-row .btn.pri { flex: 1; }
+
+      /* ── responsive ───────────────────────────── */
+      .uth {
+        margin-top: 30px; display: flex; align-items: center; gap: 10px;
+        flex-wrap: wrap;
+      }
+      .uth .lab {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #6b6457; margin-right: 4px;
+      }
+      .echip {
+        font-size: 12px; color: #c4bdb0;
+        background: var(--panel); border: 1px solid var(--hair);
+        padding: 7px 12px; border-radius: 8px;
+      }
+      .echip b { color: #9ec7a6; font-weight: 600; }
+      .earrow { color: #5d564b; font-size: 13px; }
+
+      .replay {
+        margin-top: 26px; display: flex; align-items: center; gap: 14px;
+        font-size: 13px; color: var(--muted);
+      }
+      .replay button {
+        font-family: var(--sans); font-size: 13px; font-weight: 500;
+        color: var(--cream); background: transparent;
+        border: 1px solid var(--hair); border-radius: 999px;
+        padding: 8px 16px; cursor: pointer; transition: all 0.18s ease;
+        display: inline-flex; align-items: center; gap: 8px;
+      }
+      .replay button:hover { border-color: var(--accent); color: var(--accent); }
+      .replay button:disabled { opacity: 0.4; cursor: default; }
+
+      /* reduced-motion: no entrance/streaming animation, end state shown flat */
+      .reduce .window { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .reduce .msg { animation: none !important; }
+      .reduce .ytwrap img.draft { filter: none !important; transform: none !important; }
+      .reduce .scan { display: none !important; }
+      .reduce .score-badge { animation: none !important; }
+      .reduce .kicker .seed { box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7); }
+
+      /* ── responsive ───────────────────────────── */
+      @media (max-width: 880px) {
+        .section { padding: 48px 5vw 80px; }
+        .tb { flex-direction: column; }
+        .tb-right { max-width: none; }
+        .workspace { height: 360px; }
+        .rail { gap: 2px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; margin-left: -5vw; margin-right: -5vw; padding-left: 5vw; padding-right: 5vw; }
+        .rail::-webkit-scrollbar { display: none; }
+        .uth { gap: 8px; }
+      }
+      @media (max-width: 560px) {
+        .chrome .brand { display: none; }
+        .addr { max-width: none; margin: 0; }
+        .pbody { padding: 18px 16px 18px; }
+        .cut { width: 56px; height: 68px; }
+      }
+      .homelink{position:fixed;left:24px;top:20px;z-index:50;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(241,237,227,.55);text-decoration:none;transition:color .2s;}
+      .homelink:hover{color:var(--accent);}
+      .homelink .ar{font-size:16px;line-height:1;}
+    </style>
+  </head>
+  <body>
+    <a class="homelink" href="index.html"><span class="ar">&larr;</span> Sergey Kudelin</a>
+    <section class="section" data-screen-label="Creators">
+      <div class="inner">
+        <header class="head">
+          <p class="kicker"><span class="seed"></span>FutureClinic · Creators</p>
+          <h1>
+            An AI content engine that turns a doctor&rsquo;s channel into
+            ready-to-record videos &mdash; <span class="dim">in their own voice.</span>
+          </h1>
+          <p class="lede">
+            I shipped this to production as their GTM engineer. Walk the whole
+            pipeline below &mdash; from topic research to a ready-to-record script &mdash;
+            and watch the centerpiece run itself: an <b>agentic thumbnail
+            designer</b> that critiques its own work with vision and never fakes
+            the doctor&rsquo;s <b>real face</b>.
+          </p>
+        </header>
+
+        <!-- pipeline rail -->
+        <div class="rail" id="rail"></div>
+
+        <!-- the cinematic product window -->
+        <div class="window" id="window">
+          <div class="chrome">
+            <div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+            <div class="addr"><span class="lock">&#128274;</span>futurecliniccreators.com</div>
+            <div class="brand"><img src="./assets/fc-creators-logo.png" alt="FutureClinic Creators" /></div>
+          </div>
+
+          <div class="pbody">
+            <p class="peyebrow" id="peyebrow">Step 1 of 6 · Topics</p>
+            <h2 class="ptitle" id="ptitle">Choose your next video</h2>
+            <p class="psub" id="psub">We mined search demand and your channel gaps for ideas that pull patients in.</p>
+
+            <div class="stagebody" id="stageBody"></div>
+
+            <div class="actionbar" id="actionbar">
+              <div class="step-meta">
+                <span class="stepcount" id="stepcount">Step 1 of 6</span>
+                <span class="stepdots" id="stepdots"></span>
+              </div>
+              <div class="next-hint" id="nextHint">Pick the video you want to make.</div>
+              <div class="action-row" id="actionRow">
+                <button class="btn pri block pulse" id="primaryBtn">Generate titles &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- under the hood -->
+        <div class="uth" id="uth"></div>
+
+        <div class="replay">
+          <button id="replayBtn">&#8635; Start over</button>
+          <span id="replayNote">You control each step &mdash; nothing plays on its own.</span>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      var IMG = "./assets/thumb-hormones.png";
+
+      // ── data, faithful to the real product ──────────────────
+      var TOPICS = [
+        { name: "Hormones after 40: what actually changes", desc: "Myth-busting explainer on perimenopause and skin, sleep, and energy.", score: "8.7", tag: "amber", tagl: "Your audience wants this", best: "Myth-bust" },
+        { name: "The truth about retinol", desc: "What it does, who should skip it, and how to start without wrecking your skin.", score: "8.4", tag: "green", tagl: "Not on your channel yet", best: "Tutorial" },
+        { name: "Do collagen supplements actually work?", desc: "Your strong take on the evidence \u2014 and what to spend on instead.", score: "7.9", tag: "purple", tagl: "Your strong opinion", best: "Versus" }
+      ];
+      var TITLES = [
+        { t: "Hormones After 40: What Your Doctor Isn&rsquo;t Telling You", s: "Myth-bust", sv: "red", score: "8.8", tx: "HORMONES AFTER 40" },
+        { t: "I Reviewed Every Hormone &lsquo;Fix.&rsquo; Here&rsquo;s What Actually Works.", s: "Listicle", sv: "purple", score: "8.5", tx: "WHAT ACTUALLY WORKS" },
+        { t: "Hormones After 40, Explained in 8 Minutes", s: "Tutorial", sv: "green", score: "8.1", tx: "EXPLAINED SIMPLY" }
+      ];
+      var SECTIONS = [
+        { n: 1, title: "Hook", w: 96, t: "0:00", pers: false, body: "Most of what you&rsquo;ve heard about hormones after 40 is wrong, and it&rsquo;s costing you sleep and energy. <span class='pill-bar'>[lean in]</span> I&rsquo;m a board-certified dermatologist, and today I&rsquo;ll show you what actually changes." },
+        { n: 2, title: "The real shift", w: 240, t: "0:38", pers: false, body: "Here&rsquo;s what nobody explains: it isn&rsquo;t one hormone falling off a cliff &mdash; it&rsquo;s the balance shifting. <span class='pill-bar'>[B-roll: hormone chart]</span>" },
+        { n: 3, title: "What actually helps", w: 318, t: "2:10", pers: true, body: "There are exactly three things with real evidence behind them. The first one surprised me too when I started recommending it to patients in clinic." },
+        { n: 4, title: "Close + soft CTA", w: 188, t: "4:30", pers: false, body: "If this helped, the full breakdown is on my FutureClinic page, where I answer these one-on-one. <span class='pill-bar'>[soft CTA]</span>" }
+      ];
+      function sc(v) { v = parseFloat(v); return v >= 8.5 ? "hi" : v >= 7.5 ? "mid" : "lo"; }
+
+      // ── pipeline rail + under-the-hood, both stage-aware ────
+      var PIPE = [
+        { label: "Topics", n: 1 }, { label: "Titles", n: 2 }, { label: "Thumbnail", n: 3 },
+        { label: "Questions", n: 4 }, { label: "Script", n: 5 }, { label: "Export", n: 6 }
+      ];
+      var UTH = {
+        topics: ["channel gaps", "<b>Google Autocomplete</b>", "competition scoring", "patient-intent rank"],
+        titles: ["structure types", "draft titles", "<b>anti-slop</b> filter", "score + thumb concept"],
+        thumbnail: ["<b>BiRefNet</b> real-face cutout", "<b>FLUX / Gemini</b> compose", "<b>Opus vision</b> inspect", "iterate &le; 3 rounds"],
+        questions: ["quick angle Qs", "tunes the brief", "feeds the director"],
+        script: ["beat sheet", "<b>voice-first</b> draft", "self-review", "banned-phrase lint"],
+        export: ["script .txt", "teleprompter .txt", "blueprint .json", "<b>mobile API</b> contract"]
+      };
+      var stageIdx = 0;
+      var picked = { topic: 0, title: 0 };
+
+      function renderRail() {
+        var cur = stageIdx + 1, html = "";
+        PIPE.forEach(function (s, i) {
+          if (i > 0) html += '<span class="rconn ' + (s.n <= cur ? "on" : "") + '"></span>';
+          var cls = s.n === cur ? "active" : s.n < cur ? "done" : "";
+          var mark = s.n < cur ? "&#10003;" : s.n;
+          html += '<span class="rstep ' + cls + '"><span class="b">' + mark + "</span>" + s.label + "</span>";
+        });
+        document.getElementById("rail").innerHTML = html;
+      }
+      function renderUth(stage) {
+        var chips = UTH[stage] || [], html = '<span class="lab">Under the hood</span>';
+        chips.forEach(function (c, i) {
+          if (i > 0) html += '<span class="earrow">&rarr;</span>';
+          html += '<span class="echip">' + c + "</span>";
+        });
+        document.getElementById("uth").innerHTML = html;
+      }
+
+      // ── shared UI handles ───────────────────────────────────
+      var stageBody = document.getElementById("stageBody");
+      var primaryBtn = document.getElementById("primaryBtn");
+      var nextHint = document.getElementById("nextHint");
+      var stepcount = document.getElementById("stepcount");
+      var stepdots = document.getElementById("stepdots");
+      var peyebrow = document.getElementById("peyebrow");
+      var ptitle = document.getElementById("ptitle");
+      var psub = document.getElementById("psub");
+      var ws, preview;
+
+      for (var di = 0; di < 6; di++) stepdots.appendChild(document.createElement("i"));
+      function setDots(n) { [].forEach.call(stepdots.children, function (el, i) { el.classList.toggle("on", i < n); }); }
+      function setHead(e, t, s) { peyebrow.innerHTML = e; ptitle.innerHTML = t; psub.innerHTML = s; }
+      function setHint(h) { nextHint.innerHTML = h; }
+      function setCount(c) { stepcount.innerHTML = c; }
+      function setBody(h) { stageBody.innerHTML = h; stageBody.style.animation = "none"; void stageBody.offsetWidth; stageBody.style.animation = ""; }
+      function setBtn(label, enabled, pulse) {
+        primaryBtn.innerHTML = label;
+        primaryBtn.disabled = !enabled;
+        primaryBtn.style.opacity = enabled ? "" : "0.45";
+        primaryBtn.style.pointerEvents = enabled ? "" : "none";
+        primaryBtn.classList.toggle("pulse", !!enabled && pulse !== false);
+      }
+      function btnWorking(text) {
+        primaryBtn.disabled = true;
+        primaryBtn.classList.remove("pulse");
+        primaryBtn.innerHTML = '<span class="spin" style="border-color:rgba(255,255,255,.4);border-top-color:#fff"></span>' + text;
+      }
+      function delay(fn, ms) { setTimeout(fn, ms || 1100); }
+      function bindPick(cb) {
+        [].forEach.call(stageBody.querySelectorAll(".pcard"), function (el) {
+          el.onclick = function () {
+            [].forEach.call(stageBody.querySelectorAll(".pcard"), function (c) { c.classList.remove("sel"); });
+            el.classList.add("sel");
+            cb(parseInt(el.getAttribute("data-i"), 10));
+          };
+        });
+      }
+
+      // ── STAGE 1 · topics ────────────────────────────────────
+      function enterTopics() {
+        stageIdx = 0; renderRail(); renderUth("topics"); setDots(1);
+        setHead("Step 1 of 6 &middot; Topics", "Choose your next video", "We mined search demand and your channel gaps for ideas that pull patients in.");
+        setCount("Step 1 of 6"); setHint("Pick the video you want to make.");
+        setBtn("Generate titles &rarr;", false);
+        var h = '<div class="stack">' + TOPICS.map(function (t, i) {
+          return '<div class="pcard" data-i="' + i + '"><div class="crow"><span class="t-rank">' + (i + 1) + '</span>' +
+            '<div style="flex:1;min-width:0"><div class="t-name">' + t.name + '</div><div class="t-desc">' + t.desc + '</div></div>' +
+            '<span class="tag ' + t.tag + '">' + t.tagl + '</span><span class="t-best">' + t.best + '</span>' +
+            '<span class="score ' + sc(t.score) + '">' + t.score + '</span></div></div>';
+        }).join("") + "</div>";
+        setBody(h);
+        bindPick(function (i) { picked.topic = i; setBtn("Generate titles &rarr;", true); setHint("Great pick. Now <b>generate titles</b> for it."); });
+        primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterTitles(); };
+      }
+
+      // ── STAGE 2 · titles ────────────────────────────────────
+      function enterTitles() {
+        stageIdx = 1; renderRail(); renderUth("titles"); setDots(2);
+        setHead("Step 2 of 6 &middot; Titles", "Choose your title", "Topic: <b>" + TOPICS[picked.topic].name + "</b>. Every title is editable &mdash; click to tweak.");
+        setCount("Step 2 of 6"); setHint("Writing titles per structure type, scoring each\u2026");
+        setBtn("Design thumbnail &rarr;", false, false);
+        setBody('<div class="gen-line"><span class="spin"></span>Writing titles per structure type, scoring each\u2026</div>');
+        delay(function () {
+          var h = '<div class="stack">' + TITLES.map(function (t, i) {
+            return '<div class="pcard" data-i="' + i + '"><div class="crow" style="justify-content:space-between"><span class="tag ' + t.sv + '">' + t.s + '</span><span class="score ' + sc(t.score) + '">' + t.score + '</span></div>' +
+              '<div class="editable" contenteditable="true" onclick="event.stopPropagation()">' + t.t + '</div>' +
+              '<div class="thumbtext">Thumbnail: ' + t.tx + '</div></div>';
+          }).join("") + "</div>";
+          setBody(h); setHint("Pick the title to build the video around.");
+          bindPick(function (i) { picked.title = i; setBtn("Design thumbnail &rarr;", true); setHint("Locked. Now <b>design the thumbnail</b>."); });
+        }, 1300);
+        primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterThumbnail(); };
+      }
+
+      // ── STAGE 3 · thumbnail (the agent centerpiece) ─────────
+      var THUMB = [
+        { hint: "You direct the agent. <b>Generate a concept</b> to begin.", label: "Generate concept &rarr;" },
+        { hint: "Concept locked. <b>Render the first draft</b>.", label: "Render draft &rarr;" },
+        { hint: "Draft is in. <b>Inspect it with vision</b>.", label: "Inspect with vision &rarr;" },
+        { hint: "Scored <b>7/10</b> &mdash; headline flagged. <b>Refine &amp; re-render</b>.", label: "Refine &amp; re-render &rarr;" },
+        { hint: "Now <b>9/10</b>, face real and text bold. <b>Approve</b> it.", label: "Approve thumbnail &#10003;" }
+      ];
+      var REPORT1 =
+        '<div class="rhead"><span class="who"><i>O</i>Opus vision &mdash; round 1</span><span class="score lo">7 / 10</span></div>' +
+        '<ul><li class="ok"><span class="ic">&#10003;</span>Face: real, preserved</li>' +
+        '<li class="ok"><span class="ic">&#10003;</span>Text: legible at small size</li>' +
+        '<li class="no"><span class="ic">&#10007;</span>Click-worthy: headline could pop more</li></ul>' +
+        '<div class="verdict"><b>Verdict:</b> refine &mdash; boost contrast, enlarge title, add the yellow accent.</div>';
+      var REPORT2 =
+        '<div class="rhead"><span class="who"><i>O</i>Opus vision &mdash; round 2</span><span class="score hi">9 / 10</span></div>' +
+        '<ul><li class="ok"><span class="ic">&#10003;</span>Face: real, preserved</li>' +
+        '<li class="ok"><span class="ic">&#10003;</span>Text: bold and readable</li>' +
+        '<li class="ok"><span class="ic">&#10003;</span>Click-worthy: strong hook</li></ul>' +
+        '<div class="verdict"><b>Verdict:</b> ship it. Best of 2 rounds.</div>';
+      var tstep = 0, tbusy = false;
+
+      function thumbBodyHTML() {
+        return '<div class="tb">' +
+          '<div class="tb-left"><div class="label-sm">Agent log</div>' +
+          '<div class="workspace"><div class="ws-scroll" id="ws"><div class="ws-empty" id="wsEmpty"><h3>You direct the agent</h3><p>Generate, render, inspect, refine, approve. Each click is one move the agent makes.</p></div></div></div></div>' +
+          '<div class="tb-right"><div class="label-sm">The doctor&rsquo;s photos</div>' +
+          '<div class="cutouts">' +
+          '<div class="cut" style="background:linear-gradient(160deg,#cdb59d,#8a6f57)"><span class="chk">&#10003;</span></div>' +
+          '<div class="cut" style="background:linear-gradient(160deg,#b9c4cf,#6d7c8a)"><span class="chk">&#10003;</span></div>' +
+          '<div class="cut" style="background:linear-gradient(160deg,#cbb8c7,#7e6276)"><span class="chk">&#10003;</span></div>' +
+          '<div class="cut up"><div><span>+</span>Upload</div></div></div>' +
+          '<div class="label-sm">Preview</div>' +
+          '<div class="preview-slot" id="preview"><div class="ph"><span>&#9633;</span>Your thumbnail will appear here</div></div></div></div>';
+      }
+      function ytImage(draft, scanning, score, approved) {
+        return '<div class="ytwrap"' + (approved ? ' style="outline:3px solid var(--fc-primary);outline-offset:2px"' : "") + ">" +
+          (score ? '<div class="score-badge">Click-worthy <span class="v">' + score + "</span></div>" : "") +
+          '<img src="' + IMG + '" class="' + (draft ? "draft" : "") + '" alt="thumbnail" />' +
+          (scanning ? '<div class="scan"></div>' : "") + "</div>";
+      }
+      function addCard(html, cls) {
+        var emp = document.getElementById("wsEmpty"); if (emp) emp.remove();
+        var d = document.createElement("div"); if (cls) d.className = cls; d.innerHTML = html;
+        ws.appendChild(d); requestAnimationFrame(function () { ws.scrollTop = ws.scrollHeight; });
+        return d;
+      }
+      function showThumbStep(n) {
+        var s = THUMB[n]; setHint(s.hint);
+        primaryBtn.disabled = false; primaryBtn.style.opacity = ""; primaryBtn.style.pointerEvents = "";
+        primaryBtn.innerHTML = s.label; primaryBtn.classList.add("pulse");
+      }
+      function enterThumbnail() {
+        stageIdx = 2; renderRail(); renderUth("thumbnail"); setDots(3);
+        setHead("Step 3 of 6 &middot; Thumbnail", "Design your thumbnail", "&ldquo;" + TITLES[picked.title].t + "&rdquo;");
+        setCount("Step 3 of 6");
+        setBody(thumbBodyHTML());
+        ws = document.getElementById("ws"); preview = document.getElementById("preview");
+        tstep = 0; tbusy = false; showThumbStep(0);
+        primaryBtn.onclick = thumbStep;
+      }
+      function thumbWord(n) { return ["Thinking\u2026", "Rendering\u2026", "Inspecting\u2026", "Re-rendering\u2026", "Saving\u2026"][n] || "Working\u2026"; }
+      function thumbStep() {
+        if (tbusy || primaryBtn.disabled) return;
+        var run = function (fn, ms) { tbusy = true; btnWorking(thumbWord(tstep)); delay(function () { tbusy = false; fn(); }, ms); };
+        if (tstep === 0) {
+          run(function () { addCard('<div class="lab">Concept</div>Bold left headline, the <b>real doctor</b> on the right in a white coat, clinic backdrop. Hooks: a yellow accent + a &ldquo;NEW&rdquo; flag. Keep the real face, generate the rest.', "msg concept"); tstep = 1; showThumbStep(1); }, 950);
+        } else if (tstep === 1) {
+          preview.className = "preview-slot filled"; preview.innerHTML = ytImage(true, true, "", false);
+          run(function () { addCard("Composed the draft &mdash; real face cut with <b>BiRefNet</b>, scene built with <b>FLUX / Gemini</b>.", "msg gen"); tstep = 2; showThumbStep(2); }, 1300);
+        } else if (tstep === 2) {
+          run(function () { preview.innerHTML = ytImage(true, false, "7 / 10", false); addCard(REPORT1, "report"); tstep = 3; showThumbStep(3); }, 1300);
+        } else if (tstep === 3) {
+          preview.innerHTML = ytImage(false, true, "", false);
+          run(function () { preview.innerHTML = ytImage(false, false, "9 / 10", false); addCard(REPORT2, "report"); tstep = 4; showThumbStep(4); }, 1500);
+        } else if (tstep === 4) {
+          run(function () {
+            preview.innerHTML = ytImage(false, false, "9 / 10", true);
+            addCard("&#10003; Thumbnail approved &mdash; ready to record.", "msg done");
+            setHint("Thumbnail approved &#10003; Next: a couple quick questions to shape the script.");
+            primaryBtn.disabled = false; primaryBtn.style.opacity = ""; primaryBtn.style.pointerEvents = "";
+            primaryBtn.classList.add("pulse"); primaryBtn.innerHTML = "Add your angle &rarr;";
+            primaryBtn.onclick = function () { enterQuestions(); };
+            tstep = 5;
+          }, 900);
+        }
+      }
+
+      // ── STAGE 4 · questions ─────────────────────────────────
+      function enterQuestions() {
+        stageIdx = 3; renderRail(); renderUth("questions"); setDots(4);
+        setHead("Step 4 of 6 &middot; Questions", "Shape the angle", "Two quick answers tune the script to you &mdash; not generic.");
+        setCount("Step 4 of 6"); setHint("Answer both to tailor the script."); setBtn("Write my script &rarr;", false);
+        var q1 = ["It&rsquo;s the balance shifting, not one hormone crashing", "Most &lsquo;fixes&rsquo; online are marketing, not medicine", "Small daily habits beat expensive supplements"];
+        var q2 = ["Warm and reassuring", "Direct and myth-busting", "Clinical but friendly"];
+        function opts(qi, arr) { return '<div class="qopts" data-q="' + qi + '">' + arr.map(function (o, i) { return '<div class="qopt" data-i="' + i + '"><span class="rd"></span>' + o + "</div>"; }).join("") + "</div>"; }
+        setBody('<div class="qcard"><h4>What&rsquo;s your strongest take on this topic?</h4>' + opts(0, q1) + "</div>" +
+          '<div class="qcard"><h4>How should it sound?</h4>' + opts(1, q2) + "</div>");
+        var ans = {};
+        [].forEach.call(stageBody.querySelectorAll(".qopts"), function (grp) {
+          [].forEach.call(grp.querySelectorAll(".qopt"), function (el) {
+            el.onclick = function () {
+              [].forEach.call(grp.querySelectorAll(".qopt"), function (c) { c.classList.remove("sel"); });
+              el.classList.add("sel"); ans[grp.getAttribute("data-q")] = 1;
+              if (ans["0"] && ans["1"]) { setBtn("Write my script &rarr;", true); setHint("Perfect. Now <b>write the script</b> in your voice."); }
+            };
+          });
+        });
+        primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterScript(); };
+      }
+
+      // ── STAGE 5 · script ────────────────────────────────────
+      function enterScript() {
+        stageIdx = 4; renderRail(); renderUth("script"); setDots(5);
+        setHead("Step 5 of 6 &middot; Script", "Your script", "A four-phase agentic writer &mdash; beat sheet, voice-first draft, self-review, lint.");
+        setCount("Step 5 of 6"); setBtn("Package the video &rarr;", false, false);
+        var beats = ["Planning the beat sheet (hook &rarr; energy curve &rarr; CTA)\u2026", "Drafting it in your voice\u2026", "Self-review: voice match, hook strength, banned-phrase lint\u2026"];
+        var bi = 0;
+        function show() { setHint(beats[bi]); setBody('<div class="gen-line"><span class="spin"></span>' + beats[bi] + "</div>"); }
+        function next() { bi++; if (bi < beats.length) { show(); delay(next, 1150); } else { reveal(); } }
+        show(); delay(next, 1150);
+        function reveal() {
+          var h = '<div class="stack">' + SECTIONS.map(function (s) {
+            return '<div class="sec-card ' + (s.pers ? "hot" : "") + '"><div class="sec-head"><span class="sec-num">' + s.n + '</span><span class="sec-title">' + s.title + '</span>' +
+              (s.pers ? '<span class="pers">personalized</span>' : "") + '<span class="sec-meta">' + s.w + "w &middot; " + s.t + '</span></div><div class="sec-body">' + s.body + "</div></div>";
+          }).join("") + "</div>";
+          setBody(h); setHint("Script ready in your voice. <b>Package the video</b>."); setBtn("Package the video &rarr;", true);
+        }
+        primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterExport(); };
+      }
+
+      // ── STAGE 6 · export ────────────────────────────────────
+      function enterExport() {
+        stageIdx = 5; renderRail(); renderUth("export"); setDots(6);
+        setHead("Step 6 of 6 &middot; Export", "Your video package is ready", "&ldquo;" + TITLES[picked.title].t + "&rdquo;");
+        setCount("Done");
+        setBody('<div class="export-done"><div class="seal">&#10003;</div></div>' +
+          '<div class="grid2">' +
+          '<div class="exp"><div class="emo">&#128196;</div><h3>Full Script</h3><p>Complete script with stage directions and section headers.</p><button class="btn sm">Download .txt</button></div>' +
+          '<div class="exp"><div class="emo">&#127908;</div><h3>Teleprompter</h3><p>Clean spoken text only, no stage directions.</p><button class="btn sm">Download .txt</button></div>' +
+          '<div class="exp"><div class="emo">&#128202;</div><h3>Video Blueprint</h3><p>Section outlines, word counts, and timing.</p><button class="btn sm">Download .json</button></div>' +
+          '<div class="exp"><div class="emo">&#127916;</div><h3>Project Data</h3><p>Full project export for backup or handoff.</p><button class="btn sm">Download .json</button></div>' +
+          "</div>");
+        setHint("That&rsquo;s the whole pipeline &mdash; topic to ready-to-record, in the doctor&rsquo;s voice.");
+        setBtn("&#8635; Run the pipeline again", true, false);
+        primaryBtn.onclick = function () { picked = { topic: 0, title: 0 }; enterTopics(); };
+      }
+
+      // expose for inspection / fallback
+      window.enterTopics = enterTopics; window.enterExport = enterExport;
+      window.thumbStep = thumbStep;
+      window.renderFinalInstant = function () { enterExport(); };
+
+      document.getElementById("replayBtn").onclick = function () { picked = { topic: 0, title: 0 }; enterTopics(); };
+
+      // ── window entrance (the agent never auto-plays) ────────
+      var win = document.getElementById("window");
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.body.classList.add("reduce");
+      function inView(el, frac) {
+        var r = el.getBoundingClientRect();
+        var h = window.innerHeight || document.documentElement.clientHeight;
+        var vis = Math.min(r.bottom, h) - Math.max(r.top, 0);
+        return vis > 0 && vis / Math.min(r.height, h) >= frac;
+      }
+      function revealWin() { win.classList.add("in"); }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { revealWin(); io.disconnect(); } }); }, { threshold: 0.12 });
+        io.observe(win);
+      }
+      requestAnimationFrame(function () { if (inView(win, 0.12)) revealWin(); });
+      window.addEventListener("scroll", function () { if (inView(win, 0.12)) revealWin(); }, { passive: true });
+
+      enterTopics();
+    </script>
+  </body>
+</html>

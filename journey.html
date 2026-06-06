@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Sergey Kudelin — The FutureClinic story</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0907; --cream:#f4eadd; --soft:#d8d0c2; --mid:#a89f90; --muted:#8a8170;
+    --orange:#d96a3a; --orange-soft:#e0875e; --hair:rgba(244,234,221,0.13);
+    --sans:system-ui,-apple-system,"Segoe UI",sans-serif; --serif:"Source Serif 4",Georgia,serif; --hand:"Caveat",cursive;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:#000;color:var(--cream);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--orange);color:var(--bg);}
+
+  .track{position:relative;background:var(--bg);}
+  .stage{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;background:var(--bg);}
+  .world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;}
+
+  /* placeholder frame */
+  .frame{position:absolute;width:1280px;height:853px;}
+  .frame .card{position:absolute;inset:26px;border:1px solid var(--hair);border-radius:22px;
+    background:linear-gradient(160deg, rgba(28,22,18,0.45), rgba(11,9,7,0.2));}
+  .frame .counter{position:absolute;top:60px;left:64px;display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);}
+  .frame .counter .now{color:var(--cream);}
+  .frame .counter .tube{width:80px;height:2px;background:var(--hair);border-radius:2px;overflow:hidden;}
+  .frame .counter .tube i{display:block;height:100%;background:var(--orange);}
+  .frame .body{position:absolute;top:140px;width:520px;}
+  .frame.left .body{left:64px;}
+  .frame.right .body{right:64px;left:auto;}
+  .frame .kick{font-weight:700;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin:0 0 20px;display:flex;align-items:center;gap:10px;}
+  .frame .kick .d{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 11px 1px rgba(217,106,58,0.7);}
+  .frame h1{font-family:var(--serif);font-weight:600;font-size:58px;line-height:0.96;letter-spacing:-0.03em;margin:0 0 22px;color:var(--cream);}
+  .frame h1 em{font-style:normal;color:var(--orange);}
+  .frame .lede{font-size:17px;line-height:1.6;color:var(--soft);margin:0;max-width:42ch;}
+  .frame .lede b{color:var(--cream);font-weight:600;}
+  .frame .lede a{color:var(--orange);font-weight:600;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;text-decoration-color:rgba(217,106,58,0.55);transition:text-decoration-color .2s;}
+  .frame .lede a:hover{text-decoration-color:var(--orange);}
+  .frame .hand{font-family:var(--hand);font-size:22px;color:var(--orange);margin:22px 0 0;}
+  /* fact rows */
+  .ffacts{display:flex;flex-direction:column;margin-top:26px;}
+  .ffact{display:grid;grid-template-columns:40px 1fr;column-gap:16px;align-items:start;padding:15px 0;border-top:1px solid var(--hair);}
+  .ffact:last-child{border-bottom:1px solid var(--hair);}
+  .ffact .ic{width:40px;height:40px;border:1.5px solid rgba(217,106,58,0.5);border-radius:50%;display:grid;place-items:center;}
+  .ffact .ic svg{width:19px;height:19px;stroke:var(--orange);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .ffact .t{font-weight:600;font-size:15.5px;color:var(--cream);margin:3px 0 4px;}
+  .ffact .d{font-size:13px;line-height:1.5;color:var(--mid);}
+  /* meters */
+  .fmeters{margin-top:30px;max-width:440px;}
+  .fmeter{margin-bottom:26px;}
+  .fmeter .lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+  .fmeter .lab .nm{font-weight:700;font-size:11px;letter-spacing:0.13em;text-transform:uppercase;color:var(--mid);}
+  .fmeter .lab .vl{font-family:var(--serif);font-size:22px;color:var(--cream);}
+  .fmeter .bar{height:9px;border-radius:6px;border:1px solid var(--hair);overflow:hidden;background:rgba(244,234,221,0.03);}
+  .fmeter .bar i{display:block;height:100%;border-radius:6px;}
+  .fmeter.full .bar i{width:100%;background:linear-gradient(90deg,var(--orange),var(--orange-soft));}
+  .fmeter.zero .lab .vl{color:var(--orange);}
+  .fmeter.zero .bar i{width:3%;background:var(--orange);}
+  /* timeline */
+  .ftime{display:flex;flex-direction:column;margin-top:26px;}
+  .fstep{display:grid;grid-template-columns:120px 1fr;column-gap:20px;align-items:baseline;padding:14px 0;border-top:1px solid var(--hair);}
+  .fstep:last-child{border-bottom:1px solid var(--hair);}
+  .fstep .w{font-weight:700;font-size:11px;letter-spacing:0.13em;text-transform:uppercase;color:var(--orange);}
+  .fstep .x{font-family:var(--serif);font-size:19px;color:var(--cream);}
+  /* loop nodes */
+  .floop{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:26px;max-width:480px;}
+  .fnode{padding:16px 18px 16px 0;border-top:1px solid var(--hair);}
+  .fnode .k{font-weight:700;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+  .fnode .t{font-family:var(--serif);font-size:18px;color:var(--cream);margin-bottom:5px;}
+  .fnode .d{font-size:12.5px;line-height:1.45;color:var(--mid);}
+  /* tags */
+  .ftags{display:flex;flex-direction:column;margin-top:26px;}
+  .ftag{display:grid;grid-template-columns:130px 1fr;column-gap:18px;align-items:baseline;padding:13px 0;border-top:1px solid var(--hair);}
+  .ftag:last-child{border-bottom:1px solid var(--hair);}
+  .ftag .r{font-family:var(--serif);font-size:20px;color:var(--orange);}
+  .ftag .d{font-size:13px;line-height:1.5;color:var(--mid);}
+  /* contact */
+  .fcontact{margin-top:30px;display:flex;flex-direction:column;gap:14px;}
+  .fcontact a{display:inline-flex;align-items:center;gap:11px;width:max-content;font-family:var(--sans);font-weight:600;font-size:16px;color:var(--void);background:var(--orange);border-radius:999px;padding:14px 26px;text-decoration:none;}
+  .fcontact .loc{font-size:13px;letter-spacing:0.04em;color:var(--muted);}
+  /* image slot placeholder */
+  .fslot{margin-top:8px;border:1px dashed rgba(244,234,221,0.22);border-radius:16px;display:grid;place-items:center;color:var(--muted);font-size:13px;font-style:italic;background:rgba(244,234,221,0.02);}
+
+  /* per-frame illustration: sits on the OUTER side; the walker's path runs the inner spine, clear of it */
+  .fimg{position:absolute;width:400px;height:auto;top:50%;transform:translateY(-50%);z-index:2;pointer-events:none;opacity:1;}
+  .frame.left .fimg{left:640px;right:auto;}
+  .frame.right .fimg{left:240px;right:auto;}
+
+  /* interactive creator studio (frame 4) */
+  .demo-cta{margin-top:26px;display:flex;gap:18px;align-items:stretch;max-width:520px;text-decoration:none;
+    background:rgba(20,16,13,0.7);border:1px solid var(--hair);border-radius:18px;padding:16px;transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;}
+  .demo-cta:hover{border-color:rgba(217,106,58,0.55);transform:translateY(-2px);box-shadow:0 26px 50px -30px rgba(217,106,58,0.5);}
+  .dc-thumb{position:relative;flex:none;width:150px;border-radius:12px;background:linear-gradient(135deg,#2a1d14,#0f0b08);display:grid;place-items:center;overflow:hidden;}
+  .dc-thumb .dc-tag{position:absolute;top:9px;left:9px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1a0d07;background:var(--orange);border-radius:5px;padding:3px 7px;}
+  .dc-thumb .dc-play{width:40px;height:40px;border-radius:50%;background:rgba(217,106,58,0.92);color:#fff;display:grid;place-items:center;font-size:14px;padding-left:3px;box-shadow:0 8px 20px rgba(0,0,0,0.4);}
+  .dc-body{display:flex;flex-direction:column;justify-content:center;gap:7px;padding:4px 4px 4px 0;}
+  .dc-body .dc-t{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--cream);}
+  .dc-body .dc-d{font-size:12.5px;line-height:1.5;color:var(--mid);}
+  .dc-body .dc-go{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-top:2px;}
+
+  /* outreach funnel (frame 5) */
+  .funnel{margin-top:26px;max-width:560px;display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:center;gap:16px;}
+  .frow .bar2{height:46px;width:var(--w);min-width:118px;border-radius:10px;display:flex;align-items:center;padding:0 16px;background:linear-gradient(90deg, rgba(217,106,58,0.92), rgba(217,106,58,0.32));}
+  .frow .fn{font-family:var(--serif);font-weight:600;font-size:23px;color:#1a0d07;font-variant-numeric:tabular-nums;}
+  .frow .fl{font-size:12.5px;line-height:1.35;color:var(--mid);flex:1;}
+  .frow.last .bar2{background:var(--cream);}
+  .frow.last .fn{color:var(--void);}
+  .frow.last .fl{color:var(--orange-soft);font-weight:600;}
+  .funnel-cta{margin-top:24px;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:14px;color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(217,106,58,0.5);padding-bottom:4px;width:max-content;transition:border-color .2s ease;}
+  .funnel-cta span{color:var(--orange);}
+  .funnel-cta:hover{border-color:var(--orange);}
+
+  /* scroll-reveal: content is visible by default; arriving on a frame plays the entrance */
+  @media (prefers-reduced-motion: no-preference){
+    @keyframes riseIn{from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none}}
+    @keyframes fillFull{from{width:0} to{width:100%}}
+    @keyframes fillZero{from{width:0} to{width:3%}}
+    .frame.seen .body > *{animation:riseIn .7s both cubic-bezier(.2,.7,.3,1);}
+    .frame.seen .body > *:nth-child(2){animation-delay:.07s}
+    .frame.seen .body > *:nth-child(3){animation-delay:.15s}
+    .frame.seen .body > *:nth-child(4){animation-delay:.23s}
+    .frame.seen .ffact,.frame.seen .fnode{animation:riseIn .6s both cubic-bezier(.2,.7,.3,1);}
+    .frame.seen .ffacts .ffact:nth-child(2),.frame.seen .floop .fnode:nth-child(2){animation-delay:.16s}
+    .frame.seen .ffacts .ffact:nth-child(3),.frame.seen .floop .fnode:nth-child(3){animation-delay:.28s}
+    .frame.seen .floop .fnode:nth-child(4){animation-delay:.40s}
+    .frame.seen .fmeter.full .bar i{animation:fillFull 1s both .3s cubic-bezier(.2,.7,.3,1);}
+    .frame.seen .fmeter.zero .bar i{animation:fillZero 1s both .3s cubic-bezier(.2,.7,.3,1);}
+  }
+
+  /* route */
+  .route{position:absolute;left:0;top:0;z-index:3;pointer-events:none;overflow:visible;}
+  .route .glow{fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;opacity:0.14;filter:blur(6px);}
+  .route .dotted{fill:none;stroke:var(--orange);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 24;opacity:0.62;}
+
+  /* walker (sprite) */
+  .explorer{position:fixed;left:0;top:0;z-index:8;width:84px;height:111px;transform:translate(-50%,-100%);transform-origin:50% 100%;will-change:left,top,transform;}
+  .explorer img{width:100%;height:100%;display:block;object-fit:contain;object-position:center bottom;}
+
+  .scrollhint{position:fixed;right:38px;bottom:30px;left:auto;transform:none;z-index:9;font-family:var(--hand);font-size:19px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .scrollhint .ar{width:16px;height:22px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);animation:bob 1.8s ease-in-out infinite;}
+  /* progress dots / frame nav */
+  .nav{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:9;display:flex;flex-direction:column;gap:13px;}
+  .navdot{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;background:rgba(244,234,221,0.22);transition:background .3s ease,transform .3s ease;}
+  .navdot:hover{background:rgba(244,234,221,0.5);}
+  .navdot.on{background:var(--orange);transform:scale(1.3);}
+  /* home link back to the portfolio */
+  .homelink{position:fixed;left:26px;top:22px;z-index:10;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;letter-spacing:0.02em;color:var(--mid);text-decoration:none;transition:color .2s ease;}
+  .homelink:hover{color:var(--orange);}
+  .homelink .ar{font-size:16px;line-height:1;}
+  @keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.5}50%{transform:rotate(45deg) translate(3px,3px);opacity:1}}
+
+  @media (max-width:900px){
+    .track{height:auto!important;}
+    .stage{position:relative;height:auto;overflow:visible;}
+    .world{position:relative;transform:none!important;width:100%;}
+    .frame{position:relative!important;left:0!important;top:0!important;width:100%;height:auto;min-height:92vh;border-bottom:1px solid var(--hair);}
+    .frame .card{inset:14px;}
+    .frame .body{position:relative;top:0;left:0!important;right:0!important;width:100%;text-align:left!important;padding:96px 24px 40px;}
+    .frame.right .ph{align-items:flex-start;}
+    .frame h1{font-size:clamp(40px,11vw,60px);}
+    .frame .note{position:relative;left:0!important;right:auto;bottom:0;display:block;padding:0 24px 60px;}
+    .fimg{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;width:100%!important;max-width:520px;margin:8px auto 0;display:block;opacity:1!important;}
+    .frame.right .fimg,.frame.left .fimg{left:auto;right:auto;}
+    .route,.explorer,.scrollhint,.nav{display:none;}
+  }
+</style>
+</head>
+<body>
+  <a class="homelink" href="index.html"><span class="ar">&larr;</span> Sergey Kudelin</a>
+  <div class="track" id="track">
+    <div class="stage">
+      <div class="world" id="world">
+        <svg class="route" id="route">
+          <defs><mask id="reveal"><path id="maskPath" d="" stroke="#fff" stroke-width="80" fill="none" stroke-linecap="round"/></mask></defs>
+          <path id="glowPath" class="glow" d="" mask="url(#reveal)"/>
+          <path id="dotPath" class="dotted" d="" mask="url(#reveal)"/>
+        </svg>
+        <!-- frames injected by JS -->
+      </div>
+
+      <div class="explorer" id="explorer"><img id="exImg" src="./assets/walkern/pose01.png" alt="explorer" /></div>
+
+      <div class="scrollhint" id="hint"><span>scroll the journey</span><span class="ar"></span></div>
+    </div>
+  </div>
+
+<script>
+  var track=document.getElementById('track'), world=document.getElementById('world'),
+      route=document.getElementById('route'), maskPath=document.getElementById('maskPath'),
+      dotPath=document.getElementById('dotPath'), glowPath=document.getElementById('glowPath'),
+      explorer=document.getElementById('explorer'), hint=document.getElementById('hint'),
+      exImg=document.getElementById('exImg');
+
+  // preload sprite poses
+  var POSE={}; var POSE_SRC={
+    idleR:'pose01', walkR:['pose02','pose03','pose04','pose05'],
+    idleL:'pose06', walkL:['pose07','pose08','pose09','pose10'],
+    arrR:'pose11', arrL:'pose12', flag:'pose13', stand:'pose14'
+  };
+  (function preload(){var all=['pose01','pose02','pose03','pose04','pose05','pose06','pose07','pose08','pose09','pose10','pose11','pose12','pose13','pose14'];all.forEach(function(n){var im=new Image();im.src='./assets/walkern/'+n+'.png';POSE[n]=im;});})();
+  var curPose='';
+  function setPose(n){ if(n!==curPose){ curPose=n; exImg.src='./assets/walkern/'+n+'.png'; } }
+
+  var FW=1280, FH=853, DY=1230, XL=0, XR=1480, N=6;
+  var BODIES=[
+    // 1 — The company
+    '<p class="kick"><span class="d"></span>01 &middot; The company I joined</p>'+
+    '<h1>FutureClinic<em>.</em></h1>'+
+    '<p class="lede">A <a href="https://www.ycombinator.com/companies/futureclinic" target="_blank" rel="noopener noreferrer"><b>Y&nbsp;Combinator startup that lets any doctor open their own digital clinic.</b></a> The AI does most of the work: it takes the patient history by chat, reasons through likely diagnoses, and drafts a plan. The doctor reviews the summary and signs.</p>'+
+    '<div class="ffacts">'+
+      '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span><span><div class="t">Any doctor, their own practice</div><div class="d">A subscription clinic online, across specialties. Their own practice, anywhere they want.</div></span></div>'+
+      '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><path d="M12 3.5v2.5M12 18v2.5M3.5 12h2.5M18 12h2.5M6 6l1.8 1.8M16.2 16.2L18 18M18 6l-1.8 1.8M7.8 16.2L6 18"/></svg></span><span><div class="t">The AI drafts, the doctor signs</div><div class="d">Empathic chat intake, medical reasoning, and evidence-based treatment drafts are all AI. The doctor reviews, decides, and signs.</div></span></div>'+
+      '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.3 7.3L3 21l1.7-6.7A8 8 0 1 1 21 12Z"/></svg></span><span><div class="t">Patients subscribe directly</div><div class="d">Chat-based care from a doctor they choose. Doctors set their own price, typically $30 to $90 a month, up to about $500.</div></span></div>'+
+    '</div>',
+    // 2 — The real question
+    '<p class="kick"><span class="d"></span>02 &middot; The real question</p>'+
+    '<h1>So how do you<br><em>actually grow it?</em></h1>'+
+    '<p class="lede">You can pour money into ads forever. <b>Ads do not make doctors</b>, and without doctors there is nothing to grow. The bottleneck was never demand. It was supply.</p>'+
+    '<div class="fmeters">'+
+      '<div class="fmeter full"><div class="lab"><span class="nm">Money you can spend on ads</span><span class="vl">unlimited</span></div><div class="bar"><i></i></div></div>'+
+      '<div class="fmeter zero"><div class="lab"><span class="nm">Doctors that money creates</span><span class="vl">zero</span></div><div class="bar"><i></i></div></div>'+
+    '</div>'+
+    '<p class="hand">you can buy attention. you can&rsquo;t buy supply.</p>',
+    // 3 — The wedge
+    '<p class="kick"><span class="d"></span>03 &middot; The wedge</p>'+
+    '<h1>Doctor-<wbr>creators<em>.</em></h1>'+
+    '<p class="lede">One channel already brought patients in on its own: <b>doctors with an audience.</b> They prove the model to their peers and arrive with demand attached. So the move was to go win that channel first.</p>'+
+    '<p class="hand">the way Airbnb seeded its first listings, or Uber its first drivers.</p>',
+    // 4 — What I built
+    '<p class="kick"><span class="d"></span>04 &middot; What I built</p>'+
+    '<h1>FutureClinic<br><em>Creators.</em></h1>'+
+    '<p class="lede">The engine I owned. It turns a doctor&rsquo;s channel into <b>ready-to-record evergreen videos</b> in their own voice, and every script carries their FutureClinic link.</p>'+
+    '<a class="demo-cta" href="creators-showcase.html">'+
+      '<span class="dc-thumb"><span class="dc-tag">interactive</span><span class="dc-play">&#9654;</span></span>'+
+      '<span class="dc-body"><span class="dc-t">Walk the full pipeline</span><span class="dc-d">Six steps, end to end: topics, titles, the agentic thumbnail designer that grades its own work, the question card that lets the doctor shape their own script, then export.</span><span class="dc-go">Start &rarr;</span></span>'+
+    '</a>',
+    // 5 — The outreach engine (pillar 2)
+    '<p class="kick"><span class="d"></span>05 &middot; The other engine</p>'+
+    '<h1>A 15% reply rate,<br><em>on cold email.</em></h1>'+
+    '<p class="lede">To sign physician-creators, I built the engine that reaches them. It mines YouTube and Instagram for doctor-creators, <b>verifies each against the federal NPI registry</b>, then sends every one a personalized clinic page and a founder video, built for them by name.</p>'+
+    '<div class="funnel">'+
+      '<div class="frow" style="--w:100%"><span class="bar2"><span class="fn">8,771</span></span><span class="fl">channels mined, YouTube + Instagram</span></div>'+
+      '<div class="frow" style="--w:68%"><span class="bar2"><span class="fn">2,416</span></span><span class="fl">verified MD/DO, federal NPI registry</span></div>'+
+      '<div class="frow" style="--w:44%"><span class="bar2"><span class="fn">439</span></span><span class="fl">qualified, contactable leads</span></div>'+
+      '<div class="frow last" style="--w:26%"><span class="bar2"><span class="fn">1</span></span><span class="fl">personalized clinic page</span></div>'+
+    '</div>'+
+    '<a class="funnel-cta" href="https://futureclinic.app/dr_mamina" target="_blank" rel="noopener">See a live page the engine outputs <span>dr_mamina &rarr;</span></a>',
+    // 6 — The ask
+    '<p class="kick"><span class="d"></span>06 &middot; Currently</p>'+
+    '<h1>Let&rsquo;s build<br><em>something.</em></h1>'+
+    '<p class="lede">Looking for founding, AI, and forward-deployed roles at early-stage, AI-native teams that move fast and care about what they ship.</p>'+
+    '<div class="fcontact"><a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a><a href="recommendation.pdf" target="_blank" rel="noopener" style="background:transparent;color:var(--cream);border:1.5px solid rgba(244,234,221,0.28);">Read recommendation letter &rarr;</a><span class="loc">Miami, FL &middot; remote-flexible</span></div>'
+  ];
+  var FIMG=['f1-clinic.png','f2-supply.png','f3-wedge.png','f4-creators.png','f5-outreach.png','f6-build.png'];
+  var frames=[];
+  for(var i=0;i<N;i++){
+    var side=(i%2===0)?'left':'right';
+    var x=(side==='left')?XL:XR, y=i*DY;
+    frames.push({x:x,y:y,side:side,cx:x+FW/2,cy:y+FH/2, n:i+1});
+  }
+  var WORLD_W=XR+FW+0, WORLD_H=(N-1)*DY+FH+40;
+  world.style.width=WORLD_W+'px'; world.style.height=WORLD_H+'px';
+  route.setAttribute('viewBox','0 0 '+WORLD_W+' '+WORLD_H);
+  route.style.width=WORLD_W+'px'; route.style.height=WORLD_H+'px';
+
+  // build frame DOM
+  frames.forEach(function(f){
+    var el=document.createElement('div');
+    el.className='frame '+f.side;
+    el.style.left=f.x+'px'; el.style.top=f.y+'px';
+    var nn=('0'+f.n).slice(-2);
+    el.innerHTML='<div class="card"></div>'+
+      '<div class="counter"><span class="now">'+nn+'</span>&thinsp;/&thinsp;0'+N+'<span class="tube"><i style="width:'+Math.round(11+ (f.n-1)/(N-1)*78)+'%"></i></span></div>'+
+      '<img class="fimg" src="./assets/frames/'+FIMG[f.n-1]+'" alt="" />'+
+      '<div class="body">'+BODIES[f.n-1]+'</div>';
+    world.appendChild(el);
+  });
+
+  // ---- build the path: gentle continuous spline down the SPINE between the two frame columns ----
+  // rest near each frame's inner edge so consecutive rests sit close in world-x (a soft lean, never vertical)
+  var stops=frames.map(function(f){
+    var innerX = (f.side==='left') ? f.x+1150 : f.x+130;  // left frames: right edge; right frames: left edge
+    return {x:innerX, y:f.y+610};
+  });
+  // Catmull-Rom -> cubic bezier (smooth, continuous, no straight segments)
+  function cr(pts){
+    var dd='M '+pts[0].x+' '+pts[0].y;
+    for(var k=0;k<pts.length-1;k++){
+      var p0=pts[k-1]||pts[k], p1=pts[k], p2=pts[k+1], p3=pts[k+2]||pts[k+1];
+      var c1={x:p1.x+(p2.x-p0.x)/6, y:p1.y+(p2.y-p0.y)/6};
+      var c2={x:p2.x-(p3.x-p1.x)/6, y:p2.y-(p3.y-p1.y)/6};
+      dd+=' C '+c1.x+' '+c1.y+', '+c2.x+' '+c2.y+', '+p2.x+' '+p2.y;
+    }
+    return dd;
+  }
+  var d=cr(stops);
+  maskPath.setAttribute('d',d); dotPath.setAttribute('d',d); glowPath.setAttribute('d',d);
+  var L=maskPath.getTotalLength();
+  maskPath.style.strokeDasharray=L; maskPath.style.strokeDashoffset=L;
+
+  // find path-length fraction nearest each frame stop (for camera framing)
+  var SAMP=1400, samples=[];
+  for(var s2=0;s2<=SAMP;s2++){ var pt=maskPath.getPointAtLength(L*s2/SAMP); samples.push(pt); }
+  var stopT=stops.map(function(st){
+    var best=0,bd=1e9;
+    for(var s3=0;s3<=SAMP;s3++){var dx=samples[s3].x-st.x,dy=samples[s3].y-st.y,dd=dx*dx+dy*dy;if(dd<bd){bd=dd;best=s3;}}
+    return best/SAMP;
+  });
+
+  // ---- frame index drives the camera on desktop (not raw scroll position) ----
+
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function smooth(t){t=clamp(t,0,1);return t*t*(3-2*t);}
+  function lerp(a,b,t){return a+(b-a)*t;}
+
+  var mobile=false, s=1;
+  function fit(){
+    mobile=matchMedia('(max-width:900px)').matches;
+    if(mobile){ world.style.transform='none'; track.style.height='auto'; return; }
+    track.style.height='100vh';                    // desktop is a single fixed stage; we navigate by frame
+    s=Math.min(innerWidth/FW, innerHeight/FH);
+  }
+
+  // smoothed camera state
+  var faceDir=1;
+  var frameEls=[].slice.call(world.querySelectorAll('.frame'));
+  function markSeen(idx){ var el=frameEls[idx]; if(el && !el.classList.contains('seen')) el.classList.add('seen'); }
+
+  // interactive creator studio
+  var STUDIO=[
+    {thumb:'STATINS, DEMYSTIFIED', title:'What statins actually do, in 60 seconds', script:'Most people think statins just lower cholesterol. Here is what they really do for your arteries.'},
+    {thumb:'GLP-1, HONESTLY', title:'The truth about GLP-1 weight loss', script:'Everyone is talking about Ozempic. Here is what the data actually says, and who it is really for.'},
+    {thumb:'CHEST PAIN 101', title:'Chest pain: when it is nothing, when it is not', script:'Not all chest pain is an emergency. Here are the signs that mean you should call someone now.'}
+  ];
+  document.addEventListener('click', function(ev){
+    var chip=ev.target.closest && ev.target.closest('.chip'); if(!chip) return;
+    var i=+chip.getAttribute('data-i'); var d=STUDIO[i]; if(!d) return;
+    [].forEach.call(chip.parentNode.querySelectorAll('.chip'), function(c){ c.classList.toggle('active', c===chip); });
+    var tT=document.getElementById('thumbT'), vT=document.getElementById('vTitle'), vS=document.getElementById('vScript');
+    [tT,vT,vS].forEach(function(el){ if(el) el.classList.add('swap'); });
+    setTimeout(function(){ if(tT)tT.textContent=d.thumb; if(vT)vT.textContent=d.title; if(vS)vS.textContent=d.script;
+      [tT,vT,vS].forEach(function(el){ if(el) el.classList.remove('swap'); }); }, 180);
+  });
+
+  function readScroll(){ return 0; }
+
+  function draw(camT){
+    maskPath.style.strokeDashoffset=L*(1-camT);
+    var pt=maskPath.getPointAtLength(L*Math.max(0.0001,camT));
+
+    var i0=0; while(i0<stopT.length-1 && camT>stopT[i0+1]) i0++;
+    var i1=Math.min(i0+1, stopT.length-1);
+    var span=Math.max(1e-4, stopT[i1]-stopT[i0]);
+    var u=clamp((camT-stopT[i0])/span,0,1);
+    var hold=(u<0.10||u>0.90);
+    markSeen((u<0.5)?i0:i1);   // reveal the frame we're settling on (kept once seen)
+    var fcx=lerp(frames[i0].cx, frames[i1].cx, smooth(u));
+    var fcy=lerp(frames[i0].cy, frames[i1].cy, smooth(u));
+    var bl=Math.sin(u*Math.PI)*0.92; if(camT<=stopT[0]||camT>=stopT[stopT.length-1]) bl=0;
+    var cx=lerp(fcx, pt.x, bl), cy=lerp(fcy, pt.y, bl);
+    var Tx=0.5*innerWidth - cx*s, Ty=0.5*innerHeight - cy*s;
+    world.style.transform='translate('+Tx+'px,'+Ty+'px) scale('+s+')';
+    explorer.style.left=(pt.x*s+Tx)+'px'; explorer.style.top=(pt.y*s+Ty)+'px'; explorer.style.opacity=1;
+
+    var e=0.0016, pA=maskPath.getPointAtLength(L*clamp(camT-e,0,1)), pB=maskPath.getPointAtLength(L*clamp(camT+e,0,1));
+    var dx=pB.x-pA.x; if(dx<-1.2) faceDir=-1; else if(dx>1.2) faceDir=1;
+    var slope=(pB.y-pA.y)/(Math.abs(pB.x-pA.x)+6);
+    var lean=clamp(Math.atan(slope)*180/Math.PI*0.16, -6, 6);
+    var rot = hold ? 0 : (faceDir>0 ? lean : -lean);
+
+    if(hold){
+      var nearLast = camT>=stopT[stopT.length-1]-0.012;
+      setPose(nearLast ? POSE_SRC.flag : (faceDir<0?POSE_SRC.idleL:POSE_SRC.idleR));
+    } else {
+      // stride tied to DISTANCE travelled (not time) => feet plant with the motion, no moonwalk-glide;
+      // ~195px/step gives an even ~8fps cruise that eases in/out with the trapezoidal glide
+      var step=Math.floor((camT*L)/195)%4;
+      setPose((faceDir<0?POSE_SRC.walkL:POSE_SRC.walkR)[step]);
+    }
+    explorer.style.transform='translate(-50%,-100%) rotate('+rot.toFixed(2)+'deg)';
+    hint.style.opacity=clamp(1-camT*9,0,1);
+  }
+
+  // ---- magnetic frame navigation: one gesture glides to the next frame and settles softly ----
+  // TIME-BASED tween (driven by the clock, not frame count) => identical duration on 60/120/144Hz displays
+  var cur=0, shown=stopT[0], raf=0, anim=null;
+  var GLIDE=1150;                                   // ms per frame-to-frame transition (tune this for feel)
+  var EA=0.30;                                      // accel/decel fraction: soft magnetic ends, steady cruise between
+  function easeInOut(p){                             // trapezoidal velocity => even, believable stride (no glide/flurry)
+    p=clamp(p,0,1);
+    var vmax=1/(1-EA);
+    if(p<EA) return vmax*p*p/(2*EA);
+    if(p>1-EA){ var q=1-p; return 1 - vmax*q*q/(2*EA); }
+    return vmax*(EA/2) + vmax*(p-EA);
+  }
+  function tick(now){
+    if(!anim){ raf=0; return; }
+    var p=clamp((now-anim.t0)/anim.dur,0,1);
+    shown = anim.from + (anim.to-anim.from)*easeInOut(p);
+    draw(shown);
+    if(p<1){ raf=requestAnimationFrame(tick); } else { shown=anim.to; draw(shown); anim=null; raf=0; }
+  }
+  function go(idx){
+    idx=clamp(idx,0,N-1); if(idx===cur && !anim) return;
+    anim={from:shown, to:stopT[idx], t0:(performance.now()), dur:GLIDE};
+    cur=idx; markSeen(cur); updateDots();
+    try{ history.replaceState(null, '', '#frame-'+(idx+1)); }catch(e){}
+    if(!raf) raf=requestAnimationFrame(tick);
+  }
+
+  // progress dots (also clickable)
+  var navEl=document.createElement('div'); navEl.className='nav';
+  for(var di=0; di<N; di++){ (function(i){ var b=document.createElement('button'); b.className='navdot'; b.setAttribute('aria-label','Go to frame '+(i+1)); b.addEventListener('click',function(){ go(i); }); navEl.appendChild(b); })(di); }
+  document.querySelector('.stage').appendChild(navEl);
+  function updateDots(){ [].forEach.call(navEl.children,function(b,i){ b.classList.toggle('on', i===cur); }); }
+
+  // wheel: one continuous gesture (incl. trackpad momentum) advances exactly one frame; ignored mid-glide
+  var wheelLock=false, wlT;
+  addEventListener('wheel', function(e){
+    if(mobile) return; e.preventDefault();
+    clearTimeout(wlT); wlT=setTimeout(function(){ wheelLock=false; }, 140);
+    if(wheelLock || anim || Math.abs(e.deltaY)<3) return;   // one frame per gesture, never during a glide
+    wheelLock=true; go(cur + (e.deltaY>0?1:-1));
+  }, {passive:false});
+
+  // keyboard
+  addEventListener('keydown', function(e){
+    if(mobile) return;
+    if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); go(cur+1); }
+    else if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); go(cur-1); }
+    else if(e.key==='Home'){ e.preventDefault(); go(0); }
+    else if(e.key==='End'){ e.preventDefault(); go(N-1); }
+  });
+
+  // touch swipe
+  var tY=null;
+  addEventListener('touchstart', function(e){ if(mobile) return; tY=e.touches[0].clientY; }, {passive:true});
+  addEventListener('touchend', function(e){ if(mobile||tY==null) return; var dy=tY-e.changedTouches[0].clientY; if(Math.abs(dy)>40) go(cur + (dy>0?1:-1)); tY=null; }, {passive:true});
+
+  // Deep linking: respect #frame-N URL hash on load + history navigation
+  function hashIdx(){ var m=(location.hash||'').match(/(\d+)/); return m?clamp(parseInt(m[1],10)-1,0,N-1):0; }
+  var _initIdx=hashIdx(); if(_initIdx>0){ cur=_initIdx; shown=stopT[_initIdx]; markSeen(_initIdx); }
+  addEventListener('hashchange', function(){ go(hashIdx()); });
+
+  fit(); markSeen(0); updateDots();
+  addEventListener('resize', function(){ fit(); if(!mobile) draw(shown); });
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){ fit(); if(!mobile) draw(shown); });
+  if(!mobile) draw(shown);
+
+  window.__j={maskPath:maskPath,L:L,frames:frames,stops:stops,go:function(i){go(i);},
+    // test hook: camera position as a function of elapsed ms (proves timing is clock-based, not frame-based)
+    sample:function(fromIdx,toIdx,ms){var f=stopT[fromIdx],t=stopT[toIdx];var p=clamp(ms/GLIDE,0,1);return {p:+p.toFixed(3),eased:+easeInOut(p).toFixed(3),camT:+(f+(t-f)*easeInOut(p)).toFixed(4),dur:GLIDE};}
+  };
+</script>
+</body>
+</html>
