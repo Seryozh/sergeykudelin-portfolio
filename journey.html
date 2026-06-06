@@ -100,6 +100,8 @@
   .dc-body .dc-t{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--cream);}
   .dc-body .dc-d{font-size:12.5px;line-height:1.5;color:var(--mid);}
   .dc-body .dc-go{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-top:2px;}
+  .demo-rich{max-width:560px;}
+  .dc-thumb-img{width:220px;background-size:cover;background-position:center top;background-color:#1a0d07;min-height:150px;border:1px solid rgba(217,106,58,0.18);}
 
   /* outreach funnel (frame 5) */
   .funnel{margin-top:26px;max-width:560px;display:flex;flex-direction:column;gap:11px;}
@@ -205,18 +207,19 @@
   var curPose='';
   function setPose(n){ if(n!==curPose){ curPose=n; exImg.src='./assets/walkern/'+n+'.png'; } }
 
-  var FW=1280, FH=853, DY=1230, XL=0, XR=1480, N=6;
+  var FW=1280, FH=853, DY=1230, XL=0, XR=1480, N=5;
   var BODIES=[
-    // 1 — The company
-    '<p class="kick"><span class="d"></span>01 &middot; The company I joined</p>'+
+    // 1 — The company (with framing of what I built there)
+    '<p class="kick"><span class="d"></span>01 &middot; 3 months at FutureClinic</p>'+
     '<h1>FutureClinic<em>.</em></h1>'+
     '<p class="lede">A <a href="https://www.ycombinator.com/companies/futureclinic" target="_blank" rel="noopener noreferrer"><b>Y&nbsp;Combinator startup that lets any doctor open their own digital clinic.</b></a> The AI does most of the work: it takes the patient history by chat, reasons through likely diagnoses, and drafts a plan. The doctor reviews the summary and signs.</p>'+
+    '<p class="hand">I joined the founder for a 3-month sprint to build the engine that grows it.</p>'+
     '<div class="ffacts">'+
       '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span><span><div class="t">Any doctor, their own practice</div><div class="d">A subscription clinic online, across specialties. Their own practice, anywhere they want.</div></span></div>'+
       '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><path d="M12 3.5v2.5M12 18v2.5M3.5 12h2.5M18 12h2.5M6 6l1.8 1.8M16.2 16.2L18 18M18 6l-1.8 1.8M7.8 16.2L6 18"/></svg></span><span><div class="t">The AI drafts, the doctor signs</div><div class="d">Empathic chat intake, medical reasoning, and evidence-based treatment drafts are all AI. The doctor reviews, decides, and signs.</div></span></div>'+
       '<div class="ffact"><span class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.3 7.3L3 21l1.7-6.7A8 8 0 1 1 21 12Z"/></svg></span><span><div class="t">Patients subscribe directly</div><div class="d">Chat-based care from a doctor they choose. Doctors set their own price, typically $30 to $90 a month, up to about $500.</div></span></div>'+
     '</div>',
-    // 2 — The real question
+    // 2 — Bottleneck + Wedge MERGED
     '<p class="kick"><span class="d"></span>02 &middot; The real question</p>'+
     '<h1>So how do you<br><em>actually grow it?</em></h1>'+
     '<p class="lede">You can pour money into ads forever. <b>Ads do not make doctors</b>, and without doctors there is nothing to grow. The bottleneck was never demand. It was supply.</p>'+
@@ -224,38 +227,36 @@
       '<div class="fmeter full"><div class="lab"><span class="nm">Money you can spend on ads</span><span class="vl">unlimited</span></div><div class="bar"><i></i></div></div>'+
       '<div class="fmeter zero"><div class="lab"><span class="nm">Doctors that money creates</span><span class="vl">zero</span></div><div class="bar"><i></i></div></div>'+
     '</div>'+
-    '<p class="hand">you can buy attention. you can&rsquo;t buy supply.</p>',
-    // 3 — The wedge
-    '<p class="kick"><span class="d"></span>03 &middot; The wedge</p>'+
-    '<h1>Doctor-<wbr>creators<em>.</em></h1>'+
-    '<p class="lede">One channel already brought patients in on its own: <b>doctors with an audience.</b> They prove the model to their peers and arrive with demand attached. So the move was to go win that channel first.</p>'+
-    '<p class="hand">the way Airbnb seeded its first listings, or Uber its first drivers.</p>',
-    // 4 — What I built
-    '<p class="kick"><span class="d"></span>04 &middot; What I built</p>'+
+    '<p class="lede" style="margin-top:24px;">But one channel already brought patients in on its own: <b>doctors with an audience.</b> They prove the model to their peers and arrive with demand attached. So that was the play, win them first.</p>'+
+    '<p class="hand">same wedge Airbnb used to seed listings, Uber to seed drivers.</p>',
+    // 3 — FC Creators (with inline preview)
+    '<p class="kick"><span class="d"></span>03 &middot; What I built, part one</p>'+
     '<h1>FutureClinic<br><em>Creators.</em></h1>'+
-    '<p class="lede">The engine I owned. It turns a doctor&rsquo;s channel into <b>ready-to-record evergreen videos</b> in their own voice, and every script carries their FutureClinic link.</p>'+
-    '<a class="demo-cta" href="creators-showcase.html">'+
-      '<span class="dc-thumb"><span class="dc-tag">interactive</span><span class="dc-play">&#9654;</span></span>'+
-      '<span class="dc-body"><span class="dc-t">Walk the full pipeline</span><span class="dc-d">Six steps, end to end: topics, titles, the agentic thumbnail designer that grades its own work, the question card that lets the doctor shape their own script, then export.</span><span class="dc-go">Start &rarr;</span></span>'+
+    '<p class="lede">An engine that turns a doctor&rsquo;s channel into <b>ready-to-record evergreen videos</b> in their own voice. Human-in-the-loop at every step. Every script carries their FutureClinic link, turning their audience into their patients.</p>'+
+    '<a class="demo-cta demo-rich" href="creators-showcase.html">'+
+      '<span class="dc-thumb dc-thumb-img" style="background-image:url(./assets/creators-preview.png);"><span class="dc-tag">interactive</span></span>'+
+      '<span class="dc-body"><span class="dc-t">Walk the full pipeline</span><span class="dc-d">Six steps end to end: topics, titles, the agentic thumbnail designer that grades its own work, the question card that lets the doctor shape their own script, then export.</span><span class="dc-go">Start &rarr;</span></span>'+
     '</a>',
-    // 5 — The outreach engine (pillar 2)
-    '<p class="kick"><span class="d"></span>05 &middot; The other engine</p>'+
-    '<h1>A 15% reply rate,<br><em>on cold email.</em></h1>'+
-    '<p class="lede">To sign physician-creators, I built the engine that reaches them. It mines YouTube and Instagram for doctor-creators, <b>verifies each against the federal NPI registry</b>, then sends every one a personalized clinic page and a founder video, built for them by name.</p>'+
-    '<div class="funnel">'+
-      '<div class="frow" style="--w:100%"><span class="bar2"><span class="fn">8,771</span></span><span class="fl">channels mined, YouTube + Instagram</span></div>'+
-      '<div class="frow" style="--w:68%"><span class="bar2"><span class="fn">2,416</span></span><span class="fl">verified MD/DO, federal NPI registry</span></div>'+
-      '<div class="frow" style="--w:44%"><span class="bar2"><span class="fn">439</span></span><span class="fl">qualified, contactable leads</span></div>'+
-      '<div class="frow last" style="--w:26%"><span class="bar2"><span class="fn">1</span></span><span class="fl">personalized clinic page</span></div>'+
+    // 4 — FC Outreach REPOSITIONED around personalization angle
+    '<p class="kick"><span class="d"></span>04 &middot; What I built, part two</p>'+
+    '<h1>A page and a video,<br><em>for every doctor.</em></h1>'+
+    '<p class="lede">Not a template email. Every doctor got <b>their own landing page</b> and <b>their own founder video, in their name</b>. Cold outreach that didn&rsquo;t feel cold. ~15% reply rates at peak, across multiple campaigns.</p>'+
+    '<div class="ftime" style="margin-top:18px;">'+
+      '<div class="fstep"><span class="w">Discovery</span><span class="x">YouTube + Instagram, doctor-creators per specialty</span></div>'+
+      '<div class="fstep"><span class="w">Verification</span><span class="x">Federal NPI registry + Scrapfly-rendered checks</span></div>'+
+      '<div class="fstep"><span class="w">Personalization</span><span class="x">Per-doctor page + founder video (Whisper alignment + ffmpeg)</span></div>'+
     '</div>'+
-    '<a class="funnel-cta" href="https://futureclinic.app/dr_mamina" target="_blank" rel="noopener">See a live page the engine outputs <span>dr_mamina &rarr;</span></a>',
-    // 6 — The ask
-    '<p class="kick"><span class="d"></span>06 &middot; Currently</p>'+
+    '<a class="demo-cta demo-rich" href="https://futureclinic.app/dr_mamina" target="_blank" rel="noopener">'+
+      '<span class="dc-thumb dc-thumb-img" style="background-image:url(./assets/dr-mamina-preview.png);"><span class="dc-tag">live page</span></span>'+
+      '<span class="dc-body"><span class="dc-t">See what each doctor received</span><span class="dc-d">One per doctor, generated from their channel data. dr_mamina is one example, live.</span><span class="dc-go">View &rarr;</span></span>'+
+    '</a>',
+    // 5 — Currently
+    '<p class="kick"><span class="d"></span>05 &middot; Currently</p>'+
     '<h1>Let&rsquo;s build<br><em>something.</em></h1>'+
     '<p class="lede">Looking for founding, AI, and forward-deployed roles at early-stage, AI-native teams that move fast and care about what they ship.</p>'+
     '<div class="fcontact"><a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a><a href="recommendation.pdf" target="_blank" rel="noopener" style="background:transparent;color:var(--cream);border:1.5px solid rgba(244,234,221,0.28);">Read recommendation letter &rarr;</a><span class="loc">Miami, FL &middot; remote-flexible</span></div>'
   ];
-  var FIMG=['f1-clinic.png','f2-supply.png','f3-wedge.png','f4-creators.png','f5-outreach.png','f6-build.png'];
+  var FIMG=['f1-clinic.png','f3-wedge.png','f4-creators.png','f5-outreach.png','f6-build.png'];
   var frames=[];
   for(var i=0;i<N;i++){
     var side=(i%2===0)?'left':'right';
