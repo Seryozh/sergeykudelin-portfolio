@@ -43,6 +43,46 @@
         --reveal-dur: 0.7s;
       }
 
+      /* inline links inside work entries */
+      .entry-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-decoration-color: var(--rule);
+        text-underline-offset: 2px;
+        transition: text-decoration-color 0.15s ease;
+      }
+      .entry-body a:hover { text-decoration-color: var(--accent); }
+
+      /* founder testimonial, inline with the FutureClinic entry */
+      .vouch {
+        margin: 20px 0 6px;
+        padding: 12px 0 12px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      .vouch .q {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 17px;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+      .vouch cite {
+        display: block;
+        margin-top: 10px;
+        font-style: normal;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.02em;
+        color: var(--muted);
+      }
+      .vouch cite a {
+        color: var(--muted);
+        text-decoration: underline;
+        text-decoration-color: var(--rule);
+        text-underline-offset: 2px;
+      }
+      .vouch cite a:hover { color: var(--accent); }
+
       * {
         box-sizing: border-box;
       }
@@ -637,9 +677,6 @@
       <a href="https://github.com/Seryozh" target="_blank" rel="noopener"
         >github</a
       >
-      <a href="./recommendation.pdf" target="_blank" rel="noopener"
-        >letter</a
-      >
       <a href="mailto:sergey@sergeykudelin.com">email</a>
     </nav>
 
@@ -679,17 +716,10 @@
         and indie AI tools like Lux.
       </p>
 
-      <a class="featured reveal" href="journey.html">
-        <span class="fx-eyebrow">Featured &middot; interactive walkthrough</span>
-        <span class="fx-title">The FutureClinic story</span>
-        <span class="fx-desc">An interactive walk through the growth problem I worked on at FutureClinic &mdash; and the two engines I built to solve it.</span>
-        <span class="fx-go">Walk the journey &rarr;</span>
-      </a>
-
       <section class="work">
         <h2 class="section-head reveal">
           <span>Recent work</span>
-          <span class="count">05</span>
+          <span class="count">04</span>
         </h2>
 
         <ul class="entries">
@@ -697,34 +727,46 @@
             <div class="entry-head">
               <span class="entry-num">01</span>
               <h3 class="entry-title">
-                <a href="outreach-showcase.html">FutureClinic Outreach</a
+                <a href="journey.html">FutureClinic</a
                 ><span class="ext">&rarr;</span>
               </h3>
               <span class="entry-tag">GTM Engineer · YC F24</span>
             </div>
             <p class="entry-body">
-              Cold-outreach engine for doctor-creators on YouTube. Pipeline:
-              channel discovery via ScrapeCreators, state-license verification
-              through custom ScrapFly browser tooling, Gemini Flash for
-              patient-intent classification of comment threads, Opus for
-              personalized 5-email sequences in the founder&rsquo;s voice, and a
-              Slack-gated human approval step before send. Layered Nikola on
-              top: a Modal-hosted Claude Agent SDK agent with a persistent
-              filesystem brain that reconciles Gmail against the prospect list
-              and runs the daily batch autonomously.
+              Three months building the company&rsquo;s growth engine directly
+              with the founder, end to end. Two production systems.
+              <a href="outreach-showcase.html"><b>Outreach</b></a> finds
+              doctor-creators across YouTube and Instagram, verifies each
+              against the federal NPI registry, and sends a personalized clinic
+              page and founder video to every one. It runs on Nikola, an
+              autonomous co-worker I built that lives in Slack: it researches
+              prospects, drafts the emails, tracks replies, and posts each batch
+              for a human to approve before anything sends.
+              <a href="creators-showcase.html"><b>Creators</b></a> turns a
+              doctor&rsquo;s channel into ready-to-record videos in their own
+              voice, human in the loop at every step.
+              <a href="journey.html">Walk the whole story &rarr;</a>
             </p>
+            <blockquote class="vouch">
+              <span class="q">&ldquo;Phenomenal work. The kind of product I was
+              genuinely excited to use myself, and that is the highest bar I
+              know for whether something has been built well. I recommend Sergey
+              without reservation.&rdquo;</span>
+              <cite>Dr. Usama Syed, Founder, FutureClinic (YC F24) ·
+                <a href="recommendation.pdf" target="_blank" rel="noopener">read the letter &rarr;</a></cite>
+            </blockquote>
             <dl class="metrics">
               <div class="metric">
+                <dt>2</dt>
+                <dd>AI systems to production</dd>
+              </div>
+              <div class="metric">
                 <dt>~15%</dt>
-                <dd>reply rate</dd>
+                <dd>outreach reply rate at peak</dd>
               </div>
               <div class="metric">
-                <dt>5&times;</dt>
-                <dd>cold-email baseline</dd>
-              </div>
-              <div class="metric">
-                <dt>400&times;</dt>
-                <dd>cheaper license checks</dd>
+                <dt>3 mo</dt>
+                <dd>solo, with the founder</dd>
               </div>
             </dl>
           </li>
@@ -732,41 +774,6 @@
           <li class="entry reveal">
             <div class="entry-head">
               <span class="entry-num">02</span>
-              <h3 class="entry-title">
-                <a href="creators-showcase.html">FutureClinic Creators</a
-                ><span class="ext">&rarr;</span>
-              </h3>
-              <span class="entry-tag">Next.js · Supabase</span>
-            </div>
-            <p class="entry-body">
-              AI content engine that turns a doctor&rsquo;s YouTube channel into
-              ready-to-record scripts, titles, and thumbnails in their voice.
-              Pipeline: Opus generates a voice profile from transcripts, a
-              weekly SERP cron mines topics scored for patient acquisition
-              rather than viral reach, FAL composites thumbnails, and an agentic
-              Opus loop writes scripts with self-review passes for voice match,
-              hook strength, and CTA placement, plus a banned-phrase linter on
-              the output.
-            </p>
-            <dl class="metrics">
-              <div class="metric">
-                <dt>28</dt>
-                <dd>endpoints frozen as contract</dd>
-              </div>
-              <div class="metric">
-                <dt>54</dt>
-                <dd>tests + Playwright E2E</dd>
-              </div>
-              <div class="metric">
-                <dt>1</dt>
-                <dd>voice, matched per script</dd>
-              </div>
-            </dl>
-          </li>
-
-          <li class="entry reveal">
-            <div class="entry-head">
-              <span class="entry-num">03</span>
               <h3 class="entry-title">
                 <a href="https://futureclinic-growth.vercel.app" target="_blank" rel="noopener"
                   >Derm Hunter</a
@@ -799,44 +806,46 @@
 
           <li class="entry reveal">
             <div class="entry-head">
-              <span class="entry-num">04</span>
+              <span class="entry-num">03</span>
               <h3 class="entry-title">
-                <a href="https://create.roblox.com/store/asset/131392966327387/Lux-AI-Agentic-Lua-Coding-Assistant" target="_blank" rel="noopener"
+                <a href="https://github.com/Seryozh/lux-agentic-ai" target="_blank" rel="noopener"
                   >Lux</a
                 ><span class="ext">&#8599;</span>
               </h3>
-              <span class="entry-tag">Solo &middot; Pre-FC agentic AI</span>
+              <span class="entry-tag">Solo &middot; Agentic AI</span>
             </div>
             <p class="entry-body">
-              An autonomous coding agent for Roblox Studio, built and shipped
-              through my channel before FutureClinic. It executes edits
-              in-engine and verifies them in a closed loop, self-healing when
-              the environment drifts. Three full rewrites, from a 22K-line Lua
-              monolith to a FastAPI + LangGraph + SSE backend.
+              An autonomous coding agent for Roblox Studio that turned
+              plain-English requests into working game code, executed in-engine
+              and verified through a closed-loop hash check. I built the full
+              stack: a Lua plugin and a FastAPI + LangGraph backend joined by a
+              polling bridge that gave a one-way HTTP platform true two-way
+              agent communication. It reached around 2,500 installs before I
+              wound it down.
             </p>
             <dl class="metrics">
               <div class="metric">
-                <dt>1,500+</dt>
-                <dd>active installs</dd>
+                <dt>~2,500</dt>
+                <dd>Creator Store installs</dd>
               </div>
               <div class="metric">
-                <dt>3</dt>
-                <dd>full rewrites</dd>
+                <dt>90%</dt>
+                <dd>lower token cost / request</dd>
               </div>
               <div class="metric">
-                <dt>in-engine</dt>
-                <dd>closed-loop verify</dd>
+                <dt>100&ndash;300ms</dt>
+                <dd>tool round-trip over the bridge</dd>
               </div>
             </dl>
           </li>
 
           <li class="entry reveal">
             <div class="entry-head">
-              <span class="entry-num">05</span>
+              <span class="entry-num">04</span>
               <h3 class="entry-title">
-                <a href="https://package-scanner-gules.vercel.app" target="_blank" rel="noopener"
+                <a href="logiscan-showcase.html"
                   >LogiScan</a
-                ><span class="ext">&#8599;</span>
+                ><span class="ext">&rarr;</span>
               </h3>
               <span class="entry-tag">Solo &middot; Vision</span>
             </div>

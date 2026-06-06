@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>LogiScan · Sergey Kudelin</title>
+
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* portfolio dark world */
+        --void: #0c0b09;
+        --panel: #141210;
+        --cream: #f1ede3;
+        --muted: #8a8175;
+        --hair: rgba(241, 237, 227, 0.12);
+        --accent: #c9633b;
+
+        /* product surface palette (shared with siblings) */
+        --fc-primary: #2d5a3a;
+        --fc-primary-hover: #234a2e;
+        --fc-green-light: #f0f7f1;
+        --fc-green-border: #d4e8d8;
+        --fc-bg: #faf9f6;
+        --fc-border: #e8e5df;
+        --fc-muted: #a1a19d;
+        --fc-text: #1c1c1a;
+        --fc-text-2: #3a3a38;
+        --fc-text-3: #78786e;
+        --fc-amber: #d97706;
+        --fc-red: #b91c1c;
+
+        --zodiak: "Zodiak", Georgia, serif;
+        --sans: "General Sans", system-ui, sans-serif;
+        --pserif: "Source Serif 4", Georgia, serif;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body {
+        background: var(--void);
+        color: var(--cream);
+        font-family: var(--sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      ::selection { background: var(--accent); color: var(--void); }
+
+      .section {
+        position: relative;
+        min-height: 100vh;
+        padding: clamp(56px, 9vh, 110px) 6vw clamp(70px, 11vh, 130px);
+        overflow: hidden;
+      }
+      /* faint ambient bloom behind the device */
+      .section::before {
+        content: "";
+        position: absolute;
+        left: 50%; top: 46%;
+        width: 90vw; max-width: 1200px; aspect-ratio: 16 / 10;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(
+          ellipse at center,
+          rgba(201, 99, 59, 0.10),
+          rgba(45, 90, 58, 0.06) 45%,
+          transparent 70%
+        );
+        filter: blur(10px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      /* ── editorial header ─────────────────────── */
+      .head { max-width: 880px; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 11px;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--accent); margin: 0 0 22px;
+      }
+      .kicker .seed {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7);
+      }
+      .head h1 {
+        font-family: var(--zodiak); font-weight: 600;
+        font-size: clamp(30px, 5.2vw, 60px); line-height: 1.04;
+        letter-spacing: -0.025em; margin: 0; text-wrap: balance;
+      }
+      .head h1 .dim { color: #6b6457; }
+      .head .lede {
+        font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.58;
+        color: #b8b1a4; max-width: 60ch; margin: 22px 0 0; text-wrap: pretty;
+      }
+      .head .lede b { color: var(--cream); font-weight: 500; }
+
+      /* ── the scanner device (cinematic) ───────── */
+      .device {
+        position: relative;
+        max-width: 760px; margin: 38px auto 0;
+        background: #15130f;
+        border-radius: 30px;
+        padding: 16px;
+        box-shadow:
+          0 2px 0 0 rgba(255, 255, 255, 0.05) inset,
+          0 50px 90px -30px rgba(0, 0, 0, 0.85),
+          0 0 0 1px rgba(0, 0, 0, 0.5),
+          0 0 0 6px rgba(40, 36, 30, 0.7);
+        opacity: 0;
+        transform: translateY(40px) scale(0.985);
+      }
+      .device.in {
+        animation: winIn 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+      }
+      @keyframes winIn { to { opacity: 1; transform: none; } }
+
+      /* scanner status bar (phone/tablet chrome) */
+      .scanbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 4px 12px 12px; color: #cfc8bb;
+        font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
+      }
+      .scanbar .left { display: flex; align-items: center; gap: 9px; }
+      .scanbar .live {
+        display: inline-flex; align-items: center; gap: 7px;
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+        color: #9a9182; font-weight: 600;
+      }
+      .scanbar .live i {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: #5d564b; display: block; transition: all 0.3s;
+      }
+      .scanbar.scanning .live i {
+        background: var(--accent);
+        box-shadow: 0 0 10px 1px rgba(201, 99, 59, 0.8);
+        animation: livepulse 1s ease-in-out infinite;
+      }
+      .scanbar.scanning .live { color: var(--accent); }
+      @keyframes livepulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+      .scanbar .right { display: flex; align-items: center; gap: 10px; color: #8a8175; }
+
+      /* the camera viewport that holds the photo + overlay */
+      .viewport {
+        position: relative;
+        width: 100%;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #0c0b09;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4) inset;
+      }
+      .viewport img.pallet {
+        display: block; width: 100%; height: auto;
+        transition: filter 0.5s ease, transform 0.5s ease;
+      }
+      /* before a scan, the feed reads as a raw camera preview */
+      .viewport.idle img.pallet { filter: saturate(0.92) brightness(0.95); }
+
+      /* moving scan line during the sweep */
+      .sweepline {
+        position: absolute; left: 0; right: 0; top: 0; height: 16%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(201, 99, 59, 0.0) 30%,
+          rgba(201, 99, 59, 0.35) 50%,
+          rgba(201, 99, 59, 0.0) 70%,
+          transparent
+        );
+        box-shadow: 0 0 30px 4px rgba(201, 99, 59, 0.25);
+        opacity: 0; pointer-events: none; z-index: 4;
+      }
+      .viewport.sweeping .sweepline {
+        opacity: 1; animation: sweep 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      @keyframes sweep { 0% { top: -16%; } 100% { top: 100%; } }
+
+      /* viewfinder corner ticks, framing the feed like a real scanner */
+      .corner {
+        position: absolute; width: 24px; height: 24px;
+        border: 2px solid rgba(241, 237, 227, 0.55); z-index: 5; pointer-events: none;
+      }
+      .corner.tl { left: 12px; top: 12px; border-right: 0; border-bottom: 0; border-radius: 6px 0 0 0; }
+      .corner.tr { right: 12px; top: 12px; border-left: 0; border-bottom: 0; border-radius: 0 6px 0 0; }
+      .corner.bl { left: 12px; bottom: 12px; border-right: 0; border-top: 0; border-radius: 0 0 0 6px; }
+      .corner.br { right: 12px; bottom: 12px; border-left: 0; border-top: 0; border-radius: 0 0 6px 0; }
+
+      /* ── detection boxes (percent-positioned over the image) ── */
+      .det {
+        position: absolute; z-index: 6;
+        border: 1.5px solid var(--accent);
+        border-radius: 4px;
+        box-shadow: 0 0 0 1px rgba(12, 11, 9, 0.4), 0 0 18px rgba(201, 99, 59, 0.25);
+        background: rgba(201, 99, 59, 0.06);
+        opacity: 0; transform: scale(0.82);
+        transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+      }
+      .det.show { opacity: 1; transform: none; }
+      .det.flag {
+        border-color: var(--fc-amber);
+        box-shadow: 0 0 0 1px rgba(12, 11, 9, 0.4), 0 0 20px rgba(217, 119, 6, 0.45);
+        background: rgba(217, 119, 6, 0.10);
+      }
+      /* crisp corner brackets that read as machine vision */
+      .det b {
+        position: absolute; width: 9px; height: 9px;
+        border: 2px solid var(--accent); pointer-events: none;
+      }
+      .det.flag b { border-color: var(--fc-amber); }
+      .det b.t-l { left: -2px; top: -2px; border-right: 0; border-bottom: 0; }
+      .det b.t-r { right: -2px; top: -2px; border-left: 0; border-bottom: 0; }
+      .det b.b-l { left: -2px; bottom: -2px; border-right: 0; border-top: 0; }
+      .det b.b-r { right: -2px; bottom: -2px; border-left: 0; border-top: 0; }
+
+      /* brief shimmer as each box locks on */
+      .det .pulse-ring {
+        position: absolute; inset: -3px; border-radius: 5px;
+        border: 1.5px solid var(--accent); opacity: 0;
+      }
+      .det.flag .pulse-ring { border-color: var(--fc-amber); }
+      .det.show .pulse-ring { animation: detring 0.7s ease-out 1; }
+      @keyframes detring {
+        0% { opacity: 0.7; transform: scale(0.9); }
+        100% { opacity: 0; transform: scale(1.25); }
+      }
+
+      /* floating extracted-data tag above each box */
+      .det .tag {
+        position: absolute; left: 50%; bottom: calc(100% + 6px);
+        transform: translateX(-50%) translateY(4px);
+        white-space: nowrap;
+        background: rgba(20, 18, 16, 0.92);
+        border: 1px solid rgba(201, 99, 59, 0.5);
+        color: var(--cream);
+        font-size: 10px; font-weight: 600; letter-spacing: 0.02em;
+        padding: 3px 7px; border-radius: 6px;
+        display: flex; align-items: center; gap: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+        opacity: 0; transition: opacity 0.28s ease 0.18s, transform 0.28s ease 0.18s;
+      }
+      .det.flag .tag { border-color: rgba(217, 119, 6, 0.6); }
+      .det.show .tag { opacity: 1; transform: translateX(-50%); }
+      .det .tag .st {
+        font-size: 9px; width: 13px; height: 13px; border-radius: 50%;
+        display: grid; place-items: center; flex: none;
+      }
+      .det .tag .st.ok { background: rgba(45, 90, 58, 0.9); color: #c7f0d2; }
+      .det .tag .st.warn { background: rgba(217, 119, 6, 0.92); color: #fff; }
+      /* keep edge tags from clipping out of the viewport */
+      .det.edge-l .tag { left: 0; transform: translateX(0) translateY(4px); }
+      .det.edge-l.show .tag { transform: translateX(0); }
+      .det.edge-r .tag { left: auto; right: 0; transform: translateX(0) translateY(4px); }
+      .det.edge-r.show .tag { transform: translateX(0); }
+
+      /* count badge that totals up as boxes land */
+      .scancount {
+        position: absolute; left: 12px; bottom: 12px; z-index: 7;
+        background: rgba(20, 18, 16, 0.85); backdrop-filter: blur(4px);
+        border: 1px solid var(--hair); border-radius: 8px;
+        padding: 5px 11px; font-size: 12px; font-weight: 600; color: var(--cream);
+        display: flex; align-items: center; gap: 8px;
+        opacity: 0; transition: opacity 0.3s ease;
+      }
+      .scancount.show { opacity: 1; }
+      .scancount .v { color: #9ec7a6; }
+      .scancount .f { color: #f0b569; }
+
+      /* primary scan control + hint, inside the device */
+      .deck { padding: 14px 6px 4px; }
+      .deck .hint {
+        font-size: 13px; line-height: 1.45; color: #b8b1a4;
+        margin: 0 0 12px; min-height: 19px; text-align: center;
+      }
+      .deck .hint b { color: var(--cream); font-weight: 600; }
+
+      /* ── buttons (shared family) ──────────────── */
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        font-family: var(--sans); font-weight: 600; font-size: 14.5px; cursor: pointer;
+        border-radius: 999px; padding: 13px 26px; border: 1px solid var(--hair);
+        background: var(--panel); color: var(--cream); transition: all 0.15s;
+      }
+      .btn:hover { border-color: var(--accent); color: var(--accent); }
+      .btn.pri {
+        background: var(--accent); color: #fff; border-color: var(--accent);
+        box-shadow: 0 10px 26px -10px rgba(201, 99, 59, 0.7);
+      }
+      .btn.pri:hover { background: #d97049; color: #fff; }
+      .btn.block { width: 100%; }
+      .btn.sm { padding: 9px 16px; font-size: 12.5px; }
+      .btn.working { pointer-events: none; opacity: 0.85; }
+      /* the pulsing "press me" ring on the scan button */
+      .btn.pulse { position: relative; }
+      .btn.pulse::after {
+        content: ""; position: absolute; inset: -3px; border-radius: 999px;
+        border: 2px solid var(--accent); opacity: 0;
+        animation: ring 2s ease-out infinite; pointer-events: none;
+      }
+      @keyframes ring {
+        0% { opacity: 0.55; transform: scale(1); }
+        70% { opacity: 0; transform: scale(1.13); }
+        100% { opacity: 0; transform: scale(1.13); }
+      }
+      .spin {
+        width: 15px; height: 15px; border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: #fff; border-radius: 50%;
+        animation: spin 0.7s linear infinite; flex: none;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* ── manifest reconciliation panel ────────── */
+      .reconcile {
+        max-width: 760px; margin: 26px auto 0;
+        display: grid; grid-template-columns: 1fr; gap: 18px;
+      }
+      .manifest {
+        background: var(--panel); border: 1px solid var(--hair);
+        border-radius: 16px; overflow: hidden;
+      }
+      .manifest .mhead {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 18px; border-bottom: 1px solid var(--hair);
+      }
+      .manifest .mhead .title {
+        display: flex; align-items: center; gap: 10px;
+        font-family: var(--pserif); font-weight: 600; font-size: 16px; color: var(--cream);
+      }
+      .manifest .mhead .title .pin {
+        width: 22px; height: 22px; border-radius: 7px; flex: none;
+        background: rgba(201, 99, 59, 0.16); color: var(--accent);
+        display: grid; place-items: center; font-size: 12px;
+      }
+      .manifest .mhead .summary { display: flex; align-items: center; gap: 8px; }
+      .mtag {
+        font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+        letter-spacing: 0.02em; white-space: nowrap;
+      }
+      .mtag.ok { background: rgba(45, 90, 58, 0.22); color: #9ec7a6; }
+      .mtag.flag { background: rgba(217, 119, 6, 0.18); color: #f0b569; }
+      .mrows { list-style: none; margin: 0; padding: 8px; }
+      .mrow {
+        display: flex; align-items: center; gap: 12px;
+        padding: 11px 12px; border-radius: 10px;
+        font-size: 13.5px; color: #cfc8bb;
+        opacity: 0.32; transition: opacity 0.35s ease, background 0.35s ease;
+      }
+      .mrow.lit { opacity: 1; }
+      .mrow + .mrow { margin-top: 2px; }
+      .mrow .badge {
+        width: 22px; height: 22px; border-radius: 50%; flex: none;
+        display: grid; place-items: center; font-size: 11px; font-weight: 700;
+        background: rgba(241, 237, 227, 0.07); color: #7c7468;
+      }
+      .mrow.lit .badge { background: rgba(45, 90, 58, 0.45); color: #c7f0d2; }
+      .mrow .id { font-weight: 600; color: var(--cream); width: 56px; flex: none; font-variant-numeric: tabular-nums; }
+      .mrow .carrier { color: #9a9182; flex: 1; min-width: 0; }
+      .mrow .tracking { color: #7c7468; font-size: 12px; font-variant-numeric: tabular-nums; }
+      .mrow .state { font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+      .mrow .state.matched { color: #9ec7a6; }
+      .mrow.flag {
+        background: rgba(217, 119, 6, 0.10);
+        box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.35);
+      }
+      .mrow.flag .badge { background: rgba(217, 119, 6, 0.85); color: #fff; }
+      .mrow.flag .id { color: #f5d39a; }
+      .mrow.flag .state.flagged { color: #f0b569; }
+      .mrow .note { display: block; font-size: 11px; color: #b88a4a; font-weight: 500; margin-top: 2px; }
+      .manifest .mfoot {
+        padding: 12px 18px; border-top: 1px solid var(--hair);
+        font-size: 12.5px; color: #8a8175; min-height: 18px;
+      }
+      .manifest .mfoot b { color: #f0b569; font-weight: 600; }
+      .manifest .mfoot.clean b { color: #9ec7a6; }
+
+      /* ── under the hood chip strip (shared) ───── */
+      .uth {
+        max-width: 760px; margin: 30px auto 0;
+        display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      }
+      .uth .lab {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #6b6457; margin-right: 4px;
+      }
+      .echip {
+        font-size: 12px; color: #c4bdb0;
+        background: var(--panel); border: 1px solid var(--hair);
+        padding: 7px 12px; border-radius: 8px;
+      }
+      .echip b { color: #9ec7a6; font-weight: 600; }
+      .earrow { color: #5d564b; font-size: 13px; }
+
+      /* ── how it works (3 steps) ───────────────── */
+      .how {
+        max-width: 760px; margin: 40px auto 0;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      }
+      .how .step {
+        background: var(--panel); border: 1px solid var(--hair);
+        border-radius: 14px; padding: 18px 16px;
+      }
+      .how .step .n {
+        width: 26px; height: 26px; border-radius: 8px; margin-bottom: 12px;
+        background: rgba(201, 99, 59, 0.14); color: var(--accent);
+        display: grid; place-items: center; font-size: 13px; font-weight: 700;
+        font-family: var(--pserif);
+      }
+      .how .step h3 {
+        font-family: var(--pserif); font-weight: 600; font-size: 15px;
+        margin: 0 0 6px; color: var(--cream);
+      }
+      .how .step p { font-size: 12.5px; line-height: 1.5; color: #9a9182; margin: 0; }
+
+      /* ── stats row ────────────────────────────── */
+      .stats {
+        max-width: 760px; margin: 34px auto 0;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      }
+      .stat {
+        background: var(--panel); border: 1px solid var(--hair);
+        border-radius: 14px; padding: 20px 18px; text-align: left;
+      }
+      .stat .big {
+        font-family: var(--zodiak); font-weight: 600; letter-spacing: -0.02em;
+        font-size: clamp(24px, 3.4vw, 34px); line-height: 1; color: var(--cream);
+      }
+      .stat .big .arrow { color: var(--accent); font-weight: 500; margin: 0 4px; }
+      .stat .big .unit { font-size: 0.5em; color: #8a8175; font-family: var(--sans); font-weight: 500; margin-left: 4px; }
+      .stat .cap { font-size: 12px; color: #8a8175; margin-top: 9px; line-height: 1.45; }
+
+      /* ── replay (shared) ──────────────────────── */
+      .replay {
+        max-width: 760px; margin: 28px auto 0;
+        display: flex; align-items: center; gap: 14px;
+        font-size: 13px; color: var(--muted);
+      }
+      .replay button {
+        font-family: var(--sans); font-size: 13px; font-weight: 500;
+        color: var(--cream); background: transparent;
+        border: 1px solid var(--hair); border-radius: 999px;
+        padding: 8px 16px; cursor: pointer; transition: all 0.18s ease;
+        display: inline-flex; align-items: center; gap: 8px;
+      }
+      .replay button:hover { border-color: var(--accent); color: var(--accent); }
+      .replay button:disabled { opacity: 0.4; cursor: default; }
+
+      /* reduced-motion: show the final detected state flat */
+      .reduce .device { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .reduce .det { transition: none !important; }
+      .reduce .det .tag { transition: none !important; }
+      .reduce .det.show .pulse-ring { animation: none !important; }
+      .reduce .sweepline { display: none !important; }
+      .reduce .scanbar.scanning .live i { animation: none !important; }
+      .reduce .mrow { transition: none !important; }
+      .reduce .kicker .seed { box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7); }
+      .reduce .btn.pulse::after { animation: none !important; }
+
+      /* ── responsive ───────────────────────────── */
+      @media (max-width: 880px) {
+        .section { padding: 48px 5vw 80px; }
+        .how { grid-template-columns: 1fr; }
+        .stats { grid-template-columns: 1fr; }
+        .uth { gap: 8px; }
+      }
+      @media (max-width: 560px) {
+        .device { border-radius: 22px; padding: 12px; }
+        .viewport img.pallet { border-radius: 12px; }
+        .det .tag { font-size: 9px; padding: 2px 5px; gap: 4px; }
+        .det .tag .st { width: 11px; height: 11px; font-size: 8px; }
+        .manifest .mrow .tracking { display: none; }
+        .scanbar .right .res { display: none; }
+      }
+      .homelink{position:fixed;left:24px;top:20px;z-index:50;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(241,237,227,.55);text-decoration:none;transition:color .2s;}
+      .homelink:hover{color:var(--accent);}
+      /* embed mode: when shown inside the journey, hide the editorial header so only the tool renders */
+      .embed .head,.embed .homelink{display:none!important;}
+      .embed .section{min-height:auto!important;padding:16px 3vw 28px!important;}
+      .embed .section::before{display:none!important;}
+      .homelink .ar{font-size:16px;line-height:1;}
+    </style>
+  <script>try{if(location.search.indexOf('embed')>-1)document.documentElement.className+=' embed';}catch(e){}</script>
+  </head>
+  <body>
+    <a class="homelink" href="index.html"><span class="ar">&larr;</span> Sergey Kudelin</a>
+    <section class="section" data-screen-label="LogiScan">
+      <div class="inner">
+        <header class="head">
+          <p class="kicker"><span class="seed"></span>LogiScan</p>
+          <h1>
+            Point your phone at a pallet.
+            <span class="dim">Know what&rsquo;s missing.</span>
+          </h1>
+          <p class="lede">
+            I built this solo to kill a nightly warehouse chore: checking every
+            package against a list by hand. LogiScan reads each shipping label
+            with <b>Gemini vision</b>, reconciles it against the manifest
+            mid-inference, and flags any discrepancy. It is a <b>PWA with no
+            backend</b>, costs about <b>$0.002 per scan</b>, and cut a 90-minute
+            audit to about 10. Press scan below.
+          </p>
+        </header>
+
+        <!-- the cinematic scanner device -->
+        <div class="device" id="device">
+          <div class="scanbar" id="scanbar">
+            <div class="left">
+              <span class="live"><i></i><span id="liveTxt">Camera ready</span></span>
+            </div>
+            <div class="right">
+              <span class="res">1024 &times; 768</span>
+              <span>LogiScan</span>
+            </div>
+          </div>
+
+          <div class="viewport idle" id="viewport">
+            <img class="pallet" src="./assets/logiscan/pallet-1.png" alt="A warehouse pallet of boxes, each with a shipping label" />
+            <div class="sweepline"></div>
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <!-- detection boxes injected here -->
+            <div class="scancount" id="scancount"><span>Detected</span> <span class="v" id="cntOk">0 matched</span> <span class="f" id="cntFlag"></span></div>
+          </div>
+
+          <div class="deck">
+            <p class="hint" id="hint">A live pallet. Press <b>Scan pallet</b> and LogiScan reads every label at once.</p>
+            <button class="btn pri block pulse" id="scanBtn">Scan pallet</button>
+          </div>
+        </div>
+
+        <!-- manifest reconciliation -->
+        <div class="reconcile">
+          <div class="manifest">
+            <div class="mhead">
+              <div class="title"><span class="pin">&#9776;</span>Tonight&rsquo;s manifest</div>
+              <div class="summary" id="mSummary"></div>
+            </div>
+            <ul class="mrows" id="mRows"></ul>
+            <div class="mfoot" id="mFoot">6 units expected on this pallet. Run a scan to reconcile them.</div>
+          </div>
+        </div>
+
+        <!-- under the hood -->
+        <div class="uth" id="uth"></div>
+
+        <!-- how it works -->
+        <div class="how">
+          <div class="step">
+            <div class="n">1</div>
+            <h3>Point</h3>
+            <p>Aim the phone at the pallet. No scanner gun, no special hardware, just the camera you already carry.</p>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <h3>Read</h3>
+            <p>Gemini reads every label in one shot with pixel-perfect bounding boxes, then pulls the ID, carrier, and tracking.</p>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <h3>Reconcile</h3>
+            <p>Each label is cross-referenced against the manifest mid-inference. Matches clear, discrepancies get flagged on the spot.</p>
+          </div>
+        </div>
+
+        <!-- stats -->
+        <div class="stats">
+          <div class="stat">
+            <div class="big">90<span class="arrow">&rarr;</span>10<span class="unit">min</span></div>
+            <div class="cap">Nightly audit, by hand vs by camera. Same pallet, same accuracy.</div>
+          </div>
+          <div class="stat">
+            <div class="big">$0.002<span class="unit">/ scan</span></div>
+            <div class="cap">Per-pallet inference cost on Gemini 3 Flash. Cheaper than the coffee that used to fuel the manual count.</div>
+          </div>
+          <div class="stat">
+            <div class="big">0<span class="unit">backend</span></div>
+            <div class="cap">Client-only PWA. No server, no database, no data retention. Photos never leave the device round trip.</div>
+          </div>
+        </div>
+
+        <div class="replay">
+          <button id="replayBtn">&#8635; Scan again</button>
+          <span id="replayNote">You control the scan. Nothing plays on its own.</span>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // ── the manifest, as LogiScan would reconcile it ──────────
+      // Grid order matches the photo: top row L->R, then bottom row L->R.
+      // x/y/w/h are percent coordinates measured against the real pallet
+      // photo (the labels sit on a slightly skewed grid), so each box frames
+      // its actual label at any render size. 5 match the manifest, 1 is flagged.
+      var LABELS = [
+        { id: "C02G", carrier: "UPS",   trk: "#4471", status: "ok",   x: 32.3, y: 33.6, w: 14,   h: 24   },
+        { id: "A18K", carrier: "FedEx", trk: "#9920", status: "ok",   x: 63.7, y: 33.1, w: 13.5, h: 24   },
+        { id: "D44P", carrier: "USPS",  trk: "#1183", status: "ok",   x: 91,   y: 33.1, w: 14,   h: 23.5 },
+        { id: "B07Q", carrier: "UPS",   trk: "#5512", status: "ok",   x: 35.6, y: 72.6, w: 13,   h: 20   },
+        { id: "E29R", carrier: "DHL",   trk: "#7768", status: "flag", x: 61.7, y: 70.6, w: 12.5, h: 20, note: "On shelf, not on manifest" },
+        { id: "F61M", carrier: "FedEx", trk: "#3304", status: "ok",   x: 88.5, y: 71.5, w: 13.5, h: 21   }
+      ];
+      var DRAW_GAP = 150;         // ms between each box locking on
+      var matchedCount = LABELS.filter(function (l) { return l.status === "ok"; }).length;
+      var flaggedCount = LABELS.length - matchedCount;
+
+      // ── shared handles ────────────────────────────────────────
+      var device = document.getElementById("device");
+      var viewport = document.getElementById("viewport");
+      var scanbar = document.getElementById("scanbar");
+      var liveTxt = document.getElementById("liveTxt");
+      var scancount = document.getElementById("scancount");
+      var cntOk = document.getElementById("cntOk");
+      var cntFlag = document.getElementById("cntFlag");
+      var scanBtn = document.getElementById("scanBtn");
+      var hint = document.getElementById("hint");
+      var mRows = document.getElementById("mRows");
+      var mSummary = document.getElementById("mSummary");
+      var mFoot = document.getElementById("mFoot");
+      var replayBtn = document.getElementById("replayBtn");
+
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var detEls = [];      // detection box elements, index-aligned with LABELS
+      var rowEls = [];      // manifest row elements, index-aligned with LABELS
+      var running = false;  // a scan is mid-flight
+      var done = false;     // a scan has finished
+
+      // ── build the detection boxes over the photo ──────────────
+      function buildBoxes() {
+        // clear any prior boxes (keep sweepline, corners, count)
+        detEls.forEach(function (el) { el.remove(); });
+        detEls = [];
+        LABELS.forEach(function (l) {
+          var el = document.createElement("div");
+          el.className = "det" + (l.status === "flag" ? " flag" : "");
+          // edge classes keep the floating tag from clipping out of frame
+          if (l.x <= 22) el.className += " edge-l";
+          else if (l.x >= 80) el.className += " edge-r";
+          el.style.left = (l.x - l.w / 2) + "%";
+          el.style.top = (l.y - l.h / 2) + "%";
+          el.style.width = l.w + "%";
+          el.style.height = l.h + "%";
+          var st = l.status === "flag"
+            ? '<span class="st warn">!</span>'
+            : '<span class="st ok">&#10003;</span>';
+          el.innerHTML =
+            '<b class="t-l"></b><b class="t-r"></b><b class="b-l"></b><b class="b-r"></b>' +
+            '<span class="pulse-ring"></span>' +
+            '<span class="tag">' + l.id + " &middot; " + l.carrier + " &middot; " + l.trk + st + "</span>";
+          viewport.appendChild(el);
+          detEls.push(el);
+        });
+      }
+
+      // ── build the manifest rows ───────────────────────────────
+      function buildRows() {
+        var html = LABELS.map(function (l, i) {
+          var flag = l.status === "flag";
+          return '<li class="mrow' + (flag ? " flag" : "") + '" data-i="' + i + '">' +
+            '<span class="badge">' + (flag ? "!" : "&#10003;") + "</span>" +
+            '<span class="id">' + l.id + "</span>" +
+            '<span class="carrier">' + l.carrier +
+            (flag ? '<span class="note">' + l.note + "</span>" : "") + "</span>" +
+            '<span class="tracking">' + l.trk + "</span>" +
+            '<span class="state ' + (flag ? "flagged" : "matched") + '">' +
+            (flag ? "Flagged" : "Matched") + "</span></li>";
+        }).join("");
+        mRows.innerHTML = html;
+        rowEls = [].slice.call(mRows.querySelectorAll(".mrow"));
+      }
+
+      function setSummary(show) {
+        if (!show) { mSummary.innerHTML = ""; return; }
+        mSummary.innerHTML =
+          '<span class="mtag ok">' + matchedCount + " matched</span>" +
+          '<span class="mtag flag">' + flaggedCount + " flagged</span>";
+      }
+      function updateCount(ok, flag) {
+        cntOk.innerHTML = ok + " matched";
+        cntFlag.innerHTML = flag ? "&middot; " + flag + " flagged" : "";
+      }
+
+      // ── reset to the pre-scan "live camera" state ─────────────
+      function resetScan() {
+        running = false; done = false;
+        viewport.classList.add("idle");
+        viewport.classList.remove("sweeping");
+        scanbar.classList.remove("scanning");
+        liveTxt.textContent = "Camera ready";
+        scancount.classList.remove("show");
+        updateCount(0, "");
+        buildBoxes();
+        buildRows();
+        setSummary(false);
+        mFoot.className = "mfoot";
+        mFoot.innerHTML = "6 units expected on this pallet. Run a scan to reconcile them.";
+        hint.innerHTML = "A live pallet. Press <b>Scan pallet</b> and LogiScan reads every label at once.";
+        scanBtn.disabled = false;
+        scanBtn.classList.remove("working");
+        scanBtn.classList.add("pulse");
+        scanBtn.innerHTML = "Scan pallet";
+      }
+
+      // ── the flat, fully-detected end state (reduced motion) ───
+      function showFinalInstant() {
+        running = false; done = true;
+        viewport.classList.remove("idle", "sweeping");
+        scanbar.classList.remove("scanning");
+        liveTxt.textContent = "Reconciled";
+        detEls.forEach(function (el) { el.classList.add("show"); });
+        rowEls.forEach(function (el) { el.classList.add("lit"); });
+        updateCount(matchedCount, flaggedCount);
+        scancount.classList.add("show");
+        setSummary(true);
+        mFoot.innerHTML = "<b>1 discrepancy:</b> E29R (DHL) scanned on the pallet but is not on tonight&rsquo;s manifest.";
+        hint.innerHTML = "Reconciled in one shot. <b>E29R</b> is on the pallet but not on the manifest.";
+        scanBtn.disabled = false;
+        scanBtn.classList.remove("working");
+        scanBtn.classList.remove("pulse");
+        scanBtn.innerHTML = "&#8635; Scan again";
+      }
+
+      // ── the cinematic scan sequence ───────────────────────────
+      function runScan() {
+        if (running) return;
+        if (done) { resetScan(); }   // a second press after completion restarts
+        running = true; done = false;
+
+        // 1) the camera "wakes up" and starts sweeping
+        viewport.classList.remove("idle");
+        viewport.classList.add("sweeping");
+        scanbar.classList.add("scanning");
+        liveTxt.textContent = "Reading labels…";
+        scanBtn.disabled = true;
+        scanBtn.classList.remove("pulse");
+        scanBtn.classList.add("working");
+        scanBtn.innerHTML = '<span class="spin"></span>Scanning…';
+        hint.innerHTML = "Gemini is reading every label and matching it to the manifest…";
+        scancount.classList.add("show");
+
+        var okSoFar = 0, flagSoFar = 0;
+
+        // 2) draw boxes in one-by-one, tag pops, manifest row lights
+        LABELS.forEach(function (l, i) {
+          setTimeout(function () {
+            detEls[i].classList.add("show");
+            if (rowEls[i]) rowEls[i].classList.add("lit");
+            if (l.status === "flag") flagSoFar++; else okSoFar++;
+            updateCount(okSoFar, flagSoFar);
+          }, 520 + i * DRAW_GAP);
+        });
+
+        // 3) sweep ends, manifest summary + verdict fill in
+        var finishAt = 520 + LABELS.length * DRAW_GAP + 420;
+        setTimeout(function () {
+          viewport.classList.remove("sweeping");
+          scanbar.classList.remove("scanning");
+          liveTxt.textContent = "Reconciled";
+          setSummary(true);
+          mFoot.innerHTML = "<b>1 discrepancy:</b> E29R (DHL) scanned on the pallet but is not on tonight&rsquo;s manifest.";
+          hint.innerHTML = "Reconciled. <b>5 matched</b>, and <b>E29R</b> is on the pallet but not on the manifest.";
+          scanBtn.disabled = false;
+          scanBtn.classList.remove("working");
+          scanBtn.classList.remove("pulse");
+          scanBtn.innerHTML = "&#8635; Scan again";
+          running = false; done = true;
+        }, finishAt);
+      }
+
+      // ── under the hood chip strip ─────────────────────────────
+      (function renderUth() {
+        var chips = ["<b>Gemini 3 Flash</b> vision", "pixel-perfect bounding boxes", "manifest cross-ref", "<b>no backend</b>, no retention"];
+        var html = '<span class="lab">Under the hood</span>';
+        chips.forEach(function (c, i) {
+          if (i > 0) html += '<span class="earrow">&rarr;</span>';
+          html += '<span class="echip">' + c + "</span>";
+        });
+        document.getElementById("uth").innerHTML = html;
+      })();
+
+      // ── wire controls ─────────────────────────────────────────
+      scanBtn.onclick = function () { if (!scanBtn.disabled) runScan(); };
+      replayBtn.onclick = function () { resetScan(); };
+
+      // expose for inspection / fallback
+      window.runScan = runScan;
+      window.resetScan = resetScan;
+      window.renderFinalInstant = showFinalInstant;
+
+      // ── init: build everything, then reset to live state ──────
+      if (reduce) document.body.classList.add("reduce");
+      buildBoxes();
+      buildRows();
+      resetScan();
+
+      // ── device entrance (the scanner never auto-plays) ────────
+      function inView(el, frac) {
+        var r = el.getBoundingClientRect();
+        var h = window.innerHeight || document.documentElement.clientHeight;
+        var vis = Math.min(r.bottom, h) - Math.max(r.top, 0);
+        return vis > 0 && vis / Math.min(r.height, h) >= frac;
+      }
+      function revealDevice() {
+        device.classList.add("in");
+        // with reduced motion, present the detected end state flat
+        if (reduce) showFinalInstant();
+      }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { revealDevice(); io.disconnect(); } });
+        }, { threshold: 0.12 });
+        io.observe(device);
+      }
+      requestAnimationFrame(function () { if (inView(device, 0.12)) revealDevice(); });
+      window.addEventListener("scroll", function () { if (inView(device, 0.12)) revealDevice(); }, { passive: true });
+
+      // Auto-play when embedded in the journey (no clicking needed). Pauses if the visitor takes control.
+      (function(){
+        if(!/[?&]embed/.test(location.search)) return;
+        var RESTART=function(){ (window.resetScan||function(){})(); };
+        var st=document.createElement('style');
+        st.textContent='.fakecur{position:fixed;left:0;top:0;z-index:80;pointer-events:none;transition:transform .58s cubic-bezier(.45,.05,.2,1);will-change:transform;}'
+          +'.fakecur svg{display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.4));}'
+          +'.fakecur .ring{position:absolute;left:-4px;top:-4px;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--accent);opacity:0;}'
+          +'.fakecur.press .ring{animation:curpress .5s ease-out;}'
+          +'@keyframes curpress{0%{opacity:.75;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}';
+        document.head.appendChild(st);
+        var cur=document.createElement('div'); cur.className='fakecur';
+        cur.innerHTML='<span class="ring"></span><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 2.5l15 7.4-6.4 1.6L10 19z" fill="#161513" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+        document.body.appendChild(cur);
+        function place(x,y){ cur.style.transform='translate('+x+'px,'+y+'px)'; }
+        place(window.innerWidth*0.5, window.innerHeight*0.6);
+        var paused=false, busy=false, idle=0, lastSig='';
+        function sig(){ var b=document.getElementById('scanBtn'); return (b?b.textContent:'')+'|'+document.querySelectorAll('#viewport .det.show').length; }
+        function moveClick(el){
+          busy=true;
+          var r=el.getBoundingClientRect();
+          place(r.left+r.width*0.5, r.top+r.height*0.5);
+          setTimeout(function(){ cur.classList.add('press');
+            setTimeout(function(){ cur.classList.remove('press'); try{el.click();}catch(e){} busy=false; }, 210);
+          }, 600);
+        }
+        function nextTarget(){
+          var b=document.getElementById('scanBtn');
+          if(b && !b.disabled) return b;
+          return null;
+        }
+        setInterval(function(){
+          if(paused||busy) return;
+          try{
+            var t=nextTarget();
+            if(t){ idle=0; lastSig=sig(); moveClick(t); return; }
+            var s=sig(); if(s===lastSig){ if(++idle>8){ idle=0; RESTART(); } } else { idle=0; lastSig=s; }
+          }catch(e){}
+        }, 780);
+        // plays on its own; pauses while the visitor hovers to take control
+        window.addEventListener('mouseenter', function(){ paused=true; cur.style.opacity='0'; });
+        window.addEventListener('mouseleave', function(){ paused=false; cur.style.opacity='1'; });
+      })();
+    </script>
+  </body>
+</html>
