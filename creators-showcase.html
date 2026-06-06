@@ -529,8 +529,13 @@
       }
       .homelink{position:fixed;left:24px;top:20px;z-index:50;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(241,237,227,.55);text-decoration:none;transition:color .2s;}
       .homelink:hover{color:var(--accent);}
+      /* embed mode: when shown inside the journey, hide the editorial header so only the tool renders */
+      .embed .head,.embed .homelink{display:none!important;}
+      .embed .section{min-height:auto!important;padding:16px 3vw 28px!important;}
+      .embed .section::before{display:none!important;}
       .homelink .ar{font-size:16px;line-height:1;}
     </style>
+  <script>try{if(location.search.indexOf('embed')>-1)document.documentElement.className+=' embed';}catch(e){}</script>
   </head>
   <body>
     <a class="homelink" href="index.html"><span class="ar">&larr;</span> Sergey Kudelin</a>

@@ -139,7 +139,7 @@
   .route .dotted{fill:none;stroke:var(--orange);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 24;opacity:0.62;}
 
   /* walker (sprite) */
-  .explorer{position:fixed;left:0;top:0;z-index:8;width:84px;height:111px;transform:translate(-50%,-100%);transform-origin:50% 100%;will-change:left,top,transform;}
+  .explorer{position:fixed;left:0;top:0;z-index:8;width:84px;height:111px;transform:translate(-50%,-100%);transform-origin:50% 100%;will-change:left,top,transform;pointer-events:none;}
   .explorer img{width:100%;height:100%;display:block;object-fit:contain;object-position:center bottom;}
 
   .scrollhint{position:fixed;right:38px;bottom:30px;left:auto;transform:none;z-index:9;font-family:var(--hand);font-size:19px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:6px;}
@@ -155,8 +155,33 @@
   .homelink .ar{font-size:16px;line-height:1;}
   @keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.5}50%{transform:rotate(45deg) translate(3px,3px);opacity:1}}
 
+  /* embedded interactive exhibits (frames 3 & 4) live ON the frame */
+  .frame.exhibit .body{display:none;}
+  .exwrap{position:absolute;inset:26px;padding:clamp(30px,4vh,52px) clamp(38px,4vw,62px);display:flex;flex-direction:column;}
+  .exhead{flex:none;max-width:1000px;}
+  .exhead .kick{font-weight:700;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin:0 0 13px;display:flex;align-items:center;gap:10px;}
+  .exhead .kick .d{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 11px 1px rgba(217,106,58,0.7);}
+  .exhead h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,3.8vw,48px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 13px;color:var(--cream);}
+  .exhead h1 em{font-style:normal;color:var(--orange);}
+  .exhead .lede{font-size:15px;line-height:1.5;color:var(--soft);margin:0;max-width:70ch;}
+  .exhead .lede b{color:var(--cream);font-weight:600;}
+  .exstage{flex:1;margin-top:18px;position:relative;border-radius:15px;overflow:hidden;border:1px solid var(--hair);background:#0c0b09;min-height:0;box-shadow:0 40px 80px -42px rgba(0,0,0,0.75);}
+  .exframe{width:100%;height:100%;border:0;display:block;background:#0c0b09;}
+  .exbar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 15px;background:linear-gradient(0deg, rgba(11,9,7,0.9), rgba(11,9,7,0));pointer-events:none;}
+  .exbar .exhint{font-family:var(--hand);font-size:16px;color:var(--orange-soft);text-shadow:0 1px 6px rgba(0,0,0,0.6);}
+  .exbar .exexpand{pointer-events:auto;font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--cream);background:rgba(20,16,13,0.88);border:1px solid var(--hair);border-radius:999px;padding:8px 16px;cursor:pointer;transition:border-color .2s,color .2s;}
+  .exbar .exexpand:hover{border-color:var(--orange);color:var(--orange);}
+  /* fullscreen demo overlay */
+  .overlay{position:fixed;inset:0;z-index:9999;background:rgba(6,5,4,0.97);display:none;}
+  .overlay.on{display:block;}
+  .overlay .ovframe{width:100%;height:100%;border:0;display:block;}
+  .ovclose{position:absolute;top:14px;right:18px;z-index:2;font-family:var(--sans);font-weight:600;font-size:13px;color:var(--cream);background:rgba(20,16,13,0.92);border:1px solid var(--hair);border-radius:999px;padding:9px 17px;cursor:pointer;}
+  .ovclose:hover{border-color:var(--orange);color:var(--orange);}
+
   @media (max-width:900px){
     .track{height:auto!important;}
+    .frame.exhibit .exwrap{position:relative;inset:auto;height:auto;padding:88px 18px 34px;}
+    .frame.exhibit .exstage{height:80vh;min-height:540px;flex:none;}
     .stage{position:relative;height:auto;overflow:visible;}
     .world{position:relative;transform:none!important;width:100%;}
     .frame{position:relative!important;left:0!important;top:0!important;width:100%;height:auto;min-height:92vh;border-bottom:1px solid var(--hair);}
@@ -257,6 +282,17 @@
     '<div class="fcontact"><a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a><a href="recommendation.pdf" target="_blank" rel="noopener" style="background:transparent;color:var(--cream);border:1.5px solid rgba(244,234,221,0.28);">Read recommendation letter &rarr;</a><span class="loc">Miami, FL &middot; remote-flexible</span></div>'
   ];
   var FIMG=['f1-clinic.png','f3-wedge.png','f4-creators.png','f5-outreach.png','f6-build.png'];
+  // frames that host a live, embedded interactive instead of an illustration (0-indexed)
+  var EMBED={
+    2:{ src:'creators-showcase.html', title:'FutureClinic Creators pipeline',
+        head:'<p class="kick"><span class="d"></span>03 &middot; What I built, part one</p>'+
+             '<h1>FutureClinic <em>Creators.</em></h1>'+
+             '<p class="lede">An engine that turns a doctor&rsquo;s channel into <b>ready-to-record videos</b> in their own voice, every script carrying their FutureClinic link. The real pipeline runs right here. Click in and try it.</p>' },
+    3:{ src:'outreach-showcase.html', title:'FutureClinic Outreach engine',
+        head:'<p class="kick"><span class="d"></span>04 &middot; What I built, part two</p>'+
+             '<h1>A page and a video, <em>for every doctor.</em></h1>'+
+             '<p class="lede">Every doctor got <b>their own landing page</b> and <b>their own founder video</b>, by name. Cold outreach that didn&rsquo;t feel cold, around 15% reply at peak. The real engine runs right here.</p>' }
+  };
   var frames=[];
   for(var i=0;i<N;i++){
     var side=(i%2===0)?'left':'right';
@@ -271,13 +307,24 @@
   // build frame DOM
   frames.forEach(function(f){
     var el=document.createElement('div');
-    el.className='frame '+f.side;
+    var em=EMBED[f.n-1];
+    el.className='frame '+f.side+(em?' exhibit':'');
     el.style.left=f.x+'px'; el.style.top=f.y+'px';
     var nn=('0'+f.n).slice(-2);
-    el.innerHTML='<div class="card"></div>'+
-      '<div class="counter"><span class="now">'+nn+'</span>&thinsp;/&thinsp;0'+N+'<span class="tube"><i style="width:'+Math.round(11+ (f.n-1)/(N-1)*78)+'%"></i></span></div>'+
-      '<img class="fimg" src="./assets/frames/'+FIMG[f.n-1]+'" alt="" />'+
-      '<div class="body">'+BODIES[f.n-1]+'</div>';
+    var counter='<div class="counter"><span class="now">'+nn+'</span>&thinsp;/&thinsp;0'+N+'<span class="tube"><i style="width:'+Math.round(11+ (f.n-1)/(N-1)*78)+'%"></i></span></div>';
+    if(em){
+      el.innerHTML='<div class="card"></div>'+counter+
+        '<div class="exwrap"><div class="exhead">'+em.head+'</div>'+
+        '<div class="exstage">'+
+          '<iframe class="exframe" data-src="'+em.src+'?embed=1" title="'+em.title+'" loading="lazy" scrolling="yes"></iframe>'+
+          '<div class="exbar"><span class="exhint">click inside to try it</span>'+
+          '<button class="exexpand" type="button" data-src="'+em.src+'">&#x2922;&nbsp; Full screen</button></div>'+
+        '</div></div>';
+    } else {
+      el.innerHTML='<div class="card"></div>'+counter+
+        '<img class="fimg" src="./assets/frames/'+FIMG[f.n-1]+'" alt="" />'+
+        '<div class="body">'+BODIES[f.n-1]+'</div>';
+    }
     world.appendChild(el);
   });
 
@@ -408,7 +455,7 @@
   function go(idx){
     idx=clamp(idx,0,N-1); if(idx===cur && !anim) return;
     anim={from:shown, to:stopT[idx], t0:(performance.now()), dur:GLIDE};
-    cur=idx; markSeen(cur); updateDots();
+    cur=idx; markSeen(cur); updateDots(); loadEmbed(cur);
     try{ history.replaceState(null, '', '#frame-'+(idx+1)); }catch(e){}
     if(!raf) raf=requestAnimationFrame(tick);
   }
@@ -418,6 +465,33 @@
   for(var di=0; di<N; di++){ (function(i){ var b=document.createElement('button'); b.className='navdot'; b.setAttribute('aria-label','Go to frame '+(i+1)); b.addEventListener('click',function(){ go(i); }); navEl.appendChild(b); })(di); }
   document.querySelector('.stage').appendChild(navEl);
   function updateDots(){ [].forEach.call(navEl.children,function(b,i){ b.classList.toggle('on', i===cur); }); }
+
+  // ---- embedded interactives: lazy-load on arrival, expand to fullscreen overlay ----
+  function loadEmbed(idx){
+    var fr=frameEls[idx]; if(!fr) return;
+    var ifr=fr.querySelector('.exframe');
+    if(ifr && !ifr.src && ifr.getAttribute('data-src')){
+      ifr.addEventListener('load', function(){
+        try{ var hl=ifr.contentDocument.querySelector('.homelink'); if(hl) hl.style.display='none'; }catch(e){}
+      });
+      ifr.src=ifr.getAttribute('data-src');
+    }
+  }
+  var overlay=document.createElement('div'); overlay.className='overlay';
+  overlay.innerHTML='<button class="ovclose" type="button">&times;&nbsp; Close</button><iframe class="ovframe" title="Interactive demo"></iframe>';
+  document.body.appendChild(overlay);
+  var ovFrame=overlay.querySelector('.ovframe');
+  function openOverlay(src){
+    ovFrame.onload=function(){ try{ var hl=ovFrame.contentDocument.querySelector('.homelink'); if(hl) hl.style.display='none'; }catch(e){} };
+    ovFrame.src=src; overlay.classList.add('on');
+  }
+  function closeOverlay(){ overlay.classList.remove('on'); ovFrame.src='about:blank'; }
+  overlay.querySelector('.ovclose').addEventListener('click', closeOverlay);
+  document.addEventListener('click', function(ev){
+    var btn=ev.target.closest && ev.target.closest('.exexpand');
+    if(btn){ ev.preventDefault(); openOverlay(btn.getAttribute('data-src')); }
+  });
+  addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay.classList.contains('on')) closeOverlay(); });
 
   // wheel: one continuous gesture (incl. trackpad momentum) advances exactly one frame; ignored mid-glide
   var wheelLock=false, wlT;
@@ -450,7 +524,8 @@
   fit(); markSeen(0); updateDots();
   addEventListener('resize', function(){ fit(); if(!mobile) draw(shown); });
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){ fit(); if(!mobile) draw(shown); });
-  if(!mobile) draw(shown);
+  if(!mobile){ draw(shown); loadEmbed(cur); }
+  else { Object.keys(EMBED).forEach(function(k){ loadEmbed(+k); }); }
 
   window.__j={maskPath:maskPath,L:L,frames:frames,stops:stops,go:function(i){go(i);},
     // test hook: camera position as a function of elapsed ms (proves timing is clock-based, not frame-based)

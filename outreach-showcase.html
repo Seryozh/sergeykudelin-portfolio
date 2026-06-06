@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>FutureClinic Outreach — Sergey Kudelin</title>
+
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* portfolio dark world */
+        --void: #0c0b09;
+        --panel: #141210;
+        --cream: #f1ede3;
+        --muted: #8a8175;
+        --hair: rgba(241, 237, 227, 0.12);
+        --accent: #c9633b;
+
+        /* authentic FutureClinic product palette */
+        --fc-primary: #2d5a3a;
+        --fc-primary-hover: #234a2e;
+        --fc-green-light: #f0f7f1;
+        --fc-green-border: #d4e8d8;
+        --fc-bg: #faf9f6;
+        --fc-border: #e8e5df;
+        --fc-muted: #a1a19d;
+        --fc-text: #1c1c1a;
+        --fc-text-2: #3a3a38;
+        --fc-text-3: #78786e;
+        --fc-amber: #d97706;
+        --fc-red: #b91c1c;
+
+        --zodiak: "Zodiak", Georgia, serif;
+        --sans: "General Sans", system-ui, sans-serif;
+        --pserif: "Source Serif 4", Georgia, serif;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body {
+        background: var(--void);
+        color: var(--cream);
+        font-family: var(--sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      ::selection { background: var(--accent); color: var(--void); }
+
+      .section {
+        position: relative;
+        min-height: 100vh;
+        padding: clamp(56px, 9vh, 110px) 6vw clamp(70px, 11vh, 130px);
+        overflow: hidden;
+      }
+      /* faint ambient bloom behind the window */
+      .section::before {
+        content: "";
+        position: absolute;
+        left: 50%; top: 46%;
+        width: 90vw; max-width: 1200px; aspect-ratio: 16 / 10;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(
+          ellipse at center,
+          rgba(201, 99, 59, 0.10),
+          rgba(45, 90, 58, 0.06) 45%,
+          transparent 70%
+        );
+        filter: blur(10px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      /* ── editorial header ─────────────────────── */
+      .head { max-width: 880px; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 11px;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--accent); margin: 0 0 22px;
+      }
+      .kicker .seed {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7);
+      }
+      .head h1 {
+        font-family: var(--zodiak); font-weight: 600;
+        font-size: clamp(30px, 5.2vw, 60px); line-height: 1.04;
+        letter-spacing: -0.025em; margin: 0; text-wrap: balance;
+      }
+      .head h1 .dim { color: #6b6457; }
+      .head .lede {
+        font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.58;
+        color: #b8b1a4; max-width: 60ch; margin: 22px 0 0; text-wrap: pretty;
+      }
+      .head .lede b { color: var(--cream); font-weight: 500; }
+
+      /* ── pipeline rail ────────────────────────── */
+      .rail {
+        display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+        margin: 38px 0 30px;
+      }
+      .rstep {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 500; color: #7c7468;
+        padding: 6px 13px; border-radius: 999px; white-space: nowrap;
+        border: 1px solid transparent; transition: all 0.3s ease;
+      }
+      .rstep .b {
+        width: 18px; height: 18px; border-radius: 50%;
+        display: grid; place-items: center; font-size: 10px; font-weight: 700;
+        background: rgba(241, 237, 227, 0.08); color: #7c7468;
+      }
+      .rstep.done { color: #b8b1a4; }
+      .rstep.done .b { background: rgba(45, 90, 58, 0.4); color: #9ec7a6; }
+      .rstep.active {
+        color: var(--cream); border-color: var(--accent);
+        background: rgba(201, 99, 59, 0.12);
+      }
+      .rstep.active .b { background: var(--accent); color: #fff; }
+      .rconn { width: 18px; height: 1px; background: var(--hair); }
+      .rconn.on { background: rgba(158, 199, 166, 0.35); }
+
+      /* ── the product window (cinematic) ───────── */
+      .window {
+        background: var(--fc-bg);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow:
+          0 2px 0 0 rgba(255, 255, 255, 0.04),
+          0 50px 90px -30px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transform: translateY(40px) scale(0.985);
+      }
+      .window.in {
+        animation: winIn 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+      }
+      @keyframes winIn {
+        to { opacity: 1; transform: none; }
+      }
+
+      .chrome {
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 16px;
+        background: #efece6;
+        border-bottom: 1px solid var(--fc-border);
+      }
+      .lights { display: flex; gap: 7px; }
+      .lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+      .lights .r { background: #ec6a5e; }
+      .lights .y { background: #f4bf4f; }
+      .lights .g { background: #61c554; }
+      .addr {
+        flex: 1; display: flex; align-items: center; gap: 8px;
+        background: #fff; border: 1px solid var(--fc-border);
+        border-radius: 7px; padding: 6px 12px;
+        font-size: 12.5px; color: var(--fc-text-3);
+        max-width: 360px; margin: 0 auto;
+      }
+      .addr .lock { color: var(--fc-primary); font-size: 11px; }
+      .chrome .brand {
+        display: flex; align-items: center; gap: 8px;
+      }
+      .chrome .brand img { height: 17px; width: auto; display: block; }
+      /* text brand (no logo image for the outreach surface) */
+      .chrome .brand .txtbrand {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: var(--pserif); font-weight: 600; font-size: 13.5px;
+        color: var(--fc-text-2); letter-spacing: -0.01em; white-space: nowrap;
+      }
+      .chrome .brand .txtbrand .mk {
+        width: 16px; height: 16px; border-radius: 5px; background: var(--fc-primary);
+        color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center;
+      }
+
+      /* product body */
+      .pbody { padding: 24px 26px 26px; color: var(--fc-text); }
+      .peyebrow {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+        color: var(--fc-muted); font-weight: 500;
+      }
+      .ptitle {
+        font-family: var(--pserif); font-weight: 600;
+        font-size: clamp(20px, 2.4vw, 27px); letter-spacing: -0.01em;
+        margin: 5px 0 0; color: var(--fc-text);
+      }
+      .psub { color: var(--fc-text-3); font-size: 14px; margin: 8px 0 0; }
+      .psub b { color: var(--fc-text-2); font-weight: 600; }
+
+      .tb { display: flex; gap: 22px; margin-top: 20px; align-items: stretch; }
+      .tb-left { flex: 1 1 58%; min-width: 0; }
+      .tb-right { flex: 1 1 42%; max-width: 380px; display: flex; flex-direction: column; }
+
+      .workspace {
+        background: #fff; border: 1px solid var(--fc-border);
+        border-radius: 13px; padding: 16px; height: 430px;
+        display: flex; flex-direction: column;
+      }
+      .ws-scroll {
+        flex: 1; overflow-y: auto; scroll-behavior: smooth;
+        display: flex; flex-direction: column; gap: 11px; padding-right: 6px;
+      }
+      .ws-scroll::-webkit-scrollbar { width: 5px; }
+      .ws-scroll::-webkit-scrollbar-thumb { background: var(--fc-border); border-radius: 3px; }
+      .ws-empty { margin: auto; text-align: center; color: var(--fc-text-3); padding: 20px; }
+      .ws-empty h3 {
+        font-family: var(--pserif); font-size: 17px; color: var(--fc-text);
+        margin: 0 0 6px;
+      }
+      .ws-empty p { font-size: 13px; margin: 0; line-height: 1.5; }
+
+      .msg { font-size: 13.5px; animation: pop 0.4s ease-out both; line-height: 1.5; }
+      @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      .msg.concept {
+        background: var(--fc-green-light); border: 1px solid rgba(212, 232, 216, 0.6);
+        border-radius: 11px; padding: 11px 13px; color: var(--fc-text-2);
+      }
+      .msg.concept .lab {
+        font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--fc-primary); font-weight: 600; margin-bottom: 4px;
+      }
+      .msg.gen, .msg.inspect {
+        color: var(--fc-text-3); display: flex; align-items: center; gap: 9px;
+      }
+      .msg.pass { color: var(--fc-primary); display: flex; gap: 7px; align-items: center; font-weight: 500; }
+      .msg.warn { color: var(--fc-amber); display: flex; gap: 7px; align-items: center; font-weight: 500; }
+      .msg.adjust { color: var(--fc-text-3); font-style: italic; }
+      .msg.done {
+        background: var(--fc-green-light); border: 1px solid var(--fc-green-border);
+        border-radius: 11px; padding: 11px 13px; color: var(--fc-primary); font-weight: 600;
+      }
+      /* consolidated inspection report card */
+      .report {
+        border: 1px solid var(--fc-border); border-radius: 11px; overflow: hidden;
+        animation: pop 0.4s ease-out both;
+      }
+      .report .rhead {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 9px 12px; font-size: 12px; font-weight: 600;
+        background: #fbfaf7; border-bottom: 1px solid var(--fc-border);
+      }
+      .report .rhead .who { display: flex; align-items: center; gap: 7px; color: var(--fc-text-2); }
+      .report .rhead .who i {
+        width: 16px; height: 16px; border-radius: 5px; background: var(--fc-primary);
+        color: #fff; font-style: normal; font-size: 9px; display: grid; place-items: center;
+      }
+      .report .score { font-size: 12px; padding: 2px 9px; border-radius: 999px; font-weight: 700; }
+      .report .score.lo { background: #fef3e2; color: var(--fc-amber); }
+      .report .score.hi { background: var(--fc-green-light); color: var(--fc-primary); }
+      .report ul { list-style: none; margin: 0; padding: 8px 12px 10px; display: flex; flex-direction: column; gap: 6px; }
+      .report li { font-size: 13px; display: flex; gap: 8px; align-items: flex-start; color: var(--fc-text-2); }
+      .report li .ic { flex: none; font-weight: 700; }
+      .report li.ok .ic { color: var(--fc-primary); }
+      .report li.no .ic { color: var(--fc-amber); }
+      .report .verdict {
+        padding: 9px 12px; font-size: 12.5px; border-top: 1px solid var(--fc-border);
+        color: var(--fc-text-3); background: #fbfaf7;
+      }
+      .report .verdict b { color: var(--fc-text-2); }
+      .spin {
+        width: 15px; height: 15px; border: 2px solid var(--fc-green-border);
+        border-top-color: var(--fc-primary); border-radius: 50%;
+        animation: spin 0.7s linear infinite; flex: none;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .label-sm {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--fc-muted); margin-bottom: 8px; font-weight: 500;
+      }
+
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+        font-family: var(--sans); font-weight: 500; font-size: 14px; cursor: pointer;
+        border-radius: 999px; padding: 11px 22px; border: 1px solid var(--fc-border);
+        background: #fff; color: var(--fc-text-2); transition: all 0.15s;
+      }
+      .btn:hover { border-color: var(--fc-primary); color: var(--fc-primary); }
+      .btn.pri { background: var(--fc-primary); color: #fff; border-color: var(--fc-primary); }
+      .btn.pri:hover { background: var(--fc-primary-hover); }
+      .btn.sm { padding: 8px 15px; font-size: 12.5px; }
+      .btn.ghost { border-color: transparent; color: var(--fc-text-3); }
+      .btn.ghost:hover { color: var(--fc-text); background: var(--fc-green-light); }
+      .btn.block { width: 100%; }
+
+      /* ── action bar: always shows what to press next ── */
+      .actionbar {
+        margin-top: 14px; padding-top: 14px;
+        border-top: 1px solid var(--fc-border);
+      }
+      .step-meta {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 9px;
+      }
+      .stepcount {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--fc-primary);
+      }
+      .stepdots { display: flex; gap: 5px; }
+      .stepdots i {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--fc-border); display: block; transition: background 0.3s;
+      }
+      .stepdots i.on { background: var(--fc-primary); }
+      .next-hint {
+        font-size: 13px; line-height: 1.45; color: var(--fc-text-3);
+        margin-bottom: 12px; min-height: 19px;
+      }
+      .next-hint b { color: var(--fc-text-2); font-weight: 600; }
+      /* the pulsing "press me" ring on the primary next button */
+      .btn.pulse { position: relative; }
+      .btn.pulse::after {
+        content: ""; position: absolute; inset: -3px; border-radius: 999px;
+        border: 2px solid var(--fc-primary); opacity: 0;
+        animation: ring 2s ease-out infinite; pointer-events: none;
+      }
+      @keyframes ring {
+        0% { opacity: 0.55; transform: scale(1); }
+        70% { opacity: 0; transform: scale(1.13); }
+        100% { opacity: 0; transform: scale(1.13); }
+      }
+      .btn.working { pointer-events: none; opacity: 0.8; }
+
+      /* ── stage cards ──────────────────────────── */
+      .stagebody { margin-top: 18px; animation: stageIn 0.45s ease-out both; }
+      @keyframes stageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+      .stack { display: flex; flex-direction: column; gap: 11px; }
+      .pcard {
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 12px;
+        padding: 14px 16px;
+        transition: border-color 0.15s, box-shadow 0.15s; animation: pop 0.4s ease-out both;
+      }
+      .t-name { font-family: var(--pserif); font-weight: 600; font-size: 15px; color: var(--fc-text); }
+      .t-desc { font-size: 12.5px; color: var(--fc-text-3); margin-top: 3px; line-height: 1.45; }
+      .tag { font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+      .tag.amber { background: #fef3e2; color: var(--fc-amber); }
+      .tag.green { background: var(--fc-green-light); color: var(--fc-primary); }
+      .tag.purple { background: #f5f0fb; color: #7c5cbf; }
+      .tag.blue { background: #eef4fb; color: #3b6ea5; }
+      .tag.red { background: #fdeceb; color: var(--fc-red); }
+
+      /* generate flourish */
+      .gen-line { display: flex; align-items: center; gap: 11px; font-size: 14px; color: var(--fc-text-3); padding: 20px 4px; }
+      .action-row { display: flex; gap: 9px; }
+      .action-row .btn:not(.pri) { flex: none; }
+      .action-row .btn.pri { flex: 1; }
+
+      /* ════════════════════════════════════════════════════════════
+         OUTREACH-SPECIFIC COMPONENTS  (additive, not in the sibling)
+         ════════════════════════════════════════════════════════════ */
+
+      /* ── STAGE 1 · discovered channels ────────── */
+      .chan {
+        display: flex; align-items: center; gap: 13px;
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 12px;
+        padding: 12px 14px; animation: pop 0.4s ease-out both;
+      }
+      .chan .av {
+        width: 38px; height: 38px; border-radius: 50%; flex: none;
+        display: grid; place-items: center; color: #fff; font-weight: 700;
+        font-family: var(--pserif); font-size: 15px;
+      }
+      .chan .meta { flex: 1; min-width: 0; }
+      .chan .nm { font-family: var(--pserif); font-weight: 600; font-size: 14.5px; color: var(--fc-text); }
+      .chan .sub { font-size: 12px; color: var(--fc-text-3); margin-top: 2px; }
+      .chan .src {
+        display: inline-flex; align-items: center; gap: 5px;
+        font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+        background: #f0efe9; color: var(--fc-text-3); white-space: nowrap;
+      }
+      .chan .src.yt { background: #fdeceb; color: var(--fc-red); }
+      .chan .src.ig {
+        background: linear-gradient(135deg, #fdf2f8, #f5f0fb); color: #c2378a;
+      }
+      .chan .count { font-size: 12.5px; font-weight: 700; color: var(--fc-text-2); white-space: nowrap; }
+
+      /* ── STAGE 2 · verify (the NPI card) ──────── */
+      .vcard {
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 13px;
+        overflow: hidden; animation: pop 0.4s ease-out both;
+      }
+      .vcard .vtop {
+        display: flex; align-items: center; gap: 13px;
+        padding: 15px 16px; border-bottom: 1px solid var(--fc-border);
+      }
+      .vcard .vtop .av {
+        width: 44px; height: 44px; border-radius: 50%; flex: none;
+        display: grid; place-items: center; color: #fff; font-weight: 700;
+        font-family: var(--pserif); font-size: 17px;
+        background: linear-gradient(160deg, #cdb59d, #8a6f57);
+      }
+      .vcard .vtop .vn { flex: 1; min-width: 0; }
+      .vcard .vtop .vn .nm { font-family: var(--pserif); font-weight: 600; font-size: 16px; color: var(--fc-text); }
+      .vcard .vtop .vn .sub { font-size: 12.5px; color: var(--fc-text-3); margin-top: 2px; }
+      .vcard .vstatus {
+        font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 999px;
+        white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;
+      }
+      .vcard .vstatus.pending { background: #fef3e2; color: var(--fc-amber); }
+      .vcard .vstatus.verified { background: var(--fc-green-light); color: var(--fc-primary); }
+      .vcard .vbody { padding: 13px 16px 4px; display: flex; flex-direction: column; gap: 8px; }
+      .vrow { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--fc-text-2); }
+      .vrow .ic { flex: none; font-weight: 700; color: var(--fc-primary); width: 15px; }
+      .vrow .k { color: var(--fc-text-3); }
+      .vrow .v { font-weight: 600; color: var(--fc-text-2); }
+      .vsrc { display: flex; flex-wrap: wrap; gap: 7px; padding: 11px 16px 16px; }
+      .vsrc .schip {
+        font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px;
+        background: #fbfaf7; border: 1px solid var(--fc-border); color: var(--fc-text-3);
+        display: inline-flex; align-items: center; gap: 5px;
+      }
+      .vsrc .schip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fc-primary); }
+
+      /* ── STAGE 3 · enrich (high-intent comments) ── */
+      .quote {
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 12px;
+        border-left: 3px solid var(--fc-primary); padding: 13px 15px;
+        animation: pop 0.4s ease-out both;
+      }
+      .quote .qt {
+        font-family: var(--pserif); font-size: 14.5px; line-height: 1.5; color: var(--fc-text);
+      }
+      .quote .qm {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-top: 9px; font-size: 11.5px; color: var(--fc-text-3);
+      }
+      .quote .qm .who { display: inline-flex; align-items: center; gap: 6px; }
+      .quote .qm .who .pf { width: 18px; height: 18px; border-radius: 50%; background: #d8d4cb; display: block; }
+      .quote .qm .intent {
+        font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+        padding: 3px 9px; border-radius: 999px; background: var(--fc-green-light); color: var(--fc-primary);
+      }
+      .enrich-stat {
+        display: flex; gap: 10px; margin-bottom: 13px;
+      }
+      .estat {
+        flex: 1; background: #fff; border: 1px solid var(--fc-border); border-radius: 11px;
+        padding: 11px 13px; text-align: center; animation: pop 0.4s ease-out both;
+      }
+      .estat .n { font-family: var(--pserif); font-weight: 600; font-size: 21px; color: var(--fc-primary); line-height: 1; }
+      .estat .l { font-size: 10.5px; color: var(--fc-text-3); margin-top: 5px; letter-spacing: 0.03em; }
+
+      /* ── STAGE 4 · personalize (THE CENTERPIECE) ── */
+      .perso { display: flex; gap: 22px; margin-top: 18px; align-items: stretch; }
+      .perso-col { flex: 1 1 50%; min-width: 0; display: flex; flex-direction: column; }
+      /* device frame holding the live dr_mamina page */
+      .device {
+        position: relative; border-radius: 16px; background: #1d1b17;
+        padding: 9px; box-shadow: 0 24px 50px -18px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.3);
+      }
+      .device .screen {
+        position: relative; width: 100%; aspect-ratio: 16 / 10;
+        border-radius: 9px; overflow: hidden; background: #fff;
+      }
+      .device .screen iframe { display: block; width: 100%; height: 100%; border: 0; }
+      .device .notch {
+        position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+        width: 58px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.18); z-index: 3;
+      }
+      .device-cap {
+        font-size: 12px; color: var(--fc-text-3); margin-top: 10px; line-height: 1.5;
+      }
+      .device-cap b { color: var(--fc-text-2); font-weight: 600; }
+      .device-cap .live {
+        display: inline-flex; align-items: center; gap: 5px; font-weight: 700;
+        color: var(--fc-primary);
+      }
+      .device-cap .live .pip {
+        width: 7px; height: 7px; border-radius: 50%; background: var(--fc-primary);
+        box-shadow: 0 0 0 0 rgba(45,90,58,0.5); animation: livepip 2s ease-out infinite;
+      }
+      @keyframes livepip {
+        0% { box-shadow: 0 0 0 0 rgba(45,90,58,0.45); }
+        70% { box-shadow: 0 0 0 7px rgba(45,90,58,0); }
+        100% { box-shadow: 0 0 0 0 rgba(45,90,58,0); }
+      }
+
+      /* founder video slot (styled player, no real file) */
+      .vidslot {
+        position: relative; width: 100%; aspect-ratio: 16 / 10; border-radius: 11px;
+        overflow: hidden; background:
+          radial-gradient(120% 120% at 70% 20%, #2f5c3c 0%, #1e3a28 55%, #14271c 100%);
+        box-shadow: 0 18px 40px -16px rgba(0,0,0,0.45);
+      }
+      .vidslot .grain {
+        position: absolute; inset: 0; opacity: 0.5; mix-blend-mode: overlay; pointer-events: none;
+        background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+        background-size: 4px 4px;
+      }
+      .vidslot .founder {
+        position: absolute; right: 6%; bottom: 0; width: 46%; max-width: 200px;
+        filter: drop-shadow(0 8px 18px rgba(0,0,0,0.4));
+      }
+      .vidslot .founder img { width: 100%; display: block; object-fit: contain; object-position: bottom; }
+      .vidslot .play {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: 60px; height: 60px; border-radius: 50%; z-index: 4;
+        background: rgba(255,255,255,0.93); display: grid; place-items: center;
+        cursor: pointer; transition: transform 0.18s ease, background 0.18s ease;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      }
+      .vidslot .play:hover { transform: translate(-50%, -50%) scale(1.07); }
+      .vidslot .play svg { margin-left: 3px; }
+      .vidslot .play.playing svg { display: none; }
+      .vidslot .play.playing::after {
+        content: ""; width: 14px; height: 14px; border-radius: 2px;
+        background: var(--fc-primary);
+      }
+      /* lower-third doctor name banner */
+      .vidslot .lower3 {
+        position: absolute; left: 14px; bottom: 14px; z-index: 4; max-width: 62%;
+      }
+      .vidslot .lower3 .l3name {
+        font-family: var(--pserif); font-weight: 600; font-size: 16px; color: #fff;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.5); line-height: 1.15;
+      }
+      .vidslot .lower3 .l3sub {
+        font-size: 11px; color: rgba(255,255,255,0.82); margin-top: 3px;
+        text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+      }
+      .vidslot .scrub {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 4px; z-index: 4;
+        background: rgba(255,255,255,0.22);
+      }
+      .vidslot .scrub i {
+        display: block; height: 100%; width: 0; background: var(--accent);
+        transition: width 0.2s linear;
+      }
+      .vidslot .badge {
+        position: absolute; left: 14px; top: 13px; z-index: 4;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+        color: #fff; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+        padding: 4px 9px; border-radius: 7px;
+      }
+      .vidcap {
+        font-size: 12px; color: var(--fc-text-3); margin-top: 10px; line-height: 1.55;
+      }
+      .vidcap b { color: var(--fc-text-2); font-weight: 600; }
+
+      /* the personalized-email quote-back strip */
+      .qback {
+        margin-top: 18px; background: var(--fc-green-light);
+        border: 1px solid var(--fc-green-border); border-radius: 12px; padding: 14px 16px;
+        animation: pop 0.4s ease-out both;
+      }
+      .qback .qbh {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--fc-primary); font-weight: 700; margin-bottom: 8px;
+        display: flex; align-items: center; gap: 7px;
+      }
+      .qback .qbody { font-size: 13.5px; line-height: 1.6; color: var(--fc-text-2); }
+      .qback .qbody em {
+        font-family: var(--pserif); font-style: italic; color: var(--fc-text);
+        background: #fff; padding: 1px 6px; border-radius: 5px;
+        box-shadow: inset 0 0 0 1px var(--fc-green-border);
+      }
+
+      /* ── STAGE 5 · sequence (timeline + slack) ──── */
+      .seq { display: flex; gap: 22px; margin-top: 18px; align-items: stretch; }
+      .seq-col { flex: 1 1 50%; min-width: 0; display: flex; flex-direction: column; }
+      .etl { display: flex; flex-direction: column; gap: 0; }
+      .etl .estep {
+        display: flex; align-items: flex-start; gap: 13px; position: relative;
+        padding-bottom: 16px; animation: pop 0.4s ease-out both;
+      }
+      .etl .estep:last-child { padding-bottom: 0; }
+      .etl .estep .node {
+        width: 30px; height: 30px; border-radius: 50%; flex: none; z-index: 1;
+        display: grid; place-items: center; font-size: 11px; font-weight: 700;
+        font-family: var(--sans); background: #fff; border: 2px solid var(--fc-border);
+        color: var(--fc-text-3);
+      }
+      .etl .estep.sent .node { background: var(--fc-primary); border-color: var(--fc-primary); color: #fff; }
+      .etl .estep.fire .node { border-color: var(--accent); color: var(--accent); background: #fff; }
+      .etl .estep::before {
+        content: ""; position: absolute; left: 14px; top: 30px; bottom: 0; width: 2px;
+        background: var(--fc-border);
+      }
+      .etl .estep:last-child::before { display: none; }
+      .etl .estep.sent::before { background: var(--fc-green-border); }
+      .etl .estep .ec { flex: 1; min-width: 0; padding-top: 1px; }
+      .etl .estep .et { font-family: var(--pserif); font-weight: 600; font-size: 13.5px; color: var(--fc-text); }
+      .etl .estep .ed { font-size: 12px; color: var(--fc-text-3); margin-top: 2px; line-height: 1.45; }
+      .etl .estep .est {
+        font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+        padding: 2px 8px; border-radius: 999px; white-space: nowrap; margin-top: 5px;
+        display: inline-block;
+      }
+      .etl .estep .est.ok { background: var(--fc-green-light); color: var(--fc-primary); }
+      .etl .estep .est.q { background: #f0efe9; color: var(--fc-text-3); }
+      .etl .estep .est.f { background: #fdece4; color: var(--accent); }
+
+      .slack {
+        background: #fff; border: 1px solid var(--fc-border); border-radius: 13px;
+        overflow: hidden; animation: pop 0.4s ease-out both;
+      }
+      .slack .sk-head {
+        display: flex; align-items: center; gap: 9px; padding: 11px 14px;
+        background: #fbfaf7; border-bottom: 1px solid var(--fc-border);
+        font-size: 12.5px; font-weight: 600; color: var(--fc-text-2);
+      }
+      .slack .sk-head .mk {
+        width: 19px; height: 19px; border-radius: 5px; flex: none;
+        background: #4a154b; color: #fff; font-size: 11px; font-weight: 800;
+        display: grid; place-items: center;
+      }
+      .slack .sk-head .ch { color: var(--fc-text-3); font-weight: 500; }
+      .slack .sk-msg { padding: 13px 14px; display: flex; gap: 10px; }
+      .slack .sk-msg .bot {
+        width: 34px; height: 34px; border-radius: 8px; flex: none;
+        background: var(--fc-primary); color: #fff; font-weight: 700; font-size: 13px;
+        font-family: var(--pserif); display: grid; place-items: center;
+      }
+      .slack .sk-body { flex: 1; min-width: 0; }
+      .slack .sk-who { font-size: 12.5px; font-weight: 700; color: var(--fc-text); }
+      .slack .sk-who span { font-weight: 500; color: var(--fc-muted); font-size: 11px; margin-left: 6px; }
+      .slack .sk-draft {
+        margin-top: 8px; border: 1px solid var(--fc-border); border-radius: 9px;
+        background: #fbfaf7; padding: 10px 12px;
+      }
+      .slack .sk-draft .dto { font-size: 11.5px; color: var(--fc-text-3); }
+      .slack .sk-draft .dto b { color: var(--fc-text-2); font-weight: 600; }
+      .slack .sk-draft .dsub { font-family: var(--pserif); font-weight: 600; font-size: 13.5px; color: var(--fc-text); margin: 6px 0 5px; }
+      .slack .sk-draft .dprev { font-size: 12px; color: var(--fc-text-2); line-height: 1.5; }
+      .slack .sk-draft .dprev em { font-style: italic; color: var(--fc-text-3); }
+      .slack .sk-actions { display: flex; gap: 8px; margin-top: 11px; }
+      .slack .sk-approved {
+        margin-top: 11px; background: var(--fc-green-light); border: 1px solid var(--fc-green-border);
+        color: var(--fc-primary); font-weight: 600; border-radius: 9px; padding: 9px 12px;
+        font-size: 13px; display: flex; gap: 8px; align-items: center; animation: pop 0.45s ease-out both;
+      }
+
+      /* ── closing payoff card ──────────────────── */
+      .payoff { text-align: center; padding: 8px 0 6px; }
+      .payoff .seal {
+        width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 14px;
+        background: var(--fc-primary); color: #fff; display: grid; place-items: center; font-size: 22px;
+        box-shadow: 0 8px 20px -6px rgba(45, 90, 58, 0.6);
+      }
+      .payoff h3 {
+        font-family: var(--pserif); font-weight: 600; font-size: clamp(18px, 2.1vw, 23px);
+        color: var(--fc-text); margin: 0 auto; max-width: 30ch; line-height: 1.3;
+      }
+      .payoff p {
+        font-size: 13.5px; color: var(--fc-text-3); margin: 12px auto 0; max-width: 46ch; line-height: 1.6;
+      }
+      .payoff p b { color: var(--fc-text-2); font-weight: 600; }
+      .payoff .pstats {
+        display: flex; gap: 11px; margin: 20px auto 4px; max-width: 520px; justify-content: center;
+      }
+      .payoff .pst {
+        flex: 1; background: #fff; border: 1px solid var(--fc-border); border-radius: 12px;
+        padding: 14px 12px;
+      }
+      .payoff .pst .n { font-family: var(--pserif); font-weight: 600; font-size: 22px; color: var(--fc-primary); line-height: 1; }
+      .payoff .pst .l { font-size: 11px; color: var(--fc-text-3); margin-top: 6px; line-height: 1.35; }
+
+      /* ── under the hood ───────────────────────── */
+      .uth {
+        margin-top: 30px; display: flex; align-items: center; gap: 10px;
+        flex-wrap: wrap;
+      }
+      .uth .lab {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+        text-transform: uppercase; color: #6b6457; margin-right: 4px;
+      }
+      .echip {
+        font-size: 12px; color: #c4bdb0;
+        background: var(--panel); border: 1px solid var(--hair);
+        padding: 7px 12px; border-radius: 8px;
+      }
+      .echip b { color: #9ec7a6; font-weight: 600; }
+      .earrow { color: #5d564b; font-size: 13px; }
+
+      .replay {
+        margin-top: 26px; display: flex; align-items: center; gap: 14px;
+        font-size: 13px; color: var(--muted);
+      }
+      .replay button {
+        font-family: var(--sans); font-size: 13px; font-weight: 500;
+        color: var(--cream); background: transparent;
+        border: 1px solid var(--hair); border-radius: 999px;
+        padding: 8px 16px; cursor: pointer; transition: all 0.18s ease;
+        display: inline-flex; align-items: center; gap: 8px;
+      }
+      .replay button:hover { border-color: var(--accent); color: var(--accent); }
+      .replay button:disabled { opacity: 0.4; cursor: default; }
+
+      /* reduced-motion: no entrance/streaming animation, end state shown flat */
+      .reduce .window { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .reduce .msg { animation: none !important; }
+      .reduce .vidslot .play { animation: none !important; }
+      .reduce .device-cap .live .pip { animation: none !important; }
+      .reduce .kicker .seed { box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7); }
+
+      /* ── responsive ───────────────────────────── */
+      @media (max-width: 880px) {
+        .section { padding: 48px 5vw 80px; }
+        .tb, .perso, .seq { flex-direction: column; }
+        .tb-right, .perso-col, .seq-col { max-width: none; }
+        .workspace { height: 360px; }
+        .rail { gap: 2px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; margin-left: -5vw; margin-right: -5vw; padding-left: 5vw; padding-right: 5vw; }
+        .rail::-webkit-scrollbar { display: none; }
+        .uth { gap: 8px; }
+        .enrich-stat { flex-wrap: wrap; }
+      }
+      @media (max-width: 560px) {
+        .chrome .brand { display: none; }
+        .addr { max-width: none; margin: 0; }
+        .pbody { padding: 18px 16px 18px; }
+        .payoff .pstats { flex-direction: column; }
+      }
+      .homelink{position:fixed;left:24px;top:20px;z-index:50;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;letter-spacing:.02em;color:rgba(241,237,227,.55);text-decoration:none;transition:color .2s;}
+      .homelink:hover{color:var(--accent);}
+      .homelink .ar{font-size:16px;line-height:1;}
+      /* embed mode: when shown inside the journey, hide the editorial header so only the tool renders */
+      .embed .head,.embed .homelink{display:none!important;}
+      .embed .section{min-height:auto!important;padding:16px 3vw 28px!important;}
+      .embed .section::before{display:none!important;}
+    </style>
+    <script>try{if(location.search.indexOf('embed')>-1)document.documentElement.className+=' embed';}catch(e){}</script>
+  </head>
+  <body>
+    <a class="homelink" href="index.html"><span class="ar">&larr;</span> Sergey Kudelin</a>
+    <section class="section" data-screen-label="Outreach">
+      <div class="inner">
+        <header class="head">
+          <p class="kicker"><span class="seed"></span>FutureClinic · Outreach</p>
+          <h1>
+            A page and a video, for every doctor.
+            <span class="dim">Cold outreach that doesn&rsquo;t feel cold.</span>
+          </h1>
+          <p class="lede">
+            I built the outreach engine that finds doctor-creators, verifies
+            every license against the federal registry, and reaches each one
+            with <b>their own landing page</b> and <b>their own founder video,
+            by name</b>. Walk the five stages below. The centerpiece is
+            <b>Personalize</b>, where a real, live page gets generated for a
+            single doctor and a founder video is rendered to greet them.
+          </p>
+        </header>
+
+        <!-- pipeline rail -->
+        <div class="rail" id="rail"></div>
+
+        <!-- the cinematic product window -->
+        <div class="window" id="window">
+          <div class="chrome">
+            <div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+            <div class="addr"><span class="lock">&#128274;</span>futureclinic.com/outreach</div>
+            <div class="brand">
+              <span class="txtbrand"><span class="mk">FC</span>FutureClinic Outreach</span>
+            </div>
+          </div>
+
+          <div class="pbody">
+            <p class="peyebrow" id="peyebrow">Step 1 of 5 · Discover</p>
+            <h2 class="ptitle" id="ptitle">Find the doctors worth reaching</h2>
+            <p class="psub" id="psub">Mining YouTube and Instagram for physicians with a real audience.</p>
+
+            <div class="stagebody" id="stageBody"></div>
+
+            <div class="actionbar" id="actionbar">
+              <div class="step-meta">
+                <span class="stepcount" id="stepcount">Step 1 of 5</span>
+                <span class="stepdots" id="stepdots"></span>
+              </div>
+              <div class="next-hint" id="nextHint">Mine the channels to begin.</div>
+              <div class="action-row" id="actionRow">
+                <button class="btn pri block pulse" id="primaryBtn">Mine channels &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- under the hood -->
+        <div class="uth" id="uth"></div>
+
+        <div class="replay">
+          <button id="replayBtn">&#8635; Start over</button>
+          <span id="replayNote">You control each step, nothing plays on its own.</span>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // ── data, faithful to the real outreach engine (no real PII) ──
+      // Invented doctor-creator handles across specialties (multi-specialty proof).
+      var CHANNELS = [
+        { nm: "Dr. Maya Reed", sp: "Dermatology", c: "312K", src: "yt", srcl: "YouTube", color: "linear-gradient(160deg,#cdb59d,#8a6f57)", in: "M" },
+        { nm: "Dr. Jordan Vale", sp: "Cardiology", c: "88K", src: "ig", srcl: "Instagram", color: "linear-gradient(160deg,#b9c4cf,#6d7c8a)", in: "J" },
+        { nm: "Dr. Priya Anand", sp: "Gastroenterology", c: "145K", src: "yt", srcl: "YouTube", color: "linear-gradient(160deg,#cbb8c7,#7e6276)", in: "P" },
+        { nm: "Dr. Liang Okafor", sp: "Endocrinology", c: "61K", src: "ig", srcl: "Instagram", color: "linear-gradient(160deg,#bcc8b6,#6f8268)", in: "L" }
+      ];
+      // high-intent comments surfaced by the intent classifier (invented)
+      var COMMENTS = [
+        { t: "Do you do virtual consults? I can&rsquo;t find a derm who takes my insurance.", w: "@hannah_k" },
+        { t: "Been on the waitlist 4 months, is there any way to talk to you directly?", w: "@m.delacruz" },
+        { t: "Is there a way to actually become your patient? I&rsquo;d travel for this.", w: "@riverstone88" }
+      ];
+      // 5-touch sequence states (queued -> e1_sent -> ... -> completed)
+      var TOUCHES = [
+        { e: "E1", t: "Intro + their page", d: "Personalized landing page, by name.", st: "sent", stl: "e1_sent" },
+        { e: "E2", t: "Founder video", d: "Their own founder video, rendered for them.", st: "sent", stl: "e2_sent" },
+        { e: "E3", t: "New-video trigger", d: "Fires when they post; quotes their audience back.", st: "fire", stl: "queued" },
+        { e: "E4", t: "Value + proof", d: "How peers turned their audience into patients.", st: "queued", stl: "queued" },
+        { e: "E5", t: "Soft close", d: "One clear ask, easy out.", st: "queued", stl: "queued" }
+      ];
+
+      // ── pipeline rail + under-the-hood, both stage-aware ────
+      var PIPE = [
+        { label: "Discover", n: 1 }, { label: "Verify", n: 2 }, { label: "Enrich", n: 3 },
+        { label: "Personalize", n: 4 }, { label: "Sequence", n: 5 }
+      ];
+      var UTH = {
+        discover: ["channel mining", "<b>YouTube API</b>", "<b>Instagram graph</b>", "subscriber + activity filters"],
+        verify: ["<b>NPI registry</b>", "<b>Scrapfly browser</b>", "name resolution", "specialty cross-ref"],
+        enrich: ["<b>Supadata</b> transcripts", "top-200 comments", "<b>intent classifier</b>", "enrichment merge"],
+        personalize: ["per-doctor page gen", "<b>Whisper align</b>", "<b>ffmpeg chroma-key</b>", "voice-matched copy"],
+        sequence: ["<b>Airtable</b> CRM", "<b>Gmail OAuth2</b>", "<b>Slack</b> gate", "<b>Nikola</b> agent"]
+      };
+      var stageIdx = 0;
+
+      function renderRail() {
+        var cur = stageIdx + 1, html = "";
+        PIPE.forEach(function (s, i) {
+          if (i > 0) html += '<span class="rconn ' + (s.n <= cur ? "on" : "") + '"></span>';
+          var cls = s.n === cur ? "active" : s.n < cur ? "done" : "";
+          var mark = s.n < cur ? "&#10003;" : s.n;
+          html += '<span class="rstep ' + cls + '"><span class="b">' + mark + "</span>" + s.label + "</span>";
+        });
+        document.getElementById("rail").innerHTML = html;
+      }
+      function renderUth(stage) {
+        var chips = UTH[stage] || [], html = '<span class="lab">Under the hood</span>';
+        chips.forEach(function (c, i) {
+          if (i > 0) html += '<span class="earrow">&rarr;</span>';
+          html += '<span class="echip">' + c + "</span>";
+        });
+        document.getElementById("uth").innerHTML = html;
+      }
+
+      // ── shared UI handles ───────────────────────────────────
+      var stageBody = document.getElementById("stageBody");
+      var primaryBtn = document.getElementById("primaryBtn");
+      var nextHint = document.getElementById("nextHint");
+      var stepcount = document.getElementById("stepcount");
+      var stepdots = document.getElementById("stepdots");
+      var peyebrow = document.getElementById("peyebrow");
+      var ptitle = document.getElementById("ptitle");
+      var psub = document.getElementById("psub");
+
+      var STEPS = 5;
+      for (var di = 0; di < STEPS; di++) stepdots.appendChild(document.createElement("i"));
+      function setDots(n) { [].forEach.call(stepdots.children, function (el, i) { el.classList.toggle("on", i < n); }); }
+      function setHead(e, t, s) { peyebrow.innerHTML = e; ptitle.innerHTML = t; psub.innerHTML = s; }
+      function setHint(h) { nextHint.innerHTML = h; }
+      function setCount(c) { stepcount.innerHTML = c; }
+      function setBody(h) { stageBody.innerHTML = h; stageBody.style.animation = "none"; void stageBody.offsetWidth; stageBody.style.animation = ""; }
+      function setBtn(label, enabled, pulse) {
+        primaryBtn.innerHTML = label;
+        primaryBtn.disabled = !enabled;
+        primaryBtn.style.opacity = enabled ? "" : "0.45";
+        primaryBtn.style.pointerEvents = enabled ? "" : "none";
+        primaryBtn.classList.toggle("pulse", !!enabled && pulse !== false);
+      }
+      function btnWorking(text) {
+        primaryBtn.disabled = true;
+        primaryBtn.classList.remove("pulse");
+        primaryBtn.innerHTML = '<span class="spin" style="border-color:rgba(255,255,255,.4);border-top-color:#fff"></span>' + text;
+      }
+      function delay(fn, ms) { setTimeout(fn, ms || 1100); }
+
+      // ── STAGE 1 · Discover ──────────────────────────────────
+      function enterDiscover() {
+        stageIdx = 0; renderRail(); renderUth("discover"); setDots(1);
+        setHead("Step 1 of 5 &middot; Discover", "Find the doctors worth reaching", "Mining YouTube and Instagram for physicians with a real audience.");
+        setCount("Step 1 of 5"); setHint("Mine the channels to begin.");
+        setBtn("Mine channels &rarr;", true);
+        setBody('<div class="ws-empty" style="padding:26px 10px;text-align:center;color:var(--fc-text-3)"><h3 style="font-family:var(--pserif);font-size:17px;color:var(--fc-text);margin:0 0 6px">Two platforms, one filter</h3><p style="font-size:13px;margin:0;line-height:1.5">Doctor-creators across specialties, gated on subscriber count and recent posting activity.</p></div>');
+        primaryBtn.onclick = function () {
+          if (primaryBtn.disabled) return;
+          btnWorking("Mining…");
+          setHint("Scanning channels, filtering by audience and activity…");
+          setBody('<div class="gen-line"><span class="spin"></span>Mining YouTube + Instagram for doctor-creators…</div>');
+          delay(function () {
+            var h = '<div class="stack">' + CHANNELS.map(function (c) {
+              return '<div class="chan"><div class="av" style="background:' + c.color + '">' + c.in + '</div>' +
+                '<div class="meta"><div class="nm">' + c.nm + '</div><div class="sub">' + c.sp + '</div></div>' +
+                '<span class="src ' + c.src + '">' + c.srcl + '</span><span class="count">' + c.c + '</span></div>';
+            }).join("") + "</div>";
+            setBody(h);
+            setHint("Four candidates across four specialties. <b>Verify their licenses</b>.");
+            setBtn("Verify licenses &rarr;", true);
+            primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterVerify(); };
+          }, 1350);
+        };
+      }
+
+      // ── STAGE 2 · Verify ────────────────────────────────────
+      function enterVerify() {
+        stageIdx = 1; renderRail(); renderUth("verify"); setDots(2);
+        setHead("Step 2 of 5 &middot; Verify", "Confirm every license", "Each candidate is matched against the federal NPI registry. Hard sources get a Scrapfly-rendered browser to beat anti-scraping.");
+        setCount("Step 2 of 5"); setHint("Run the verification on Dr. Maya Reed…");
+        setBtn("Run verification &rarr;", true, false);
+        function card(verified) {
+          return '<div class="vcard">' +
+            '<div class="vtop"><div class="av">M</div>' +
+            '<div class="vn"><div class="nm">Dr. Maya Reed</div><div class="sub">Dermatology &middot; YouTube 312K</div></div>' +
+            (verified
+              ? '<span class="vstatus verified">&#10003; Verified</span>'
+              : '<span class="vstatus pending"><span class="spin" style="width:12px;height:12px;border-color:#f6dcae;border-top-color:var(--fc-amber)"></span>Candidate</span>') +
+            '</div>' +
+            (verified
+              ? '<div class="vbody">' +
+                  '<div class="vrow"><span class="ic">&#10003;</span><span class="k">Credential</span><span class="v">MD &middot; board-certified</span></div>' +
+                  '<div class="vrow"><span class="ic">&#10003;</span><span class="k">License</span><span class="v">Active &middot; CA &amp; NY</span></div>' +
+                  '<div class="vrow"><span class="ic">&#10003;</span><span class="k">Specialty</span><span class="v">Dermatology, matches channel</span></div>' +
+                '</div>' +
+                '<div class="vsrc">' +
+                  '<span class="schip"><span class="dot"></span>NPI registry</span>' +
+                  '<span class="schip"><span class="dot"></span>Doximity</span>' +
+                  '<span class="schip"><span class="dot"></span>practice site</span>' +
+                '</div>'
+              : '<div class="vbody" style="padding-bottom:14px"><div class="vrow"><span class="k" style="color:var(--fc-text-3)">Resolving name against the NPI registry and cross-referencing specialty…</span></div></div>') +
+            '</div>';
+        }
+        setBody(card(false));
+        primaryBtn.onclick = function () {
+          if (primaryBtn.disabled) return;
+          btnWorking("Verifying…");
+          setHint("NPI lookup + Scrapfly-rendered cross-check…");
+          delay(function () {
+            setBody(card(true));
+            setHint("License confirmed, specialty matches. <b>Enrich</b> her before we write.");
+            setBtn("Enrich the prospect &rarr;", true);
+            primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterEnrich(); };
+          }, 1450);
+        };
+      }
+
+      // ── STAGE 3 · Enrich ────────────────────────────────────
+      function enterEnrich() {
+        stageIdx = 2; renderRail(); renderUth("enrich"); setDots(3);
+        setHead("Step 3 of 5 &middot; Enrich", "Know them before you write", "Pull transcripts with Supadata, scrape the top ~200 comments per video, then run an intent classifier to surface the doctor&rsquo;s own audience asking for care.");
+        setCount("Step 3 of 5"); setHint("Pull transcripts and classify comment intent…");
+        setBtn("Personalize for her &rarr;", true, false);
+        setBody('<div class="ws-empty" style="padding:24px 10px;text-align:center;color:var(--fc-text-3)"><h3 style="font-family:var(--pserif);font-size:17px;color:var(--fc-text);margin:0 0 6px">Listen first</h3><p style="font-size:13px;margin:0;line-height:1.5">Transcripts give us her voice. Comments give us her demand.</p></div>');
+        primaryBtn.onclick = function () {
+          if (primaryBtn.disabled) return;
+          btnWorking("Classifying…");
+          setHint("Reading transcripts, scoring ~200 comments per video for intent…");
+          setBody('<div class="gen-line"><span class="spin"></span>Transcribing with Supadata &amp; classifying comment intent…</div>');
+          delay(function () {
+            var stat = '<div class="enrich-stat">' +
+              '<div class="estat"><div class="n">28</div><div class="l">transcripts pulled</div></div>' +
+              '<div class="estat"><div class="n">~200</div><div class="l">comments / video</div></div>' +
+              '<div class="estat"><div class="n">3</div><div class="l">high-intent surfaced</div></div></div>';
+            var quotes = '<div class="label-sm">High-intent comments, her own audience</div><div class="stack">' +
+              COMMENTS.map(function (c) {
+                return '<div class="quote"><div class="qt">&ldquo;' + c.t + '&rdquo;</div>' +
+                  '<div class="qm"><span class="who"><span class="pf"></span>' + c.w + ' &middot; viewer</span>' +
+                  '<span class="intent">high intent</span></div></div>';
+              }).join("") + "</div>";
+            setBody(stat + quotes);
+            setHint("Her audience is already asking for care. Now <b>personalize</b>, the centerpiece.");
+            setBtn("Personalize for her &rarr;", true);
+            primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterPersonalize(); };
+          }, 1450);
+        };
+      }
+
+      // ── STAGE 4 · Personalize (THE CENTERPIECE) ─────────────
+      function enterPersonalize() {
+        stageIdx = 3; renderRail(); renderUth("personalize"); setDots(4);
+        setHead("Step 4 of 5 &middot; Personalize", "A page and a video, built for her", "Every doctor receives their own landing page and their own founder video, by name. This is the whole point: cold outreach that doesn&rsquo;t feel cold.");
+        setCount("Step 4 of 5");
+        setHint("This is the unique part. <b>Generate her assets</b>, then continue.");
+        setBtn("Generate her page + video &rarr;", true);
+
+        var loading =
+          '<div class="perso">' +
+            '<div class="perso-col"><div class="label-sm">Personalized landing page</div>' +
+              '<div class="device"><span class="notch"></span><div class="screen" style="display:grid;place-items:center;background:repeating-linear-gradient(45deg,#f3f1ec,#f3f1ec 10px,#efece6 10px,#efece6 20px)"><div class="gen-line" style="padding:0"><span class="spin"></span>Building her page…</div></div></div>' +
+              '<div class="device-cap">A real page, generated from her channel data and deployed live.</div>' +
+            '</div>' +
+            '<div class="perso-col"><div class="label-sm">Founder video, for her</div>' +
+              '<div class="vidslot" style="display:grid;place-items:center"><div class="grain"></div><div class="gen-line" style="padding:0;color:rgba(255,255,255,.85)"><span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span>Rendering her video…</div></div>' +
+              '<div class="vidcap">Rendered per-doctor. not a template.</div>' +
+            '</div>' +
+          '</div>';
+
+        // EMPTY (pre-generate) state so nothing auto-plays
+        var empty =
+          '<div class="perso">' +
+            '<div class="perso-col"><div class="label-sm">Personalized landing page</div>' +
+              '<div class="device"><span class="notch"></span><div class="screen" style="display:grid;place-items:center;background:repeating-linear-gradient(45deg,#f3f1ec,#f3f1ec 10px,#efece6 10px,#efece6 20px)"><div style="text-align:center;color:var(--fc-muted);font-size:12.5px;padding:16px;line-height:1.5"><div style="font-size:22px;margin-bottom:6px;opacity:.6">&#9633;</div>Her page renders here</div></div></div>' +
+              '<div class="device-cap">A real page, generated from her channel data and deployed live.</div>' +
+            '</div>' +
+            '<div class="perso-col"><div class="label-sm">Founder video, for her</div>' +
+              '<div class="vidslot" style="display:grid;place-items:center"><div class="grain"></div><div style="text-align:center;color:rgba(255,255,255,.78);font-size:12.5px;padding:16px;line-height:1.5;position:relative;z-index:2"><div style="font-size:22px;margin-bottom:6px;opacity:.7">&#9654;</div>Her founder video renders here</div></div>' +
+              '<div class="vidcap">Rendered per-doctor. not a template.</div>' +
+            '</div>' +
+          '</div>';
+
+        setBody(empty);
+        primaryBtn.onclick = function () {
+          if (primaryBtn.disabled) return;
+          btnWorking("Generating…");
+          setHint("Generating her page and rendering her founder video…");
+          setBody(loading);
+          delay(function () {
+            renderPersonalized();
+            setHint("Her page is live and her video is ready. Now <b>queue the sequence</b>.");
+            setBtn("Queue the sequence &rarr;", true);
+            primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterSequence(); };
+          }, 1700);
+        };
+      }
+
+      function renderPersonalized() {
+        var html =
+          '<div class="perso">' +
+            // LEFT: the REAL live page in a device frame
+            '<div class="perso-col"><div class="label-sm">Personalized landing page</div>' +
+              '<div class="device"><span class="notch"></span>' +
+                '<div class="screen">' +
+                  '<iframe src="https://futureclinic.app/dr_mamina" loading="lazy" title="Personalized clinic page" style="width:100%;height:100%;border:0;"></iframe>' +
+                '</div>' +
+              '</div>' +
+              '<div class="device-cap">One example, generated and deployed <span class="live"><span class="pip"></span>live</span>: <b>dr_mamina</b>. Every doctor gets their own.</div>' +
+            '</div>' +
+            // RIGHT: founder video slot (styled player, no real file)
+            '<div class="perso-col"><div class="label-sm">Founder video, for her</div>' +
+              '<!-- FOUNDER_VIDEO_SLOT: drop real mp4 here when cleared -->' +
+              '<div class="vidslot" id="vidslot">' +
+                '<div class="grain"></div>' +
+                '<span class="badge">rendered for her</span>' +
+                '<div class="founder"><img src="./assets/walkern/pose03.png" alt="" /></div>' +
+                '<div class="play" id="playBtn" role="button" aria-label="Play founder video" tabindex="0">' +
+                  '<svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M2 2l16 9-16 9V2z" fill="#2d5a3a"/></svg>' +
+                '</div>' +
+                '<div class="lower3"><div class="l3name">&ldquo;Hi Dr. Reed,&rdquo;</div><div class="l3sub">your name, spoken in the first three seconds</div></div>' +
+                '<div class="scrub"><i id="scrub"></i></div>' +
+              '</div>' +
+              '<div class="vidcap">Rendered per-doctor via <b>Whisper</b> word-level alignment, <b>Playwright</b> capture, and an <b>ffmpeg</b> chroma-key composite. No two are the same.</div>' +
+            '</div>' +
+          '</div>' +
+          // their own audience, quoted back inside the email
+          '<div class="qback"><div class="qbh">&#9993; Her own audience, quoted back to her</div>' +
+            '<div class="qbody">The personalized email opens with her viewers&rsquo; own words: <em>&ldquo;Do you do virtual consults?&rdquo;</em> and <em>&ldquo;is there any way to talk to you directly?&rdquo;</em>, the demand is already in her comments. We just hand it back.</div></div>';
+        setBody(html);
+        wirePlayer();
+      }
+
+      // founder-video play affordance: a faux scrub, no real media
+      function wirePlayer() {
+        var btn = document.getElementById("playBtn");
+        var scrub = document.getElementById("scrub");
+        if (!btn || !scrub) return;
+        var playing = false, t = null, pct = 0;
+        function toggle() {
+          playing = !playing;
+          btn.classList.toggle("playing", playing);
+          if (playing) {
+            if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+              scrub.style.width = "100%"; return;
+            }
+            t = setInterval(function () {
+              pct += 1.6; if (pct >= 100) { pct = 100; clearInterval(t); }
+              scrub.style.width = pct + "%";
+            }, 60);
+          } else if (t) { clearInterval(t); }
+        }
+        btn.onclick = toggle;
+        btn.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } };
+      }
+
+      // ── STAGE 5 · Sequence ──────────────────────────────────
+      function enterSequence() {
+        stageIdx = 4; renderRail(); renderUth("sequence"); setDots(5);
+        setHead("Step 5 of 5 &middot; Sequence", "Send, gated by a human", "A 5-touch sequence on a state machine, 5&ndash;7 minutes apart, Gmail OAuth2 for deliverability. Nothing sends without a Slack approval. Nikola, a Modal-hosted Claude Agent SDK agent, runs the daily batch.");
+        setCount("Step 5 of 5");
+        setHint("This draft is waiting on you. <b>Approve it in Slack</b> to send.");
+        setBtn("Approve &amp; send", true, false);
+
+        var timeline = '<div class="seq-col"><div class="label-sm">5-touch sequence &middot; E1 &rarr; E5</div><div class="etl">' +
+          TOUCHES.map(function (e) {
+            var cls = e.st === "sent" ? "sent" : e.st === "fire" ? "fire" : "";
+            var stcls = e.st === "sent" ? "ok" : e.st === "fire" ? "f" : "q";
+            var stlbl = e.st === "sent" ? e.stl : e.st === "fire" ? "on new video" : "queued";
+            var mark = e.st === "sent" ? "&#10003;" : e.e.replace("E", "");
+            return '<div class="estep ' + cls + '"><div class="node">' + mark + '</div>' +
+              '<div class="ec"><div class="et">' + e.e + ' &middot; ' + e.t + '</div><div class="ed">' + e.d + '</div>' +
+              '<span class="est ' + stcls + '">' + stlbl + '</span></div></div>';
+          }).join("") +
+          '</div><p class="psub" style="margin-top:14px;font-size:12px">A daily 9AM scan detects new videos. <b>E3</b> fires the moment a doctor posts, quoting their audience&rsquo;s high-intent comments back at them. Perfect timing, their own words.</p></div>';
+
+        var slack = '<div class="seq-col"><div class="label-sm">Slack approval gate</div>' +
+          '<div class="slack" id="slack">' +
+            '<div class="sk-head"><span class="mk">#</span>outreach-approvals <span class="ch">&middot; gated by a human</span></div>' +
+            '<div class="sk-msg"><div class="bot">N</div><div class="sk-body">' +
+              '<div class="sk-who">Nikola <span>agent &middot; just now</span></div>' +
+              '<div class="sk-draft">' +
+                '<div class="dto">Draft <b>E1</b> to <b>Dr. Maya Reed</b> &middot; dermatology</div>' +
+                '<div class="dsub">Saw your video on retinol, built you a page</div>' +
+                '<div class="dprev">Hi Dr. Reed, I&rsquo;m Sergey from FutureClinic. A few of your viewers asked the same thing in your comments: <em>&ldquo;do you do virtual consults?&rdquo;</em> So I built you a page where they can&hellip;</div>' +
+              '</div>' +
+              '<div class="sk-actions" id="skActions">' +
+                '<button class="btn pri sm" id="approveBtn">&#10003; Approve</button>' +
+                '<button class="btn sm" id="editBtn">Edit</button>' +
+              '</div>' +
+            '</div></div>' +
+          '</div>' +
+          '<p class="psub" style="margin-top:12px;font-size:12px"><b>Nikola</b> reconciles Gmail against the prospect list with a persistent filesystem brain, then queues the next batch. A human still says go.</p></div>';
+
+        setBody('<div class="seq">' + timeline + slack + '</div>');
+
+        var approveBtn = document.getElementById("approveBtn");
+        var editBtn = document.getElementById("editBtn");
+        function approve() {
+          var actions = document.getElementById("skActions");
+          if (actions) actions.innerHTML = '<div class="sk-approved" style="width:100%"><span>&#10003;</span> Approved, sending via Gmail, 5&ndash;7 min spacing. Nikola takes it from here.</div>';
+          setHint("Approved. That&rsquo;s the whole engine, <b>see the result</b>.");
+          setBtn("See the result &rarr;", true);
+          primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterPayoff(); };
+        }
+        if (approveBtn) approveBtn.onclick = approve;
+        if (editBtn) editBtn.onclick = function () { setHint("Edit inline, then approve. <b>Nothing sends</b> until you do."); };
+        // the primary button mirrors the Slack approve action
+        primaryBtn.onclick = function () { if (!primaryBtn.disabled) approve(); };
+      }
+
+      // ── Final payoff (mechanism over metrics) ───────────────
+      function enterPayoff() {
+        setHead("Done", "Cold outreach that doesn&rsquo;t feel cold", "The mechanism is the point: every doctor reached by name, with something built for them.");
+        setCount("Done");
+        setBody('<div class="payoff"><div class="seal">&#10003;</div>' +
+          '<h3>Every one reached with a page and a video built for them, by name.</h3>' +
+          '<p>~15% reply rate at peak, across multiple campaigns. 100+ NPI-verified physicians reached. The numbers held because the outreach was real, <b>personalization, not volume</b>.</p>' +
+          '<div class="pstats">' +
+            '<div class="pst"><div class="n">~15%</div><div class="l">reply rate at peak</div></div>' +
+            '<div class="pst"><div class="n">100+</div><div class="l">NPI-verified physicians</div></div>' +
+            '<div class="pst"><div class="n">1:1</div><div class="l">a page + video per doctor</div></div>' +
+          '</div></div>');
+        setHint("That&rsquo;s the whole pipeline, discover to send, every doctor by name.");
+        setBtn("&#8635; Run the pipeline again", true, false);
+        primaryBtn.onclick = function () { enterDiscover(); };
+      }
+
+      // expose for inspection / fallback
+      window.enterDiscover = enterDiscover;
+      window.enterPersonalize = enterPersonalize;
+      window.enterSequence = enterSequence;
+      window.enterPayoff = enterPayoff;
+      window.renderFinalInstant = function () { enterPayoff(); };
+
+      document.getElementById("replayBtn").onclick = function () { enterDiscover(); };
+
+      // ── window entrance (the engine never auto-plays) ───────
+      var win = document.getElementById("window");
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.body.classList.add("reduce");
+      function inView(el, frac) {
+        var r = el.getBoundingClientRect();
+        var h = window.innerHeight || document.documentElement.clientHeight;
+        var vis = Math.min(r.bottom, h) - Math.max(r.top, 0);
+        return vis > 0 && vis / Math.min(r.height, h) >= frac;
+      }
+      function revealWin() { win.classList.add("in"); }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { revealWin(); io.disconnect(); } }); }, { threshold: 0.12 });
+        io.observe(win);
+      }
+      requestAnimationFrame(function () { if (inView(win, 0.12)) revealWin(); });
+      window.addEventListener("scroll", function () { if (inView(win, 0.12)) revealWin(); }, { passive: true });
+
+      enterDiscover();
+    </script>
+  </body>
+</html>
