@@ -24,6 +24,16 @@
   }
   @media print {
     body { padding: 0; max-width: none; }
+    /* printed/PDF resumes can't click links, so show the actual URLs */
+    .bullets a[href^="http"]:after,
+    .item a[href^="http"]:after,
+    .vouch cite a[href^="http"]:after {
+      content: " (" attr(href) ")";
+      font-weight: 400;
+      font-size: 8pt;
+      color: #777;
+      word-break: break-all;
+    }
   }
 
   /* HEADER */
@@ -185,7 +195,7 @@
     <a href="https://linkedin.com/in/sergeykudelin">linkedin.com/in/sergeykudelin</a>
   </div>
   <p class="summary">
-    I build AI products end to end and have been at it for two to three years: AI tools for video games, then <strong>Lux</strong>, an autonomous coding agent shipped to my 200K-subscriber YouTube channel (2,500+ installs), then GTM engineer at <strong>FutureClinic (Y Combinator F24)</strong>, building outreach agents like Nikola and wiring AI to find the right doctors at scale.
+    Three years building AI products end to end. It started with AI tools for video games and <strong>Lux</strong>, an autonomous coding agent shipped to my 200K-subscriber YouTube channel (2,500+ installs). Most recently I was the GTM engineer at <strong>FutureClinic (Y Combinator F24)</strong>, building outreach agents like Nikola and wiring AI to find the right doctors at scale.
   </p>
 </header>
 
