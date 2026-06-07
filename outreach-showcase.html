@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>FutureClinic Outreach — Sergey Kudelin</title>
+    <title>FutureClinic Outreach · Sergey Kudelin</title>
 
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1097,7 +1097,7 @@
       // ── STAGE 5 · Sequence ──────────────────────────────────
       function enterSequence() {
         stageIdx = 4; renderRail(); renderUth("sequence"); setDots(5);
-        setHead("Step 5 of 5 &middot; Sequence", "Send, gated by a human", "A 5-touch sequence on a state machine, 5&ndash;7 minutes apart, Gmail OAuth2 for deliverability. Nothing sends without a Slack approval. Nikola, a Modal-hosted Claude Agent SDK agent, runs the daily batch.");
+        setHead("Step 5 of 5 &middot; Sequence", "Send, gated by a human", "A 5-touch sequence on a state machine, 5-7 minutes apart, Gmail OAuth2 for deliverability. Nothing sends without a Slack approval. Nikola, a Modal-hosted Claude Agent SDK agent, runs the daily batch.");
         setCount("Step 5 of 5");
         setHint("This draft is waiting on you. <b>Approve it in Slack</b> to send.");
         setBtn("Approve &amp; send", true, false);
@@ -1138,7 +1138,7 @@
         var editBtn = document.getElementById("editBtn");
         function approve() {
           var actions = document.getElementById("skActions");
-          if (actions) actions.innerHTML = '<div class="sk-approved" style="width:100%"><span>&#10003;</span> Approved, sending via Gmail, 5&ndash;7 min spacing. Nikola takes it from here.</div>';
+          if (actions) actions.innerHTML = '<div class="sk-approved" style="width:100%"><span>&#10003;</span> Approved, sending via Gmail, 5-7 min spacing. Nikola takes it from here.</div>';
           setHint("Approved. That&rsquo;s the whole engine, <b>see the result</b>.");
           setBtn("See the result &rarr;", true);
           primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterPayoff(); };

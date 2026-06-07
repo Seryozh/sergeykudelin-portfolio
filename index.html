@@ -101,13 +101,19 @@
       }
       .entry-links a:hover { border-bottom-color: var(--accent); }
 
-      /* tools line under the bio */
+      /* tools block under the bio */
       .bio.tools {
         font-family: var(--mono);
-        font-size: 13px;
-        line-height: 1.7;
+        font-size: 12.5px;
+        line-height: 1.95;
         color: var(--muted);
         margin-top: 26px;
+      }
+      .bio.tools b {
+        color: var(--ink);
+        font-weight: 600;
+        display: inline-block;
+        min-width: 116px;
       }
 
       * {
@@ -737,9 +743,11 @@
       </p>
 
       <p class="bio tools reveal">
-        Day to day: Claude Code, Modal, Supabase, Firebase, Vercel, Next.js,
-        FastAPI, Apify, ScrapFly, ScrapeCreators, Apollo, Airtable, Gemini,
-        FAL, Whisper, Playwright.
+        <b>Languages</b> TypeScript, Python, SQL, Lua<br />
+        <b>AI</b> Claude (Agent SDK, Opus &amp; Sonnet), GPT-4o, Gemini Vision, Whisper, OpenRouter, LangGraph, FAL (FLUX, BiRefNet)<br />
+        <b>Frontend</b> Next.js, React, Vite, PWA, Tailwind<br />
+        <b>Backend &amp; data</b> FastAPI, Modal, Docker, Railway, Vercel, Supabase, Postgres, Airtable, Firebase, Redis<br />
+        <b>Scraping &amp; ops</b> Playwright, Apify, ScrapeCreators, ScrapFly, Exa, Supadata, Apollo, Hunter.io, NPI registry, Gmail OAuth2, Slack, ffmpeg
       </p>
 
       <section class="work">
@@ -811,7 +819,7 @@
               <span class="entry-num">01</span>
               <h3 class="entry-title">
                 <a href="https://futureclinic-growth.vercel.app" target="_blank" rel="noopener"
-                  >Derm Hunter</a
+                  >DermHunter</a
                 ><span class="ext">&#8599;</span>
               </h3>
               <span class="entry-tag">Solo &middot; 2-night build</span>

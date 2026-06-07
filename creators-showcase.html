@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>FutureClinic Creators — Sergey Kudelin</title>
+    <title>FutureClinic Creators · Sergey Kudelin</title>
 
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -545,11 +545,11 @@
           <p class="kicker"><span class="seed"></span>FutureClinic · Creators</p>
           <h1>
             An AI content engine that turns a doctor&rsquo;s channel into
-            ready-to-record videos &mdash; <span class="dim">in their own voice.</span>
+            ready-to-record videos, <span class="dim">in their own voice.</span>
           </h1>
           <p class="lede">
             I shipped this to production as their GTM engineer. Walk the whole
-            pipeline below &mdash; from topic research to a ready-to-record script &mdash;
+            pipeline below, from topic research to a ready-to-record script, 
             and watch the centerpiece run itself: an <b>agentic thumbnail
             designer</b> that critiques its own work with vision and never fakes
             the doctor&rsquo;s <b>real face</b>.
@@ -592,7 +592,7 @@
 
         <div class="replay">
           <button id="replayBtn">&#8635; Start over</button>
-          <span id="replayNote">You control each step &mdash; nothing plays on its own.</span>
+          <span id="replayNote">You control each step, nothing plays on its own.</span>
         </div>
       </div>
     </section>
@@ -613,7 +613,7 @@
       ];
       var SECTIONS = [
         { n: 1, title: "Hook", w: 96, t: "0:00", pers: false, body: "Most of what you&rsquo;ve heard about hormones after 40 is wrong, and it&rsquo;s costing you sleep and energy. <span class='pill-bar'>[lean in]</span> I&rsquo;m a board-certified dermatologist, and today I&rsquo;ll show you what actually changes." },
-        { n: 2, title: "The real shift", w: 240, t: "0:38", pers: false, body: "Here&rsquo;s what nobody explains: it isn&rsquo;t one hormone falling off a cliff &mdash; it&rsquo;s the balance shifting. <span class='pill-bar'>[B-roll: hormone chart]</span>" },
+        { n: 2, title: "The real shift", w: 240, t: "0:38", pers: false, body: "Here&rsquo;s what nobody explains: it isn&rsquo;t one hormone falling off a cliff, it&rsquo;s the balance shifting. <span class='pill-bar'>[B-roll: hormone chart]</span>" },
         { n: 3, title: "What actually helps", w: 318, t: "2:10", pers: true, body: "There are exactly three things with real evidence behind them. The first one surprised me too when I started recommending it to patients in clinic." },
         { n: 4, title: "Close + soft CTA", w: 188, t: "4:30", pers: false, body: "If this helped, the full breakdown is on my FutureClinic page, where I answer these one-on-one. <span class='pill-bar'>[soft CTA]</span>" }
       ];
@@ -714,7 +714,7 @@
       // ── STAGE 2 · titles ────────────────────────────────────
       function enterTitles() {
         stageIdx = 1; renderRail(); renderUth("titles"); setDots(2);
-        setHead("Step 2 of 6 &middot; Titles", "Choose your title", "Topic: <b>" + TOPICS[picked.topic].name + "</b>. Every title is editable &mdash; click to tweak.");
+        setHead("Step 2 of 6 &middot; Titles", "Choose your title", "Topic: <b>" + TOPICS[picked.topic].name + "</b>. Every title is editable, click to tweak.");
         setCount("Step 2 of 6"); setHint("Writing titles per structure type, scoring each\u2026");
         setBtn("Design thumbnail &rarr;", false, false);
         setBody('<div class="gen-line"><span class="spin"></span>Writing titles per structure type, scoring each\u2026</div>');
@@ -735,17 +735,17 @@
         { hint: "You direct the agent. <b>Generate a concept</b> to begin.", label: "Generate concept &rarr;" },
         { hint: "Concept locked. <b>Render the first draft</b>.", label: "Render draft &rarr;" },
         { hint: "Draft is in. <b>Inspect it with vision</b>.", label: "Inspect with vision &rarr;" },
-        { hint: "Scored <b>7/10</b> &mdash; headline flagged. <b>Refine &amp; re-render</b>.", label: "Refine &amp; re-render &rarr;" },
+        { hint: "Scored <b>7/10</b>, headline flagged. <b>Refine &amp; re-render</b>.", label: "Refine &amp; re-render &rarr;" },
         { hint: "Now <b>9/10</b>, face real and text bold. <b>Approve</b> it.", label: "Approve thumbnail &#10003;" }
       ];
       var REPORT1 =
-        '<div class="rhead"><span class="who"><i>O</i>Opus vision &mdash; round 1</span><span class="score lo">7 / 10</span></div>' +
+        '<div class="rhead"><span class="who"><i>O</i>Opus vision, round 1</span><span class="score lo">7 / 10</span></div>' +
         '<ul><li class="ok"><span class="ic">&#10003;</span>Face: real, preserved</li>' +
         '<li class="ok"><span class="ic">&#10003;</span>Text: legible at small size</li>' +
         '<li class="no"><span class="ic">&#10007;</span>Click-worthy: headline could pop more</li></ul>' +
-        '<div class="verdict"><b>Verdict:</b> refine &mdash; boost contrast, enlarge title, add the yellow accent.</div>';
+        '<div class="verdict"><b>Verdict:</b> refine, boost contrast, enlarge title, add the yellow accent.</div>';
       var REPORT2 =
-        '<div class="rhead"><span class="who"><i>O</i>Opus vision &mdash; round 2</span><span class="score hi">9 / 10</span></div>' +
+        '<div class="rhead"><span class="who"><i>O</i>Opus vision, round 2</span><span class="score hi">9 / 10</span></div>' +
         '<ul><li class="ok"><span class="ic">&#10003;</span>Face: real, preserved</li>' +
         '<li class="ok"><span class="ic">&#10003;</span>Text: bold and readable</li>' +
         '<li class="ok"><span class="ic">&#10003;</span>Click-worthy: strong hook</li></ul>' +
@@ -799,7 +799,7 @@
           run(function () { addCard('<div class="lab">Concept</div>Bold left headline, the <b>real doctor</b> on the right in a white coat, clinic backdrop. Hooks: a yellow accent + a &ldquo;NEW&rdquo; flag. Keep the real face, generate the rest.', "msg concept"); tstep = 1; showThumbStep(1); }, 950);
         } else if (tstep === 1) {
           preview.className = "preview-slot filled"; preview.innerHTML = ytImage(true, true, "", false);
-          run(function () { addCard("Composed the draft &mdash; real face cut with <b>BiRefNet</b>, scene built with <b>FLUX / Gemini</b>.", "msg gen"); tstep = 2; showThumbStep(2); }, 1300);
+          run(function () { addCard("Composed the draft, real face cut with <b>BiRefNet</b>, scene built with <b>FLUX / Gemini</b>.", "msg gen"); tstep = 2; showThumbStep(2); }, 1300);
         } else if (tstep === 2) {
           run(function () { preview.innerHTML = ytImage(true, false, "7 / 10", false); addCard(REPORT1, "report"); tstep = 3; showThumbStep(3); }, 1300);
         } else if (tstep === 3) {
@@ -808,7 +808,7 @@
         } else if (tstep === 4) {
           run(function () {
             preview.innerHTML = ytImage(false, false, "9 / 10", true);
-            addCard("&#10003; Thumbnail approved &mdash; ready to record.", "msg done");
+            addCard("&#10003; Thumbnail approved, ready to record.", "msg done");
             setHint("Thumbnail approved &#10003; Next: a couple quick questions to shape the script.");
             primaryBtn.disabled = false; primaryBtn.style.opacity = ""; primaryBtn.style.pointerEvents = "";
             primaryBtn.classList.add("pulse"); primaryBtn.innerHTML = "Add your angle &rarr;";
@@ -821,7 +821,7 @@
       // ── STAGE 4 · questions ─────────────────────────────────
       function enterQuestions() {
         stageIdx = 3; renderRail(); renderUth("questions"); setDots(4);
-        setHead("Step 4 of 6 &middot; Questions", "Shape the angle", "Two quick answers tune the script to you &mdash; not generic.");
+        setHead("Step 4 of 6 &middot; Questions", "Shape the angle", "Two quick answers tune the script to you, not generic.");
         setCount("Step 4 of 6"); setHint("Answer both to tailor the script."); setBtn("Write my script &rarr;", false);
         var q1 = ["It&rsquo;s the balance shifting, not one hormone crashing", "Most &lsquo;fixes&rsquo; online are marketing, not medicine", "Small daily habits beat expensive supplements"];
         var q2 = ["Warm and reassuring", "Direct and myth-busting", "Clinical but friendly"];
@@ -844,7 +844,7 @@
       // ── STAGE 5 · script ────────────────────────────────────
       function enterScript() {
         stageIdx = 4; renderRail(); renderUth("script"); setDots(5);
-        setHead("Step 5 of 6 &middot; Script", "Your script", "A four-phase agentic writer &mdash; beat sheet, voice-first draft, self-review, lint.");
+        setHead("Step 5 of 6 &middot; Script", "Your script", "A four-phase agentic writer, beat sheet, voice-first draft, self-review, lint.");
         setCount("Step 5 of 6"); setBtn("Package the video &rarr;", false, false);
         var beats = ["Planning the beat sheet (hook &rarr; energy curve &rarr; CTA)\u2026", "Drafting it in your voice\u2026", "Self-review: voice match, hook strength, banned-phrase lint\u2026"];
         var bi = 0;
@@ -873,7 +873,7 @@
           '<div class="exp"><div class="emo">&#128202;</div><h3>Video Blueprint</h3><p>Section outlines, word counts, and timing.</p><button class="btn sm">Download .json</button></div>' +
           '<div class="exp"><div class="emo">&#127916;</div><h3>Project Data</h3><p>Full project export for backup or handoff.</p><button class="btn sm">Download .json</button></div>' +
           "</div>");
-        setHint("That&rsquo;s the whole pipeline &mdash; topic to ready-to-record, in the doctor&rsquo;s voice.");
+        setHint("That&rsquo;s the whole pipeline, topic to ready-to-record, in the doctor&rsquo;s voice.");
         setBtn("&#8635; Run the pipeline again", true, false);
         primaryBtn.onclick = function () { picked = { topic: 0, title: 0 }; enterTopics(); };
       }
