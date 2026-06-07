@@ -26,13 +26,12 @@
     body { padding: 0; max-width: none; }
   }
   /* compact URL list, shown only in print/PDF (digital PDFs keep links clickable; paper loses them) */
-  .print-links { display: none; font-size: 8pt; color: #666; line-height: 1.45; margin-top: 0.07in; word-break: break-word; }
-  @media print { .print-links { display: block; } }
+  a.u { color: #54627d; text-decoration: none; font-size: 0.92em; word-break: break-word; }
 
   /* HEADER */
   h1 {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 23pt;
+    font-size: 20pt;
     font-weight: 600;
     letter-spacing: -0.015em;
     line-height: 1.05;
@@ -40,9 +39,9 @@
   }
   .role {
     font-family: Georgia, serif;
-    font-style: italic;
+    font-style: normal;
     font-size: 11.5pt;
-    color: #2d4a2b;
+    color: #1d3a5f;
     margin-top: 0.05in;
   }
   .contact {
@@ -61,7 +60,7 @@
     margin-top: 0.11in;
     color: #2a2a2a;
   }
-  .summary strong { color: #2d4a2b; font-weight: 700; }
+  .summary strong { color: #1d3a5f; font-weight: 700; }
 
   /* SECTIONS */
   section {
@@ -74,8 +73,8 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #2d4a2b;
-    border-bottom: 0.6pt solid #2d4a2b;
+    color: #1d3a5f;
+    border-bottom: 0.6pt solid #1d3a5f;
     padding-bottom: 3pt;
     margin-bottom: 0.1in;
   }
@@ -95,7 +94,7 @@
     color: #111;
   }
   .job-title .company { font-weight: 700; }
-  .job-title .yc { color: #2d4a2b; font-weight: 600; }
+  .job-title .yc { color: #1d3a5f; font-weight: 600; }
   .job-title .sep { color: #aaa; margin: 0 4pt; }
   .job-meta {
     font-size: 9.5pt;
@@ -123,24 +122,24 @@
     position: absolute;
     left: 0;
     top: 0;
-    color: #2d4a2b;
+    color: #1d3a5f;
     font-weight: 700;
   }
   ul.bullets li strong { color: #111; font-weight: 700; }
-  ul.bullets li a { color: #2d4a2b; text-decoration: underline; text-decoration-color: rgba(45, 74, 43, 0.35); text-underline-offset: 2px; }
-  ul.bullets li a:hover { text-decoration-color: #2d4a2b; }
-  ul.bullets li a code { color: #2d4a2b; }
+  ul.bullets li a { color: #1d3a5f; text-decoration: underline; text-decoration-color: rgba(29, 58, 95, 0.4); text-underline-offset: 2px; }
+  ul.bullets li a:hover { text-decoration-color: #1d3a5f; }
+  ul.bullets li a code { color: #1d3a5f; }
   code {
     font-family: "SF Mono", Menlo, Consolas, monospace;
     font-size: 9pt;
-    color: #2d4a2b;
+    color: #1d3a5f;
   }
 
   /* TESTIMONIAL */
   .testimonial {
     margin-top: 0.09in;
     padding: 0.04in 0 0.04in 0.15in;
-    border-left: 2pt solid #2d4a2b;
+    border-left: 2pt solid #1d3a5f;
   }
   .testimonial .quote {
     font-family: Georgia, serif;
@@ -154,7 +153,7 @@
     color: #555;
     margin-top: 0.04in;
   }
-  .testimonial .attribution strong { color: #2d4a2b; font-weight: 600; }
+  .testimonial .attribution strong { color: #1d3a5f; font-weight: 600; }
   .testimonial .attribution a { color: #555; text-decoration: none; }
   .testimonial .attribution .sep { color: #bbb; margin: 0 4pt; }
 
@@ -206,16 +205,16 @@
   </p>
   <ul class="bullets">
     <li>
-      <strong><a href="https://sergeykudelin.com/outreach-showcase">FC Outreach ↗</a></strong> Discovery across YouTube and Instagram, license verification against the federal NPI registry, then a personalized landing page (<a href="https://futureclinic.app/dr_mamina"><code>dr_mamina</code></a>) and founder video for every doctor, rendered with Whisper word-level alignment + ffmpeg chroma-key. Run by Nikola, an autonomous agent on Modal (Claude Agent SDK, filesystem-as-brain). 15% reply rate on cold outreach.
+      <strong>FC Outreach</strong> <a class="u" href="https://sergeykudelin.com/outreach-showcase">sergeykudelin.com/outreach-showcase</a>. Discovery across YouTube and Instagram, license verification against the federal NPI registry, then a personalized landing page (<a class="u" href="https://futureclinic.app/dr_mamina">futureclinic.app/dr_mamina</a>) and founder video for every doctor, rendered with Whisper word-level alignment + ffmpeg chroma-key. Run by Nikola, an autonomous agent on Modal (Claude Agent SDK, filesystem-as-brain). 15% reply rate on cold outreach.
     </li>
     <li>
-      <strong><a href="https://sergeykudelin.com/creators-showcase">FC Creators ↗</a></strong> 6-stage content pipeline (Topics → Titles → Thumbnail → Questions → Script → Export) that learns a doctor's voice and drafts ready-to-record videos, human-in-the-loop throughout. Next.js + Supabase + Docker workers, orchestrating Claude Opus + Sonnet, FAL, Supadata, Apify. Live and in active use by doctor-creators at futurecliniccreators.com.
+      <strong>FC Creators</strong> <a class="u" href="https://sergeykudelin.com/creators-showcase">sergeykudelin.com/creators-showcase</a>. 6-stage content pipeline (Topics → Titles → Thumbnail → Questions → Script → Export) that learns a doctor's voice and drafts ready-to-record videos, human-in-the-loop throughout. Next.js + Supabase + Docker workers, orchestrating Claude Opus + Sonnet, FAL, Supadata, Apify. Live and in active use by doctor-creators at futurecliniccreators.com.
     </li>
   </ul>
   <div class="testimonial">
     <p class="quote">"Phenomenal work, the kind of product I was genuinely excited to use myself. I recommend Sergey without reservation."</p>
     <p class="attribution">
-      <strong>Dr. Usama Syed</strong><span class="sep">·</span>Founder, FutureClinic (YC F24)<span class="sep">·</span><a href="mailto:usama@futureclinic.com">usama@futureclinic.com</a><span class="sep">·</span><a href="https://sergeykudelin.com/recommendation.pdf">Full letter ↗</a>
+      <strong>Dr. Usama Syed</strong><span class="sep">·</span>Founder, FutureClinic (YC F24)<span class="sep">·</span><a href="mailto:usama@futureclinic.com">usama@futureclinic.com</a><span class="sep">·</span>letter <a class="u" href="https://sergeykudelin.com/recommendation.pdf">sergeykudelin.com/recommendation.pdf</a>
     </p>
   </div>
 
@@ -233,13 +232,13 @@
 <section>
   <h2>Projects</h2>
   <p class="item">
-    <strong><a href="https://futureclinic-growth.vercel.app">DermHunter &#8599;</a></strong> AI doctor-discovery pipeline, built solo in two nights to apply to FutureClinic. They hired me to ship it as a production system.
+    <strong>DermHunter</strong> <a class="u" href="https://futureclinic-growth.vercel.app">futureclinic-growth.vercel.app</a>. AI doctor-discovery pipeline, built solo in two nights to apply to FutureClinic. They hired me to ship it as a production system.
   </p>
   <p class="item">
-    <strong><a href="https://github.com/Seryozh/lux-agentic-ai">Lux &#8599;</a></strong> Autonomous coding agent shipped through my 200K-subscriber YouTube channel (<a href="https://youtube.com/@SergeCode">@SergeCode</a>) to 3,000+ installs. Closed-loop hash check verified every edit before it landed.
+    <strong>Lux</strong> <a class="u" href="https://github.com/Seryozh/lux-agentic-ai">github.com/Seryozh/lux-agentic-ai</a>. Autonomous coding agent shipped through my 200K-subscriber YouTube channel (<a href="https://youtube.com/@SergeCode">@SergeCode</a>) to 3,000+ installs. Closed-loop hash check verified every edit before it landed.
   </p>
   <p class="item">
-    <strong><a href="https://package-scanner-gules.vercel.app">LogiScan &#8599;</a></strong> Phone-camera + Gemini package auditor with pixel-perfect bounding boxes. Turned a 90-minute nightly audit into about 10, at roughly $0.002 a scan.
+    <strong>LogiScan</strong> <a class="u" href="https://package-scanner-gules.vercel.app">package-scanner-gules.vercel.app</a>. Phone-camera + Gemini package auditor with pixel-perfect bounding boxes. Turned a 90-minute nightly audit into about 10, at roughly $0.002 a scan.
   </p>
 </section>
 
@@ -252,8 +251,6 @@
   <h2>Tools</h2>
   <p class="item">TypeScript · Python · SQL · Claude Agent SDK · Opus/Sonnet · GPT-4o · Gemini Vision · Whisper · LangGraph · FAL · Next.js · FastAPI · Modal · Supabase · Playwright · Apify · Exa · Supadata · NPI Registry</p>
 </section>
-
-<p class="print-links">Links: sergeykudelin.com · futureclinic.app/dr_mamina · futureclinic-growth.vercel.app · github.com/Seryozh/lux-agentic-ai · package-scanner-gules.vercel.app · recommendation letter: sergeykudelin.com/recommendation.pdf</p>
 
 </body>
 </html>
