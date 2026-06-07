@@ -6,7 +6,7 @@
 <style>
   @page {
     size: letter;
-    margin: 0.34in 0.6in;
+    margin: 0.3in 0.55in;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -26,7 +26,7 @@
     body { padding: 0; max-width: none; }
   }
   /* compact URL list, shown only in print/PDF (digital PDFs keep links clickable; paper loses them) */
-  .print-links { display: none; font-size: 8pt; color: #666; line-height: 1.5; margin-top: 0.12in; word-break: break-word; }
+  .print-links { display: none; font-size: 8pt; color: #666; line-height: 1.45; margin-top: 0.07in; word-break: break-word; }
   @media print { .print-links { display: block; } }
 
   /* HEADER */
@@ -206,10 +206,10 @@
   </p>
   <ul class="bullets">
     <li>
-      <strong><a href="https://sergeykudelin.com/outreach-showcase">FC Outreach ↗</a></strong> Discovery across YouTube and Instagram, license verification against the federal NPI registry, then a personalized landing page (<a href="https://futureclinic.app/dr_mamina"><code>dr_mamina</code></a>) and founder video for every doctor, rendered with Whisper word-level alignment + ffmpeg chroma-key. Run by Nikola, an autonomous agent on Modal (Claude Agent SDK, filesystem-as-brain).
+      <strong><a href="https://sergeykudelin.com/outreach-showcase">FC Outreach ↗</a></strong> Discovery across YouTube and Instagram, license verification against the federal NPI registry, then a personalized landing page (<a href="https://futureclinic.app/dr_mamina"><code>dr_mamina</code></a>) and founder video for every doctor, rendered with Whisper word-level alignment + ffmpeg chroma-key. Run by Nikola, an autonomous agent on Modal (Claude Agent SDK, filesystem-as-brain). Hit ~15% reply at peak.
     </li>
     <li>
-      <strong><a href="https://sergeykudelin.com/creators-showcase">FC Creators ↗</a></strong> 6-stage content pipeline (Topics → Titles → Thumbnail → Questions → Script → Export) that learns a doctor's voice and drafts ready-to-record videos, human-in-the-loop throughout. Next.js + Supabase + Docker workers, orchestrating Claude Opus + Sonnet, FAL, Supadata, Apify.
+      <strong><a href="https://sergeykudelin.com/creators-showcase">FC Creators ↗</a></strong> 6-stage content pipeline (Topics → Titles → Thumbnail → Questions → Script → Export) that learns a doctor's voice and drafts ready-to-record videos, human-in-the-loop throughout. Next.js + Supabase + Docker workers, orchestrating Claude Opus + Sonnet, FAL, Supadata, Apify. Live at futurecliniccreators.com, used by doctor-creators with audiences up to 226K; cuts idea-to-published from 2-4 weeks to 24 hours.
     </li>
   </ul>
   <div class="testimonial">
@@ -236,7 +236,7 @@
     <strong><a href="https://futureclinic-growth.vercel.app">DermHunter &#8599;</a></strong> AI doctor-discovery pipeline, built solo in two nights to apply to FutureClinic. They hired me to ship it as a production system.
   </p>
   <p class="item">
-    <strong><a href="https://github.com/Seryozh/lux-agentic-ai">Lux &#8599;</a></strong> Autonomous coding agent for Roblox, shipped through my 200K-subscriber YouTube channel (<a href="https://youtube.com/@SergeCode">@SergeCode</a>) to 3,000+ installs. Cut token cost per request roughly 90% with lazy context loading.
+    <strong><a href="https://github.com/Seryozh/lux-agentic-ai">Lux &#8599;</a></strong> Autonomous coding agent for Roblox, shipped through my 200K-subscriber YouTube channel (<a href="https://youtube.com/@SergeCode">@SergeCode</a>) to 3,000+ installs. Closed-loop hash check verified every edit in-engine.
   </p>
   <p class="item">
     <strong><a href="https://package-scanner-gules.vercel.app">LogiScan &#8599;</a></strong> Phone-camera + Gemini pallet auditor with pixel-perfect bounding boxes. Turned a 90-minute nightly audit into about 10, at roughly $0.002 a scan.
@@ -250,7 +250,7 @@
 
 <section>
   <h2>Tools</h2>
-  <p class="item">TypeScript · Python · SQL · Claude Agent SDK · Opus/Sonnet · GPT-4o · Gemini Vision · Whisper · LangGraph · FAL · Next.js · FastAPI · Modal · Docker · Supabase · Playwright · Apify · ScrapeCreators · Exa · Supadata · Hunter.io · NPI Registry · Gmail OAuth2</p>
+  <p class="item">TypeScript · Python · SQL · Claude Agent SDK · Opus/Sonnet · GPT-4o · Gemini Vision · Whisper · LangGraph · FAL · Next.js · FastAPI · Modal · Supabase · Playwright · Apify · Exa · Supadata · NPI Registry</p>
 </section>
 
 <p class="print-links">Links: sergeykudelin.com · futureclinic.app/dr_mamina · futureclinic-growth.vercel.app · github.com/Seryozh/lux-agentic-ai · package-scanner-gules.vercel.app · recommendation letter: sergeykudelin.com/recommendation.pdf</p>
