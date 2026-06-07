@@ -360,11 +360,53 @@
         background: var(--fc-border); display: block; transition: background 0.3s;
       }
       .stepdots i.on { background: var(--fc-primary); }
+      /* ── coach callout: the friendly guide speaking each step ── */
       .next-hint {
-        font-size: 13px; line-height: 1.45; color: var(--fc-text-3);
+        display: flex; align-items: flex-start; gap: 10px;
         margin-bottom: 12px; min-height: 19px;
       }
-      .next-hint b { color: var(--fc-text-2); font-weight: 600; }
+      .next-hint .coach-badge {
+        flex: none; width: 26px; height: 26px; border-radius: 50%;
+        background: var(--fc-primary); position: relative;
+        display: grid; place-items: center;
+        box-shadow: 0 2px 8px -2px rgba(45, 90, 58, 0.55);
+        margin-top: 1px;
+      }
+      /* a tiny chat-dot mark, not an emoji */
+      .next-hint .coach-badge::before {
+        content: ""; width: 8px; height: 8px; border-radius: 50%;
+        background: #fff; box-shadow: -7px 0 0 -2px #fff, 7px 0 0 -2px #fff;
+      }
+      .next-hint .coach-bubble {
+        position: relative; flex: 1; min-width: 0;
+        font-size: 13px; line-height: 1.45; color: var(--fc-text-2);
+        background: var(--fc-green-light);
+        border: 1px solid var(--fc-green-border);
+        border-radius: 12px; border-top-left-radius: 4px;
+        padding: 8px 12px;
+      }
+      .next-hint .coach-bubble b { color: var(--fc-primary); font-weight: 600; }
+      /* little speech-bubble tail pointing back at the badge */
+      .next-hint .coach-bubble::before {
+        content: ""; position: absolute; left: -6px; top: 8px;
+        width: 10px; height: 10px; background: var(--fc-green-light);
+        border-left: 1px solid var(--fc-green-border);
+        border-bottom: 1px solid var(--fc-green-border);
+        transform: rotate(45deg);
+      }
+      /* coach "talks" when the text changes */
+      .next-hint.coach-talk .coach-bubble { animation: coachTalk 0.42s cubic-bezier(0.2, 0.7, 0.3, 1); }
+      .next-hint.coach-talk .coach-badge { animation: coachNod 0.42s ease-out; }
+      @keyframes coachTalk {
+        0% { opacity: 0.4; transform: translateY(4px) scale(0.985); }
+        55% { transform: translateY(-1px) scale(1.012); }
+        100% { opacity: 1; transform: none; }
+      }
+      @keyframes coachNod {
+        0% { transform: scale(0.85); }
+        55% { transform: scale(1.12); }
+        100% { transform: none; }
+      }
       /* the pulsing "press me" ring on the primary next button */
       .btn.pulse { position: relative; }
       .btn.pulse::after {
@@ -378,6 +420,124 @@
         100% { opacity: 0; transform: scale(1.13); }
       }
       .btn.working { pointer-events: none; opacity: 0.8; }
+
+      /* ── spotlight: dims everything but the one thing to do next ── */
+      /* the dim sits over the product body; it NEVER eats clicks */
+      .pbody { position: relative; }
+      .spot-dim {
+        position: absolute; inset: 0; z-index: 30;
+        background: rgba(28, 28, 26, 0.42);
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.4s ease;
+        border-radius: 0 0 14px 14px;
+      }
+      .spot-dim.on { opacity: 1; }
+      /* the active target is lifted above the dim and ringed */
+      .spot-target {
+        position: relative; z-index: 31;
+        border-radius: 12px;
+        box-shadow: 0 0 0 3px rgba(201, 99, 59, 0.55), 0 0 0 9px rgba(201, 99, 59, 0.16);
+        animation: spotGlow 2s ease-in-out infinite;
+      }
+      @keyframes spotGlow {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(201, 99, 59, 0.5), 0 0 0 9px rgba(201, 99, 59, 0.12); }
+        50% { box-shadow: 0 0 0 3px rgba(201, 99, 59, 0.75), 0 0 0 12px rgba(201, 99, 59, 0.22); }
+      }
+      /* a "do this" cue pinned to the top-right of the spotlighted card,
+         clear of the left-aligned heading so it never overlaps copy */
+      .spot-cue {
+        position: absolute; top: -11px; right: 14px; z-index: 33; pointer-events: none;
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+        color: #fff; background: var(--accent);
+        padding: 4px 10px; border-radius: 999px;
+        box-shadow: 0 6px 16px -4px rgba(201, 99, 59, 0.6);
+        animation: cueFloat 1.7s ease-in-out infinite;
+        white-space: nowrap;
+      }
+      @keyframes cueFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+      }
+
+      /* ── rail step completion: satisfying check pop ── */
+      .rstep.just-done .b {
+        animation: railPop 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+      }
+      @keyframes railPop {
+        0% { transform: scale(0.4); }
+        45% { transform: scale(1.35); }
+        70% { transform: scale(0.92); }
+        100% { transform: scale(1); }
+      }
+
+      /* ── intro overlay (manual mode only) ── */
+      .intro-veil {
+        position: absolute; inset: 0; z-index: 40;
+        display: grid; place-items: center; padding: 24px;
+        background: rgba(250, 249, 246, 0.78);
+        backdrop-filter: blur(6px);
+        animation: introFade 0.5s ease-out;
+      }
+      .intro-veil.out { animation: introOut 0.4s ease-in forwards; }
+      @keyframes introFade { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes introOut { to { opacity: 0; visibility: hidden; } }
+      .intro-card {
+        max-width: 420px; text-align: center;
+        background: #fff; border: 1px solid var(--fc-border);
+        border-radius: 16px; padding: 30px 28px;
+        box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.28);
+        animation: introCard 0.55s cubic-bezier(0.2, 0.7, 0.3, 1);
+      }
+      @keyframes introCard {
+        from { opacity: 0; transform: translateY(14px) scale(0.97); }
+        to { opacity: 1; transform: none; }
+      }
+      .intro-card .intro-mark {
+        width: 38px; height: 38px; border-radius: 50%; margin: 0 auto 16px;
+        background: var(--fc-primary); position: relative;
+        display: grid; place-items: center;
+        box-shadow: 0 6px 16px -4px rgba(45, 90, 58, 0.55);
+      }
+      .intro-card .intro-mark::before {
+        content: ""; width: 10px; height: 10px; border-radius: 50%;
+        background: #fff; box-shadow: -9px 0 0 -2.5px #fff, 9px 0 0 -2.5px #fff;
+      }
+      .intro-card h3 {
+        font-family: var(--pserif); font-weight: 600;
+        font-size: 22px; letter-spacing: -0.01em; color: var(--fc-text);
+        margin: 0 0 8px;
+      }
+      .intro-card p {
+        font-size: 14px; line-height: 1.55; color: var(--fc-text-3);
+        margin: 0 0 20px;
+      }
+      .intro-card .btn { width: 100%; }
+
+      /* ── reward burst at the final stage ── */
+      .export-done .seal.burst {
+        animation: sealBurst 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+      }
+      @keyframes sealBurst {
+        0% { transform: scale(0.5); box-shadow: 0 8px 20px -6px rgba(45, 90, 58, 0.6); }
+        45% { transform: scale(1.18); box-shadow: 0 0 0 10px rgba(45, 90, 58, 0.18), 0 8px 20px -6px rgba(45, 90, 58, 0.6); }
+        100% { transform: scale(1); box-shadow: 0 8px 20px -6px rgba(45, 90, 58, 0.6); }
+      }
+      /* soft on-brand sparkle ring, no confetti */
+      .export-done .seal.burst::after {
+        content: ""; position: absolute; left: 50%; top: 50%;
+        width: 46px; height: 46px; border-radius: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid var(--fc-primary);
+        animation: sealRing 0.9s ease-out forwards;
+        pointer-events: none;
+      }
+      .export-done { position: relative; }
+      .export-done .seal { position: relative; }
+      @keyframes sealRing {
+        0% { opacity: 0.7; transform: translate(-50%, -50%) scale(0.7); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(2.4); }
+      }
 
       .preview-slot {
         position: relative; width: 100%; aspect-ratio: 16 / 9;
@@ -510,6 +670,16 @@
       .reduce .scan { display: none !important; }
       .reduce .score-badge { animation: none !important; }
       .reduce .kicker .seed { box-shadow: 0 0 14px 1px rgba(201, 99, 59, 0.7); }
+      /* tutorial layer: keep the guidance, drop the motion */
+      .reduce .next-hint.coach-talk .coach-bubble,
+      .reduce .next-hint.coach-talk .coach-badge { animation: none !important; }
+      .reduce .spot-target { animation: none !important; }
+      .reduce .spot-cue { animation: none !important; }
+      .reduce .spot-dim { transition: none !important; }
+      .reduce .rstep.just-done .b { animation: none !important; }
+      .reduce .intro-veil, .reduce .intro-card { animation: none !important; }
+      .reduce .export-done .seal.burst { animation: none !important; }
+      .reduce .export-done .seal.burst::after { display: none !important; }
 
       /* ── responsive ───────────────────────────── */
       @media (max-width: 880px) {
@@ -579,7 +749,7 @@
                 <span class="stepcount" id="stepcount">Step 1 of 6</span>
                 <span class="stepdots" id="stepdots"></span>
               </div>
-              <div class="next-hint" id="nextHint">Pick the video you want to make.</div>
+              <div class="next-hint" id="nextHint"><span class="coach-badge" aria-hidden="true"></span><span class="coach-bubble" id="coachBubble">Pick the video you want to make.</span></div>
               <div class="action-row" id="actionRow">
                 <button class="btn pri block pulse" id="primaryBtn">Generate titles &rarr;</button>
               </div>
@@ -635,12 +805,17 @@
       var stageIdx = 0;
       var picked = { topic: 0, title: 0 };
 
+      var railDone = {}; // tracks which steps were already "done" so we only pop newly-done ones
       function renderRail() {
         var cur = stageIdx + 1, html = "";
         PIPE.forEach(function (s, i) {
           if (i > 0) html += '<span class="rconn ' + (s.n <= cur ? "on" : "") + '"></span>';
-          var cls = s.n === cur ? "active" : s.n < cur ? "done" : "";
-          var mark = s.n < cur ? "&#10003;" : s.n;
+          var isDone = s.n < cur;
+          var cls = s.n === cur ? "active" : isDone ? "done" : "";
+          // freshly completed step: add a one-shot pop on its check badge
+          if (isDone && !railDone[s.n]) cls += " just-done";
+          railDone[s.n] = isDone;
+          var mark = isDone ? "&#10003;" : s.n;
           html += '<span class="rstep ' + cls + '"><span class="b">' + mark + "</span>" + s.label + "</span>";
         });
         document.getElementById("rail").innerHTML = html;
@@ -658,6 +833,7 @@
       var stageBody = document.getElementById("stageBody");
       var primaryBtn = document.getElementById("primaryBtn");
       var nextHint = document.getElementById("nextHint");
+      var coachBubble = document.getElementById("coachBubble");
       var stepcount = document.getElementById("stepcount");
       var stepdots = document.getElementById("stepdots");
       var peyebrow = document.getElementById("peyebrow");
@@ -668,20 +844,33 @@
       for (var di = 0; di < 6; di++) stepdots.appendChild(document.createElement("i"));
       function setDots(n) { [].forEach.call(stepdots.children, function (el, i) { el.classList.toggle("on", i < n); }); }
       function setHead(e, t, s) { peyebrow.innerHTML = e; ptitle.innerHTML = t; psub.innerHTML = s; }
-      function setHint(h) { nextHint.innerHTML = h; }
+      // route the hint through the coach bubble + give it a little "talking" beat
+      function setHint(h) {
+        if (!coachBubble) { nextHint.innerHTML = h; return; }
+        if (coachBubble.innerHTML === h) return;
+        coachBubble.innerHTML = h;
+        nextHint.classList.remove("coach-talk");
+        void nextHint.offsetWidth;
+        nextHint.classList.add("coach-talk");
+      }
       function setCount(c) { stepcount.innerHTML = c; }
-      function setBody(h) { stageBody.innerHTML = h; stageBody.style.animation = "none"; void stageBody.offsetWidth; stageBody.style.animation = ""; }
+      function setBody(h) {
+        stageBody.innerHTML = h; stageBody.style.animation = "none"; void stageBody.offsetWidth; stageBody.style.animation = "";
+        refreshSpotlight();
+      }
       function setBtn(label, enabled, pulse) {
         primaryBtn.innerHTML = label;
         primaryBtn.disabled = !enabled;
         primaryBtn.style.opacity = enabled ? "" : "0.45";
         primaryBtn.style.pointerEvents = enabled ? "" : "none";
         primaryBtn.classList.toggle("pulse", !!enabled && pulse !== false);
+        refreshSpotlight();
       }
       function btnWorking(text) {
         primaryBtn.disabled = true;
         primaryBtn.classList.remove("pulse");
         primaryBtn.innerHTML = '<span class="spin" style="border-color:rgba(255,255,255,.4);border-top-color:#fff"></span>' + text;
+        refreshSpotlight();
       }
       function delay(fn, ms) { setTimeout(fn, ms || 1100); }
       function bindPick(cb) {
@@ -690,8 +879,72 @@
             [].forEach.call(stageBody.querySelectorAll(".pcard"), function (c) { c.classList.remove("sel"); });
             el.classList.add("sel");
             cb(parseInt(el.getAttribute("data-i"), 10));
+            refreshSpotlight();
           };
         });
+      }
+
+      // ── spotlight: always make the single next action obvious ──
+      // A dim sits over the product body, the active target is lifted out of it
+      // and ringed, with a small floating "do this" cue. The dim is pointer-events:none
+      // so it never blocks clicks, including the autoplay driver's programmatic ones.
+      var pbody = document.querySelector(".pbody");
+      var spotDim = null, spotCue = null, spotGroup = [], spotCueHost = null;
+      function ensureSpotEls() {
+        if (!pbody) return;
+        if (!spotDim) { spotDim = document.createElement("div"); spotDim.className = "spot-dim"; pbody.appendChild(spotDim); }
+        if (!spotCue) { spotCue = document.createElement("div"); spotCue.className = "spot-cue"; spotCue.innerHTML = "Tap to choose &#8595;"; }
+      }
+      function clearSpot() {
+        spotGroup.forEach(function (g) { if (g) g.classList.remove("spot-target"); });
+        spotGroup = [];
+        // the cue is hosted inside the focal element so it tracks layout for free
+        if (spotCue && spotCue.parentNode) spotCue.parentNode.removeChild(spotCue);
+        spotCueHost = null;
+      }
+      function pickSpotTarget() {
+        // unselected idea cards take priority, then unanswered question groups,
+        // otherwise the primary button is the thing to press.
+        var cards = stageBody.querySelectorAll(".pcard");
+        if (cards.length && !stageBody.querySelector(".pcard.sel")) return { focal: cards[0], group: [].slice.call(cards), cue: "Tap to choose", isBtn: false };
+        var grps = stageBody.querySelectorAll(".qopts");
+        for (var i = 0; i < grps.length; i++) {
+          if (!grps[i].querySelector(".qopt.sel")) {
+            return { focal: grps[i].querySelector(".qopt") || grps[i], group: [grps[i]], cue: "Pick an answer", isBtn: false };
+          }
+        }
+        if (primaryBtn && !primaryBtn.disabled) return { focal: primaryBtn, group: [primaryBtn], cue: "", isBtn: true };
+        return null; // mid-animation / busy: nothing to spotlight right now
+      }
+      var spotObserver = null; // set up after enterTopics; paused around our own cue writes
+      function refreshSpotlight() {
+        try {
+          ensureSpotEls();
+          if (!pbody || !spotDim) return;
+          // pause the observer so the cue add/remove below does not loop back in
+          if (spotObserver) spotObserver.disconnect();
+          clearSpot();
+          var t = pickSpotTarget();
+          if (!t) { spotDim.classList.remove("on"); }
+          else {
+            spotDim.classList.add("on");
+            spotGroup = t.group.slice();
+            spotGroup.forEach(function (g) { if (g) g.classList.add("spot-target"); });
+            // a floating chevron cue, hosted inside the focal card so it tracks
+            // layout automatically. The primary button already has its own pulse
+            // ring, so it gets no extra label, just the lift + glow.
+            if (!t.isBtn && t.focal) {
+              spotCue.innerHTML = t.cue + " &#8595;";
+              t.focal.style.position = t.focal.style.position || "relative";
+              t.focal.appendChild(spotCue);
+              spotCueHost = t.focal;
+            }
+          }
+        } catch (e) { /* never let the spotlight break the demo */ }
+        finally {
+          // resume observing real stage changes (cards, agent log, new stages)
+          try { if (spotObserver) spotObserver.observe(stageBody, { childList: true, subtree: true }); } catch (e2) {}
+        }
       }
 
       // ── STAGE 1 · topics ────────────────────────────────────
@@ -707,7 +960,7 @@
             '<span class="score ' + sc(t.score) + '">' + t.score + '</span></div></div>';
         }).join("") + "</div>";
         setBody(h);
-        bindPick(function (i) { picked.topic = i; setBtn("Generate titles &rarr;", true); setHint("Great pick. Now <b>generate titles</b> for it."); });
+        bindPick(function (i) { picked.topic = i; setBtn("Generate titles &rarr;", true); setHint("Nice. Now <b>generate titles</b> for it."); });
         primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterTitles(); };
       }
 
@@ -724,8 +977,8 @@
               '<div class="editable" contenteditable="true" onclick="event.stopPropagation()">' + t.t + '</div>' +
               '<div class="thumbtext">Thumbnail: ' + t.tx + '</div></div>';
           }).join("") + "</div>";
-          setBody(h); setHint("Pick the title to build the video around.");
-          bindPick(function (i) { picked.title = i; setBtn("Design thumbnail &rarr;", true); setHint("Locked. Now <b>design the thumbnail</b>."); });
+          setBody(h); setHint("Your move: pick a title to build the video around.");
+          bindPick(function (i) { picked.title = i; setBtn("Design thumbnail &rarr;", true); setHint("Locked in. Now <b>design the thumbnail</b>."); });
         }, 1300);
         primaryBtn.onclick = function () { if (!primaryBtn.disabled) enterThumbnail(); };
       }
@@ -778,9 +1031,10 @@
         return d;
       }
       function showThumbStep(n) {
-        var s = THUMB[n]; setHint(s.hint);
+        var s = THUMB[n];
         primaryBtn.disabled = false; primaryBtn.style.opacity = ""; primaryBtn.style.pointerEvents = "";
         primaryBtn.innerHTML = s.label; primaryBtn.classList.add("pulse");
+        setHint(s.hint); refreshSpotlight();
       }
       function enterThumbnail() {
         stageIdx = 2; renderRail(); renderUth("thumbnail"); setDots(3);
@@ -809,11 +1063,12 @@
           run(function () {
             preview.innerHTML = ytImage(false, false, "9 / 10", true);
             addCard("&#10003; Thumbnail approved, ready to record.", "msg done");
-            setHint("Thumbnail approved &#10003; Next: a couple quick questions to shape the script.");
             primaryBtn.disabled = false; primaryBtn.style.opacity = ""; primaryBtn.style.pointerEvents = "";
             primaryBtn.classList.add("pulse"); primaryBtn.innerHTML = "Add your angle &rarr;";
             primaryBtn.onclick = function () { enterQuestions(); };
             tstep = 5;
+            setHint("Nice work. Approved at 9/10. Next: a couple quick questions to shape the script.");
+            refreshSpotlight();
           }, 900);
         }
       }
@@ -835,6 +1090,8 @@
               [].forEach.call(grp.querySelectorAll(".qopt"), function (c) { c.classList.remove("sel"); });
               el.classList.add("sel"); ans[grp.getAttribute("data-q")] = 1;
               if (ans["0"] && ans["1"]) { setBtn("Write my script &rarr;", true); setHint("Perfect. Now <b>write the script</b> in your voice."); }
+              else { setHint("Good. One more to go, then we write."); }
+              refreshSpotlight();
             };
           });
         });
@@ -873,9 +1130,16 @@
           '<div class="exp"><div class="emo">&#128202;</div><h3>Video Blueprint</h3><p>Section outlines, word counts, and timing.</p><button class="btn sm">Download .json</button></div>' +
           '<div class="exp"><div class="emo">&#127916;</div><h3>Project Data</h3><p>Full project export for backup or handoff.</p><button class="btn sm">Download .json</button></div>' +
           "</div>");
-        setHint("That&rsquo;s the whole pipeline, topic to ready-to-record, in the doctor&rsquo;s voice.");
+        setHint("That&rsquo;s a full video, start to finish. Nicely done.");
         setBtn("&#8635; Run the pipeline again", true, false);
         primaryBtn.onclick = function () { picked = { topic: 0, title: 0 }; enterTopics(); };
+        // reward: a brief on-brand burst on the completion seal.
+        // setTimeout (not rAF) so it still fires if the tab is briefly hidden;
+        // a short delay lets the freshly-inserted seal paint its base state first.
+        try {
+          var seal = stageBody.querySelector(".export-done .seal");
+          if (seal) setTimeout(function () { seal.classList.add("burst"); }, 60);
+        } catch (e) {}
       }
 
       // expose for inspection / fallback
@@ -903,6 +1167,44 @@
       window.addEventListener("scroll", function () { if (inView(win, 0.12)) revealWin(); }, { passive: true });
 
       enterTopics();
+
+      // ── keep the spotlight honest through any DOM change ────
+      // A light MutationObserver re-runs the spotlight whenever #stageBody
+      // changes (covers the thumbnail agent-log cards and any path we did not
+      // hook explicitly). refreshSpotlight pauses this observer around its own
+      // cue writes, so it never loops. Wrapped so it can never throw.
+      (function () {
+        try {
+          if (!("MutationObserver" in window)) return;
+          spotObserver = new MutationObserver(function () { refreshSpotlight(); });
+          spotObserver.observe(stageBody, { childList: true, subtree: true });
+          refreshSpotlight(); // initial pass now that the observer exists
+        } catch (e) {}
+      })();
+
+      // ── intro overlay (manual mode only; never in embed/autoplay) ──
+      (function () {
+        if (/[?&]embed/.test(location.search)) return; // autoplay runs immediately, no intro
+        try {
+          var host = document.querySelector(".pbody");
+          if (!host) return;
+          var veil = document.createElement("div");
+          veil.className = "intro-veil";
+          veil.innerHTML =
+            '<div class="intro-card">' +
+            '<div class="intro-mark" aria-hidden="true"></div>' +
+            '<h3>Let&rsquo;s build a video, together.</h3>' +
+            '<p>Six steps, from a topic to a ready-to-record script. I&rsquo;ll guide you.</p>' +
+            '<button class="btn pri" id="introStart" type="button">Start the walkthrough</button>' +
+            '</div>';
+          host.appendChild(veil);
+          var start = veil.querySelector("#introStart");
+          start.onclick = function () {
+            veil.classList.add("out");
+            setTimeout(function () { if (veil.parentNode) veil.parentNode.removeChild(veil); refreshSpotlight(); }, 420);
+          };
+        } catch (e) {}
+      })();
 
       // Auto-play when embedded in the journey (no clicking needed). Pauses if the visitor takes control.
       (function(){
