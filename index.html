@@ -83,6 +83,24 @@
       }
       .vouch cite a:hover { color: var(--accent); }
 
+      /* explorable demo links under the FutureClinic entry */
+      .entry-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: 14px 0 2px;
+        font-family: var(--mono);
+        font-size: 13px;
+      }
+      .entry-links a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 2px;
+        transition: border-color 0.15s ease;
+      }
+      .entry-links a:hover { border-bottom-color: var(--accent); }
+
       * {
         box-sizing: border-box;
       }
@@ -677,6 +695,7 @@
       <a href="https://github.com/Seryozh" target="_blank" rel="noopener"
         >github</a
       >
+      <a href="resume.html" target="_blank" rel="noopener">résumé</a>
       <a href="mailto:sergey@sergeykudelin.com">email</a>
     </nav>
 
@@ -717,14 +736,12 @@
 
       <section class="work">
         <h2 class="section-head reveal">
-          <span>Recent work</span>
-          <span class="count">04</span>
+          <span>Experience</span>
         </h2>
 
         <ul class="entries">
-          <li class="entry reveal">
+          <li class="entry reveal lead">
             <div class="entry-head">
-              <span class="entry-num">01</span>
               <h3 class="entry-title">
                 <a href="journey.html">FutureClinic</a
                 ><span class="ext">&rarr;</span>
@@ -733,18 +750,20 @@
             </div>
             <p class="entry-body">
               Three months building the company&rsquo;s growth engine directly
-              with the founder, end to end. Two production systems.
-              <a href="outreach-showcase.html"><b>Outreach</b></a> finds
-              doctor-creators across YouTube and Instagram, verifies each
-              against the federal NPI registry, and sends a personalized clinic
-              page and founder video to every one. It runs on Nikola, an
-              autonomous co-worker I built that lives in Slack: it researches
-              prospects, drafts the emails, tracks replies, and posts each batch
-              for a human to approve before anything sends.
-              <a href="creators-showcase.html"><b>Creators</b></a> turns a
-              doctor&rsquo;s channel into ready-to-record videos in their own
-              voice, human in the loop at every step.
-              <a href="journey.html">Walk the whole story &rarr;</a>
+              with the founder, end to end. I shipped two production systems.
+              Outreach finds doctor-creators across YouTube and Instagram,
+              verifies each against the federal NPI registry, and sends a
+              personalized clinic page and founder video to every one. It runs
+              on Nikola, an autonomous co-worker I built that lives in Slack: it
+              researches prospects, drafts the emails, tracks replies, and posts
+              each batch for a human to approve before anything sends. Creators
+              turns a doctor&rsquo;s channel into ready-to-record videos in their
+              own voice, human in the loop at every step.
+            </p>
+            <p class="entry-links">
+              <a href="journey.html">Walk the story &rarr;</a>
+              <a href="outreach-showcase.html">Outreach demo &rarr;</a>
+              <a href="creators-showcase.html">Creators demo &rarr;</a>
             </p>
             <blockquote class="vouch">
               <span class="q">&ldquo;Phenomenal work. The kind of product I was
@@ -752,13 +771,20 @@
               know for whether something has been built well. I recommend Sergey
               without reservation.&rdquo;</span>
               <cite>Dr. Usama Syed, Founder, FutureClinic (YC F24) ·
-                <a href="recommendation.pdf" target="_blank" rel="noopener">read the letter &rarr;</a></cite>
+                <a href="resume.html" target="_blank" rel="noopener">résumé and his contact for a reference &rarr;</a></cite>
             </blockquote>
           </li>
+        </ul>
 
+        <h2 class="section-head reveal">
+          <span>Projects</span>
+          <span class="count">03</span>
+        </h2>
+
+        <ul class="entries">
           <li class="entry reveal">
             <div class="entry-head">
-              <span class="entry-num">02</span>
+              <span class="entry-num">01</span>
               <h3 class="entry-title">
                 <a href="https://futureclinic-growth.vercel.app" target="_blank" rel="noopener"
                   >Derm Hunter</a
@@ -777,7 +803,7 @@
 
           <li class="entry reveal">
             <div class="entry-head">
-              <span class="entry-num">03</span>
+              <span class="entry-num">02</span>
               <h3 class="entry-title">
                 <a href="https://github.com/Seryozh/lux-agentic-ai" target="_blank" rel="noopener"
                   >Lux</a
@@ -799,7 +825,7 @@
 
           <li class="entry reveal">
             <div class="entry-head">
-              <span class="entry-num">04</span>
+              <span class="entry-num">03</span>
               <h3 class="entry-title">
                 <a href="logiscan-showcase.html"
                   >LogiScan</a
