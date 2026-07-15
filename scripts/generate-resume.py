@@ -10,8 +10,6 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.platypus import (
     HRFlowable,
     KeepTogether,
-    ListFlowable,
-    ListItem,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -88,7 +86,7 @@ section_style = ParagraphStyle(
     leading=11,
     textColor=MUTED,
     tracking=1.3,
-    spaceBefore=18,
+    spaceBefore=17,
     spaceAfter=7,
 )
 job_style = ParagraphStyle(
@@ -127,6 +125,14 @@ bullet_style = ParagraphStyle(
     leftIndent=0,
     firstLineIndent=0,
 )
+bullet_mark_style = ParagraphStyle(
+    "BulletMark",
+    parent=bullet_style,
+    fontName="Helvetica-Bold",
+    fontSize=9.4,
+    leading=13.6,
+    textColor=CORAL,
+)
 small_style = ParagraphStyle(
     "Small",
     parent=styles["Normal"],
@@ -139,28 +145,45 @@ skill_label_style = ParagraphStyle(
     "SkillLabel",
     parent=small_style,
     fontName=FONT_BOLD,
+    fontSize=8.8,
+    leading=11.6,
+)
+skill_text_style = ParagraphStyle(
+    "SkillText",
+    parent=small_style,
+    fontSize=8.8,
+    leading=11.6,
 )
 
 
 def section_title(text):
     return [
         Paragraph(text.upper(), section_style),
-        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=12),
+        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=11),
     ]
 
 
 def bullets(items):
-    return ListFlowable(
-        [ListItem(Paragraph(item, bullet_style), leftIndent=10, spaceAfter=5) for item in items],
-        bulletType="bullet",
-        start="circle",
-        bulletFontName=FONT_REGULAR,
-        bulletFontSize=5.5,
-        bulletColor=CORAL,
-        leftIndent=12,
-        bulletOffsetY=1.6,
-        spaceAfter=8,
+    rows = [[Paragraph("&#8226;", bullet_mark_style), Paragraph(item, bullet_style)] for item in items]
+    table = Table(
+        rows,
+        colWidths=[0.17 * inch, 6.83 * inch],
+        hAlign="LEFT",
     )
+    table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -2), 5),
+                ("BOTTOMPADDING", (0, -1), (-1, -1), 0),
+            ]
+        )
+    )
+    table.spaceAfter = 8
+    return table
 
 
 def job(title, company, dates, description, items):
@@ -172,10 +195,11 @@ def job(title, company, dates, description, items):
     header.setStyle(
         TableStyle(
             [
-                ("VALIGN", (0, 0), (-1, -1), "BASELINE"),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 0),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 0),
                 ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (1, 0), (1, -1), 2.8),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
             ]
         )
@@ -205,16 +229,16 @@ story = [
     Paragraph("Sergey Kudelin", name_style),
     Paragraph("Growth Engineer / Miami, FL", role_style),
     Paragraph(
-        '<link href="mailto:kudelin.dev@gmail.com" color="#5E625B">kudelin.dev@gmail.com</link>'
+        '<link href="mailto:sergey@sergeykudelin.com" color="#5E625B">sergey@sergeykudelin.com</link>'
         '  /  <link href="https://sergeykudelin.com" color="#5E625B">sergeykudelin.com</link>'
         '  /  <link href="https://www.linkedin.com/in/sergeykudelin" color="#5E625B">linkedin.com/in/sergeykudelin</link>'
         '  /  <link href="https://github.com/Seryozh" color="#5E625B">github.com/Seryozh</link>',
         contact_style,
     ),
     Paragraph(
-        "Growth Engineer who turns market research and customer conversations into working "
-        "product experiments. Currently contracting with Fyxed after building FutureClinic "
-        "Creators and its physician-acquisition systems.",
+        "I got into FutureClinic by building them a working doctor-discovery system before I "
+        "had the job. Now I am the Growth Engineer at Fyxed, where I build the systems it uses "
+        "to find and prove demand.",
         summary_style,
     ),
 ]
@@ -228,9 +252,9 @@ story.extend(
             "Contract / Jun 2026 to present",
             "Fintech for residential property managers.",
             [
-                "Build and operate a source-backed market intelligence system that reads property-management websites for payment signals and links each qualified account to a verified decision-maker.",
-                "Turn repeated repair-funding signals from customer calls into a PM-branded owner workflow, including private intake and case review for a live repair.",
-                "Build and run the data and orchestration behind Fyxed's outbound motion, which produced the company's first outbound-booked meeting and shifted warm outreach toward text after email underperformed.",
+                "Built and now operate the system Fyxed uses to find property managers already signaling an owner-payment problem, with the source evidence and decision-maker attached.",
+                "Built and now run Fyxed's PM-branded owner workflow for a live repair-funding case, including private intake and internal review.",
+                "Built Fyxed's first outbound stack across CRM architecture, enrichment, sequencing, and channel testing. The founder used it to book the company's first outbound meeting.",
             ],
         ),
         Spacer(1, 16),
@@ -248,15 +272,16 @@ story.extend(
     ]
 )
 
-story.extend(section_title("Skills"))
+story.extend(section_title("Skills & tools"))
 skills = Table(
     [
-        [Paragraph("Engineering", skill_label_style), Paragraph("TypeScript, Python, SQL, React, Next.js, FastAPI, Postgres, Supabase, Redis", small_style)],
-        [Paragraph("AI systems", skill_label_style), Paragraph("Claude Agent SDK, OpenRouter, tool calling, human approval, state machines, audit logs", small_style)],
-        [Paragraph("Growth systems", skill_label_style), Paragraph("Market research, enrichment, source verification, CRM design, campaign orchestration", small_style)],
-        [Paragraph("Creator systems", skill_label_style), Paragraph("Audience research, idea selection, scripting workflows, thumbnail direction, voice modeling", small_style)],
+        [Paragraph("Languages & web", skill_label_style), Paragraph("TypeScript, JavaScript, Python, SQL, HTML/CSS, React, Next.js, Node.js, FastAPI, Express", skill_text_style)],
+        [Paragraph("Data & infra", skill_label_style), Paragraph("Postgres, Supabase, Redis, Drizzle, BullMQ, Modal, Vercel, GitHub, REST APIs, webhooks", skill_text_style)],
+        [Paragraph("AI & agents", skill_label_style), Paragraph("Claude, Codex, Claude Agent SDK, OpenRouter, Gemini, GPT-4o, LangGraph, human approval", skill_text_style)],
+        [Paragraph("GTM & research", skill_label_style), Paragraph("Clay, Apollo, Exa Agent API, Firecrawl, Apify, Hunter, Snov, NPI Registry, YouTube Data API", skill_text_style)],
+        [Paragraph("CRM & outbound", skill_label_style), Paragraph("Twenty CRM, Instantly, Smartlead, Airtable, Slack, Gmail, Resend, Twilio Lookup, OpenPhone, Google Drive", skill_text_style)],
     ],
-    colWidths=[1.05 * inch, 5.95 * inch],
+    colWidths=[1.15 * inch, 5.85 * inch],
     hAlign="LEFT",
 )
 skills.setStyle(
@@ -282,22 +307,7 @@ story.append(
 )
 
 story.extend(section_title("Education"))
-education = Table(
-    [[Paragraph("<b>Computer Science</b> / Florida International University", small_style), Paragraph("Miami, FL", date_style)]],
-    colWidths=[5.7 * inch, 1.3 * inch],
-)
-education.setStyle(
-    TableStyle(
-        [
-            ("LEFTPADDING", (0, 0), (-1, -1), 0),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-            ("TOPPADDING", (0, 0), (-1, -1), 0),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ("VALIGN", (0, 0), (-1, -1), "BASELINE"),
-        ]
-    )
-)
-story.append(education)
+story.append(Paragraph("<b>Florida International University</b>", small_style))
 
 doc.build(story)
 print(OUTPUT)
