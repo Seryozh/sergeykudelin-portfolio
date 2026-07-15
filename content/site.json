@@ -1,374 +1,60 @@
 {
-  "system": {
-    "name": "Decision Trace",
-    "version": "0.2.0",
-    "status": "Design-system specimen"
+  "identity": {
+    "name": "Sergey Kudelin",
+    "role": "Product vision and build"
   },
-  "hero": {
-    "eyebrow": "PRODUCT JUDGMENT / BUILDING / 2026",
-    "titleLines": ["The work is the", "change in direction."],
-    "thesis": "A portfolio that follows the moment an inherited model stopped fitting, the decision that replaced it, and the artifact that made the decision real.",
-    "note": "Placeholder content. The visual and interaction language is the deliverable."
-  },
-  "cases": [
-    {
-      "id": "futureclinic",
-      "index": "01",
-      "company": "FutureClinic",
-      "role": "Product + build",
-      "decision": "Turn an undefined creator workflow into a shipped operating system.",
-      "proof": "BUILD PROOF",
-      "href": "#case-futureclinic",
-      "linkState": "Open flow specimen"
+  "fyxed": {
+    "company": "Fyxed",
+    "role": "Product vision and GTM",
+    "introduction": [
+      "I entered property-management fintech without prior domain experience. The strongest thesis I developed appeared when I stopped centering the rent calendar.",
+      "Fyxed treats rent timing and repair funding as separate programs. My thesis concerned where the repair conversation should begin."
+    ],
+    "title": "At Fyxed, a repair changed who the product had to ask.",
+    "inherited": {
+      "title": "Property manager",
+      "body": "The initial product story centered here: help the property manager handle rent timing."
     },
-    {
-      "id": "fyxed",
-      "index": "02",
-      "company": "Fyxed",
-      "role": "Product vision + GTM",
-      "decision": "Reframe repair funding around the owner’s decision at the moment of cost.",
-      "proof": "DECISION PROOF",
-      "href": "#case-fyxed",
-      "linkState": "Open flow specimen"
-    }
-  ],
-  "flows": [
-    {
-      "caseId": "futureclinic",
-      "caseLabel": "CASE 01 / FUTURECLINIC",
-      "introPrimary": "A different artifact,",
-      "introEmphasis": "inside the same grammar.",
-      "introBody": "This placeholder case proves that the system can carry software workflow evidence without borrowing the repair statement’s internal layout.",
-      "diff": {
-        "inheritedLabel": "INHERITED MODEL",
-        "inheritedTitle": "Scattered workflow",
-        "inheritedBody": "Treat each production step as a separate handoff.",
-        "reframedLabel": "REFRAMED MODEL",
-        "reframedTitle": "Operating system",
-        "reframedBody": "Make sequence, state, and output visible in one working surface."
-      },
-      "artifact": {
-        "variant": "workflow-system",
-        "evidenceId": "futureclinic-artifact-03",
-        "contextLabel": "CREATOR OPERATIONS",
-        "type": "WORKFLOW / 001",
-        "title": "Production control room",
-        "summary": "A reconstructed workflow surface used only to demonstrate the software-artifact variant.",
-        "stages": [
-          {
-            "index": "01",
-            "label": "Brief",
-            "detail": "Scope and constraints locked",
-            "state": "complete"
-          },
-          {
-            "index": "02",
-            "label": "Build",
-            "detail": "Working system assembled",
-            "state": "active"
-          },
-          {
-            "index": "03",
-            "label": "Review",
-            "detail": "Evidence and output checked",
-            "state": "queued"
-          },
-          {
-            "index": "04",
-            "label": "Release",
-            "detail": "Handoff waits for verification",
-            "state": "queued"
-          }
-        ],
-        "output": {
-          "label": "OUTPUT",
-          "title": "One visible production state",
-          "detail": "Placeholder output. Replace with the verified FutureClinic artifact."
-        },
-        "footer": "WORKFLOW-SYSTEM VARIANT",
-        "status": "SPECIMEN / NOT LIVE DATA",
-        "caption": "FIG. 03 — SOFTWARE WORKFLOW",
-        "provenance": "RECONSTRUCTION / PLACEHOLDER",
-        "callouts": [
-          "State is legible",
-          "Output stays attached"
-        ]
-      },
-      "validation": {
-        "evidenceId": "futureclinic-response-04",
-        "quote": "A verified founder response belongs here once publication language is approved.",
-        "label": "FOUNDER RESPONSE / PLACEHOLDER",
-        "status": "Replace with an attributed source"
-      },
-      "boundary": {
-        "label": "ATTRIBUTION BOUNDARY",
-        "title": "The build can be shown before usage can be claimed.",
-        "body": "This specimen demonstrates the proof hierarchy. It does not claim adoption, retention, or a measured business result."
-      },
-      "transfer": {
-        "label": "TRANSFER / NEXT CASE",
-        "primary": "New domain.",
-        "emphasis": "Same way of seeing.",
-        "note": "Find the operating constraint, then make the decision visible."
-      },
-      "trace": [
-        {
-          "id": "signal",
-          "number": "S01",
-          "kind": "signal",
-          "label": "SIGNAL",
-          "date": "SOURCE / 01",
-          "title": "The workflow had no single visible state.",
-          "body": "A software case can begin with the contradiction that made the inherited process hard to operate. This text is a placeholder for verified source material.",
-          "claim": {
-            "status": "unproven",
-            "evidenceIds": [
-              "futureclinic-source-01"
-            ],
-            "publicSafe": true
-          },
-          "source": {
-            "evidenceId": "futureclinic-source-01",
-            "staticId": "source-static-signal",
-            "title": "Workflow signal excerpt",
-            "meta": "SOURCE / PLACEHOLDER / 01",
-            "quote": "The work exists across steps, but the operating state is hard to see in one place.",
-            "note": "This reconstruction demonstrates source hierarchy. Replace it with a verified excerpt before publication.",
-            "state": "Reconstruction",
-            "proofStatus": "Unproven"
-          }
-        },
-        {
-          "id": "decision",
-          "number": "D02",
-          "kind": "decision",
-          "label": "DECISION",
-          "date": "MODEL / 02",
-          "title": "Treat the workflow itself as the product surface.",
-          "body": "The decision chapter preserves the same hierarchy used in the fintech case while the artifact language changes with the work.",
-          "claim": {
-            "status": "unproven",
-            "evidenceIds": [],
-            "publicSafe": true
-          }
-        },
-        {
-          "id": "artifact",
-          "number": "A03",
-          "kind": "artifact",
-          "label": "ARTIFACT",
-          "date": "BUILD / 03",
-          "title": "Show sequence, current state, and output together.",
-          "body": "The workflow plate uses ordered stages and visible status language. A native product image can replace it later without changing the case structure.",
-          "claim": {
-            "status": "unproven",
-            "evidenceIds": [
-              "futureclinic-artifact-03"
-            ],
-            "publicSafe": true
-          }
-        },
-        {
-          "id": "proof",
-          "number": "P04",
-          "kind": "proof",
-          "label": "RESPONSE",
-          "date": "PROOF / 04",
-          "title": "Attach the founder’s response to the exact artifact.",
-          "body": "The validation pattern remains the same across domains: another person’s attributed words sit beside the thing they responded to.",
-          "claim": {
-            "status": "unproven",
-            "evidenceIds": [
-              "futureclinic-response-04"
-            ],
-            "publicSafe": true
-          }
-        },
-        {
-          "id": "unknown",
-          "number": "U05",
-          "kind": "unknown",
-          "label": "BOUNDARY",
-          "date": "LIMIT / 05",
-          "title": "Keep shipped proof separate from usage proof.",
-          "body": "The case can establish product judgment and a shipped system. It should leave usage outcomes open until defensible evidence exists.",
-          "claim": {
-            "status": "unproven",
-            "evidenceIds": [],
-            "publicSafe": true
-          }
-        }
+    "repair": {
+      "title": "A priced repair",
+      "body": "A priced repair created a decision the timing story did not resolve."
+    },
+    "proposal": {
+      "title": "Owner",
+      "body": "Would the owner choose to cover the financing cost so the repair could happen now?"
+    },
+    "unknowns": {
+      "title": "Before the thesis can become product truth",
+      "items": [
+        "The operating path still needs contractual and accounting validation.",
+        "The market test is whether owners actually choose this option."
       ]
     },
-    {
-      "caseId": "fyxed",
-    "caseLabel": "CASE 02 / FYXED",
-    "introPrimary": "One decision,",
-    "introEmphasis": "shown all the way through.",
-    "introBody": "Every chapter answers a different credibility question. The line is a reading instrument, not a motif pasted on top.",
-    "diff": {
-      "inheritedLabel": "INHERITED MODEL",
-      "inheritedTitle": "Timing problem",
-      "inheritedBody": "Lead with a promised date and explain the mechanism.",
-      "reframedLabel": "REFRAMED MODEL",
-      "reframedTitle": "Repair decision",
-      "reframedBody": "Start at the priced repair and make the owner’s choice clear."
-    },
-      "artifact": {
-        "evidenceId": "artifact-03",
-        "variant": "repair-statement",
-        "contextLabel": "PROPERTY OPERATIONS",
-        "type": "REPAIR / 0184",
-        "title": "Repair statement",
-        "amount": "$4,860.00",
-        "surfaceLabel": "OWNER VIEW",
-        "property": "1437 Placeholder Avenue",
-        "description": "HVAC replacement · quoted 10 Jul",
-        "choices": [
-        { "index": "01", "label": "Pay repair balance", "value": "$4,860", "active": false },
-        { "index": "02", "label": "Choose payment plan", "value": "Review", "active": true }
-      ],
-        "footer": "PM-BRANDED OWNER CHOICE",
-      "status": "SPECIMEN / NOT LIVE DATA",
-      "caption": "FIG. 03 — OWNER REPAIR CHOICE",
-      "provenance": "RECONSTRUCTION / PLACEHOLDER",
-      "callouts": ["Cost is already known", "Choice sits with owner"]
-    },
-    "validation": {
-      "evidenceId": "response-04",
-      "quote": "This is where another person’s exact words carry the proof.",
-      "label": "EXTERNAL RESPONSE / PLACEHOLDER",
-      "status": "Replace with a verified source"
-    },
-    "boundary": {
-      "label": "ATTRIBUTION BOUNDARY",
-      "title": "Direction confirmed internally.",
-      "body": "External adoption remains unproven. The final case should say this plainly and link only to evidence that can be defended."
-    },
-    "transfer": {
-      "label": "TRANSFER / NEXT CASE",
-      "primary": "Different system.",
-      "emphasis": "Same instinct.",
-      "note": "Learn the constraint before defending the brief."
-    },
-    "trace": [
-    {
-      "id": "signal",
-      "number": "S01",
-      "kind": "signal",
-      "label": "SIGNAL",
-      "date": "SOURCE / 01",
-      "title": "The explanation stopped matching the actual constraint.",
-      "body": "This chapter isolates the observation that made the inherited model feel incomplete. The source appears beside the claim, never as decoration.",
-      "claim": { "status": "unproven", "evidenceIds": ["source-01"], "publicSafe": true },
-      "source": {
-        "evidenceId": "source-01",
-        "staticId": "source-static-signal",
-        "title": "Signal excerpt",
-        "meta": "CALL / PLACEHOLDER / SOURCE 01",
-        "quote": "The product is being explained around timing. The anxiety begins once the repair already has a price.",
-        "note": "This is a reconstruction used to demonstrate hierarchy. Replace it with a verified excerpt before publication.",
-        "state": "Reconstruction",
-        "proofStatus": "Unproven"
-      }
-    },
-    {
-      "id": "decision",
-      "number": "D02",
-      "kind": "decision",
-      "label": "DECISION",
-      "date": "MODEL / 02",
-      "title": "Move the choice to the person who owns the asset.",
-      "body": "The decision receives the largest thought line in the case. A compact diff shows exactly what changed without turning the page into a strategy deck.",
-      "claim": { "status": "unproven", "evidenceIds": [], "publicSafe": true }
-    },
-    {
-      "id": "artifact",
-      "number": "A03",
-      "kind": "artifact",
-      "label": "ARTIFACT",
-      "date": "BUILD / 03",
-      "title": "Make the new model tangible enough to react to.",
-      "body": "Artifacts sit flat on the page at useful scale. They are not trapped in device mockups. Provenance and annotations wait until the reader asks for them.",
-      "claim": { "status": "unproven", "evidenceIds": ["artifact-03"], "publicSafe": true }
-    },
-    {
-      "id": "proof",
-      "number": "P04",
-      "kind": "proof",
-      "label": "RESPONSE",
-      "date": "PROOF / 04",
-      "title": "Let another person’s words carry the validation.",
-      "body": "When defensible metrics do not exist, a sourced response and the artifact itself can establish credibility without manufacturing certainty.",
-      "claim": { "status": "unproven", "evidenceIds": ["response-04"], "publicSafe": true }
-    },
-    {
-      "id": "unknown",
-      "number": "U05",
-      "kind": "unknown",
-      "label": "BOUNDARY",
-      "date": "LIMIT / 05",
-      "title": "End with what the evidence does not prove.",
-      "body": "The case closes with a calm attribution boundary. This increases trust and gives the next decision somewhere honest to begin.",
-      "claim": { "status": "unproven", "evidenceIds": [], "publicSafe": true }
-    }
+    "boundary": "This is a proposed product and GTM thesis. The owner-paid path is still unverified.",
+    "actions": [
+      "Move the cost choice to the owner",
+      "Show what the thesis still has to prove",
+      "Return to the repair"
+    ],
+    "states": [
+      "The inherited story stops at the repair.",
+      "The proposed owner decision is visible.",
+      "The proposed decision and its remaining tests are visible."
     ]
+  },
+  "futureclinic": {
+    "company": "FutureClinic",
+    "role": "Product and build",
+    "title": "The role was broad. The public proof is still narrow.",
+    "paragraphs": [
+      "At FutureClinic, I worked across product and implementation on an AI creator workflow.",
+      "The product idea was to keep the working state visible across the production process. The final case needs the exact artifact before that idea can carry more weight."
+    ],
+    "boundary": "Founder attribution and usage outcomes stay out until the source pass is complete."
+  },
+  "close": {
+    "statement": "I do my best work while the real product question is still taking shape.",
+    "githubLabel": "Inspect the source",
+    "githubUrl": "https://github.com/Seryozh/sergeykudelin-portfolio"
   }
-  ],
-  "evidence": [
-    {
-      "id": "futureclinic-source-01",
-      "type": "document",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Placeholder excerpt created for the FutureClinic design-system specimen",
-      "placeholder": true
-    },
-    {
-      "id": "futureclinic-artifact-03",
-      "type": "artifact",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Workflow reconstruction containing no live product or customer data",
-      "placeholder": true
-    },
-    {
-      "id": "futureclinic-response-04",
-      "type": "quote",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Placeholder copy that must be replaced by an attributed founder response",
-      "placeholder": true
-    },
-    {
-      "id": "source-01",
-      "type": "call",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Placeholder excerpt created for the design-system specimen",
-      "placeholder": true
-    },
-    {
-      "id": "artifact-03",
-      "type": "artifact",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Interface reconstruction containing no live customer data",
-      "placeholder": true
-    },
-    {
-      "id": "response-04",
-      "type": "quote",
-      "status": "placeholder",
-      "visibility": "public",
-      "permission": "reconstruction-only",
-      "provenance": "Placeholder copy that must be replaced by an attributed quote",
-      "placeholder": true
-    }
-  ]
 }

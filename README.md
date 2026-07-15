@@ -1,13 +1,8 @@
 # Sergey Kudelin portfolio
 
-This repository contains the living prototype and implementation contract for **Decision Trace**, a portfolio system centered on product judgment rather than unsupported metrics.
+The portfolio opens on one specific Fyxed product thesis: the rent-timing story stopped at the repair bill. A single interaction exposes the proposed owner decision and the proof it still needs. FutureClinic is presented separately because its public source inventory is less complete.
 
-Start here:
-
-1. `DESIGN_SYSTEM.md` explains the visual language, flow, and credibility model.
-2. `design-system/manifest.json` is the machine entry point.
-3. `AGENTS.md` defines what a future model may change and how.
-4. `/` is the canonical living specimen. Its current case content is intentionally marked as placeholder or reconstruction.
+The self-prompt, evidence table, rejection history, and acceptance gate live in `design/`.
 
 ## Commands
 
