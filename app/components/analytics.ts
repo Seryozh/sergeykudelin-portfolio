@@ -7,7 +7,6 @@ export type PortfolioEventName =
   | "resume_open"
   | "resume_pdf_open"
   | "contact_click"
-  | "brief_view"
   | "external_profile_open";
 
 export type PortfolioEventProperties = Record<

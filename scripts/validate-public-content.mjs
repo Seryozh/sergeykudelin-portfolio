@@ -10,6 +10,8 @@ const blocked = [
   ["private Drive URL", new RegExp(["drive", ".google", ".com"].join(""), "i")],
   ["old unsupported reply claim", /15\s*%/i],
   ["unverified click claim", /12\s*%/i],
+  ["weaker FutureClinic ownership framing", /first working version/i],
+  ["removed Fyxed outbound meeting claim", /first meeting booked through outbound/i],
   ["unsupported formal title", new RegExp(["Founding", " Engineer"].join(""), "i")],
   ["unsupported bank wording", new RegExp(["FDIC", "-backed"].join(""), "i")],
   ["private FutureClinic repository", new RegExp(["doctor", "-preview", "-pages"].join(""), "i")],

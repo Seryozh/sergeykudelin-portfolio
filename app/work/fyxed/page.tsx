@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
+import { ProjectPlayer } from "../../components/ProjectPlayer";
 import { TrackPageView } from "../../components/TrackPageView";
-import { TrackedLink } from "../../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Fyxed: When GTM Reaches the Product",
+  title: "Fyxed: When Growth Reached the Repair Bill",
   description:
-    "Current contract work at Fyxed, where market signals became a PM-branded repair workflow and a concrete product test.",
+    "Sergey Kudelin's current Growth Engineer contract at Fyxed, covering the sourced GTM layer and a PM-branded repair workflow test.",
   alternates: { canonical: "/work/fyxed" },
 };
 
@@ -15,132 +15,122 @@ export default function FyxedCase() {
   return (
     <>
       <TrackPageView pageType="case" caseId="fyxed" />
-      <a className="skip-link" href="#main">Skip to the case study</a>
+      <a className="skip-link" href="#main">
+        Skip to the case study
+      </a>
       <Header current="work" />
-      <main className="case-page" id="main">
-        <header className="case-hero shell">
-          <div className="case-meta">
+
+      <main className="case-file-page case-file-page-fyxed" id="main">
+        <header className="case-file-cover shell">
+          <div className="case-file-meta">
+            <span>Case 02</span>
             <span>Fyxed</span>
             <span>Growth Engineer / Contract</span>
-            <span>June 2026 to present</span>
+            <span>Jun 2026 to present</span>
           </div>
-          <h1>At Fyxed, growth keeps turning into product work.</h1>
-          <p className="case-deck">
-            I joined a fintech for property managers while the GTM motion was
-            still being figured out. The job is current, and the useful part is
-            getting close enough to the workflow to build the next real test.
+          <div className="case-file-title">
+            <p className="studio-label">Current work / property-management fintech</p>
+            <h1>Growth work got useful when it reached the repair bill.</h1>
+          </div>
+          <p className="case-file-deck">
+            I build the source-backed GTM layer at Fyxed. The more interesting
+            work starts when a real problem comes back through that layer. Repair
+            funding kept recurring, so I turned the owner experience into a
+            concrete product test.
           </p>
         </header>
 
-        <div className="case-body shell">
-          <section className="case-chapter" aria-labelledby="learn-title">
-            <p className="case-overline">Getting oriented</p>
-            <div className="case-chapter-content">
-              <h2 id="learn-title">First, I had to make a niche market legible.</h2>
+        <section className="case-reel-wrap shell" aria-labelledby="fyxed-reel-title">
+          <div className="case-reel-intro">
+            <p className="studio-label">Guided case</p>
+            <div>
+              <h2 id="fyxed-reel-title">Five scenes. Current through July 2026.</h2>
               <p>
-                Property management has a lot of actors, financial constraints,
-                and local rules. I built a source-backed market layer so every
-                account and outreach decision stayed tied to evidence instead of
-                a guess.
-              </p>
-              <p>
-                That system reads public company sites for owner-payment signals
-                and traces useful accounts to the person who actually owns the
-                firm. It is the operating layer behind the GTM motion, and I am
-                still building it.
+                The case stays honest about what exists today and what the test
+                still has to prove.
               </p>
             </div>
-          </section>
+          </div>
+          <ProjectPlayer project="fyxed" />
+        </section>
 
-          <section className="case-chapter" aria-labelledby="signal-title">
-            <p className="case-overline">The repeated signal</p>
-            <div className="case-chapter-content">
-              <h2 id="signal-title">Repairs kept showing up in the real conversations.</h2>
+        <section className="working-file shell" aria-labelledby="working-file-title">
+          <header className="working-file-head">
+            <p className="studio-label">The working object</p>
+            <div>
+              <h2 id="working-file-title">A repair file with a real next action.</h2>
               <p>
-                Different property managers kept describing the same event. A
-                repair needed to happen, and the owner still had to decide how
-                to cover it. That was sharper than another abstract financing
-                message.
-              </p>
-              <p>
-                I proposed a simple PM-branded owner workflow, then built the
-                product surface and case tooling needed to test the framing. The
-                founder approved the direction for testing.
+                The reconstruction below uses a fictional company, property,
+                amount, and address. It shows the interaction without exposing
+                customer data or product terms.
               </p>
             </div>
-          </section>
+          </header>
 
-          <section className="case-chapter" aria-labelledby="artifact-title">
-            <p className="case-overline">The product test</p>
-            <div className="case-chapter-content">
-              <h2 id="artifact-title">Make the next decision concrete.</h2>
-              <p>
-                The workflow collects the repair context and its supporting
-                document, gives the owner a clear path inside the property
-                manager&apos;s brand, and keeps the case together for manual review.
-              </p>
-            </div>
-            <div className="case-artifact-wide fyxed-artifact" aria-label="Synthetic reconstruction of a repair review case">
-              <div className="artifact-topline">
-                <span className="artifact-brand"><i aria-hidden="true" /> Repair review</span>
-                <span className="artifact-status">Current prototype</span>
+          <div className="repair-workbench" aria-label="Synthetic reconstruction of the Fyxed repair case workflow">
+            <div className="repair-workbench-head">
+              <div>
+                <span className="studio-label">Case / Juniper House</span>
+                <h3>Roof repair review</h3>
               </div>
-              <div className="repair-layout">
-                <div className="repair-summary">
-                  <p className="artifact-kicker">Case file / Redwood Court</p>
-                  <h3>A repair needs a real next step.</h3>
-                  <p>
-                    The property manager can collect the estimate, give the
-                    owner a clear decision, and keep the case together for
-                    manual review.
-                  </p>
-                  <div className="document-row">
-                    <span className="document-icon" aria-hidden="true">PDF</span>
-                    <span><strong>Vendor estimate</strong><small>Attached to the private case</small></span>
-                    <span className="check" aria-label="Complete">✓</span>
+              <span className="workbench-status">Prototype</span>
+            </div>
+
+            <div className="repair-workbench-grid">
+              <section className="repair-workbench-document" aria-labelledby="document-title">
+                <p className="studio-label">Supporting document</p>
+                <div className="repair-document-card">
+                  <span className="repair-document-type">PDF</span>
+                  <div>
+                    <h4 id="document-title">Vendor estimate</h4>
+                    <p>Fictional amount / fictional vendor</p>
                   </div>
+                  <span className="document-ready">Ready</span>
                 </div>
-                <ol className="repair-steps" aria-label="Repair workflow">
-                  <li className="is-complete"><span>01</span><strong>Repair captured</strong><small>Estimate and context stay together.</small></li>
-                  <li className="is-current"><span>02</span><strong>Owner decision</strong><small>A simple choice in the PM&apos;s brand.</small></li>
-                  <li><span>03</span><strong>Manual review</strong><small>No approval is implied by the page.</small></li>
+                <dl className="case-facts">
+                  <div><dt>Property</dt><dd>Juniper House</dd></div>
+                  <div><dt>Owner status</dt><dd>Review requested</dd></div>
+                  <div><dt>PM brand</dt><dd>Fictional</dd></div>
+                  <div><dt>Decision</dt><dd>Manual</dd></div>
+                </dl>
+              </section>
+
+              <section className="repair-workbench-flow" aria-labelledby="workflow-title">
+                <p className="studio-label" id="workflow-title">Case path</p>
+                <ol>
+                  <li className="is-done"><span>01</span><div><strong>Repair captured</strong><p>The estimate and context stay together.</p></div></li>
+                  <li className="is-done"><span>02</span><div><strong>Owner sees the choice</strong><p>The property manager remains the visible relationship.</p></div></li>
+                  <li className="is-active"><span>03</span><div><strong>Information collected</strong><p>The case becomes complete enough for review.</p></div></li>
+                  <li><span>04</span><div><strong>Manual decision</strong><p>The prototype makes no approval promise.</p></div></li>
                 </ol>
-              </div>
-              <p className="artifact-caption">
-                Synthetic reconstruction based on an internal prototype. The
-                company, property, and document are fictional.
-              </p>
+              </section>
             </div>
-          </section>
 
-          <section className="case-chapter" aria-labelledby="fyxed-boundary-title">
-            <p className="case-overline">Current boundary</p>
-            <div className="case-chapter-content">
-              <div className="proof-boundary">
-                <p className="artifact-kicker">Where the work stands</p>
-                <h3 id="fyxed-boundary-title">The workflow is real. The business result is still being tested.</h3>
-                <p>
-                  This is active contract work. A property manager brought the
-                  team a live repair and asked for a concrete review. The
-                  workflow has not produced a verified funded or repaid case, so
-                  this page does not claim one.
-                </p>
-              </div>
-            </div>
-          </section>
+            <p className="workbench-caption">
+              Reconstruction based on an internal prototype. No customer,
+              property, account, or underwriting data is shown.
+            </p>
+          </div>
+        </section>
 
-          <nav className="case-next" aria-label="Next action">
-            <span>See the compact version</span>
-            <TrackedLink
-              href="/resume"
-              eventName="resume_open"
-              eventProperties={{ entry_surface: "fyxed_case" }}
-            >
-              Open my resume ↗
-            </TrackedLink>
-          </nav>
-        </div>
+        <section className="case-close shell" aria-labelledby="fyxed-close-title">
+          <p className="studio-label">Where it stands</p>
+          <div>
+            <h2 id="fyxed-close-title">The next proof has to come from the case.</h2>
+            <p>
+              The prototype exists, and the workflow is concrete enough to put
+              in front of a property manager. Launch status, financing outcomes,
+              and repeat use remain open.
+            </p>
+          </div>
+        </section>
+
+        <nav className="case-next-studio shell" aria-label="Previous case study">
+          <span>Previous / flagship case</span>
+          <a href="/work/futureclinic">FutureClinic / Creators ↗</a>
+        </nav>
       </main>
+
       <Footer />
     </>
   );

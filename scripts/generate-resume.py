@@ -75,8 +75,8 @@ summary_style = ParagraphStyle(
     fontSize=10.4,
     leading=14.5,
     textColor=INK,
-    spaceBefore=14,
-    spaceAfter=12,
+    spaceBefore=12,
+    spaceAfter=10,
 )
 section_style = ParagraphStyle(
     "Section",
@@ -86,8 +86,8 @@ section_style = ParagraphStyle(
     leading=11,
     textColor=MUTED,
     tracking=1.3,
-    spaceBefore=17,
-    spaceAfter=7,
+    spaceBefore=14,
+    spaceAfter=5,
 )
 job_style = ParagraphStyle(
     "Job",
@@ -159,7 +159,7 @@ skill_text_style = ParagraphStyle(
 def section_title(text):
     return [
         Paragraph(text.upper(), section_style),
-        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=11),
+        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=8),
     ]
 
 
@@ -236,9 +236,10 @@ story = [
         contact_style,
     ),
     Paragraph(
-        "I got into FutureClinic by building them a working doctor-discovery system before I "
-        "had the job. Now I am the Growth Engineer at Fyxed, where I build the systems it uses "
-        "to find and prove demand.",
+        "I build working systems around market evidence. I joined FutureClinic after building a "
+        "physician-discovery engine for the company before I had the job, then built the "
+        "original FutureClinic Creators implementation. Now I am the Growth Engineer at "
+        "Fyxed, where I build the data and product workflows behind GTM.",
         summary_style,
     ),
 ]
@@ -252,21 +253,21 @@ story.extend(
             "Contract / Jun 2026 to present",
             "Fintech for residential property managers.",
             [
-                "Built and now operate the system Fyxed uses to find property managers already signaling an owner-payment problem, with the source evidence and decision-maker attached.",
-                "Built and now run Fyxed's PM-branded owner workflow for a live repair-funding case, including private intake and internal review.",
-                "Built Fyxed's first outbound stack across CRM architecture, enrichment, sequencing, and channel testing. The founder used it to book the company's first outbound meeting.",
+                "Built and now operate Fyxed's source-backed GTM data engine across roughly 3,600 property-management companies and 5,200 contacts, linking payment signals to verified decision-makers.",
+                "Turned repeated repair-funding signals from customer calls into a PM-branded owner payment choice, then built the private intake and case-review workflow for the product test.",
+                "Built and now run Fyxed's outbound system, including CRM architecture, enrichment, sequencing, and channel testing.",
             ],
         ),
-        Spacer(1, 16),
+        Spacer(1, 12),
         job(
             "GTM Engineer",
             "FutureClinic, YC F24",
             "Contract / Mar to May 2026",
             "Digital clinics and creator tools for physicians.",
             [
-                "Built the first working version of FutureClinic Creators myself, including its backend and AI pipeline, then worked with another engineer to take it into production. It is live today.",
-                "Built Doctor Preview Pages and the internal review and publishing workflow behind them, giving each physician creator a custom clinic page and founder video made specifically for them.",
-                "Built Nikola, an AI outreach agent in Slack that researched physician creators and created personalized Gmail drafts only after human approval.",
+                "Built the original end-to-end FutureClinic Creators implementation, including its backend and AI pipeline. The product is live today.",
+                "Built Derm Hunter as proof of work before joining FutureClinic. A documented run discovered 245 YouTube channels and verified 68 physicians against NPI data in 14 minutes.",
+                "Built a personalized physician-acquisition workflow that generated a custom clinic preview and founder video for each prospect. Nikola handled prospect research in Slack and created Gmail drafts only after human approval.",
             ],
         ),
     ]
@@ -298,16 +299,66 @@ skills.setStyle(
 )
 story.append(skills)
 
-story.extend(section_title("Creator background"))
-story.append(
-    Paragraph(
-        "Built and ran a Roblox YouTube channel before entering startups. That work trained my instincts for audience research, idea selection, scripts, thumbnails, and keeping content specific to the creator.",
-        small_style,
+story.extend(section_title("Misc facts about me"))
+facts = Table(
+    [
+        [
+            Paragraph("Creator", skill_label_style),
+            Paragraph("Grew a Roblox YouTube channel to 200,000 subscribers.", skill_text_style),
+        ],
+        [
+            Paragraph("AI systems", skill_label_style),
+            Paragraph(
+                "I have a deep practical understanding of orchestrating AI systems around real tasks and finding where they remove the most manual work. Recently, I turned a broken-screen MacBook into a remote agent host over SSH.",
+                skill_text_style,
+            ),
+        ],
+    ],
+    colWidths=[1.15 * inch, 5.85 * inch],
+    hAlign="LEFT",
+)
+facts.setStyle(
+    TableStyle(
+        [
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -2), 5),
+            ("BOTTOMPADDING", (0, -1), (-1, -1), 0),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]
     )
 )
+story.append(facts)
 
 story.extend(section_title("Education"))
-story.append(Paragraph("<b>Florida International University</b>", small_style))
+education = Table(
+    [
+        [
+            Paragraph("<b>University of Florida</b> / Computer Science", small_style),
+            Paragraph("2024-2025", date_style),
+        ],
+        [
+            Paragraph("<b>Florida International University</b> / Computer Science", small_style),
+            Paragraph("2022-2023", date_style),
+        ],
+    ],
+    colWidths=[5.2 * inch, 1.8 * inch],
+    hAlign="LEFT",
+)
+education.setStyle(
+    TableStyle(
+        [
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -2), 5),
+            ("BOTTOMPADDING", (0, -1), (-1, -1), 0),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]
+    )
+)
+story.append(education)
 
 doc.build(story)
 print(OUTPUT)

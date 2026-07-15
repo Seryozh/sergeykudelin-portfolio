@@ -1,0 +1,37 @@
+sources:
+  fc_derm_repo:
+    visibility: public
+    url: https://github.com/Seryozh/derm-hunter
+    supports: [futureclinic_pre_hire_build, derm_hunter_authorship]
+  fc_derm_analysis:
+    visibility: public
+    url: https://github.com/Seryozh/derm-hunter/blob/e74d7943a0a078b52bf772dc7b3e40920ff2b858/ANALYSIS.md
+    supports: [derm_hunter_documented_run]
+  fc_creators_live:
+    visibility: public
+    url: https://www.futurecliniccreators.com/login
+    supports: [futureclinic_creators_live]
+  fc_founder_recommendation:
+    visibility: public
+    public_path: /futureclinic-recommendation.pdf
+    supports: [futureclinic_role, creators_scope, founder_validation]
+  fc_origin_repositories:
+    visibility: private
+    public_reference_allowed: false
+    supports: [creators_original_implementation]
+  fc_handoff_records:
+    visibility: private
+    public_reference_allowed: false
+    supports: [creators_handoff, nikola_human_approval]
+  fy_role_records:
+    visibility: private
+    public_reference_allowed: false
+    supports: [fyxed_current_contract_role]
+  fy_operating_records:
+    visibility: private
+    public_reference_allowed: false
+    supports: [fyxed_aggregate_market_layer, fyxed_repair_signal, fyxed_product_test]
+  sergey_direct_confirmation:
+    visibility: first_person
+    public_reference_allowed: true
+    supports: [creator_subscriber_count, creators_implementation_sequence]

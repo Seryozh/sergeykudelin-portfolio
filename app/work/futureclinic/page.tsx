@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArtifactTabs } from "../../components/ArtifactTabs";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
+import { ProjectPlayer } from "../../components/ProjectPlayer";
 import { TrackPageView } from "../../components/TrackPageView";
 import { TrackedLink } from "../../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "FutureClinic Creators: Building the Proof Before the Job",
+  title: "FutureClinic: Building Before the Role",
   description:
-    "How Sergey Kudelin built FutureClinic Creators, personalized doctor previews, and a human-approved outreach agent.",
+    "How Sergey Kudelin built proof for FutureClinic, then built the original FutureClinic Creators implementation and its acquisition systems.",
   alternates: { canonical: "/work/futureclinic" },
 };
 
@@ -17,142 +17,143 @@ export default function FutureClinicCase() {
   return (
     <>
       <TrackPageView pageType="case" caseId="futureclinic" />
-      <a className="skip-link" href="#main">Skip to the case study</a>
+      <a className="skip-link" href="#main">
+        Skip to the case study
+      </a>
       <Header current="work" />
-      <main className="case-page" id="main">
-        <header className="case-hero shell">
-          <div className="case-meta">
-            <span>FutureClinic</span>
+
+      <main className="case-file-page" id="main">
+        <header className="case-file-cover shell">
+          <div className="case-file-meta">
+            <span>Case 01</span>
+            <span>FutureClinic / YC F24</span>
             <span>GTM Engineer / Contract</span>
-            <span>March to May 2026</span>
+            <span>Mar to May 2026</span>
           </div>
-          <h1>I had spent years making videos. Here, that context became a product.</h1>
-          <p className="case-deck">
-            FutureClinic was building digital clinics for doctors. I worked
-            closely with the founder and built the creator product, plus the
-            acquisition systems around it.
+          <div className="case-file-title">
+            <p className="studio-label">Product and acquisition systems</p>
+            <h1>The proof I built before the role became a much larger product.</h1>
+          </div>
+          <p className="case-file-deck">
+            I started with a physician-discovery system built for the hiring
+            process. Inside the company, my creator background became useful
+            product context. I built the original end-to-end FutureClinic
+            Creators implementation and the acquisition workflow around it.
           </p>
         </header>
 
-        <div className="case-body shell">
-          <section className="case-chapter" aria-labelledby="proof-title">
-            <p className="case-overline">Before the role</p>
-            <div className="case-chapter-content">
-              <h2 id="proof-title">I built the proof before I had the job.</h2>
+        <section className="case-reel-wrap shell" aria-labelledby="futureclinic-reel-title">
+          <div className="case-reel-intro">
+            <p className="studio-label">Guided case</p>
+            <div>
+              <h2 id="futureclinic-reel-title">Five scenes. About four minutes.</h2>
               <p>
-                Derm Hunter found physician-creators on YouTube, checked their
-                identity against the federal NPI Registry, and kept uncertain
-                matches out. I built it specifically for FutureClinic during the
-                hiring process.
+                Use the inline controls, or open presentation mode for a clean
+                interview walkthrough.
               </p>
-              <p>
-                The repository and working demo made the conversation concrete.
-                That proof helped create the opportunity to work with the team.
-              </p>
-              <div className="source-row">
-                <TrackedLink
-                  href="https://github.com/Seryozh/derm-hunter"
-                  eventName="proof_open"
-                  eventProperties={{ case_id: "futureclinic", proof_id: "derm_hunter", destination_type: "github" }}
-                >
-                  Derm Hunter on GitHub ↗
-                </TrackedLink>
-                <TrackedLink
-                  href="https://futureclinic-growth.vercel.app"
-                  eventName="proof_open"
-                  eventProperties={{ case_id: "futureclinic", proof_id: "derm_hunter_demo", destination_type: "demo" }}
-                >
-                  Open the public demo ↗
-                </TrackedLink>
-              </div>
             </div>
-          </section>
+          </div>
+          <ProjectPlayer project="futureclinic" />
+        </section>
 
-          <section className="case-chapter" aria-labelledby="creators-title">
-            <p className="case-overline">The flagship build</p>
-            <div className="case-chapter-content">
-              <h2 id="creators-title">FutureClinic Creators</h2>
-              <p>
-                I understood the difference between content that is technically
-                correct and content a creator would actually record. The product
-                started with a doctor&apos;s existing channel and carried their
-                voice through topics, scripts, and thumbnail direction.
-              </p>
-              <p>
-                I built the first working version myself, including the backend
-                and AI pipeline. After it proved the idea, I worked with another
-                engineer to take it into production. The product is live today.
-              </p>
-            </div>
-            <div className="case-artifact-wide">
-              <ArtifactTabs />
-            </div>
-          </section>
+        <section className="proof-shelf shell" aria-labelledby="proof-shelf-title">
+          <header className="proof-shelf-head">
+            <p className="studio-label">Public proof</p>
+            <h2 id="proof-shelf-title">The sources you can open yourself.</h2>
+          </header>
 
-          <section className="case-chapter" aria-labelledby="preview-title">
-            <p className="case-overline">Acquisition as product</p>
-            <div className="case-chapter-content">
-              <h2 id="preview-title">The pitch became something each doctor could see.</h2>
+          <div className="proof-shelf-grid">
+            <article className="proof-card proof-card-featured">
+              <p className="proof-card-index">01 / Pre-hire build</p>
+              <h3>Derm Hunter</h3>
               <p>
-                A generic message did not show a physician what FutureClinic
-                would look like for them. I built Doctor Preview Pages so each
-                doctor received a custom clinic page and a personalized founder
-                video. The internal review and publishing flow sat behind it.
+                A public physician-creator discovery pipeline. Its documented
+                run found 245 creator channels and verified 68 physicians in 14
+                minutes.
               </p>
-              <p>
-                I kept the same rule in the outreach system. Nikola handled the
-                repetitive research and prepared Gmail drafts, then stopped for
-                human approval. It never sent on its own in the version I handed
-                off.
+              <p className="proof-card-boundary">
+                One system run. It measures system behavior only. Customer
+                outcomes remain unknown.
               </p>
-            </div>
-          </section>
+              <TrackedLink
+                className="studio-link studio-link-dark"
+                href="https://github.com/Seryozh/derm-hunter"
+                eventName="proof_open"
+                eventProperties={{
+                  case_id: "futureclinic",
+                  proof_id: "derm_hunter",
+                  destination_type: "github",
+                }}
+              >
+                Open the repository <span aria-hidden="true">↗</span>
+              </TrackedLink>
+            </article>
 
-          <section className="case-chapter" aria-labelledby="boundary-title">
-            <p className="case-overline">Proof boundary</p>
-            <div className="case-chapter-content">
-              <div className="proof-boundary">
-                <p className="artifact-kicker">What the evidence supports</p>
-                <h3 id="boundary-title">A real first implementation, a live product, and a clean handoff.</h3>
-                <p>
-                  The first complete Creators implementation is backed by my
-                  repository history. The current product is publicly live.
-                  Adoption and conversion were not documented cleanly enough
-                  for this site, so I leave them out.
-                </p>
-              </div>
-              <blockquote className="founder-quote">
-                <p>
-                  “Phenomenal work, the kind of product I was genuinely excited
-                  to use myself.”
-                </p>
-                <cite>Dr. Usama Syed, founder of FutureClinic</cite>
+            <article className="proof-card">
+              <p className="proof-card-index">02 / Product continuity</p>
+              <h3>FutureClinic Creators is live.</h3>
+              <p>
+                The current product confirms that the product line exists
+                today. Current adoption and later code lineage require separate
+                evidence.
+              </p>
+              <TrackedLink
+                className="studio-link studio-link-dark"
+                href="https://www.futurecliniccreators.com/login"
+                eventName="proof_open"
+                eventProperties={{
+                  case_id: "futureclinic",
+                  proof_id: "creators_live",
+                  destination_type: "product",
+                }}
+              >
+                Open the live product <span aria-hidden="true">↗</span>
+              </TrackedLink>
+            </article>
+
+            <article className="proof-card proof-card-quote">
+              <p className="proof-card-index">03 / Founder reference</p>
+              <blockquote>
+                <p>“Phenomenal work.”</p>
+                <cite>Dr. Usama Syed, FutureClinic founder</cite>
               </blockquote>
-              <div className="source-row">
-                <TrackedLink
-                  href="https://www.futurecliniccreators.com/login"
-                  eventName="proof_open"
-                  eventProperties={{ case_id: "futureclinic", proof_id: "creators_live", destination_type: "product" }}
-                >
-                  FutureClinic Creators ↗
-                </TrackedLink>
-                <TrackedLink
-                  href="/futureclinic-recommendation.pdf"
-                  eventName="proof_open"
-                  eventProperties={{ case_id: "futureclinic", proof_id: "founder_recommendation", destination_type: "pdf" }}
-                >
-                  Read the recommendation ↗
-                </TrackedLink>
-              </div>
-            </div>
-          </section>
+              <TrackedLink
+                className="studio-link studio-link-dark"
+                href="/futureclinic-recommendation.pdf"
+                eventName="proof_open"
+                eventProperties={{
+                  case_id: "futureclinic",
+                  proof_id: "founder_recommendation",
+                  destination_type: "pdf",
+                }}
+              >
+                Read the recommendation <span aria-hidden="true">↗</span>
+              </TrackedLink>
+            </article>
+          </div>
+        </section>
 
-          <nav className="case-next" aria-label="Next case study">
-            <span>Next / current work</span>
-            <Link href="/work/fyxed">Fyxed: when GTM reaches the product ↗</Link>
-          </nav>
-        </div>
+        <section className="case-close shell" aria-labelledby="futureclinic-close-title">
+          <p className="studio-label">What this case shows</p>
+          <div>
+            <h2 id="futureclinic-close-title">
+              I can use context outside the job description to make the product
+              better.
+            </h2>
+            <p>
+              The useful part was knowing which creative decisions had to stay
+              visible to the doctor, then building the system around those
+              decisions.
+            </p>
+          </div>
+        </section>
+
+        <nav className="case-next-studio shell" aria-label="Next case study">
+          <span>Next / current work</span>
+          <Link href="/work/fyxed">Fyxed / Repair workflow ↗</Link>
+        </nav>
       </main>
+
       <Footer />
     </>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./studio.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sergeykudelin.com"),
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s | Sergey Kudelin",
   },
   description:
-    "Growth engineer working across product, GTM, and AI. Case studies from FutureClinic and Fyxed.",
+    "Growth Engineer in Miami. Case files on FutureClinic Creators and current product and GTM work at Fyxed.",
   applicationName: "Sergey Kudelin",
   authors: [{ name: "Sergey Kudelin", url: "https://sergeykudelin.com" }],
   creator: "Sergey Kudelin",
@@ -17,14 +18,23 @@ export const metadata: Metadata = {
     siteName: "Sergey Kudelin",
     title: "Sergey Kudelin - Growth Engineer",
     description:
-      "Product-minded growth work at FutureClinic and Fyxed, with the actual systems behind it.",
+      "Case files on FutureClinic Creators and current product and GTM work at Fyxed.",
     url: "https://sergeykudelin.com",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Sergey Kudelin portfolio case file",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Sergey Kudelin - Growth Engineer",
     description:
-      "Product-minded growth work at FutureClinic and Fyxed, with the actual systems behind it.",
+      "Case files on FutureClinic Creators and current product and GTM work at Fyxed.",
+    images: ["/og.png"],
   },
   robots: {
     index: false,

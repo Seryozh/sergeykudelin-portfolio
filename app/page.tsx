@@ -1,4 +1,3 @@
-import { ArtifactTabs } from "./components/ArtifactTabs";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { PersonJsonLd } from "./components/PersonJsonLd";
@@ -14,178 +13,197 @@ export default function Home() {
         Skip to the work
       </a>
       <Header />
-      <main id="main">
-        <section className="hero shell" aria-labelledby="home-title">
-          <div className="hero-copy">
-            <p className="eyebrow">
-              <span className="signal-dot" aria-hidden="true" />
-              Sergey Kudelin / Growth Engineer
-            </p>
-            <h1 id="home-title">I get close to the problem, then build.</h1>
-            <p className="hero-lede">
-              I work with early-stage teams when growth starts touching the
-              product. Right now I am a contract Growth Engineer at Fyxed.
-              Before that, I built creator and acquisition products with
-              FutureClinic.
-            </p>
-            <div className="hero-actions" aria-label="Primary actions">
-              <TrackedLink
-                className="button button-dark"
-                href="#work"
-                eventName="case_view"
-                eventProperties={{ case_id: "work_index", entry_surface: "hero" }}
-              >
-                See the work
-              </TrackedLink>
-              <TrackedLink
-                className="text-link"
-                href="/resume"
-                eventName="resume_open"
-                eventProperties={{ entry_surface: "hero" }}
-              >
-                Resume <span aria-hidden="true">↗</span>
-              </TrackedLink>
-            </div>
+
+      <main id="main" className="portfolio-main">
+        <section className="cover shell" aria-labelledby="home-title">
+          <div className="cover-ledger" aria-label="Current role">
+            <span>Sergey Kudelin</span>
+            <span>Growth Engineer</span>
+            <span>Miami</span>
+            <span className="cover-current">Current: Fyxed / Contract</span>
           </div>
 
-          <aside className="hero-aside" aria-label="Current role and site context">
-            <div className="current-role">
-              <span className="aside-label">Current</span>
-              <strong>Growth Engineer at Fyxed</strong>
-              <span>Contract / Miami</span>
-            </div>
-            <p className="found-here">
-              Most people find me on LinkedIn. This is the part with the work.
+          <div className="cover-copy">
+            <p className="studio-label">Portfolio / 2026</p>
+            <h1 id="home-title">
+              I built for FutureClinic before I worked there.
+            </h1>
+            <p className="cover-deck">
+              That is still how I work. I get close enough to the workflow to
+              build the missing part.
             </p>
+          </div>
+
+          <div className="cover-actions" aria-label="Primary actions">
             <TrackedLink
-              className="quiet-link"
-              href="/brief"
-              eventName="brief_view"
+              className="studio-link studio-link-primary"
+              href="/work/futureclinic"
+              eventName="case_view"
+              eventProperties={{ case_id: "futureclinic", entry_surface: "hero" }}
+            >
+              Open the FutureClinic case <span aria-hidden="true">↗</span>
+            </TrackedLink>
+            <TrackedLink
+              className="studio-link"
+              href="/resume"
+              eventName="resume_open"
               eventProperties={{ entry_surface: "hero" }}
             >
-              Why the site works this way
+              Read the resume <span aria-hidden="true">↗</span>
             </TrackedLink>
-          </aside>
+          </div>
+
+          <div className="cover-note">
+            <span className="studio-label">What is here</span>
+            <p>
+              Two case files. Each one can open as a presentation when you want
+              the short version.
+            </p>
+          </div>
         </section>
 
-        <section className="case-section shell" id="work" aria-labelledby="futureclinic-title">
-          <div className="section-intro">
-            <p className="section-index">01 / FutureClinic</p>
-            <div>
-              <h2 id="futureclinic-title">
-                A creator product, built close to the founder.
-              </h2>
+        <section className="work-index shell" id="work" aria-labelledby="work-title">
+          <header className="work-index-head">
+            <p className="studio-label">Selected work</p>
+            <h2 id="work-title">The work, in the order I would present it.</h2>
+          </header>
+
+          <article className="work-file work-file-futureclinic">
+            <div className="work-file-copy">
+              <div className="work-file-meta">
+                <span>Case 01</span>
+                <span>FutureClinic / YC F24</span>
+                <span>Mar to May 2026</span>
+              </div>
+              <p className="work-file-status">GTM Engineer / Contract</p>
+              <h3>Creator context became product context.</h3>
               <p>
-                I built the first working version of FutureClinic Creators
-                myself, including the backend and AI pipeline. Once it proved
-                the idea, I worked with another engineer to take it into
-                production. It is live today.
+                I spent years making videos. At FutureClinic, that experience
+                shaped an AI product for doctor-creators. I built the original
+                end-to-end implementation, including its backend and AI
+                pipeline.
               </p>
               <TrackedLink
-                className="case-link"
+                className="studio-link studio-link-dark"
                 href="/work/futureclinic"
                 eventName="case_view"
                 eventProperties={{ case_id: "futureclinic", entry_surface: "home" }}
               >
-                How it came together <span aria-hidden="true">↗</span>
+                Run the case <span aria-hidden="true">↗</span>
               </TrackedLink>
             </div>
-          </div>
-          <ArtifactTabs />
-        </section>
 
-        <section className="case-section fyxed-section shell" aria-labelledby="fyxed-title">
-          <div className="section-intro">
-            <p className="section-index">02 / Fyxed / Current</p>
-            <div>
-              <h2 id="fyxed-title">
-                The interesting part started when repairs kept coming up.
-              </h2>
+            <div className="work-file-artifact creator-poster" aria-label="Reconstruction of the FutureClinic Creators workflow">
+              <div className="poster-topline">
+                <span>FutureClinic Creators</span>
+                <span>Original build / reconstruction</span>
+              </div>
+              <div className="creator-poster-body">
+                <p className="studio-label">A doctor&apos;s channel enters here</p>
+                <h4>One working context for the whole video.</h4>
+                <ol className="creator-pipeline">
+                  <li><span>01</span>Profile</li>
+                  <li><span>02</span>Topics</li>
+                  <li><span>03</span>Title</li>
+                  <li><span>04</span>Thumbnail</li>
+                  <li><span>05</span>Script</li>
+                  <li><span>06</span>Export</li>
+                </ol>
+              </div>
+              <p className="poster-caption">
+                Reconstruction of the original workflow. No private product
+                data is shown.
+              </p>
+            </div>
+          </article>
+
+          <article className="work-file work-file-fyxed">
+            <div className="work-file-copy">
+              <div className="work-file-meta">
+                <span>Case 02</span>
+                <span>Fyxed</span>
+                <span>Jun 2026 to present</span>
+              </div>
+              <p className="work-file-status">Growth Engineer / Contract</p>
+              <h3>Repair funding kept coming up.</h3>
               <p>
-                I joined to work on growth. Customer calls kept pointing back
-                to repair funding, so I turned that signal into a PM-branded
-                owner workflow and built the version we could actually test.
+                I joined to work on growth. Real conversations kept returning
+                to the same repair bill, so I reframed the owner experience
+                around that document and built the product test around it.
               </p>
               <TrackedLink
-                className="case-link"
+                className="studio-link studio-link-dark"
                 href="/work/fyxed"
                 eventName="case_view"
                 eventProperties={{ case_id: "fyxed", entry_surface: "home" }}
               >
-                What I am working on now <span aria-hidden="true">↗</span>
+                Open the current work <span aria-hidden="true">↗</span>
               </TrackedLink>
             </div>
-          </div>
 
-          <div className="fyxed-artifact" aria-label="Synthetic reconstruction of the Fyxed repair workflow">
-            <div className="artifact-topline">
-              <span className="artifact-brand"><i aria-hidden="true" /> Repair review</span>
-              <span className="artifact-status">Prototype</span>
-            </div>
-            <div className="repair-layout">
-              <div className="repair-summary">
-                <p className="artifact-kicker">Case file / Redwood Court</p>
-                <h3>A repair needs a real next step.</h3>
-                <p>
-                  The property manager can collect the estimate, give the owner
-                  a clear decision, and keep the case together for manual review.
-                </p>
-                <div className="document-row">
-                  <span className="document-icon" aria-hidden="true">PDF</span>
-                  <span><strong>Vendor estimate</strong><small>Attached to the private case</small></span>
-                  <span className="check" aria-label="Complete">✓</span>
-                </div>
+            <div className="work-file-artifact repair-poster" aria-label="Synthetic reconstruction of the Fyxed repair workflow">
+              <div className="poster-topline">
+                <span>Repair file / Juniper House</span>
+                <span>Prototype reconstruction</span>
               </div>
-              <ol className="repair-steps" aria-label="Repair workflow">
-                <li className="is-complete"><span>01</span><strong>Repair captured</strong><small>Estimate and context stay together.</small></li>
-                <li className="is-current"><span>02</span><strong>Owner decision</strong><small>A simple choice in the PM&apos;s brand.</small></li>
-                <li><span>03</span><strong>Manual review</strong><small>No approval is implied by the page.</small></li>
-              </ol>
+              <div className="repair-poster-body">
+                <div className="repair-document">
+                  <span className="repair-document-type">PDF</span>
+                  <div>
+                    <p>Vendor estimate</p>
+                    <span>Fictional property / fictional amount</span>
+                  </div>
+                </div>
+                <ol className="repair-flow">
+                  <li className="is-done"><span>01</span>Repair captured</li>
+                  <li className="is-active"><span>02</span>Owner choice</li>
+                  <li><span>03</span>Manual review</li>
+                </ol>
+              </div>
+              <p className="poster-caption">
+                Reconstruction based on an internal prototype. No customer data
+                is shown.
+              </p>
             </div>
-            <p className="artifact-caption">
-              Synthetic reconstruction based on an internal prototype. No
-              customer or property data is shown.
+          </article>
+        </section>
+
+        <section className="origin shell" id="about" aria-labelledby="origin-title">
+          <div className="origin-index">
+            <p className="studio-label">Before startups</p>
+            <span>Roblox / YouTube</span>
+          </div>
+          <div className="origin-copy">
+            <h2 id="origin-title">I started by making videos.</h2>
+            <p>
+              I grew a Roblox YouTube channel to 200,000 subscribers. It taught
+              me to notice what people choose and where a story loses them.
+              That same judgment now shows up in the products I build.
+            </p>
+          </div>
+          <div className="origin-note">
+            <span className="studio-label">The through line</span>
+            <p>
+              Make something specific, then watch what happens. Change the work
+              when the evidence changes.
             </p>
           </div>
         </section>
 
-        <section className="about-section shell" id="about" aria-labelledby="about-title">
-          <div className="about-marker">
-            <p className="section-index">A little context</p>
-            <p className="about-location">Miami, FL</p>
-          </div>
-          <div className="about-copy">
-            <h2 id="about-title">I started by making videos.</h2>
-            <p>
-              YouTube taught me how much tiny editorial decisions matter.
-              Later I started building software because I wanted to test ideas
-              without waiting for somebody else to make them real.
-            </p>
-            <p>
-              That leaves me somewhere between growth and product. I am usually
-              happiest while the brief is still moving and there is something
-              concrete to put in front of people.
-            </p>
-          </div>
-        </section>
-
-        <section className="contact-section shell" id="contact" aria-labelledby="contact-title">
-          <p className="section-index">Contact</p>
-          <h2 id="contact-title">
-            If the role needs someone who can learn the workflow and build the
-            next test, email me.
-          </h2>
-          <div className="contact-actions">
+        <section className="contact-studio shell" id="contact" aria-labelledby="contact-title">
+          <p className="studio-label">Contact</p>
+          <h2 id="contact-title">The shortest way to reach me is email.</h2>
+          <div className="contact-studio-links">
             <TrackedLink
-              className="button button-coral"
-              href="mailto:kudelin.dev@gmail.com"
+              className="contact-email"
+              href="mailto:sergey@sergeykudelin.com"
               eventName="contact_click"
               eventProperties={{ entry_surface: "home_footer" }}
             >
-              kudelin.dev@gmail.com
+              sergey@sergeykudelin.com <span aria-hidden="true">↗</span>
             </TrackedLink>
             <TrackedLink
-              className="text-link"
+              className="studio-link studio-link-light"
               href="https://www.linkedin.com/in/sergeykudelin"
               eventName="external_profile_open"
               eventProperties={{ profile_id: "linkedin", entry_surface: "home_footer" }}
@@ -195,6 +213,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+
       <Footer />
     </>
   );

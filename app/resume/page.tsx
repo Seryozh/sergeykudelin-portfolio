@@ -24,10 +24,12 @@ export default function ResumePage() {
               <p className="eyebrow"><span className="signal-dot" aria-hidden="true" />Growth Engineer / Miami</p>
               <h1>Sergey Kudelin</h1>
               <p className="resume-tagline">
-                Growth Engineer who turns market research and customer
-                conversations into working product experiments. Currently
-                contracting with Fyxed after building FutureClinic Creators and
-                its physician-acquisition systems.
+                I build working systems around market evidence. I joined
+                FutureClinic after building a physician-discovery engine for
+                the company before I had the job, then built the original
+                FutureClinic Creators implementation. Now I am the Growth
+                Engineer at Fyxed, where I build the data and product workflows
+                behind GTM.
               </p>
             </div>
             <TrackedLink
@@ -41,7 +43,7 @@ export default function ResumePage() {
           </header>
 
           <div className="resume-contact" aria-label="Contact details">
-            <a href="mailto:kudelin.dev@gmail.com">kudelin.dev@gmail.com</a>
+            <a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a>
             <a href="https://sergeykudelin.com">sergeykudelin.com</a>
             <a href="https://www.linkedin.com/in/sergeykudelin">linkedin.com/in/sergeykudelin</a>
             <a href="https://github.com/Seryozh">github.com/Seryozh</a>
@@ -57,20 +59,18 @@ export default function ResumePage() {
               <p>Fintech for residential property managers.</p>
               <ul>
                 <li>
-                  Build and operate a source-backed market intelligence system
-                  that reads property-management websites for payment signals
-                  and links each qualified account to a verified decision-maker.
+                  Built and now operate Fyxed&apos;s source-backed GTM data engine
+                  across roughly 3,600 property-management companies and 5,200
+                  contacts, linking payment signals to verified decision-makers.
                 </li>
                 <li>
-                  Turn repeated repair-funding signals from customer calls into
-                  a PM-branded owner workflow, including private intake and case
-                  review for a live repair.
+                  Turned repeated repair-funding signals from customer calls
+                  into a PM-branded owner payment choice, then built the private
+                  intake and case-review workflow for the product test.
                 </li>
                 <li>
-                  Build and run the data and orchestration behind Fyxed&apos;s
-                  outbound motion, which produced the company&apos;s first
-                  outbound-booked meeting and shifted warm outreach toward text
-                  after email underperformed.
+                  Built and now run Fyxed&apos;s outbound system, including CRM
+                  architecture, enrichment, sequencing, and channel testing.
                 </li>
               </ul>
             </article>
@@ -83,21 +83,21 @@ export default function ResumePage() {
               <p>Digital clinics and creator tools for physicians.</p>
               <ul>
                 <li>
-                  Built the first working version of FutureClinic Creators
-                  myself, including its backend and AI pipeline, then worked
-                  with another engineer to take it into production. It is live
-                  today.
+                  Built the original end-to-end FutureClinic Creators
+                  implementation, including its backend and AI pipeline. The
+                  product is live today.
                 </li>
                 <li>
-                  Built Doctor Preview Pages and the internal review and
-                  publishing workflow behind them, giving each physician creator
-                  a custom clinic page and founder video made specifically for
-                  them.
+                  Built Derm Hunter as proof of work before joining
+                  FutureClinic. A documented run discovered 245 YouTube
+                  channels and verified 68 physicians against NPI data in 14
+                  minutes.
                 </li>
                 <li>
-                  Built Nikola, an AI outreach agent in Slack that researched
-                  physician creators and created personalized Gmail drafts only
-                  after human approval.
+                  Built a personalized physician-acquisition workflow that
+                  generated a custom clinic preview and founder video for each
+                  prospect. Nikola handled prospect research in Slack and
+                  created Gmail drafts only after human approval.
                 </li>
               </ul>
             </article>
@@ -113,22 +113,35 @@ export default function ResumePage() {
             </div>
           </section>
 
-          <section className="resume-section" aria-labelledby="creator-heading">
-            <h2 id="creator-heading">Creator background</h2>
-            <p className="resume-background">
-              Built and ran a Roblox YouTube channel before entering startups.
-              That work trained my instincts for audience research, idea
-              selection, scripts, thumbnails, and keeping content specific to
-              the creator.
-            </p>
+          <section className="resume-section" aria-labelledby="misc-heading">
+            <h2 id="misc-heading">Misc facts about me</h2>
+            <div className="skills-lines">
+              <p><strong>Creator</strong> Grew a Roblox YouTube channel to 200,000 subscribers.</p>
+              <p>
+                <strong>AI systems</strong> I have a deep practical understanding
+                of orchestrating AI systems around real tasks and finding where
+                they remove the most manual work. Recently, I turned a
+                broken-screen MacBook into a remote agent host over SSH.
+              </p>
+            </div>
           </section>
 
           <section className="resume-section" aria-labelledby="education-heading">
             <h2 id="education-heading">Education</h2>
-            <div className="resume-role-head">
-              <h3>Computer Science / Florida International University</h3>
-              <span className="resume-role-meta">Miami, FL</span>
-            </div>
+            <article className="resume-role">
+              <div className="resume-role-head">
+                <h3>University of Florida</h3>
+                <span className="resume-role-meta">2024-2025</span>
+              </div>
+              <p>Computer Science</p>
+            </article>
+            <article className="resume-role">
+              <div className="resume-role-head">
+                <h3>Florida International University</h3>
+                <span className="resume-role-meta">2022-2023</span>
+              </div>
+              <p>Computer Science</p>
+            </article>
           </section>
         </div>
       </main>

@@ -1,0 +1,67 @@
+claims:
+  futureclinic_pre_hire_build:
+    status: public_verified
+    surfaces: [home, futureclinic, resume]
+    evidence: [fc_derm_repo]
+    safe: Built Derm Hunter for FutureClinic during the hiring process.
+  derm_hunter_documented_run:
+    status: public_verified
+    surfaces: [futureclinic, resume]
+    evidence: [fc_derm_analysis]
+    measurement_boundary: One documented system run. It is not a business outcome.
+    safe: A documented run found 245 creator channels and verified 68 physicians in 14 minutes.
+  creators_original_implementation:
+    status: private_verified_and_first_person
+    surfaces: [home, futureclinic, resume]
+    evidence: [fc_origin_repositories, sergey_direct_confirmation]
+    attribution_boundary: Original end-to-end implementation only. Later production lineage remains separate.
+    safe: I built the original end-to-end FutureClinic Creators implementation, including the backend and AI pipeline.
+  futureclinic_creators_live:
+    status: public_verified
+    surfaces: [home, futureclinic]
+    evidence: [fc_creators_live]
+    attribution_boundary: Live product continuity does not prove adoption or unchanged code lineage.
+    safe: FutureClinic Creators is live today.
+  nikola_human_approval:
+    status: private_verified
+    surfaces: [futureclinic]
+    evidence: [fc_handoff_records]
+    safe: Nikola prepared personalized Gmail drafts and stopped for human approval.
+  fyxed_current_contract_role:
+    status: private_verified
+    surfaces: [home, fyxed, resume]
+    evidence: [fy_role_records]
+    safe: Growth Engineer at Fyxed. Contract. June 2026 to present.
+  fyxed_aggregate_market_layer:
+    status: private_verified
+    surfaces: [fyxed, resume]
+    evidence: [fy_operating_records]
+    measurement_boundary: Aggregate system coverage. It is not a demand or revenue metric.
+    safe: Built a source-backed GTM layer across roughly 3,600 property-management firms and 5,200 contacts.
+  fyxed_repair_signal:
+    status: private_verified
+    surfaces: [home, fyxed]
+    evidence: [fy_operating_records]
+    attribution_boundary: Repair financing existed before Sergey joined.
+    safe: I saw repair funding recur in real conversations and reframed the owner experience around an existing repair bill.
+  fyxed_product_test:
+    status: private_verified
+    surfaces: [home, fyxed]
+    evidence: [fy_operating_records]
+    attribution_boundary: Prototype and case workflow only. No launch, approval, funding, or repayment claim.
+    safe: Built a PM-branded owner choice, intake, and manual review flow for the test.
+  creator_subscriber_count:
+    status: first_person
+    surfaces: [home, resume]
+    evidence: [sergey_direct_confirmation]
+    attribution_boundary: Self-reported. Keep in first person until a public channel record is attached.
+    safe: I grew a Roblox YouTube channel to 200,000 subscribers.
+
+blocked_variants:
+  - 15% reply rate
+  - launched repair-financing product
+  - FDIC-backed
+  - built app.fyxed.com
+  - product-market fit
+  - Marquise had an active $4,000 repair case
+  - first working version

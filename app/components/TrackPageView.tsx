@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { classifyAcquisition, track } from "./analytics";
 
 type TrackPageViewProps = {
-  pageType: "portfolio" | "case" | "brief" | "resume";
+  pageType: "portfolio" | "case" | "resume";
   caseId?: string;
 };
 
@@ -27,11 +27,6 @@ export function TrackPageView({ pageType, caseId }: TrackPageViewProps) {
         case_id: caseId,
         entry_surface: base.acquisition_source,
       });
-      return;
-    }
-
-    if (pageType === "brief") {
-      track("brief_view", { entry_surface: base.acquisition_source });
       return;
     }
 
