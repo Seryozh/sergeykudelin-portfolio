@@ -48,63 +48,63 @@ name_style = ParagraphStyle(
     "Name",
     parent=styles["Normal"],
     fontName=FONT_BOLD,
-    fontSize=28,
-    leading=29,
+    fontSize=30,
+    leading=32,
     textColor=INK,
-    spaceAfter=4,
+    spaceAfter=5,
 )
 role_style = ParagraphStyle(
     "Role",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=12,
-    leading=15,
+    fontSize=12.5,
+    leading=16,
     textColor=CORAL,
-    spaceAfter=8,
+    spaceAfter=10,
 )
 contact_style = ParagraphStyle(
     "Contact",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=8.2,
-    leading=10,
+    fontSize=8.6,
+    leading=11.2,
     textColor=MUTED,
 )
 summary_style = ParagraphStyle(
     "Summary",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=9.8,
-    leading=13.2,
+    fontSize=10.4,
+    leading=14.5,
     textColor=INK,
-    spaceBefore=11,
-    spaceAfter=8,
+    spaceBefore=14,
+    spaceAfter=12,
 )
 section_style = ParagraphStyle(
     "Section",
     parent=styles["Normal"],
     fontName=FONT_BOLD,
-    fontSize=8.4,
-    leading=10,
+    fontSize=8.7,
+    leading=11,
     textColor=MUTED,
     tracking=1.3,
-    spaceBefore=8,
-    spaceAfter=6,
+    spaceBefore=18,
+    spaceAfter=7,
 )
 job_style = ParagraphStyle(
     "Job",
     parent=styles["Normal"],
     fontName=FONT_BOLD,
-    fontSize=11.2,
-    leading=13,
+    fontSize=11.7,
+    leading=14.5,
     textColor=INK,
 )
 date_style = ParagraphStyle(
     "Date",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=8.5,
-    leading=10,
+    fontSize=8.9,
+    leading=11,
     textColor=MUTED,
     alignment=TA_RIGHT,
 )
@@ -112,17 +112,17 @@ company_style = ParagraphStyle(
     "Company",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=8.7,
-    leading=10.5,
+    fontSize=9.1,
+    leading=12,
     textColor=MUTED,
-    spaceAfter=5,
+    spaceAfter=7,
 )
 bullet_style = ParagraphStyle(
     "Bullet",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=8.75,
-    leading=11.6,
+    fontSize=9.4,
+    leading=13.6,
     textColor=INK,
     leftIndent=0,
     firstLineIndent=0,
@@ -131,22 +131,27 @@ small_style = ParagraphStyle(
     "Small",
     parent=styles["Normal"],
     fontName=FONT_REGULAR,
-    fontSize=8.55,
-    leading=11,
+    fontSize=9.3,
+    leading=13,
     textColor=INK,
+)
+skill_label_style = ParagraphStyle(
+    "SkillLabel",
+    parent=small_style,
+    fontName=FONT_BOLD,
 )
 
 
 def section_title(text):
     return [
         Paragraph(text.upper(), section_style),
-        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=7),
+        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=12),
     ]
 
 
 def bullets(items):
     return ListFlowable(
-        [ListItem(Paragraph(item, bullet_style), leftIndent=10) for item in items],
+        [ListItem(Paragraph(item, bullet_style), leftIndent=10, spaceAfter=5) for item in items],
         bulletType="bullet",
         start="circle",
         bulletFontName=FONT_REGULAR,
@@ -154,7 +159,7 @@ def bullets(items):
         bulletColor=CORAL,
         leftIndent=12,
         bulletOffsetY=1.6,
-        spaceAfter=4,
+        spaceAfter=8,
     )
 
 
@@ -189,8 +194,8 @@ doc = SimpleDocTemplate(
     pagesize=letter,
     rightMargin=0.56 * inch,
     leftMargin=0.56 * inch,
-    topMargin=0.48 * inch,
-    bottomMargin=0.43 * inch,
+    topMargin=0.58 * inch,
+    bottomMargin=0.55 * inch,
     title="Sergey Kudelin - Growth Engineer Resume",
     author="Sergey Kudelin",
     subject="Growth Engineer resume",
@@ -207,8 +212,9 @@ story = [
         contact_style,
     ),
     Paragraph(
-        "I build products and the GTM systems around them for early-stage teams. "
-        "Currently contracting with Fyxed after working directly with FutureClinic's founder.",
+        "Growth Engineer who turns market research and customer conversations into working "
+        "product experiments. Currently contracting with Fyxed after building FutureClinic "
+        "Creators and its physician-acquisition systems.",
         summary_style,
     ),
 ]
@@ -222,44 +228,57 @@ story.extend(
             "Contract / Jun 2026 to present",
             "Fintech for residential property managers.",
             [
-                "Build a source-backed market intelligence system that reads property-manager websites for payment signals and traces each useful account to a verified decision-maker.",
-                "Turn repeated repair-funding signals from customer calls into a PM-branded owner workflow, with the product surface and case tooling needed to test the idea safely.",
-                "Built the operating layer behind Fyxed's early outbound motion, which produced the company's first outbound-booked meeting and moved warm outreach toward text after email underperformed.",
+                "Build and operate a source-backed market intelligence system that reads property-management websites for payment signals and links each qualified account to a verified decision-maker.",
+                "Turn repeated repair-funding signals from customer calls into a PM-branded owner workflow, including private intake and case review for a live repair.",
+                "Build and run the data and orchestration behind Fyxed's outbound motion, which produced the company's first outbound-booked meeting and shifted warm outreach toward text after email underperformed.",
             ],
         ),
-        Spacer(1, 7),
+        Spacer(1, 16),
         job(
             "GTM Engineer",
             "FutureClinic, YC F24",
             "Contract / Mar to May 2026",
             "Digital clinics and creator tools for physicians.",
             [
-                "Built the first working version of FutureClinic Creators, including the backend and AI pipeline, then worked with another engineer to take it into production. The product is live today.",
-                "Built personalized Doctor Preview Pages and the internal review and publishing workflow behind them, including individualized founder-video generation for physician creators.",
-                "Built Nikola, a human-approved AI agent that researched doctors and prepared personalized Gmail drafts while keeping every outbound action behind review.",
+                "Built the first working version of FutureClinic Creators myself, including its backend and AI pipeline, then worked with another engineer to take it into production. It is live today.",
+                "Built Doctor Preview Pages and the internal review and publishing workflow behind them, giving each physician creator a custom clinic page and founder video made specifically for them.",
+                "Built Nikola, an AI outreach agent in Slack that researched physician creators and created personalized Gmail drafts only after human approval.",
             ],
         ),
     ]
 )
 
 story.extend(section_title("Skills"))
-story.extend(
+skills = Table(
     [
-        Paragraph(
-            "<b>Engineering</b>  TypeScript, Python, SQL, React, Next.js, FastAPI, Postgres, Supabase, Redis",
-            small_style,
-        ),
-        Spacer(1, 3),
-        Paragraph(
-            "<b>AI systems</b>  Claude Agent SDK, OpenRouter, tool calling, human approval, state machines, audit logs",
-            small_style,
-        ),
-        Spacer(1, 3),
-        Paragraph(
-            "<b>Growth systems</b>  Enrichment, source verification, CRM design, campaign orchestration, deliverability",
-            small_style,
-        ),
-    ]
+        [Paragraph("Engineering", skill_label_style), Paragraph("TypeScript, Python, SQL, React, Next.js, FastAPI, Postgres, Supabase, Redis", small_style)],
+        [Paragraph("AI systems", skill_label_style), Paragraph("Claude Agent SDK, OpenRouter, tool calling, human approval, state machines, audit logs", small_style)],
+        [Paragraph("Growth systems", skill_label_style), Paragraph("Market research, enrichment, source verification, CRM design, campaign orchestration", small_style)],
+        [Paragraph("Creator systems", skill_label_style), Paragraph("Audience research, idea selection, scripting workflows, thumbnail direction, voice modeling", small_style)],
+    ],
+    colWidths=[1.05 * inch, 5.95 * inch],
+    hAlign="LEFT",
+)
+skills.setStyle(
+    TableStyle(
+        [
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -2), 5),
+            ("BOTTOMPADDING", (0, -1), (-1, -1), 0),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]
+    )
+)
+story.append(skills)
+
+story.extend(section_title("Creator background"))
+story.append(
+    Paragraph(
+        "Built and ran a Roblox YouTube channel before entering startups. That work trained my instincts for audience research, idea selection, scripts, thumbnails, and keeping content specific to the creator.",
+        small_style,
+    )
 )
 
 story.extend(section_title("Education"))

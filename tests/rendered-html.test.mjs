@@ -39,6 +39,7 @@ for (const [pathname, expected] of routes) {
     assert.match(html, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
     assert.match(html, /<meta[^>]+name="robots"[^>]+noindex/i);
     assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+    assert.doesNotMatch(html, /sergey-portrait|<img\b|<picture\b|rel="preload"[^>]+as="image"/i);
     assert.doesNotMatch(html, /15\s*%|12\s*%|—/);
     assert.equal((html.match(/<h1\b/gi) ?? []).length, 1);
   });

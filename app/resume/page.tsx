@@ -24,9 +24,10 @@ export default function ResumePage() {
               <p className="eyebrow"><span className="signal-dot" aria-hidden="true" />Growth Engineer / Miami</p>
               <h1>Sergey Kudelin</h1>
               <p className="resume-tagline">
-                I build products and the GTM systems around them for early-stage
-                teams. Currently contracting with Fyxed after working directly
-                with FutureClinic&apos;s founder.
+                Growth Engineer who turns market research and customer
+                conversations into working product experiments. Currently
+                contracting with Fyxed after building FutureClinic Creators and
+                its physician-acquisition systems.
               </p>
             </div>
             <TrackedLink
@@ -56,20 +57,20 @@ export default function ResumePage() {
               <p>Fintech for residential property managers.</p>
               <ul>
                 <li>
-                  Build a source-backed market intelligence system that reads
-                  property-manager websites for payment signals and traces each
-                  useful account to a verified decision-maker.
+                  Build and operate a source-backed market intelligence system
+                  that reads property-management websites for payment signals
+                  and links each qualified account to a verified decision-maker.
                 </li>
                 <li>
                   Turn repeated repair-funding signals from customer calls into
-                  a PM-branded owner workflow, with the product surface and case
-                  tooling needed to test the idea safely.
+                  a PM-branded owner workflow, including private intake and case
+                  review for a live repair.
                 </li>
                 <li>
-                  Built the operating layer behind Fyxed&apos;s early outbound
-                  motion, which produced the company&apos;s first outbound-booked
-                  meeting and moved warm outreach toward text after email
-                  underperformed.
+                  Build and run the data and orchestration behind Fyxed&apos;s
+                  outbound motion, which produced the company&apos;s first
+                  outbound-booked meeting and shifted warm outreach toward text
+                  after email underperformed.
                 </li>
               </ul>
             </article>
@@ -82,19 +83,21 @@ export default function ResumePage() {
               <p>Digital clinics and creator tools for physicians.</p>
               <ul>
                 <li>
-                  Built the first working version of FutureClinic Creators,
-                  including the backend and AI pipeline, then worked with another
-                  engineer to take it into production. The product is live today.
+                  Built the first working version of FutureClinic Creators
+                  myself, including its backend and AI pipeline, then worked
+                  with another engineer to take it into production. It is live
+                  today.
                 </li>
                 <li>
-                  Built personalized Doctor Preview Pages and the internal review
-                  and publishing workflow behind them, including individualized
-                  founder-video generation for physician creators.
+                  Built Doctor Preview Pages and the internal review and
+                  publishing workflow behind them, giving each physician creator
+                  a custom clinic page and founder video made specifically for
+                  them.
                 </li>
                 <li>
-                  Built Nikola, a human-approved AI agent that researched doctors
-                  and prepared personalized Gmail drafts while keeping every
-                  outbound action behind review.
+                  Built Nikola, an AI outreach agent in Slack that researched
+                  physician creators and created personalized Gmail drafts only
+                  after human approval.
                 </li>
               </ul>
             </article>
@@ -105,8 +108,19 @@ export default function ResumePage() {
             <div className="skills-lines">
               <p><strong>Engineering</strong> TypeScript, Python, SQL, React, Next.js, FastAPI, Postgres, Supabase, Redis</p>
               <p><strong>AI systems</strong> Claude Agent SDK, OpenRouter, tool calling, human approval, state machines, audit logs</p>
-              <p><strong>Growth systems</strong> Enrichment, source verification, CRM design, campaign orchestration, deliverability</p>
+              <p><strong>Growth systems</strong> Market research, enrichment, source verification, CRM design, campaign orchestration</p>
+              <p><strong>Creator systems</strong> Audience research, idea selection, scripting workflows, thumbnail direction, voice modeling</p>
             </div>
+          </section>
+
+          <section className="resume-section" aria-labelledby="creator-heading">
+            <h2 id="creator-heading">Creator background</h2>
+            <p className="resume-background">
+              Built and ran a Roblox YouTube channel before entering startups.
+              That work trained my instincts for audience research, idea
+              selection, scripts, thumbnails, and keeping content specific to
+              the creator.
+            </p>
           </section>
 
           <section className="resume-section" aria-labelledby="education-heading">

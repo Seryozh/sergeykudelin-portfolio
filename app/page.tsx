@@ -150,19 +150,11 @@ export default function Home() {
         </section>
 
         <section className="about-section shell" id="about" aria-labelledby="about-title">
-          <div className="portrait-wrap">
-            {/* Native media avoids a provider-specific image endpoint in the Worker build. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/sergey-portrait.png"
-              alt="Sergey Kudelin"
-              width="800"
-              height="800"
-            />
-            <span className="portrait-note">Miami, FL</span>
+          <div className="about-marker">
+            <p className="section-index">A little context</p>
+            <p className="about-location">Miami, FL</p>
           </div>
           <div className="about-copy">
-            <p className="section-index">A little context</p>
             <h2 id="about-title">I started by making videos.</h2>
             <p>
               YouTube taught me how much tiny editorial decisions matter.
