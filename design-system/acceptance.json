@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "required": [
+    { "id": "manifest-locked", "check": "manifest status equals locked" },
+    { "id": "version-sync", "check": "manifest, tokens, motion, components, and acceptance versions match" },
+    { "id": "token-sync", "check": "color, type, surface, grid, and motion tokens match and are consumed by implementation variables" },
+    { "id": "trace-enum", "check": "all content trace kinds use the manifest enum" },
+    { "id": "chapter-state-enum", "check": "runtime emits unseen, entered, active, and complete states" },
+    { "id": "trace-count", "check": "a case flow contains 4 to 6 trace nodes" },
+    { "id": "boundary-required", "check": "a case flow contains an unknown boundary node" },
+    { "id": "artifact-link", "check": "each flow has one artifact node linked to its public evidence record" },
+    { "id": "artifact-variants", "check": "repair-statement, workflow-system, and source-image are closed schema variants" },
+    { "id": "placeholder-labeled", "check": "reconstructed or placeholder evidence is labeled on the visible surface" },
+    { "id": "private-evidence-isolated", "check": "the server passes explicit public content fields and never the evidence registry" },
+    { "id": "single-h1", "check": "every route has exactly one h1" },
+    { "id": "focus-visible", "check": "interactive controls have a visible focus state" },
+    { "id": "touch-targets", "check": "interactive targets are at least 44px in their compact breakpoint" },
+    { "id": "reduced-motion", "check": "prefers-reduced-motion exposes content and removes transforms" },
+    { "id": "no-js-readable", "check": "server-rendered content is visible before the motion-ready class exists" },
+    { "id": "mobile-order", "check": "evidence follows its claim in DOM order and no CSS visual reordering is used" },
+    { "id": "no-forbidden-effects", "check": "no parallax, custom cursor, autoplay, ambient loop, scroll hijack, or transition all" },
+    { "id": "build", "check": "npm run build exits successfully" }
+  ],
+  "manualViewports": [360, 390, 768, 1024, 1440],
+  "manualAudit": [
+    "No horizontal overflow",
+    "One dominant visual event per viewport",
+    "Source drawer works by keyboard and returns focus",
+    "Mobile artifact annotations become an ordered legend",
+    "Semantic colors are paired with labels",
+    "No private or proprietary material is exposed"
+  ]
+}
