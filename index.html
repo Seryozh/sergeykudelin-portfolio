@@ -38,6 +38,9 @@
     pre { white-space: pre-wrap; word-wrap: break-word; font: inherit; }
     a { color: #d0d5da; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #4a5058; }
     a:hover { color: #ffffff; text-decoration-color: #d97757; }
+    .name { cursor: default; }
+    .name:hover .n1 { display: none; }
+    .name:hover::before { content: "the best growth engineer you haven't hired yet"; color: #f4f5f6; }
     .cursor {
       display: inline-block; width: 0.6em; height: 1.15em;
       background: #d97757; vertical-align: text-bottom;
@@ -50,12 +53,11 @@
   </style>
 </head>
 <body>
+<!-- you actually read the source. i like you already. sergey@sergeykudelin.com -->
 <main>
 
-<div class="cmd note"># sergeykudelin.com is a terminal because that is where the work happens.<br># it also answers curl. try: curl -L sergeykudelin.com</div>
-
 <div class="cmd"><span class="ps1">$</span> <b>whoami</b></div>
-<div class="out"><p><b>Sergey Kudelin</b> · Growth Engineer · Miami, FL</p></div>
+<div class="out"><p><b class="name"><span class="n1">Sergey Kudelin</span></b> · Growth Engineer · Miami, FL</p></div>
 
 <div class="cmd"><span class="ps1">$</span> <b>sergey --summary</b></div>
 <div class="out"><p>I work on growth at early-stage startups, usually as the only person doing it. At my last two companies that meant building the prospect database, the outbound system, the reporting behind both, and a generator that produced a separate landing page per target company out of that company's own published data. I build with AI agents and always have, and <b>Claude Code</b> is most of how I work day to day. Before startups I built a Roblox YouTube channel to around <b>200K subscribers</b>, which is probably why I still care how a page reads to the person on the other side of it.</p></div>
@@ -99,7 +101,8 @@
 github     <a href="https://github.com/Seryozh">github.com/Seryozh</a>
 linkedin   <a href="https://linkedin.com/in/sergeykudelin">linkedin.com/in/sergeykudelin</a>
 resume     <a href="/resume.pdf">/resume.pdf</a>  <span class="quiet">(one page)</span>
-skill      <a href="/skill">/skill</a>  <span class="quiet">(a SKILL.md your agent can load)</span></pre></div>
+skill      <a href="/skill">/skill</a>  <span class="quiet">(a SKILL.md your agent can load)</span>
+curl       <span class="quiet">curl -L sergeykudelin.com</span></pre></div>
 
 <div class="cmd"><span class="ps1">$</span> <span class="cursor"></span></div>
 
