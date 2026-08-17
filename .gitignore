@@ -2,3 +2,4 @@
 .vercel/
 .playwright-cli/
 node_modules/
+recommendation.pdf
