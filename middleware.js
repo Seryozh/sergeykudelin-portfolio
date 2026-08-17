@@ -5,7 +5,7 @@ export default function middleware(request) {
   if (/curl|wget|httpie/i.test(ua)) {
     return new Response(null, {
       headers: {
-        "x-middleware-rewrite": new URL("/resume.txt", request.url).toString(),
+        "x-middleware-rewrite": new URL("/man.txt", request.url).toString(),
       },
     });
   }
