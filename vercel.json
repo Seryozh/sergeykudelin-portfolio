@@ -4,7 +4,33 @@
   "installCommand": null,
   "framework": null,
   "outputDirectory": null,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(curl|wget|httpie).*"
+        }
+      ],
+      "destination": "/resume.txt"
+    },
+    {
+      "source": "/skill",
+      "destination": "/skill.md"
+    }
+  ],
   "headers": [
+    {
+      "source": "/skill.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [

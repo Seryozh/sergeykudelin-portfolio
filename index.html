@@ -3,300 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Sergey Kudelin. Product, GTM, and systems.">
-  <meta name="theme-color" content="#F2EFE7">
+  <meta name="description" content="Sergey Kudelin. Growth engineer. Lives in Claude Code.">
+  <meta name="theme-color" content="#101214">
   <title>Sergey Kudelin</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F2EFE7'/%3E%3Cpath d='M15 0h2v32h-2z' fill='%23F04B2F'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101214'/%3E%3Ctext x='6' y='23' font-family='Menlo,monospace' font-size='18' fill='%23d97757'%3E%3E%3C/text%3E%3C/svg%3E">
   <style>
-    :root {
-      --color-field: #F2EFE7;
-      --color-ink: #11100E;
-      --color-signal: #F04B2F;
-      --color-quiet: #6F6B65;
-      --font-display: Arial, "Helvetica Neue", Helvetica, sans-serif;
-      --font-text: Arial, "Helvetica Neue", Helvetica, sans-serif;
-      --page-gutter: clamp(1.125rem, 3vw, 3.5rem);
-      --pad-left: max(var(--page-gutter), env(safe-area-inset-left));
-      --pad-right: max(var(--page-gutter), env(safe-area-inset-right));
-      --pad-top: max(var(--page-gutter), env(safe-area-inset-top));
-      --pad-bottom: max(var(--page-gutter), env(safe-area-inset-bottom));
-      --seam-width: 2px;
-      --seam-x: clamp(57vw, calc(63.43vw - 20.57px), 62vw);
-      --seam-local: calc(var(--seam-x) - var(--pad-left));
-      --registration-shift: clamp(0.75rem, 1.5vw, 1.5rem);
-      --motion-duration: 820ms;
-      --motion-delay: 120ms;
-      --motion-ease: cubic-bezier(.16, 1, .3, 1);
-      --mark-size: min(19rem, calc((100vw - var(--pad-left) - var(--pad-right)) / 4.9), 29svh);
-      --funnel-width: clamp(8rem, calc(var(--seam-x) - var(--pad-left) - 1rem), 24rem);
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html {
-      background: var(--color-field);
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
-      min-block-size: 100vh;
-      min-block-size: 100svh;
-      margin: 0;
-      background: var(--color-field);
-      color: var(--color-ink);
-      font-family: var(--font-text);
-      text-rendering: geometricPrecision;
+      background: #101214;
+      color: #b9bfc7;
+      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13.5px;
+      line-height: 1.62;
+      padding: 40px 20px 80px;
     }
-
-    .identity {
-      position: relative;
-      min-block-size: 100vh;
-      min-block-size: 100svh;
-      isolation: isolate;
+    main { max-width: 84ch; margin: 0 auto; }
+    .note { color: #6b7280; }
+    .cmd { margin: 30px 0 10px; color: #e8eaec; }
+    .cmd:first-child { margin-top: 0; }
+    .ps1 { color: #d97757; font-weight: 700; }
+    .cmd b { color: #f4f5f6; font-weight: 700; }
+    .out p { margin: 0 0 10px; }
+    .out p:last-child { margin-bottom: 0; }
+    .li { padding-left: 4ch; text-indent: -2ch; margin-bottom: 6px; }
+    .li:last-child { margin-bottom: 0; }
+    .rolehead { margin: 14px 0 6px; }
+    .rolehead:first-child { margin-top: 0; }
+    .role { color: #e8eaec; font-weight: 700; }
+    .when { color: #6b7280; }
+    .quiet { color: #6b7280; }
+    b { color: #e8eaec; font-weight: 700; }
+    .quote { color: #6b7280; padding-left: 2ch; margin: 8px 0 2px; }
+    pre { white-space: pre-wrap; word-wrap: break-word; font: inherit; }
+    a { color: #d0d5da; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #4a5058; }
+    a:hover { color: #ffffff; text-decoration-color: #d97757; }
+    .cursor {
+      display: inline-block; width: 0.6em; height: 1.15em;
+      background: #d97757; vertical-align: text-bottom;
+      animation: blink 1.1s steps(1) infinite;
     }
-
-    .label {
-      position: absolute;
-      z-index: 5;
-      margin: 0;
-      color: var(--color-quiet);
-      font-size: clamp(0.6875rem, 0.7vw, 0.8125rem);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      max-inline-size: calc(100vw - var(--pad-left) - var(--pad-right));
-    }
-
-    .territory {
-      inset-block-start: var(--pad-top);
-      inset-inline-end: var(--pad-right);
-      text-align: end;
-    }
-
-    .prompt {
-      position: absolute;
-      z-index: 5;
-      inset-block-end: calc(var(--pad-bottom) + 3rem);
-      inset-inline-start: var(--pad-left);
-      inline-size: var(--funnel-width);
-      margin: 0;
-      color: var(--color-ink);
-      font-size: clamp(0.9375rem, 1.25vw, 1.125rem);
-      font-weight: 600;
-      line-height: 1.25;
-      overflow-wrap: break-word;
-    }
-
-    .contact {
-      position: absolute;
-      z-index: 5;
-      inset-block-end: calc(var(--pad-bottom) - 0.75rem);
-      inset-inline-start: var(--pad-left);
-      display: inline-flex;
-      inline-size: var(--funnel-width);
-      min-block-size: 44px;
-      align-items: center;
-      padding: 0.75rem 0 0.5rem;
-      color: var(--color-ink);
-      font-size: clamp(0.75rem, 0.85vw, 0.875rem);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: 0.04em;
-      max-inline-size: var(--funnel-width);
-      overflow-wrap: anywhere;
-      text-decoration: none;
-    }
-
-    .contact::after {
-      position: absolute;
-      inset-inline: 0;
-      inset-block-end: 0.35rem;
-      block-size: 1px;
-      background: var(--color-ink);
-      content: "";
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 180ms var(--motion-ease);
-    }
-
-    .contact:is(:hover, :focus, :focus-visible)::after {
-      transform: scaleX(1);
-    }
-
-    .contact:focus-visible {
-      outline: 2px solid var(--color-ink);
-      outline-offset: 2px;
-    }
-
-    .mark {
-      position: absolute;
-      z-index: 2;
-      inset-inline: var(--pad-left) var(--pad-right);
-      inset-block-start: min(50%, calc(100svh - 10.25rem));
-      min-block-size: calc(var(--mark-size) * 1.6);
-      margin: 0;
-      transform: translateY(-50%);
-      color: var(--color-ink);
-      font-family: var(--font-display);
-      font-size: var(--mark-size);
-      font-weight: 800;
-      line-height: 0.8;
-      letter-spacing: -0.075em;
-    }
-
-    .mark-visual,
-    .plane {
-      position: absolute;
-      inset: 0;
-    }
-
-    .plane {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      will-change: transform;
-    }
-
-    .plane-left {
-      clip-path: inset(0 calc(100% - var(--seam-local)) 0 0);
-      animation: register-left var(--motion-duration) var(--motion-ease) var(--motion-delay) both;
-    }
-
-    .plane-right {
-      clip-path: inset(0 0 0 var(--seam-local));
-      animation: register-right var(--motion-duration) var(--motion-ease) var(--motion-delay) both;
-    }
-
-    .word {
-      display: block;
-      white-space: nowrap;
-    }
-
-    .seam {
-      position: absolute;
-      z-index: 3;
-      inset-block: 0;
-      inset-inline-start: var(--seam-x);
-      inline-size: var(--seam-width);
-      background: var(--color-signal);
-      transform-origin: center;
-      transition: inline-size 180ms var(--motion-ease), inset-inline-start 180ms var(--motion-ease);
-      animation: register-seam var(--motion-duration) var(--motion-ease) var(--motion-delay) both;
-    }
-
-    .contact:is(:hover, :focus, :focus-visible) ~ .seam {
-      inset-inline-start: calc(var(--seam-x) - 2px);
-      inline-size: 6px;
-    }
-
-    .sr-only {
-      position: absolute;
-      inline-size: 1px;
-      block-size: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    @keyframes register-left {
-      from { transform: translate3d(calc(var(--registration-shift) * -1), 0, 0); }
-      to { transform: translate3d(0, 0, 0); }
-    }
-
-    @keyframes register-right {
-      from { transform: translate3d(var(--registration-shift), 0, 0); }
-      to { transform: translate3d(0, 0, 0); }
-    }
-
-    @keyframes register-seam {
-      from { transform: translateX(-4px) scaleX(5); }
-      to { transform: translateX(0) scaleX(1); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .plane-left,
-      .plane-right,
-      .seam {
-        animation: none;
-      }
-
-      .seam {
-        transition: none;
-      }
-
-      .contact::after {
-        transform: scaleX(1);
-        transition: none;
-      }
-
-      .contact:is(:hover, :focus, :focus-visible) ~ .seam {
-        inset-inline-start: var(--seam-x);
-        inline-size: var(--seam-width);
-      }
-    }
-
-    @media (forced-colors: active) {
-      .seam {
-        background: CanvasText;
-      }
-
-      .label,
-      .contact,
-      .mark {
-        color: CanvasText;
-      }
-
-      .contact:focus-visible {
-        outline-color: Highlight;
-      }
-
-      .contact::after {
-        background: CanvasText;
-      }
-    }
-
-    @media print {
-      .identity {
-        min-block-size: 100vh;
-      }
-
-      .plane-left,
-      .plane-right,
-      .seam {
-        animation: none;
-      }
-    }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+    @media (max-width: 600px) { body { font-size: 12px; padding: 24px 14px 60px; } }
+    ::selection { background: #d97757; color: #101214; }
   </style>
 </head>
 <body>
-  <main class="identity">
-    <p class="label territory">PRODUCT / GTM / SYSTEMS</p>
-    <h1 class="mark">
-      <span class="sr-only">SERGEY KUDELIN</span>
-      <span class="mark-visual" aria-hidden="true">
-        <span class="plane plane-left">
-          <span class="word">SERGEY</span>
-          <span class="word">KUDELIN</span>
-        </span>
-        <span class="plane plane-right">
-          <span class="word">SERGEY</span>
-          <span class="word">KUDELIN</span>
-        </span>
-      </span>
-    </h1>
-    <div class="funnel">
-      <p class="prompt">You clicked. <wbr>What brought you here?</p>
-      <a class="contact" href="mailto:sergey@sergeykudelin.com?subject=Why%20I%20clicked&amp;body=Sergey%2C%0D%0A%0D%0AI%20found%20you%20through%3A%0D%0A%0D%0AI%20clicked%20because%3A%0D%0A%0D%0AI%27m%20working%20on%3A%0D%0A">Tell me by <wbr>email <span aria-hidden="true">↗</span></a>
-      <span class="seam" aria-hidden="true"></span>
-    </div>
-  </main>
+<main>
+
+<div class="cmd note"># sergeykudelin.com is a terminal because that is where the work happens.<br># it also answers curl. try: curl sergeykudelin.com</div>
+
+<div class="cmd"><span class="ps1">$</span> <b>whoami</b></div>
+<div class="out"><p><b>Sergey Kudelin</b> · Growth Engineer · Miami, FL</p></div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --summary</b></div>
+<div class="out"><p>I work on growth at early-stage startups, usually as the only person doing it. At my last two companies that meant building the prospect database, the outbound system, the reporting behind both, and a generator that produced a separate landing page per target company out of that company's own published data. I build with AI agents and always have, and <b>Claude Code</b> is most of how I work day to day. Before startups I built a Roblox YouTube channel to around <b>200K subscribers</b>, which is probably why I still care how a page reads to the person on the other side of it.</p></div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --experience</b></div>
+<div class="out">
+  <div class="rolehead"><span class="role">Growth and Operations Consultant · Fyxed</span> <span class="when">· Jun-Aug 2026 · Miami</span></div>
+  <p class="quiet">Fyxed is a very early-stage fintech for residential property managers, a sister company to APM Help. I was the only person on the business side, hired for three months while the company was still deciding between two product shapes, on-time rent and repair financing.</p>
+  <div class="li">* Built fyxed.com, including the owner benefit package (<a href="https://fyxed.com/owner-benefit-package">fyxed.com/owner-benefit-package</a>), where the office charges owners for the on-time payout instead of paying for it themselves.</div>
+  <div class="li">* Built the outbound side of the business by myself: a self-hosted CRM holding <b>3,749 companies</b> and <b>646 outreach threads</b>, the campaigns running on top of it, and the reporting behind both.</div>
+  <div class="li">* Ran 20 campaigns across 517 property management firms with zero ad budget. Warm prospects replied at <b>40%</b> (16 of 40), cold at 2% (7 of 350).</div>
+  <div class="li">* Every email in those campaigns was written for one specific firm: agents researched it and drafted from its site, and I approved each send. I logged interviews and replies in writing, and the company used that log to decide which product to pursue.</div>
+  <div class="li">* Wrote a page generator that builds a separate brief for each firm out of that firm's own published fee schedule and door count, off a dataset of 269 firms.</div>
+
+  <div class="rolehead"><span class="role">GTM Engineer · FutureClinic (Y Combinator F24)</span> <span class="when">· Mar-May 2026 · Miami</span></div>
+  <p class="quiet">FutureClinic is a telehealth startup where any doctor can launch a chat-based digital clinic. I built its GTM engine end to end, directly with the founder.</p>
+  <div class="li">* <b>FC Outreach</b>: generated a <b>15% reply rate on cold outreach</b> by building the engine that finds doctor-creators across YouTube and Instagram, verifies each against the federal NPI registry, and sends every one a personalized landing page and founder video. Run by Nikola, an autonomous agent I built on Modal with the Claude Agent SDK.</div>
+  <div class="li">* <b>FC Creators</b>: a 6-stage pipeline that learns a doctor's voice and drafts ready-to-record videos, human in the loop throughout. Next.js, Supabase and Docker workers, orchestrating Claude Opus and Sonnet, FAL, Supadata and Apify. Live and in use at <a href="https://futurecliniccreators.com">futurecliniccreators.com</a>.</div>
+  <p class="quote">"Phenomenal work, the kind of product I was genuinely excited to use myself. I recommend Sergey without reservation." (Dr. Usama Syed, Founder, FutureClinic, YC F24)</p>
+
+  <div class="rolehead"><span class="role">Web &amp; SEO Automation · Gray &amp; Sons</span> <span class="when">· Summer 2025 · Miami</span></div>
+  <div class="li">* Assisted with AI content-generation and lead-enrichment workflows, and worked on <a href="https://sellusyourjewelry.com">sellusyourjewelry.com</a>, the company's high-end watch buying site.</div>
+  <div class="li">* Set up Meta Pixel and conversion tracking, and ran A/B tests on landing pages.</div>
+</div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --projects</b></div>
+<div class="out">
+  <div class="li">* <b>Lux</b>: autonomous coding agent, shipped through my YouTube channel to <b>5,000+ installs</b>. It was the culmination of my YouTube journey and the point where I began working with AI professionally, which led to FutureClinic. <a href="https://youtube.com/@SergeCode">youtube.com/@SergeCode</a></div>
+  <div class="li">* <b>DermHunter</b>: AI doctor-discovery pipeline, built solo in two nights as a demo for FutureClinic. I proposed heavy marketing toward medical content creators, and they hired me to ship it as a production system.</div>
+  <div class="li">* <b>AI Harnesses</b>: starting with the Fyxed contract, I document every business process and meeting and build them into an AI brain my agents work from. The reusable skills are public at <a href="https://github.com/Seryozh/agent-skills">github.com/Seryozh/agent-skills</a>. I consider it my biggest differentiating factor.</div>
+</div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --stack</b></div>
+<div class="out"><p>TypeScript · Next.js · React · Node · Python · SQL · Postgres · Supabase · <b>Claude Code</b> · <b>Claude Agent SDK</b> · <b>Opus/Sonnet</b> · Modal · FastAPI · Playwright · Vercel · Apify · Exa</p></div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --education</b></div>
+<div class="out"><p>Computer Science · Florida International University</p></div>
+
+<div class="cmd"><span class="ps1">$</span> <b>sergey --contact</b></div>
+<div class="out"><pre>email      <a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a>
+github     <a href="https://github.com/Seryozh">github.com/Seryozh</a>
+linkedin   <a href="https://linkedin.com/in/sergeykudelin">linkedin.com/in/sergeykudelin</a>
+resume     <a href="/resume.pdf">/resume.pdf</a>  <span class="quiet">(one page)</span>
+skill      <a href="/skill">/skill</a>  <span class="quiet">(a SKILL.md your agent can load)</span></pre></div>
+
+<div class="cmd"><span class="ps1">$</span> <span class="cursor"></span></div>
+
+</main>
 </body>
 </html>

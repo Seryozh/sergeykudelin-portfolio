@@ -1,0 +1,96 @@
+SERGEY KUDELIN(1)                 growth engineer                 SERGEY KUDELIN(1)
+
+NAME
+    Sergey Kudelin - Growth Engineer, Miami, FL
+    sergey@sergeykudelin.com · sergeykudelin.com · github.com/Seryozh
+    linkedin.com/in/sergeykudelin
+
+SYNOPSIS
+    sergey [--summary] [--experience] [--projects] [--stack] [--contact]
+
+DESCRIPTION
+    I work on growth at early-stage startups, usually as the only person doing
+    it. At my last two companies that meant building the prospect database, the
+    outbound system, the reporting behind both, and a generator that produced a
+    separate landing page per target company out of that company's own published
+    data. I build with AI agents and always have, and Claude Code is most of how
+    I work day to day. Before startups I built a Roblox YouTube channel to
+    around 200K subscribers, which is probably why I still care how a page reads
+    to the person on the other side of it.
+
+EXPERIENCE
+    Growth and Operations Consultant · Fyxed · Jun-Aug 2026 · Miami
+        Fyxed is a very early-stage fintech for residential property managers, a
+        sister company to APM Help. I was the only person on the business side,
+        hired for three months while the company was still deciding between two
+        product shapes, on-time rent and repair financing.
+
+        * Built fyxed.com, including the owner benefit package
+          (fyxed.com/owner-benefit-package), where the office charges owners for
+          the on-time payout instead of paying for it themselves.
+        * Built the outbound side of the business by myself: a self-hosted CRM
+          holding 3,749 companies and 646 outreach threads, the campaigns
+          running on top of it, and the reporting behind both.
+        * Ran 20 campaigns across 517 property management firms with zero ad
+          budget. Warm prospects replied at 40% (16 of 40), cold at 2% (7 of 350).
+        * Every email in those campaigns was written for one specific firm:
+          agents researched it and drafted from its site, and I approved each
+          send. I logged interviews and replies in writing, and the company used
+          that log to decide which product to pursue.
+        * Wrote a page generator that builds a separate brief for each firm out
+          of that firm's own published fee schedule and door count, off a
+          dataset of 269 firms.
+
+    GTM Engineer · FutureClinic (Y Combinator F24) · Mar-May 2026 · Miami
+        FutureClinic is a telehealth startup where any doctor can launch a
+        chat-based digital clinic. I built its GTM engine end to end, directly
+        with the founder.
+
+        * FC Outreach: generated a 15% reply rate on cold outreach by building
+          the engine that finds doctor-creators across YouTube and Instagram,
+          verifies each against the federal NPI registry, and sends every one a
+          personalized landing page and founder video. Run by Nikola, an
+          autonomous agent I built on Modal with the Claude Agent SDK.
+        * FC Creators: a 6-stage pipeline that learns a doctor's voice and
+          drafts ready-to-record videos, human in the loop throughout. Next.js,
+          Supabase and Docker workers, orchestrating Claude Opus and Sonnet,
+          FAL, Supadata and Apify. Live and in use at futurecliniccreators.com.
+
+        "Phenomenal work, the kind of product I was genuinely excited to use
+        myself. I recommend Sergey without reservation."
+        (Dr. Usama Syed, Founder, FutureClinic, YC F24)
+
+    Web & SEO Automation · Gray & Sons · Summer 2025 · Miami
+        * Assisted with AI content-generation and lead-enrichment workflows, and
+          worked on sellusyourjewelry.com, the company's high-end watch buying
+          site.
+        * Set up Meta Pixel and conversion tracking, and ran A/B tests on
+          landing pages.
+
+PROJECTS
+    Lux         Autonomous coding agent, shipped through my YouTube channel to
+                5,000+ installs. It was the culmination of my YouTube journey
+                and the point where I began working with AI professionally,
+                which led to FutureClinic. youtube.com/@SergeCode
+    DermHunter  AI doctor-discovery pipeline, built solo in two nights as a demo
+                for FutureClinic. I proposed heavy marketing toward medical
+                content creators, and they hired me to ship it as a production
+                system.
+    AI          Starting with the Fyxed contract, I document every business
+    Harnesses   process and meeting and build them into an AI brain my agents
+                work from. The reusable skills are public at
+                github.com/Seryozh/agent-skills. I consider it my biggest
+                differentiating factor.
+
+STACK
+    TypeScript · Next.js · React · Node · Python · SQL · Postgres · Supabase ·
+    Claude Code · Claude Agent SDK · Opus/Sonnet · Modal · FastAPI · Playwright ·
+    Vercel · Apify · Exa
+
+EDUCATION
+    Computer Science · Florida International University
+
+SEE ALSO
+    sergeykudelin.com/resume.pdf (one page), sergeykudelin.com/skill (SKILL.md)
+
+Miami, FL                          2026                          SERGEY KUDELIN(1)
