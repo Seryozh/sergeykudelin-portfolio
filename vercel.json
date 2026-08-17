@@ -19,6 +19,10 @@
     {
       "source": "/skill",
       "destination": "/skill.md"
+    },
+    {
+      "source": "/resume",
+      "destination": "/resume.pdf"
     }
   ],
   "headers": [
