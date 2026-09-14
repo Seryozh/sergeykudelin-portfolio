@@ -21,11 +21,11 @@ I'm looking for a full-time, remote role where I can build with a team for the l
 
 Contract · Jun-Aug 2026
 
-- Built a prospect database for U.S. third-party single-family rental property managers with full coverage nationwide by combining industry directories, company websites, state licensing records, and business filings.
+I built a prospect database for U.S. third-party single-family rental property managers with full coverage nationwide by combining industry directories, company websites, state licensing records, and business filings.
 
-- Built custom scrapers and AI agent workflows for company research, contact enrichment and personalized outreach, with source verification, deduplication and integration into a self-hosted CRM.
+I built custom scrapers and AI agent workflows for company research, contact enrichment and personalized outreach, with source verification, deduplication and integration into a self-hosted CRM.
 
-- Conducted customer discovery for repair financing through direct conversations with prospective customers, working closely with legal to shape product requirements, clarify financing limits and identify eligible use cases.
+I conducted customer discovery for repair financing through direct conversations with prospective customers, working closely with legal to shape product requirements, clarify financing limits and identify eligible use cases.
 
 ### GTM Engineer · FutureClinic (YC F24)
 
