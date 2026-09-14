@@ -9,7 +9,7 @@ A Growth / GTM Engineer who happens to be a person. Based in Miami, FL and looki
 
 ## Work
 
-I'm a Growth / GTM Engineer who builds with AI agents. I built @SergeCode to around 200K subscribers and more than 13M views. At FutureClinic (YC F24), I proposed an AI system for turning doctors' expertise into video scripts and thumbnails, and built its first working version.
+I'm a Growth / GTM Engineer who builds with AI agents. I built @SergeCode to around 200K subscribers and more than 13M views. At FutureClinic (YC F24), I proposed FutureClinic Creators and built its initial prototype. The system was designed to help doctors attract patients through articles and YouTube videos, building audience trust and giving people a path to book a consultation.
 
 At Fyxed, I built the website and the systems behind the outreach operation: company research, CRM, personalized campaigns and reply reporting. I build with Claude Code and Codex. I'm based in Miami and looking for a full-time, remote role.
 
@@ -27,9 +27,11 @@ I set up a self-hosted CRM with 3,749 companies and ran 20 campaigns. Agents res
 
 Full-time · Mar-May 2026
 
-I proposed focusing on doctor-creators for FutureClinic's digital-clinic platform because they already had an audience that could become patients. I built Nikola, an AI research and outreach agent that researched doctors and turned its findings into personalized email drafts. I also built physician verification workflows and personalized clinic previews.
+I proposed FutureClinic Creators, an AI system designed to help doctors attract patients through articles and YouTube videos. The idea was to build trust through useful content and give readers and viewers a path to book a consultation.
 
-I proposed FutureClinic Creators, an AI system for turning doctors' expertise into video scripts and thumbnails. I built the first working version using Claude and worked with another engineer to bring it into production. The system researched existing content and developed topics, question cards, scripts and thumbnails for doctors to review before recording.
+I built the initial prototype using Claude, including workflows for content research, video topics, question cards, scripts and thumbnails. Another engineer then developed it for production.
+
+I also proposed recruiting doctors who already had an audience for FutureClinic's digital-clinic platform. I built Nikola, an AI research and outreach agent that researched doctors and turned its findings into personalized email drafts, along with physician verification workflows and personalized clinic previews.
 
 ### YouTube Creator (SergeCode) · YouTube
 
