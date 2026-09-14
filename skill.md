@@ -35,9 +35,9 @@ I built the initial prototype using Claude, with workflows for content research,
 
 I also proposed recruiting doctors who already had an audience for FutureClinic's digital-clinic platform. I built Nikola, an AI agent that researched doctors and drafted personalized outreach, along with physician verification workflows and personalized clinic previews.
 
-“I recommend Sergey without reservation.”
+[FutureClinic Creators](https://futurecliniccreators.com)
 
-Dr. Usama Syed, Founder, FutureClinic (YC F24)
+[Recommendation letter from Dr. Usama Syed](https://www.sergeykudelin.com/recommendation.pdf)
 
 ### YouTube Creator (SergeCode) · YouTube
 
