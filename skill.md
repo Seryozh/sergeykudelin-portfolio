@@ -21,9 +21,11 @@ I'm looking for a full-time, remote role where I can build with a team for the l
 
 Contract · Jun-Aug 2026
 
-At Fyxed, an early-stage fintech for residential property managers, I built the website and ran the outreach operation. That included company research, CRM, personalized campaigns and reporting. I was the only person on the business side and used customer conversations to help the team decide what to build.
+- Built a prospect database for U.S. third-party single-family rental property managers with full coverage nationwide by combining industry directories, company websites, state licensing records, and business filings.
 
-I set up a self-hosted CRM with 3,749 companies and ran 20 campaigns. Agents researched each firm from its own website and drafted personalized messages for my review, and I tracked the replies. I also built a landing-page generator that used each firm's published fees and property count to explain Fyxed's offer for that business.
+- Built custom scrapers and AI agent workflows for company research, contact enrichment and personalized outreach, with source verification, deduplication and integration into a self-hosted CRM.
+
+- Conducted customer discovery for repair financing through direct conversations with prospective customers, working closely with legal to shape product requirements, clarify financing limits and identify eligible use cases.
 
 ### GTM Engineer · FutureClinic (YC F24)
 
