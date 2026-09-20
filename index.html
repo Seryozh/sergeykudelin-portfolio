@@ -1,91 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Growth / GTM Engineer based in Miami. Built @SergeCode to around 200K subscribers and growth tools for FutureClinic and Fyxed.">
-  <meta name="theme-color" content="#101214">
-  <title>Sergey Kudelin | Growth / GTM Engineer</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101214'/%3E%3Ctext x='6' y='23' font-family='Menlo,monospace' font-size='18' fill='%23d97757'%3E%3E%3C/text%3E%3C/svg%3E">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      background: #101214;
-      color: #b9bfc7;
-      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 13.5px;
-      line-height: 1.62;
-      padding: 40px 20px 80px;
-    }
-    main { max-width: 84ch; margin: 0 auto; }
-    .note { color: #6b7280; }
-    .cmd { margin: 30px 0 10px; color: #e8eaec; font-size: inherit; font-weight: 700; }
-    .cmd:first-child { margin-top: 0; }
-    .out p { margin: 0 0 10px; }
-    .out p:last-child { margin-bottom: 0; }
-    .li { padding-left: 4ch; text-indent: -2ch; margin-bottom: 6px; }
-    .li:last-child { margin-bottom: 0; }
-    .rolehead { margin: 14px 0 6px; }
-    .rolehead:first-child { margin-top: 0; }
-    .role { color: #e8eaec; font-weight: 700; }
-    .when { color: #6b7280; }
-    .quiet { color: #6b7280; }
-    b { color: #e8eaec; font-weight: 700; }
-    pre { white-space: pre-wrap; word-wrap: break-word; font: inherit; }
-    a { color: #d0d5da; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #4a5058; }
-    a:hover { color: #ffffff; text-decoration-color: #d97757; }
-    @media (max-width: 600px) { body { font-size: 12px; padding: 24px 14px 60px; } }
-    ::selection { background: #d97757; color: #101214; }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta name="description" content="Previously at FutureClinic (YC F24) and Fyxed. Creator of SergeCode: 200K subscribers and 18M+ views on YouTube.">
+
+<meta content="#101214" name="theme-color"/>
+<title>Sergey Kudelin | Growth / GTM Engineer</title>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101214'/%3E%3Ctext x='6' y='23' font-family='Menlo,monospace' font-size='18' fill='%23d97757'%3E%3E%3C/text%3E%3C/svg%3E" rel="icon"/>
+<style>
+p.intro{margin-top:23px;max-width:80ch}
+:root{--paper:#101214;--ink:#b9bfc7;--head:#e8eaec;--muted:#969eaa;--link:#d0d5da;--line:#292f35;--underline:#4a5058;--accent:#d97757;--mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;color-scheme:dark}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-padding-top:28px}body{margin:0;background:var(--paper);color:var(--ink);font:14.5px/1.65 var(--mono);-webkit-font-smoothing:antialiased}::selection{background:var(--accent);color:var(--paper)}a{color:var(--link);text-decoration:underline;text-decoration-color:var(--underline);text-decoration-thickness:1px;text-underline-offset:4px}a:hover{color:#fff;text-decoration-color:var(--accent)}a:focus-visible{outline:2px solid var(--accent);outline-offset:5px}h1,h2,h3,strong{color:var(--head)}h1,h2,h3,p{margin:0}h1{font-size:27px;line-height:1.35;letter-spacing:-.025em;font-weight:650}h2{font-size:13px;line-height:1.6;font-weight:500;color:var(--muted)}h3{font-size:18px;line-height:1.5;letter-spacing:-.015em;font-weight:600}.skip{position:fixed;top:10px;left:10px;z-index:10;transform:translateY(-160%);padding:10px 13px;background:var(--head);color:var(--paper)}.skip:focus{transform:translateY(0)}.layout{display:grid;grid-template-columns:145px minmax(0,1fr);gap:55px;max-width:1060px;margin:0 auto;padding:43px 28px 40px}.sidebar{position:sticky;top:43px;align-self:start;font-size:13px}.brand{display:block;font-weight:600;text-decoration:none;color:var(--head);margin-bottom:28px}.site-nav{display:flex;flex-direction:column;align-items:flex-start;gap:15px}.site-nav a{text-decoration:none}.site-nav a:hover{text-decoration:underline;text-decoration-color:var(--accent)}main{min-width:0}.identity{display:flex;align-items:baseline;justify-content:space-between;gap:20px}.location{color:var(--muted);font-size:13px;white-space:nowrap}.role{color:var(--muted);margin-top:7px;font-size:13px}.quick-links{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:13px;font-size:13px}.page-section{margin-top:32px;scroll-margin-top:28px}.page-section>h2{margin-bottom:10px}.experience{padding:20px 0;border-top:1px solid var(--line)}.experience:last-child{padding-bottom:0}.experience-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px 20px;margin-bottom:8px}.company-context{font-size:13px;letter-spacing:0;color:var(--muted);font-weight:400;white-space:nowrap}.achievement{margin-bottom:4px}.detail{font-size:14px}.case-links{list-style:none;display:flex;flex-wrap:wrap;gap:6px 21px;padding:0;margin:12px 0 0;font-size:13px;line-height:1.75}.projects-list{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}.projects-list li{display:grid;grid-template-columns:145px minmax(0,1fr);gap:17px;padding:13px 0;border-bottom:1px solid var(--line)}.projects-list a{font-weight:600;color:var(--head)}.projects-list p{font-size:14px}.contact-copy{margin:12px 0 8px}.contact-links{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;padding:0;margin:0;font-size:13px}.footer{margin-top:26px;padding-top:17px;border-top:1px solid var(--line);display:flex;align-items:baseline;justify-content:space-between;gap:12px 24px;font-size:12px;color:var(--muted)}.footer a{white-space:nowrap}
+@media(max-width:1000px){.layout{grid-template-columns:125px minmax(0,1fr);gap:34px;padding:34px 25px}.sidebar{top:34px}.experience-head{align-items:flex-start}.projects-list{font-size:14px}}
+@media(max-width:760px){body{font-size:14px;line-height:1.7}.layout{display:block;padding:0 21px 30px}.sidebar{position:static;font-size:12px;padding:19px 0 18px;border-bottom:1px solid var(--line);margin-bottom:26px}.brand{display:none}.site-nav{flex-direction:row;gap:27px}.site-nav a{padding:3px 0}h1{font-size:25px}.identity{gap:12px}.location{font-size:12px}.role{font-size:12px;margin-top:7px}.quick-links{font-size:12px;gap:10px 23px;margin-top:14px}.page-section{margin-top:29px}.page-section>h2{font-size:12px}.experience{padding:18px 0}.experience-head{display:block;margin-bottom:9px}h3{font-size:17px}.company-context{font-size:12px}.detail{font-size:13px}.case-links{font-size:12px;gap:7px 20px;margin-top:11px}.projects-list li{grid-template-columns:112px minmax(0,1fr);gap:14px;padding:13px 0}.projects-list p{font-size:13px}.contact-links{font-size:12px;gap:9px 20px}.footer{display:block;font-size:11.5px;line-height:1.8;margin-top:25px}.footer a{display:inline-block;margin-top:10px}}
+@media print{:root{--paper:#fff;--ink:#222;--head:#111;--muted:#444;--link:#111;--line:#ccc;--underline:#888;color-scheme:light}.sidebar,.skip{display:none}.layout{display:block;max-width:none;padding:0}body{font-size:10.5pt}.page-section{margin-top:20px}.experience{break-inside:avoid}.footer{font-size:9pt}}
+</style>
 </head>
 <body>
-<!-- you actually read the source. i like you already. sergey@sergeykudelin.com -->
-<main>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<aside class="sidebar">
+<a class="brand" href="/">Sergey Kudelin</a>
+<nav aria-label="Main navigation" class="site-nav"><a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav>
+</aside>
+<main id="main">
+<header>
+<div class="identity"><h1>Sergey Kudelin</h1><span class="location">Miami</span></div>
+<p class="role">Growth / GTM Engineer</p>
+<nav aria-label="Profile links" class="quick-links"><a href="mailto:sergey@sergeykudelin.com">Email</a><a href="https://linkedin.com/in/sergeykudelin">LinkedIn</a></nav>
+<p class="intro">Previously at <a href="/portfolio/content-for-doctors.html">FutureClinic</a> (<a href="https://www.ycombinator.com/companies/futureclinic">YC F24</a>) and <a href="/portfolio/lead-research.html">Fyxed</a>. Creator of <a href="/portfolio/youtube.html">SergeCode</a>: <strong>200K subscribers</strong> and <strong>18M+ views</strong> on YouTube.</p>
+</header>
+<section aria-labelledby="work-title" class="page-section" id="work">
+<h2 id="work-title">Work</h2>
+<article aria-labelledby="futureclinic-title" class="experience">
+<header class="experience-head"><h3 id="futureclinic-title"><a href="https://www.ycombinator.com/companies/futureclinic">FutureClinic</a> <span class="company-context">YC F24</span></h3></header>
+<p class="achievement"><strong>Built the original content product for doctors.</strong></p>
+<ul aria-label="FutureClinic work" class="case-links"><li><a href="/portfolio/content-for-doctors.html">Creators</a></li><li><a href="/portfolio/slack-assistant.html">Slack agent</a></li><li><a href="/recommendation.pdf">Founder recommendation</a></li></ul>
+</article>
+<article aria-labelledby="fyxed-title" class="experience">
+<header class="experience-head"><h3 id="fyxed-title"><a href="https://fyxed.com/">Fyxed</a></h3></header>
+<p class="achievement"><strong>Built prospect research and personalized outreach from scratch.</strong></p>
+<p class="detail">3,357 property managers researched.</p>
+<ul aria-label="Fyxed work" class="case-links"><li><a href="/portfolio/lead-research.html">Prospect intelligence</a></li><li><a href="/portfolio/email-outreach.html">Outbound system</a></li><li><a href="/portfolio/repair-offers.html">Repair offers</a></li></ul>
+</article>
+<article aria-labelledby="youtube-title" class="experience">
+<header class="experience-head"><h3 id="youtube-title"><a href="https://www.youtube.com/@SergeCode">YouTube</a></h3></header>
+<p class="achievement"><strong>200K subscribers · 18M+ views</strong></p>
+<p class="detail">Ideas, scripts, editing and the games on screen.</p>
+<ul class="case-links"><li><a href="/portfolio/youtube.html">My YouTube channel</a></li></ul>
+</article>
+</section>
+<section aria-labelledby="projects-title" class="page-section" id="projects">
+<h2 id="projects-title">Projects</h2>
+<ul class="projects-list"><li><a href="/portfolio/ai-team.html">AI team</a><p>Building a Mac app where agents work together.</p></li></ul>
 
-<div class="out"><p><b>Sergey Kudelin</b> · Growth / GTM Engineer · Miami, FL</p></div>
-
-<h2 class="cmd">About</h2>
-<div class="out"><p>I&#x27;m a Growth / GTM Engineer who builds with AI agents. I built @SergeCode to around 200K subscribers and more than 13M views. At FutureClinic (YC F24), I proposed FutureClinic Creators and built its initial prototype to help doctors attract patients through articles and YouTube videos.</p>
-<p>At Fyxed, I built the website and the systems behind the outreach operation: company research, CRM, personalized campaigns and reporting. I work with Claude Code and Codex. I&#x27;m based in Miami.</p>
-<p>I&#x27;m looking for a full-time, remote role where I can build with a team for the long term. I want to get to know the product and customers deeply, take responsibility for growth, and make what we learn useful across the team.</p></div>
-
-<h2 class="cmd">Experience</h2>
-<div class="out">
-<div class="rolehead"><span class="role">Growth Engineer · Fyxed</span> <span class="when">· Contract · Jun-Aug 2026 · Remote</span></div>
-<p>I built a prospect database for U.S. third-party single-family rental property managers with full coverage nationwide by combining industry directories, company websites, state licensing records, and business filings.</p>
-<p>I built custom scrapers and AI agent workflows for company research, contact enrichment and personalized outreach, with source verification, deduplication and integration into a self-hosted CRM.</p>
-<p>I conducted customer discovery for repair financing through direct conversations with prospective customers, working closely with legal to shape product requirements, clarify financing limits and identify eligible use cases.</p>
-<p><a href="https://fyxed.com/owner-benefit-package">Owner benefit package</a></p><div class="rolehead"><span class="role">GTM Engineer · FutureClinic (YC F24)</span> <span class="when">· Full-time · Mar-May 2026 · Remote</span></div>
-<p>I proposed FutureClinic Creators, an AI system designed to help doctors attract patients through articles and YouTube videos. The idea was to build trust through useful content and give readers and viewers a path to book a consultation.</p>
-<p>I built the initial prototype using Claude, with workflows for content research, video topics, question cards, scripts and thumbnails. Another engineer then developed it for production.</p>
-<p>I also proposed recruiting doctors who already had an audience for FutureClinic&#x27;s digital-clinic platform. I built Nikola, an AI agent that researched doctors and drafted personalized outreach, along with physician verification workflows and personalized clinic previews.</p>
-<p><a href="https://futurecliniccreators.com">FutureClinic Creators</a></p>
-<p><a href="/recommendation.pdf">Recommendation letter from Dr. Usama Syed</a></p>
-<div class="rolehead"><span class="role">YouTube Creator (SergeCode)</span> <span class="when">· Self-employed · 2019-2025</span></div>
-<p>I built and ran @SergeCode, a Roblox YouTube channel, growing it to around 200K subscribers and more than 13M views. A game-building video reached 3.7M views, and a Short reached 5.3M.</p>
-<p>I developed the video ideas, wrote scripts and edited the finished videos. For videos about building with AI, I also built the Roblox games and assets featured on screen.</p>
-<p><a href="https://www.youtube.com/@SergeCode">SergeCode on YouTube</a></p><p><a href="https://www.youtube.com/watch?v=J6JBEsGL0Qw">Game-building video</a></p></div>
-
-<h2 class="cmd">Projects</h2>
-<div class="out">
-<div class="li">* <b>AI workflows</b>: Reusable skills I use for research, writing and checking agent work. <a href="https://github.com/Seryozh/agent-skills">Public agent skills</a></div></div>
-
-<h2 class="cmd">Skills and tools</h2>
-<div class="out"><p>Market research · Growth experiments · Go-to-market strategy · Content and distribution · Marketing automation · Outreach · Reporting · AI agents · Claude Code · Codex</p></div>
-
-<h2 class="cmd">Education</h2>
-
-<div class="out"><p>Computer Science · Florida International University</p></div>
-<h2 class="cmd">Contact</h2>
-<div class="out"><pre>email      <a href="mailto:sergey@sergeykudelin.com">sergey@sergeykudelin.com</a>
-github     <a href="https://github.com/Seryozh">github.com/Seryozh</a>
-linkedin   <a href="https://linkedin.com/in/sergeykudelin">linkedin.com/in/sergeykudelin</a>
-resume     <a href="/resume.pdf">/resume.pdf</a>  <span class="quiet">(one page)</span>
-skill      <a href="/skill">/skill</a>  <span class="quiet">(a SKILL.md your agent can load)</span>
-curl       <span class="quiet">curl -L sergeykudelin.com</span></pre></div>
-
-
+</section>
+<section aria-labelledby="contact-title" class="page-section" id="contact">
+<h2 id="contact-title">Contact</h2>
+<p class="contact-copy">Open to full-time remote roles.</p>
+<ul class="contact-links"><li><a href="https://github.com/Seryozh">GitHub</a></li><li><a href="https://linkedin.com/in/sergeykudelin">LinkedIn</a></li></ul>
+</section>
+<footer class="footer"><a href="/skill">For agents</a></footer>
 </main>
+</div>
 </body>
 </html>
