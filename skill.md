@@ -1,50 +1,16 @@
 ---
-name: sergey-kudelin
-description: Professional profile of Sergey Kudelin, a Growth / GTM Engineer with work at FutureClinic (YC F24), Fyxed, and YouTube.
+name: next-customer
+description: Next Customer is being built by Sergey Kudelin to help YC-backed startups find their next customers.
 ---
 
-# Sergey Kudelin
+# Next Customer
 
-Growth / GTM Engineer. Miami, FL. Open to full-time remote roles.
+Meet your next customer.
 
-Previously at FutureClinic (YC F24) and Fyxed. Creator of SergeCode: 200K subscribers and 18M+ views on YouTube.
+I'm building Next Customer to help YC-backed startups find their next customers.
 
-## FutureClinic (YC F24)
+Website in progress. Built by Sergey Kudelin.
 
-I built the original content product for doctors, from topic research to scripts, titles and thumbnails. I owned the original build and worked with Fareed on bringing it into production. I also built a Slack assistant for company knowledge and recurring work.
-
-- [Creators](https://sergeykudelin.com/portfolio/content-for-doctors.html)
-- [Slack agent](https://sergeykudelin.com/portfolio/slack-assistant.html)
-- [Founder recommendation](https://sergeykudelin.com/recommendation.pdf)
-- [FutureClinic at Y Combinator](https://www.ycombinator.com/companies/futureclinic)
-
-## Fyxed
-
-I built prospect research and personalized outreach from scratch. The research system assessed 3,357 property managers. I set up email infrastructure, prepared prospect lists and personalized campaigns, and worked with property managers to test the company's offers. Repair-financing discussions became a product preview and an owner offer page.
-
-- [Prospect intelligence](https://sergeykudelin.com/portfolio/lead-research.html)
-- [Outbound system](https://sergeykudelin.com/portfolio/email-outreach.html)
-- [Repair offers](https://sergeykudelin.com/portfolio/repair-offers.html)
-
-## YouTube
-
-I built and ran SergeCode, a YouTube channel with around 200,000 subscribers and over 18 million views. I owned the ideas, scripts, editing and games featured on screen. One game-building video brought in 3.72 million views and 59,000 subscribers.
-
-- [My YouTube channel](https://sergeykudelin.com/portfolio/youtube.html)
-- [SergeCode on YouTube](https://www.youtube.com/@SergeCode)
-
-## Projects
-
-- [AI team](https://sergeykudelin.com/portfolio/ai-team.html): building a Mac app where agents work together.
-
-## Tools and experience
-
-Growth research, product experiments, content, personalized outreach, AI agents, Claude Code and Codex.
-
-## Contact and references
-
+- [LinkedIn](https://linkedin.com/in/sergeykudelin)
 - Email: sergey@sergeykudelin.com
-- LinkedIn: https://linkedin.com/in/sergeykudelin
-- GitHub: https://github.com/Seryozh
 - Website: https://sergeykudelin.com/
-- Agent profile: https://sergeykudelin.com/skill
