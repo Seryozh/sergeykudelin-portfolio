@@ -1,11 +1,12 @@
-Next Customer
+Sergey Kudelin — Curiosity, made useful.
 
-Meet your next customer.
+I build AI tools, research systems, and content. I like connecting the pieces —
+and turning an idea into something people can use.
 
-I'm building Next Customer to help YC-backed startups find their next customers.
-
-Website in progress. Built by Sergey Kudelin.
+Explore eight case studies in AI assistants, research, outreach, and content:
+https://sergeykudelin.com/portfolio/
 
 - LinkedIn: https://linkedin.com/in/sergeykudelin
 - Email: sergey@sergeykudelin.com
+- Resume: https://sergeykudelin.com/resume
 - Website: https://sergeykudelin.com/
