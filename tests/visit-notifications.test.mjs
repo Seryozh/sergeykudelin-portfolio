@@ -158,7 +158,7 @@ test("test query only adds a marker and never bypasses filtering", async (t) => 
 test("only named UTM fields are included, bounded to a single line", async (t) => {
   const state = setup(t);
   const query = new URLSearchParams({
-    utm_source: "linkedin\nforged line", utm_medium: "social", utm_campaign: "x".repeat(150),
+    utm_source: "linkedin\nforged\u2028line", utm_medium: "social", utm_campaign: "x".repeat(150),
     email: "private@example.com", token: "private-token",
   });
   await middleware(request(`/?${query}`), state.context);

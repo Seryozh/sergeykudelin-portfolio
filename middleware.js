@@ -22,7 +22,7 @@ const DOCUMENT_PATHS = new Set([
 ]);
 
 function clean(value, length = 180) {
-  return String(value || "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, length);
+  return String(value || "").replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, " ").trim().slice(0, length);
 }
 
 function decodeCity(value) {
