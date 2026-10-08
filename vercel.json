@@ -40,7 +40,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'sha256-bD6pCwbVesGeBraG61Vr0g0UkPDQ8QOW48KW204t+Bc=' 'sha256-jtaVEdl05oY2rFBMum8Tcygz+CIoxQX2rpeZD9bf3zQ=' 'sha256-czEbrmJxZyHx/ZcsWn9K6VaUBLmDwgU6LUCTZNBC3NU=' 'sha256-L5T6IpY0JWFrsmqKu6CL7yV2q4kZckYeGiTRAJN3JGM=' 'sha256-7+OAXbskovO4mq2jKfspul/udmDdX8+CPr3vFNpf66I='; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+          "value": "default-src 'none'; style-src 'self' 'unsafe-inline' https://widget.replain.cc; script-src 'sha256-bD6pCwbVesGeBraG61Vr0g0UkPDQ8QOW48KW204t+Bc=' 'sha256-jtaVEdl05oY2rFBMum8Tcygz+CIoxQX2rpeZD9bf3zQ=' 'sha256-czEbrmJxZyHx/ZcsWn9K6VaUBLmDwgU6LUCTZNBC3NU=' 'sha256-L5T6IpY0JWFrsmqKu6CL7yV2q4kZckYeGiTRAJN3JGM=' 'sha256-7+OAXbskovO4mq2jKfspul/udmDdX8+CPr3vFNpf66I=' 'sha256-sphwfzWXurjEXPJ7ZyjN4HEdNmYrefEvIHicSWXPXSs=' https://widget.replain.cc; img-src 'self' data: https://widget.replain.cc https://assets.replain.cc https://app.replain.cc/logo-default.png; font-src 'self'; connect-src https://app.replain.cc wss://ws.replain.cc; media-src https://widget.replain.cc/dist/media/; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
         },
         {
           "key": "Referrer-Policy",
