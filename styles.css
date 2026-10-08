@@ -1,0 +1,20 @@
+@font-face{font-family:Shantell;src:url('/assets/fonts/ShantellSans-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+:root{color-scheme:light dark;--paper:#fafaf7;--ink:#303331;--blue:#395a73;--grid:#556a7610;--muted:#656d6b;--line:#b7c0c2}
+@media(prefers-color-scheme:dark){:root{--paper:#202526;--ink:#e4e6df;--blue:#9dbbcd;--grid:#c0d3d70b;--muted:#a4aeac;--line:#4b5659}}
+*{box-sizing:border-box}
+html{min-width:320px;min-height:100%;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+body{position:relative;isolation:isolate;margin:0;min-height:100svh;display:grid;align-items:center;padding:72px 40px 120px;color:var(--ink);font-family:Shantell,cursive}
+#paper-grid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+html.grid-ready{background-image:none}
+.intro{width:min(100%,720px);margin-inline:auto}
+h1{margin:0;font-size:clamp(2.8rem,6.6vw,4.6rem);font-weight:400;line-height:1.2;letter-spacing:-2.4px}
+p{max-width:600px;margin:23px 0 27px;font-size:1.0625rem;line-height:1.85;letter-spacing:-.3px}
+.profile-links{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.profile-links a,.profile-links button{display:inline-flex;align-items:center;min-height:44px;padding:6px 0;color:var(--blue);background:none;border:0;font:inherit;font-size:.875rem;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.profile-links a:hover,.profile-links button:hover,.email-details a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:5px}
+.email-details{margin-top:12px;font-size:.875rem;line-height:1.7}
+.email-details a{display:inline-flex;align-items:center;min-height:44px;color:var(--blue);text-decoration:none;overflow-wrap:anywhere;max-width:100%}
+[hidden]{display:none!important}
+@media(max-width:600px){body{padding:48px 28px 100px}h1{max-width:380px;font-size:clamp(3rem,10.8vw,3.7rem);letter-spacing:-2px}p{margin-block:22px 24px;font-size:1rem;max-width:360px}.profile-links{gap:24px}}
+@media(max-width:360px){body{padding-inline:24px}.profile-links{gap:22px}.profile-links a,.profile-links button{font-size:.8rem}}

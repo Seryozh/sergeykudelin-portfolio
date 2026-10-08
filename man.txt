@@ -1,11 +1,9 @@
-Next Customer
+Sergey Kudelin
 
-Meet your next customer.
+I work on growth, make videos, and build products.
 
-I'm building Next Customer to help YC-backed startups find their next customers.
-
-Website in progress. Built by Sergey Kudelin.
-
-- LinkedIn: https://linkedin.com/in/sergeykudelin
-- Email: sergey@sergeykudelin.com
-- Website: https://sergeykudelin.com/
+LinkedIn: https://www.linkedin.com/in/sergeykudelin/
+GitHub: https://github.com/Seryozh
+YouTube: https://www.youtube.com/@SergeCode
+Recommendation: https://sergeykudelin.com/recommendation.pdf
+Contact: https://sergeykudelin.com/
