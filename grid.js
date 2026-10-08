@@ -117,8 +117,8 @@
 
   function step(delta) {
     let motion = 0;
-    const damping = Math.pow(0.8, delta);
-    const pressure = pointer.down ? 11 : 8;
+    const damping = Math.pow(0.65, delta);
+    const pressure = pointer.down ? 5 : 3.5;
     const radiusSquared = RADIUS * RADIUS;
 
     // Update velocities before positions so every spring reads the same sheet.
@@ -149,8 +149,8 @@
         if (row > 0) { neighborX += x[index - columns]; neighborY += y[index - columns]; neighbors++; }
         if (row < rows - 1) { neighborX += x[index + columns]; neighborY += y[index + columns]; neighbors++; }
 
-        const ax = (targetX - x[index]) * 0.095 + (neighborX / neighbors - x[index]) * 0.035;
-        const ay = (targetY - y[index]) * 0.095 + (neighborY / neighbors - y[index]) * 0.035;
+        const ax = (targetX - x[index]) * 0.03 + (neighborX / neighbors - x[index]) * 0.01;
+        const ay = (targetY - y[index]) * 0.03 + (neighborY / neighbors - y[index]) * 0.01;
         vx[index] = (vx[index] + ax * delta) * damping;
         vy[index] = (vy[index] + ay * delta) * damping;
         motion = Math.max(motion, Math.abs(vx[index]), Math.abs(vy[index]), Math.abs(ax), Math.abs(ay));
@@ -242,8 +242,8 @@
     const nextY = event.clientY - bounds.top;
     if (nextX < 0 || nextY < 0 || nextX > width || nextY > height) { leave(); return; }
     if (pointer.active) {
-      pointer.pullX = Math.max(-1.6, Math.min(1.6, (nextX - pointer.x) * 0.075));
-      pointer.pullY = Math.max(-1.6, Math.min(1.6, (nextY - pointer.y) * 0.075));
+      pointer.pullX = Math.max(-0.6, Math.min(0.6, (nextX - pointer.x) * 0.035));
+      pointer.pullY = Math.max(-0.6, Math.min(0.6, (nextY - pointer.y) * 0.035));
     }
     pointer.x = nextX;
     pointer.y = nextY;

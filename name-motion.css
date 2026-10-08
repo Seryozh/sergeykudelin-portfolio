@@ -1,0 +1,57 @@
+#name{
+  display:flex;
+  align-items:baseline;
+  gap:.26em;
+  width:100%;
+  margin:0;
+  padding-block:.02em;
+  line-height:1.45;
+  letter-spacing:0;
+  white-space:nowrap;
+  overflow:visible;
+  animation:none;
+  font-family:ShantellVariable,Shantell,cursive;
+  font-weight:450;
+  font-synthesis:none;
+  font-feature-settings:'rlig' 1;
+  font-variation-settings:'wght' 450,'ital' 0,'BNCE' 0,'INFM' 25,'SPAC' 0;
+  cursor:default;
+  -webkit-tap-highlight-color:transparent;
+}
+#name .name-word{display:inline-flex;align-items:baseline;flex:none;white-space:nowrap}
+#name .name-letter{
+  display:inline-block;
+  flex:none;
+  width:var(--letter-width,.59em);
+  margin:0;
+  padding:0;
+  line-height:inherit;
+  letter-spacing:0;
+  text-align:center;
+  overflow:visible;
+  font-weight:450;
+  font-variation-settings:'wght' 450,'ital' 0,'BNCE' 0,'INFM' 25,'SPAC' 0;
+  animation:none;
+  transition:none;
+  transform-origin:50% 65%;
+}
+/* Fixed advances keep the name's layout still while individual letters respond. */
+#name .name-word:first-child .name-letter:nth-child(1){--letter-width:.56em}
+#name .name-word:first-child .name-letter:nth-child(2){--letter-width:.59em}
+#name .name-word:first-child .name-letter:nth-child(3){--letter-width:.49em}
+#name .name-word:first-child .name-letter:nth-child(4){--letter-width:.64em}
+#name .name-word:first-child .name-letter:nth-child(5){--letter-width:.59em}
+#name .name-word:first-child .name-letter:nth-child(6){--letter-width:.59em}
+#name .name-word:last-child .name-letter:nth-child(1){--letter-width:.66em}
+#name .name-word:last-child .name-letter:nth-child(2){--letter-width:.60em}
+#name .name-word:last-child .name-letter:nth-child(3){--letter-width:.65em}
+#name .name-word:last-child .name-letter:nth-child(4){--letter-width:.59em}
+#name .name-word:last-child .name-letter:nth-child(5){--letter-width:.33em}
+#name .name-word:last-child .name-letter:nth-child(6){--letter-width:.30em}
+#name .name-word:last-child .name-letter:nth-child(7){--letter-width:.63em}
+#name:focus-visible{outline:1px dashed var(--line,#b7c0c2);outline-offset:5px;border-radius:4px}
+@media(max-width:600px){#name{font-size:clamp(28px,8.8vw,48px);gap:.22em}}
+@media(prefers-reduced-motion:reduce){
+  #name,#name .name-letter{animation:none!important;transition:none!important}
+  #name .name-letter{transform:none!important}
+}

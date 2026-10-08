@@ -1,9 +1,22 @@
 Sergey Kudelin
 
-I work on growth, make videos, and build products.
+Growth / GTM / Product / Content
+
+I build products, AI workflows and content to help businesses grow.
+
+FutureClinic — GTM engineer · YC F24
+I led the doctor-creator growth strategy with the founder and built Creators full stack, automating research, scripts and thumbnails in each doctor’s voice.
+https://www.futurecliniccreators.com/
+
+Fyxed — Growth engineer · Product
+I joined in growth and ended up leading the product, talking to customers and scraping our U.S. property-manager ICP nationwide.
+https://fyxed.com/
+
+SergeCode — YouTube creator
+I grew a Roblox YouTube channel to 200K subscribers and 18M+ views, directing and producing the videos myself.
+https://www.youtube.com/@SergeCode
 
 LinkedIn: https://www.linkedin.com/in/sergeykudelin/
 GitHub: https://github.com/Seryozh
-YouTube: https://www.youtube.com/@SergeCode
-Recommendation: https://sergeykudelin.com/recommendation.pdf
-Contact: https://sergeykudelin.com/
+Email: kudelin.dev@gmail.com
+Website: https://sergeykudelin.com/
