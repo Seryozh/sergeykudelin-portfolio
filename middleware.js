@@ -11,6 +11,7 @@ const PAGE_PATHS = new Set([
   // /portfolio/ is only a meta-refresh shell; its destination / sends the alert.
   "/", "/index.html",
   "/soda", "/soda/", "/soda/index.html",
+  "/privy", "/privy/", "/privy/index.html",
   ...[
     "content-for-doctors", "youtube", "lead-research", "slack-assistant", "ai-team",
     "second-brain", "email-outreach", "repair-offers",
