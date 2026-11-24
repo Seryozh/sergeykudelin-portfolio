@@ -15,26 +15,9 @@
         }
       ],
       "destination": "/man.txt"
-    },
-    {
-      "source": "/skill",
-      "destination": "/skill.md"
-    },
-    {
-      "source": "/resume",
-      "destination": "/resume.pdf"
     }
   ],
   "headers": [
-    {
-      "source": "/skill.md",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
-        }
-      ]
-    },
     {
       "source": "/((?!soda|privy).*)",
       "headers": [
