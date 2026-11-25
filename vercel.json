@@ -85,5 +85,87 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/resume",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/resume.pdf",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/resume.html",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/resume.txt",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/sergey-kudelin-resume.pdf",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/Resume.pdf",
+      "destination": "/Sergey-Kudelin-Resume.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/recommendation.pdf",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/futureclinic-recommendation.pdf",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/portfolio/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/skill",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/skill.md",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/privy",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/privy/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/soda",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/soda/:path*",
+      "destination": "/",
+      "permanent": false
+    }
   ]
 }

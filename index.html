@@ -1,80 +1,173 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="I'm a growth engineer, and my skill is finding demand that already exists and catching it.">
-  <meta name="color-scheme" content="light dark">
-  <title>Sergey Kudelin | GTM Engineer</title>
-  <link rel="canonical" href="https://sergeykudelin.com/">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Sergey Kudelin">
-  <meta property="og:title" content="Sergey Kudelin | GTM Engineer">
-  <meta property="og:description" content="I'm a growth engineer, and my skill is finding demand that already exists and catching it.">
-  <meta property="og:url" content="https://sergeykudelin.com/">
-  <meta name="twitter:card" content="summary">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=sk-v2">
-  <link rel="icon" href="/assets/favicon.svg?v=sk-v2" type="image/svg+xml">
-  <link rel="preload" href="/assets/fonts/ShantellSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="/assets/fonts/ShantellSans-Variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/styles.css?v=08b08b51e4">
-  <link rel="stylesheet" href="/name-motion.css?v=a759ad0b2d">
-  <script src="/grid.js?v=2f94fa2296" integrity="sha256-L5T6IpY0JWFrsmqKu6CL7yV2q4kZckYeGiTRAJN3JGM=" crossorigin="anonymous" defer></script>
-  <script src="/name-motion.js?v=efe3805dbb" integrity="sha256-7+OAXbskovO4mq2jKfspul/udmDdX8+CPr3vFNpf66I=" crossorigin="anonymous" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=880">
+<meta name="description" content="I'm a growth engineer, and my skill is finding demand that already exists and catching it.">
+<link rel="canonical" href="https://sergeykudelin.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sergey Kudelin">
+<meta property="og:title" content="Sergey Kudelin | GTM Engineer">
+<meta property="og:description" content="I'm a growth engineer, and my skill is finding demand that already exists and catching it.">
+<meta property="og:url" content="https://sergeykudelin.com/">
+<meta name="twitter:card" content="summary">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=sk-v2">
+<link rel="icon" href="/assets/favicon.svg?v=sk-v2" type="image/svg+xml">
+
+<title>Sergey Kudelin | GTM Engineer</title>
+<style>
+  /* Type scale: 9.5 / 10.5 / 12 / 25pt. Vertical rhythm: 14pt line. Layout: Sergey's own version, 5 and 9 November 2026. */
+  :root {
+    --ink: #17212B;
+    --body: #2B3641;
+    --muted: #5C6873;
+    --rule: #DDE2E7;
+    --accent: #1F5673;
+    --link-line: #A9BAC6;
+    --sep: #9AA5AF;
+    --left: 76pt;
+    --gutter: 16pt;
+  }
+  @page { size: Letter; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 612pt; }
+  body {
+    font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 13.4pt;
+    color: var(--body);
+    padding: 44pt 50pt 0;
+    -webkit-print-color-adjust: exact;
+    font-variant-ligatures: none;
+    font-kerning: normal;
+  }
+  a { color: inherit; text-decoration: none; border-bottom: 0.5pt solid var(--link-line); }
+
+  /* block: header */
+  header { display: grid; grid-template-columns: 1fr auto; column-gap: 18pt; align-items: start; }
+  b { font-weight: 600; color: var(--ink); }
+  h1 { font-size: 25pt; line-height: 30pt; font-weight: 600; letter-spacing: -0.2pt; color: var(--ink); }
+  .title { font-size: 12.5pt; line-height: 19pt; color: var(--accent); font-weight: 500; }
+  .contact { text-align: right; color: var(--muted); padding-top: 7pt; }
+  .contact a { color: var(--muted); }
+
+  /* block: summary */
+  .lede { margin-top: 9pt; font-size: 9.5pt; line-height: 13.4pt; color: var(--ink); }
+
+  /* block: section (left label + items) */
+  section {
+    display: grid;
+    grid-template-columns: var(--left) 1fr;
+    column-gap: var(--gutter);
+    align-items: first baseline;
+    margin-top: 12pt;
+    padding-top: 11pt;
+    border-top: 0.5pt solid var(--rule);
+  }
+  h2 { font-size: 9.5pt; line-height: 13.4pt; font-weight: 600; color: var(--ink); }
+  .when { color: var(--muted); }
+
+  /* items: entry and text */
+  .item + .item { margin-top: 14pt; }
+  h3 { font-size: 10.5pt; line-height: 13.4pt; font-weight: 600; color: var(--ink); }
+  h3 .sep { font-weight: 400; color: var(--sep); margin: 0 4.5pt; }
+  h3 .role { font-weight: 400; color: var(--body); }
+  .about { color: var(--muted); }
+
+  ul { list-style: disc outside; margin-top: 5pt; padding-left: 10pt; }
+  li + li { margin-top: 6.5pt; }
+  li::marker { color: var(--muted); font-size: 7pt; }
+
+  .note { margin-top: 5pt; color: var(--muted); }
+  .q { font-style: italic; color: var(--body); }
+  .ai p + p { margin-top: 3pt; }
+
+  .tools { color: var(--body); }
+  p, li, .lede, .about, h3, .tools { text-wrap: pretty; }
+
+  /* web wrapper: the printed page shown as a sheet */
+  html { width: auto; background: #EEF1F4; }
+  body { width: auto; padding: 0; background: transparent; }
+  .sheet { width: 612pt; min-height: 792pt; margin: 28px auto 14px; padding: 44pt 50pt 40pt; background: #fff;
+           box-shadow: 0 1px 2px rgba(23,33,43,.06), 0 10px 30px rgba(23,33,43,.08); }
+  .under { width: 612pt; margin: 0 auto 48px; display: flex; justify-content: flex-end; gap: 18px; font-size: 10pt; }
+  .under a { color: var(--muted); }
+  @media print { html { background: #fff; } .sheet { margin: 0; box-shadow: none; } .under { display: none; } }
+</style>
 </head>
 <body>
-  <canvas id="paper-grid" aria-hidden="true"></canvas>
-  <a class="skip-link" href="#work">Skip to work</a>
-  <div class="page">
-    <header class="topbar">
-      <a class="home" href="#top" aria-label="Sergey Kudelin, top of page"><img class="brand-logo" src="/assets/sergey-sk-logo-v2.png" width="62" height="46" alt="" aria-hidden="true"></a>
-      <nav aria-label="Contact and profiles">
-        <a class="ink-link" href="https://www.linkedin.com/in/sergeykudelin/">LinkedIn</a>
-        <a class="ink-link" href="https://github.com/Seryozh">GitHub</a>
-        <a class="ink-link" href="mailto:kudelin.dev@gmail.com">Email</a>
-      </nav>
-    </header>
+<main class="sheet">
 
-    <main id="top">
-      <section class="intro" aria-labelledby="name">
-        <p class="scope">GTM Engineer</p>
-        <h1 id="name" aria-label="Sergey Kudelin" tabindex="0"><span class="name-word" aria-hidden="true"><span class="name-letter" style="--i:0">S</span><span class="name-letter" style="--i:1">e</span><span class="name-letter" style="--i:2">r</span><span class="name-letter" style="--i:3">g</span><span class="name-letter" style="--i:4">e</span><span class="name-letter" style="--i:5">y</span></span> <span class="name-word" aria-hidden="true"><span class="name-letter" style="--i:6">K</span><span class="name-letter" style="--i:7">u</span><span class="name-letter" style="--i:8">d</span><span class="name-letter" style="--i:9">e</span><span class="name-letter" style="--i:10">l</span><span class="name-letter" style="--i:11">i</span><span class="name-letter" style="--i:12">n</span></span></h1>
-        <p class="intro-copy">I'm a growth engineer, and my skill is finding demand that already exists and catching it.</p>
-      </section>
-
-      <section class="work" id="work" aria-label="Selected work">
-        <article class="project project-creators" aria-labelledby="creators-title">
-          <div class="project-label"><span class="project-dot" aria-hidden="true"></span><span>01</span></div>
-          <div class="project-body">
-            <div class="project-heading"><h2 id="creators-title">FutureClinic</h2><span class="role">GTM engineer · YC F24</span></div>
-            <p>I led the doctor-creator growth strategy with the founder and built Creators full stack, automating research, scripts and thumbnails in each doctor’s voice.</p>
-          </div>
-        </article>
-
-        <article class="project project-fyxed" aria-labelledby="fyxed-title">
-          <div class="project-label"><span class="project-dot" aria-hidden="true"></span><span>02</span></div>
-          <div class="project-body">
-            <div class="project-heading"><h2 id="fyxed-title">Fyxed</h2><span class="role">Growth engineer, contract</span></div>
-            <p>Led product development and customer conversations with property managers.</p>
-            <a class="project-link ink-link" href="https://fyxed.com/">See Fyxed</a>
-          </div>
-        </article>
-
-        <article class="project project-youtube" aria-labelledby="youtube-title">
-          <div class="project-label"><span class="project-dot" aria-hidden="true"></span><span>03</span></div>
-          <div class="project-body">
-            <div class="project-heading"><h2 id="youtube-title">SergeCode</h2><span class="role">YouTube creator</span></div>
-            <p>I grew a Roblox YouTube channel to 200K subscribers and 18M+ views, directing and producing the videos myself.</p>
-            <a class="project-link ink-link" href="https://www.youtube.com/@SergeCode">Watch the channel</a>
-          </div>
-        </article>
-      </section>
-
-      <footer class="contact">
-        <a class="email ink-link" href="mailto:kudelin.dev@gmail.com">kudelin.dev@gmail.com</a>
-      </footer>
-    </main>
+<header>
+  <div>
+    <h1>Sergey Kudelin</h1>
+    <div class="title">GTM Engineer</div>
   </div>
-  <script src="/chat.js?v=24a6486704" integrity="sha256-JKZIZwSABNI/JMfcfFWYLXsjJZ/7Untx+0i0EkIEWGs=" crossorigin="anonymous" defer></script>
+  <div class="contact">
+    Miami, FL<br>
+    <a href="mailto:kudelin.dev@gmail.com">kudelin.dev@gmail.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/sergeykudelin/">linkedin.com/in/sergeykudelin</a>
+  </div>
+</header>
+
+<p class="lede">I'm a growth engineer, and my skill is finding demand that already exists and catching it. I&nbsp;made tutorials designed around questions people already looked up on Google and YouTube, reaching 200K subscribers and 18M+ views. In 2026 I&nbsp;transitioned into startups and did similar work at FutureClinic (YC F24), then Fyxed, building scrapers, AI pipelines and pages, all through Claude Code and Codex.</p>
+
+<section>
+  <div>
+    <h2>Experience</h2>
+  </div>
+  <div>
+    <div class="item">
+      <h3><a href="https://fyxed.com/">Fyxed</a><span class="sep">|</span><span class="role">Growth Engineer, contract</span></h3>
+      <div class="about">Advances late rent so property managers can pay owners on time · Jun 2026 – Oct 2026</div>
+      <ul>
+        <li>Led product development and customer conversations with property managers.</li>
+        <li>Mapped every U.S. property management company into a <span style="white-space:nowrap">self-hosted</span> CRM, using my own scrapers for directories, company websites and licensing records.</li>
+        <li>Enriched records with AI that read 3,300+ firm websites and flagged firms that already promised owners their rent on time, our warmest prospects.</li>
+        <li>Connected my scrapers and contact enrichment to the CRM through its API and ran outbound from it, with our agents accessing it via MCP.</li>
+        <li>Ran campaigns with a reply rate of about 7%. Within about 40 days we had 72 meetings with property managers.</li>
+        <li>Positioned Fyxed for property managers and the owners they pay, drawing on those meetings, then rebuilt the website, demos and financing offers to match.</li>
+      </ul>
+    </div>
+    <div class="item">
+      <h3><a href="https://www.ycombinator.com/companies/futureclinic">FutureClinic (YC F24)</a><span class="sep">|</span><span class="role">GTM Engineer</span></h3>
+      <div class="about">Lets doctors launch digital clinics · Mar 2026 – May 2026</div>
+      <ul>
+        <li>Designed and built the strategy, tooling, pipelines and analytics for finding, reaching and onboarding physicians.</li>
+        <li>Built Creators, an AI tool drafting scripts, titles and thumbnails in a doctor's own voice, to win over doctors who already have audiences.</li>
+        <li>Found and verified doctors who post videos, with an AI agent in our Slack drafting each first email; 15% of the doctors I&nbsp;emailed replied.</li>
+        <li>Kept cold outreach running by handling email deliverability and warming backup inboxes before they were needed.</li>
+        <li>Priced out paid search for the five medical specialties we planned to target first, using SEMrush click prices to look for keywords we could break even on in the first month.</li>
+      </ul>
+    </div>
+    <div class="item">
+      <h3><a href="https://www.youtube.com/@SergeCode">SergeCode</a><span class="sep">|</span><span class="role">YouTube Creator, <span style="white-space:nowrap">self-employed</span></span></h3>
+      <div class="about">Roblox YouTube channel, 200K subscribers, 18M+ views · Oct 2019 – Jan 2026</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div>
+    <h2>Education</h2>
+  </div>
+  <div>
+    <div class="item">
+      <h3>Florida International University<span class="sep">|</span><span class="role">Computer Science</span></h3>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div>
+    <h2>Skills</h2>
+  </div>
+  <div>
+    <div class="item tools">SEO, paid channels (Google, Meta, ChatGPT ads), referral programs, automations, scripts and APIs, data analysis in SQL, Supabase, PostHog, dashboards</div>
+  </div>
+</section>
+
+</main>
+<div class="under"><a href="/Sergey-Kudelin-Resume.pdf">PDF</a><a href="https://www.linkedin.com/in/sergeykudelin/">LinkedIn</a><a href="https://github.com/Seryozh">GitHub</a></div>
+<script src="/chat.js?v=24a6486704" integrity="sha256-JKZIZwSABNI/JMfcfFWYLXsjJZ/7Untx+0i0EkIEWGs=" crossorigin="anonymous" defer></script>
 </body>
 </html>

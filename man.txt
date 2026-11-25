@@ -1,21 +1,40 @@
 Sergey Kudelin
-
 GTM Engineer
-
-I'm a growth engineer, and my skill is finding demand that already exists and catching it.
-
-FutureClinic — GTM engineer · YC F24
-I led the doctor-creator growth strategy with the founder and built Creators full stack, automating research, scripts and thumbnails in each doctor’s voice.
-
-Fyxed — Growth engineer, contract
+Miami, FL
+kudelin.dev@gmail.com  ·  linkedin.com/in/sergeykudelin
+I'm a growth engineer, and my skill is finding demand that already exists and catching it. I made tutorials designed
+around questions people already looked up on Google and YouTube, reaching 200K subscribers and 18M+ views. In
+2026 I transitioned into startups and did similar work at FutureClinic (YC F24), then Fyxed, building scrapers, AI
+pipelines and pages, all through Claude Code and Codex.
+Experience Fyxed | Growth Engineer, contract
+Advances late rent so property managers can pay owners on time · Jun 2026 – Oct 2026
 Led product development and customer conversations with property managers.
-https://fyxed.com/
+Mapped every U.S. property management company into a self-hosted CRM, using my own
+scrapers for directories, company websites and licensing records.
+Enriched records with AI that read 3,300+ firm websites and flagged firms that already
+promised owners their rent on time, our warmest prospects.
+Connected my scrapers and contact enrichment to the CRM through its API and ran outbound
+from it, with our agents accessing it via MCP.
+Ran campaigns with a reply rate of about 7%. Within about 40 days we had 72 meetings with
+property managers.
+Positioned Fyxed for property managers and the owners they pay, drawing on those meetings,
+then rebuilt the website, demos and financing offers to match.
+FutureClinic (YC F24) | GTM Engineer
+Lets doctors launch digital clinics · Mar 2026 – May 2026
+Designed and built the strategy, tooling, pipelines and analytics for finding, reaching and
+onboarding physicians.
+Built Creators, an AI tool drafting scripts, titles and thumbnails in a doctor's own voice, to win
+over doctors who already have audiences.
+Found and verified doctors who post videos, with an AI agent in our Slack drafting each first
+email; 15% of the doctors I emailed replied.
+Kept cold outreach running by handling email deliverability and warming backup inboxes
+before they were needed.
+Priced out paid search for the five medical specialties we planned to target first, using SEMrush
+click prices to look for keywords we could break even on in the first month.
+SergeCode | YouTube Creator, self-employed
+Roblox YouTube channel, 200K subscribers, 18M+ views · Oct 2019 – Jan 2026
+Education Florida International University | Computer Science
+Skills SEO, paid channels (Google, Meta, ChatGPT ads), referral programs, automations, scripts and
+APIs, data analysis in SQL, Supabase, PostHog, dashboards
 
-SergeCode — YouTube creator
-I grew a Roblox YouTube channel to 200K subscribers and 18M+ views, directing and producing the videos myself.
-https://www.youtube.com/@SergeCode
-
-LinkedIn: https://www.linkedin.com/in/sergeykudelin/
-GitHub: https://github.com/Seryozh
-Email: kudelin.dev@gmail.com
-Website: https://sergeykudelin.com/
+PDF: https://sergeykudelin.com/Sergey-Kudelin-Resume.pdf
